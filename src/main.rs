@@ -7,5 +7,5 @@ fn main() {
 	let _args = util::parse_args();
 	println!("thank god it's friday");
 
-	let x11_handler = Handler::new().expect("Failed to create X11 handler");
+	let x11_handler = Handler::new().expect("Failed to create the X11 handler");
 }
