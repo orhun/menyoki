@@ -5,6 +5,7 @@ authors = ["orhun <orhunparmaksiz@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+clap = "2.33.0"
 
 [profile.dev]
 opt-level = 0
