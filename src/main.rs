@@ -1,3 +1,6 @@
+mod util;
+
 fn main() {
-    println!("thank god it's friday");
+	let _args = util::parse_args();
+	println!("thank god it's friday");
 }
