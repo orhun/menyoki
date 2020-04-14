@@ -6,7 +6,7 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33.0"
-x11 = "2.18.2"
+x11 = { version = "2.18.2", features = ["xlib"]}
 
 [profile.dev]
 opt-level = 0
