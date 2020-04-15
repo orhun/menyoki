@@ -28,7 +28,7 @@ impl Display {
 			display: self.display,
 		}
 	}
-	pub fn get_focus_window(&self) -> Window {
+	pub fn get_focused_window(&self) -> Window {
 		let focus_window: *mut xlib::Window = &mut 0;
 		let revert_to_return: *mut i32 = &mut 0;
 		unsafe {
