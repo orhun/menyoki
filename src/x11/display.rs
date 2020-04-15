@@ -1,3 +1,4 @@
+use crate::x11::window::Window;
 use std::ptr;
 use x11::xlib;
 
@@ -14,6 +15,28 @@ impl Display {
 			} else {
 				None
 			}
+		}
+	}
+	pub fn get_root_window(&self) -> Window {
+		let mut root_window: usize = 0;
+		unsafe {
+			let screen = xlib::XDefaultScreenOfDisplay(self.display);
+			root_window = xlib::XRootWindowOfScreen(screen) as usize;
+		};
+		Window {
+			xid: unsafe { root_window },
+			display: self.display,
+		}
+	}
+	pub fn get_focus_window(&self) -> Window {
+		let focus_window: *mut xlib::Window = &mut 0;
+		let revert_to_return: *mut i32 = &mut 0;
+		unsafe {
+			xlib::XGetInputFocus(self.display, focus_window, revert_to_return)
+		};
+		Window {
+			xid: unsafe { *focus_window as usize },
+			display: self.display,
 		}
 	}
 }
