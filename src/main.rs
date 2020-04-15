@@ -1,11 +1,11 @@
 mod util;
 mod x11;
 
-use self::x11::Handler;
+use self::x11::display::Display;
 
 fn main() {
 	let _args = util::parse_args();
 	println!("thank god it's friday");
 
-	let x11_handler = Handler::new().expect("Failed to create the X11 handler");
+	let display = Display::open().expect("Cannot open display.");
 }
