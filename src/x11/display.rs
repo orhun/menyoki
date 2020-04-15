@@ -18,13 +18,13 @@ impl Display {
 		}
 	}
 	pub fn get_root_window(&self) -> Window {
-		let mut root_window: usize = 0;
+		let root_window: usize;
 		unsafe {
 			let screen = xlib::XDefaultScreenOfDisplay(self.display);
 			root_window = xlib::XRootWindowOfScreen(screen) as usize;
 		};
 		Window {
-			xid: unsafe { root_window },
+			xid: root_window,
 			display: self.display,
 		}
 	}
