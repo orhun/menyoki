@@ -39,3 +39,11 @@ impl Display {
 		}
 	}
 }
+
+impl Drop for Display {
+	fn drop(&mut self) {
+		unsafe {
+			xlib::XCloseDisplay(self.display);
+		}
+	}
+}
