@@ -15,6 +15,7 @@ impl Display {
 			None
 		}
 	}
+	#[allow(dead_code)]
 	pub fn get_root_window(&self) -> Window {
 		let root_window: usize;
 		unsafe {
