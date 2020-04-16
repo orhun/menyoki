@@ -8,13 +8,11 @@ pub struct Display {
 
 impl Display {
 	pub fn open() -> Option<Self> {
-		unsafe {
-			let display = xlib::XOpenDisplay(ptr::null());
-			if !display.is_null() {
-				Some(Self { display })
-			} else {
-				None
-			}
+		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
+		if !display.is_null() {
+			Some(Self { display })
+		} else {
+			None
 		}
 	}
 	pub fn get_root_window(&self) -> Window {
