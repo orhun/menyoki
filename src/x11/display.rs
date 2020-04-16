@@ -32,7 +32,7 @@ impl Display {
 		let focus_window: *mut xlib::Window = &mut 0;
 		let revert_to_return: *mut i32 = &mut 0;
 		unsafe {
-			xlib::XGetInputFocus(self.display, focus_window, revert_to_return)
+			xlib::XGetInputFocus(self.display, focus_window, revert_to_return);
 		};
 		Window {
 			xid: unsafe { *focus_window as usize },
