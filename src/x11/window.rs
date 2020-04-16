@@ -1,4 +1,14 @@
+use image::RgbImage;
+use std::slice;
 use x11::xlib;
+
+#[derive(Debug)]
+struct Bgr {
+	b: u8,
+	g: u8,
+	r: u8,
+	_p: u8,
+}
 
 #[derive(Debug)]
 pub struct Rect {
@@ -6,6 +16,17 @@ pub struct Rect {
 	pub y: i32,
 	pub width: u32,
 	pub height: u32,
+}
+
+impl Rect {
+	pub fn origin(rect: Self) -> Self {
+		Rect {
+			x: 0,
+			y: 0,
+			width: rect.width,
+			height: rect.height,
+		}
+	}
 }
 
 pub struct Window {
@@ -36,6 +57,44 @@ impl Window {
 			y,
 			width,
 			height,
+		}
+	}
+
+	pub fn get_image(&self, rect: Rect) -> Option<RgbImage> {
+		let window_image = unsafe {
+			xlib::XGetImage(
+				self.display,
+				self.xid as u64,
+				rect.x,
+				rect.y,
+				rect.width,
+				rect.height,
+				xlib::XAllPlanes(),
+				xlib::ZPixmap,
+			)
+		};
+		if !window_image.is_null() {
+			let image = unsafe { &mut *window_image };
+			let mut bgr_data = unsafe {
+				slice::from_raw_parts::<Bgr>(
+					image.data as *const _,
+					image.width as usize * image.height as usize,
+				)
+			}
+			.iter();
+			let mut image_buffer = RgbImage::new(rect.width, rect.height);
+			for pixel in image_buffer.pixels_mut() {
+				match bgr_data.next() {
+					Some(bgr) => *pixel = image::Rgb([bgr.r, bgr.g, bgr.b]),
+					None => {}
+				};
+			}
+			unsafe {
+				xlib::XDestroyImage(window_image as *mut _);
+			};
+			Some(image_buffer)
+		} else {
+			None
 		}
 	}
 }
