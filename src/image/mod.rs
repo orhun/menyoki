@@ -1,22 +1,11 @@
 pub mod gif;
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, Default)]
 pub struct Rect {
 	pub x: i32,
 	pub y: i32,
 	pub width: u32,
 	pub height: u32,
-}
-
-impl Rect {
-	pub fn origin(&self) -> Self {
-		Rect {
-			x: 0,
-			y: 0,
-			width: self.width,
-			height: self.height,
-		}
-	}
 }
 
 #[derive(Debug)]
