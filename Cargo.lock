@@ -372,6 +372,7 @@ name = "tgif"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "gif",
  "image",
  "x11",
 ]
