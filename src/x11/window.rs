@@ -1,5 +1,4 @@
-use image::RgbImage;
-use std::slice;
+use std::slice::{self, Iter};
 use x11::xlib;
 
 #[derive(Debug)]
@@ -8,6 +7,16 @@ struct Bgr {
 	g: u8,
 	r: u8,
 	_p: u8,
+}
+
+impl Bgr {
+	fn buffer(bgr_data: Iter<'static, Bgr>) -> Vec<u8> {
+		let mut image_buffer = Vec::new();
+		for bgr in bgr_data {
+			image_buffer.extend(&[bgr.r, bgr.g, bgr.b])
+		}
+		image_buffer
+	}
 }
 
 #[derive(Debug)]
@@ -60,7 +69,7 @@ impl Window {
 		}
 	}
 
-	pub fn get_image(&self, rect: Rect) -> Option<RgbImage> {
+	pub fn get_image(&self, rect: Rect) -> Option<Vec<u8>> {
 		let window_image = unsafe {
 			xlib::XGetImage(
 				self.display,
@@ -75,20 +84,15 @@ impl Window {
 		};
 		if !window_image.is_null() {
 			let image = unsafe { &mut *window_image };
-			let mut bgr_data = unsafe {
-				slice::from_raw_parts::<Bgr>(
-					image.data as *const _,
-					image.width as usize * image.height as usize,
-				)
-			}
-			.iter();
-			let mut image_buffer = RgbImage::new(rect.width, rect.height);
-			for pixel in image_buffer.pixels_mut() {
-				match bgr_data.next() {
-					Some(bgr) => *pixel = image::Rgb([bgr.r, bgr.g, bgr.b]),
-					None => {}
-				};
-			}
+			let image_buffer = Bgr::buffer(
+				unsafe {
+					slice::from_raw_parts::<Bgr>(
+						image.data as *const _,
+						image.width as usize * image.height as usize,
+					)
+				}
+				.iter(),
+			);
 			unsafe {
 				xlib::XDestroyImage(window_image as *mut _);
 			};
