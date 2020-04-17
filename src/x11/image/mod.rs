@@ -1,3 +1,4 @@
+pub mod gif;
 use crate::x11::window::Rect;
 
 #[derive(Debug)]
