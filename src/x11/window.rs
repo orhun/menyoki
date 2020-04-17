@@ -1,5 +1,4 @@
 use crate::x11::image::{Bgr, Image};
-use gif::Frame;
 use std::slice;
 use x11::xlib;
 
