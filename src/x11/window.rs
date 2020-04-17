@@ -1,4 +1,4 @@
-use crate::x11::image::Bgr;
+use crate::x11::image::{Bgr, Image};
 use gif::Frame;
 use std::slice;
 use x11::xlib;
@@ -53,7 +53,7 @@ impl Window {
 		}
 	}
 
-	pub fn get_image(&self, rect: Rect) -> Option<Frame> {
+	pub fn get_image(&self, rect: Rect) -> Option<Image> {
 		let window_image = unsafe {
 			xlib::XGetImage(
 				self.display,
@@ -68,21 +68,16 @@ impl Window {
 		};
 		if !window_image.is_null() {
 			let image = unsafe { &mut *window_image };
-			let frame = gif::Frame::from_rgb_speed(
-				rect.width as u16,
-				rect.height as u16,
-				&Bgr::get_rgb_pixels(unsafe {
-					slice::from_raw_parts::<Bgr>(
-						image.data as *const _,
-						image.width as usize * image.height as usize,
-					)
-				}),
-				30,
-			);
+			let data = Bgr::get_rgb_pixels(unsafe {
+				slice::from_raw_parts::<Bgr>(
+					image.data as *const _,
+					image.width as usize * image.height as usize,
+				)
+			});
 			unsafe {
 				xlib::XDestroyImage(window_image as *mut _);
 			};
-			Some(frame)
+			Some(Image { rect, data })
 		} else {
 			None
 		}
