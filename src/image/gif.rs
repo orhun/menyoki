@@ -2,8 +2,8 @@ use crate::image::{Image, Rect};
 use gif::{Encoder, Frame, Repeat, SetParameter};
 
 pub struct Gif<'a> {
-	pub rect: Rect,
 	pub frames: Vec<Frame<'a>>,
+	pub rect: Rect,
 	pub speed: i32,
 }
 

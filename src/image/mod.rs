@@ -38,6 +38,6 @@ impl Bgr {
 }
 
 pub struct Image {
-	pub rect: Rect,
 	pub data: Vec<u8>,
+	pub rect: Rect,
 }
