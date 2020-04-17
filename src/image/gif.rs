@@ -1,5 +1,4 @@
-use crate::x11::image::Image;
-use crate::x11::window::Rect;
+use crate::image::{Image, Rect};
 use gif::{Encoder, Frame, Repeat, SetParameter};
 
 pub struct Gif<'a> {
