@@ -20,7 +20,7 @@ impl Gif<'_> {
 			self.rect.width as u16,
 			self.rect.height as u16,
 			&image.data,
-			30,
+			self.speed,
 		))
 	}
 }
