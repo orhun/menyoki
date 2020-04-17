@@ -11,7 +11,7 @@ struct Bgr {
 }
 
 impl Bgr {
-	fn get_rgb_pixels(bgr_data: Iter<'static, Bgr>) -> Vec<u8> {
+	fn get_rgb_pixels(bgr_data: &[Bgr]) -> Vec<u8> {
 		let mut pixels = Vec::new();
 		for bgr in bgr_data {
 			pixels.extend(&[bgr.r, bgr.g, bgr.b])
@@ -88,15 +88,12 @@ impl Window {
 			let frame = gif::Frame::from_rgb_speed(
 				rect.width as u16,
 				rect.height as u16,
-				&Bgr::get_rgb_pixels(
-					unsafe {
-						slice::from_raw_parts::<Bgr>(
-							image.data as *const _,
-							image.width as usize * image.height as usize,
-						)
-					}
-					.iter(),
-				),
+				&Bgr::get_rgb_pixels(unsafe {
+					slice::from_raw_parts::<Bgr>(
+						image.data as *const _,
+						image.width as usize * image.height as usize,
+					)
+				}),
 				30,
 			);
 			unsafe {
