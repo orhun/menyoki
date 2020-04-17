@@ -11,12 +11,12 @@ pub struct Rect {
 }
 
 impl Rect {
-	pub fn origin(rect: Self) -> Self {
+	pub fn origin(&self) -> Self {
 		Rect {
 			x: 0,
 			y: 0,
-			width: rect.width,
-			height: rect.height,
+			width: self.width,
+			height: self.height,
 		}
 	}
 }
