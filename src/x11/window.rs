@@ -1,3 +1,4 @@
+use gif::Frame;
 use std::slice::{self, Iter};
 use x11::xlib;
 
@@ -11,11 +12,11 @@ struct Bgr {
 
 impl Bgr {
 	fn buffer(bgr_data: Iter<'static, Bgr>) -> Vec<u8> {
-		let mut image_buffer = Vec::new();
+		let mut pixels = Vec::new();
 		for bgr in bgr_data {
-			image_buffer.extend(&[bgr.r, bgr.g, bgr.b])
+			pixels.extend(&[bgr.r, bgr.g, bgr.b])
 		}
-		image_buffer
+		pixels
 	}
 }
 
@@ -69,7 +70,7 @@ impl Window {
 		}
 	}
 
-	pub fn get_image(&self, rect: Rect) -> Option<Vec<u8>> {
+	pub fn get_image(&self, rect: Rect) -> Option<Frame> {
 		let window_image = unsafe {
 			xlib::XGetImage(
 				self.display,
@@ -84,19 +85,24 @@ impl Window {
 		};
 		if !window_image.is_null() {
 			let image = unsafe { &mut *window_image };
-			let image_buffer = Bgr::buffer(
-				unsafe {
-					slice::from_raw_parts::<Bgr>(
-						image.data as *const _,
-						image.width as usize * image.height as usize,
-					)
-				}
-				.iter(),
+			let frame = gif::Frame::from_rgb_speed(
+				rect.width as u16,
+				rect.height as u16,
+				&Bgr::buffer(
+					unsafe {
+						slice::from_raw_parts::<Bgr>(
+							image.data as *const _,
+							image.width as usize * image.height as usize,
+						)
+					}
+					.iter(),
+				),
+				30,
 			);
 			unsafe {
 				xlib::XDestroyImage(window_image as *mut _);
 			};
-			Some(image_buffer)
+			Some(frame)
 		} else {
 			None
 		}
