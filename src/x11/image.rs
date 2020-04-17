@@ -1,3 +1,5 @@
+use crate::x11::window::Rect;
+
 #[derive(Debug)]
 pub struct Bgr {
 	b: u8,
@@ -14,4 +16,9 @@ impl Bgr {
 		}
 		pixels
 	}
+}
+
+pub struct Image {
+	rect: Rect,
+	data: Vec<u8>,
 }
