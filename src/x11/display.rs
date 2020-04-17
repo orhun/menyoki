@@ -22,10 +22,7 @@ impl Display {
 			let screen = xlib::XDefaultScreenOfDisplay(self.display);
 			root_window = xlib::XRootWindowOfScreen(screen) as usize;
 		};
-		Window {
-			xid: root_window,
-			display: self.display,
-		}
+		Window::new(root_window, self.display)
 	}
 	pub fn get_focused_window(&self) -> Window {
 		let focus_window: *mut xlib::Window = &mut 0;
@@ -33,10 +30,7 @@ impl Display {
 		unsafe {
 			xlib::XGetInputFocus(self.display, focus_window, revert_to_return);
 		};
-		Window {
-			xid: unsafe { *focus_window as usize },
-			display: self.display,
-		}
+		Window::new(unsafe { *focus_window as usize }, self.display)
 	}
 }
 

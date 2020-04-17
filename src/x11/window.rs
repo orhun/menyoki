@@ -2,12 +2,23 @@ use crate::image::{Bgr, Image, Rect};
 use std::slice;
 use x11::xlib;
 
+#[derive(Clone, Copy, Debug)]
 pub struct Window {
 	pub xid: usize,
 	pub display: *mut xlib::Display,
+	pub rect: Rect,
 }
 
 impl Window {
+	pub fn new(xid: usize, display: *mut xlib::Display) -> Self {
+		Self {
+			xid,
+			display,
+			rect: Rect::default(),
+		}
+		.set_rect()
+	}
+
 	pub fn get_rect(&self) -> Rect {
 		let mut root: xlib::Window = 0;
 		let (mut x, mut y, mut width, mut height, mut border_width, mut depth) =
@@ -33,15 +44,20 @@ impl Window {
 		}
 	}
 
-	pub fn get_image(&self, rect: Rect) -> Option<Image> {
+	fn set_rect(&mut self) -> Self {
+		self.rect = self.get_rect();
+		*self
+	}
+
+	pub fn get_image(&self) -> Option<Image> {
 		let window_image = unsafe {
 			xlib::XGetImage(
 				self.display,
 				self.xid as u64,
-				rect.x,
-				rect.y,
-				rect.width,
-				rect.height,
+				self.rect.x,
+				self.rect.y,
+				self.rect.width,
+				self.rect.height,
 				xlib::XAllPlanes(),
 				xlib::ZPixmap,
 			)
@@ -57,7 +73,10 @@ impl Window {
 			unsafe {
 				xlib::XDestroyImage(window_image as *mut _);
 			};
-			Some(Image { rect, data })
+			Some(Image {
+				rect: self.rect,
+				data,
+			})
 		} else {
 			None
 		}
