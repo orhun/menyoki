@@ -1,5 +1,5 @@
 use gif::Frame;
-use std::slice::{self, Iter};
+use std::slice;
 use x11::xlib;
 
 #[derive(Debug)]
