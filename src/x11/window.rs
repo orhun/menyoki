@@ -49,6 +49,11 @@ impl Window {
 		*self
 	}
 
+	pub fn reset_position(&mut self) {
+		self.geometry.x = 0;
+		self.geometry.y = 0;
+	}
+
 	pub fn get_image(&self) -> Option<Image> {
 		let window_image = unsafe {
 			xlib::XGetImage(
