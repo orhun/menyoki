@@ -2,11 +2,17 @@ use crate::x11::window::Window;
 use std::ptr;
 use x11::xlib;
 
+/* X11 display */
 pub struct Display {
 	display: *mut xlib::Display,
 }
 
 impl Display {
+	/**
+	 * Open a display.
+	 *
+	 * @return Display (Option)
+	 */
 	pub fn open() -> Option<Self> {
 		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
 		if !display.is_null() {
@@ -15,6 +21,12 @@ impl Display {
 			None
 		}
 	}
+
+	/**
+	 * Get the root window of the default screen.
+	 *
+	 * @return Window
+	 */
 	#[allow(dead_code)]
 	pub fn get_root_window(&self) -> Window {
 		let root_window: usize;
@@ -24,6 +36,12 @@ impl Display {
 		};
 		Window::new(root_window, self.display)
 	}
+
+	/**
+	 * Get the focused window.
+	 *
+	 * @return Window
+	 */
 	pub fn get_focused_window(&self) -> Window {
 		let focus_window: *mut xlib::Window = &mut 0;
 		let revert_to_return: *mut i32 = &mut 0;
@@ -34,6 +52,7 @@ impl Display {
 	}
 }
 
+/* Close the X11 display when the Window object went out of scope. */
 impl Drop for Display {
 	fn drop(&mut self) {
 		unsafe {
