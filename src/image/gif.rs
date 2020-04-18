@@ -3,16 +3,16 @@ use gif::{Encoder, Frame, Repeat, SetParameter};
 
 pub struct Gif<'a> {
 	pub frames: Vec<Frame<'a>>,
-	pub geometry: Geometry,
 	pub speed: i32,
+	pub geometry: Geometry
 }
 
 impl Gif<'_> {
-	pub fn new(geometry: Geometry, speed: i32) -> Self {
+	pub fn new(speed: i32, geometry: Geometry) -> Self {
 		Self {
-			geometry,
 			frames: Vec::new(),
 			speed,
+			geometry,
 		}
 	}
 	pub fn add_frame(&mut self, image: Image) {
