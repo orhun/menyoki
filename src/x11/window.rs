@@ -1,4 +1,4 @@
-use crate::image::{Bgr, Image, Rect};
+use crate::image::{Bgr, Geometry, Image};
 use std::slice;
 use x11::xlib;
 
@@ -6,7 +6,7 @@ use x11::xlib;
 pub struct Window {
 	pub xid: usize,
 	pub display: *mut xlib::Display,
-	pub rect: Rect,
+	pub geometry: Geometry,
 }
 
 impl Window {
@@ -14,12 +14,12 @@ impl Window {
 		Self {
 			xid,
 			display,
-			rect: Rect::default(),
+			geometry: Geometry::default(),
 		}
-		.set_rect()
+		.set_geometry()
 	}
 
-	pub fn get_rect(&self) -> Rect {
+	pub fn get_geometry(&self) -> Geometry {
 		let mut root: xlib::Window = 0;
 		let (mut x, mut y, mut width, mut height, mut border_width, mut depth) =
 			(0, 0, 0, 0, 0, 0);
@@ -36,7 +36,7 @@ impl Window {
 				&mut depth,
 			);
 		}
-		Rect {
+		Geometry {
 			x,
 			y,
 			width,
@@ -44,8 +44,8 @@ impl Window {
 		}
 	}
 
-	fn set_rect(&mut self) -> Self {
-		self.rect = self.get_rect();
+	fn set_geometry(&mut self) -> Self {
+		self.geometry = self.get_geometry();
 		*self
 	}
 
@@ -54,10 +54,10 @@ impl Window {
 			xlib::XGetImage(
 				self.display,
 				self.xid as u64,
-				self.rect.x,
-				self.rect.y,
-				self.rect.width,
-				self.rect.height,
+				self.geometry.x,
+				self.geometry.y,
+				self.geometry.width,
+				self.geometry.height,
 				xlib::XAllPlanes(),
 				xlib::ZPixmap,
 			)
@@ -74,7 +74,7 @@ impl Window {
 				xlib::XDestroyImage(window_image as *mut _);
 			};
 			Some(Image {
-				rect: self.rect,
+				geometry: self.geometry,
 				data,
 			})
 		} else {

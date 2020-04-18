@@ -1,24 +1,24 @@
-use crate::image::{Image, Rect};
+use crate::image::{Geometry, Image};
 use gif::{Encoder, Frame, Repeat, SetParameter};
 
 pub struct Gif<'a> {
 	pub frames: Vec<Frame<'a>>,
-	pub rect: Rect,
+	pub geometry: Geometry,
 	pub speed: i32,
 }
 
 impl Gif<'_> {
-	pub fn new(rect: Rect, speed: i32) -> Self {
+	pub fn new(geometry: Geometry, speed: i32) -> Self {
 		Self {
-			rect,
+			geometry,
 			frames: Vec::new(),
 			speed,
 		}
 	}
 	pub fn add_frame(&mut self, image: Image) {
 		self.frames.push(Frame::from_rgb_speed(
-			self.rect.width as u16,
-			self.rect.height as u16,
+			self.geometry.width as u16,
+			self.geometry.height as u16,
 			&image.data,
 			self.speed,
 		))

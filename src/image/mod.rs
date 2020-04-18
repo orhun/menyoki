@@ -1,7 +1,7 @@
 pub mod gif;
 
 #[derive(Clone, Copy, Debug, Default)]
-pub struct Rect {
+pub struct Geometry {
 	pub x: i32,
 	pub y: i32,
 	pub width: u32,
@@ -28,5 +28,5 @@ impl Bgr {
 
 pub struct Image {
 	pub data: Vec<u8>,
-	pub rect: Rect,
+	pub geometry: Geometry,
 }
