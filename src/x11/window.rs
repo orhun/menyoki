@@ -2,6 +2,7 @@ use crate::image::{Bgr, Geometry, Image};
 use std::slice;
 use x11::xlib;
 
+/* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
 	pub xid: usize,
@@ -10,6 +11,13 @@ pub struct Window {
 }
 
 impl Window {
+	/**
+	 * Create a new Window object.
+	 *
+	 * @param  xid
+	 * @param  display
+	 * @return Window
+	 */
 	pub fn new(xid: usize, display: *mut xlib::Display) -> Self {
 		Self {
 			xid,
@@ -19,6 +27,11 @@ impl Window {
 		.set_geometry()
 	}
 
+	/**
+	 * Get the geometric properties of the window.
+	 *
+	 * @return Geometry
+	 */
 	fn get_geometry(&self) -> Geometry {
 		let mut root: xlib::Window = 0;
 		let (mut x, mut y, mut width, mut height, mut border_width, mut depth) =
@@ -44,16 +57,27 @@ impl Window {
 		}
 	}
 
+	/**
+	 * Set the geometric properties of the window.
+	 *
+	 * @return Window
+	 */
 	fn set_geometry(&mut self) -> Self {
 		self.geometry = self.get_geometry();
 		*self
 	}
 
+	/* Set (x, y) of the window geometry to (0, 0) */
 	pub fn reset_position(&mut self) {
 		self.geometry.x = 0;
 		self.geometry.y = 0;
 	}
 
+	/**
+	 * Get the image of the window.
+	 *
+	 * @return Image (Option)
+	 */
 	pub fn get_image(&self) -> Option<Image> {
 		let window_image = unsafe {
 			xlib::XGetImage(
