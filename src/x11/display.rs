@@ -52,7 +52,7 @@ impl Display {
 	}
 }
 
-/* Close the X11 display when the Window object went out of scope. */
+/* Close the display when the Display object went out of scope. */
 impl Drop for Display {
 	fn drop(&mut self) {
 		unsafe {
