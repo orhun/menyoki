@@ -18,13 +18,15 @@ impl Gif<'_> {
 		}
 	}
 
-	pub fn add_frame(&mut self, image: Image) {
-		self.frames.push(Frame::from_rgb_speed(
+	pub fn add_frame(&mut self, image: Image, delay: u16) {
+		let mut frame = Frame::from_rgb_speed(
 			self.geometry.width as u16,
 			self.geometry.height as u16,
 			&image.data,
 			self.speed,
-		))
+		);
+		frame.delay = delay;
+		self.frames.push(frame)
 	}
 
 	pub fn save(&self, file: File, repeat: Repeat) -> Result<(), Error> {
