@@ -27,14 +27,14 @@ impl Gif<'_> {
 		))
 	}
 
-	pub fn save(&self, file: File) -> Result<(), Error> {
+	pub fn save(&self, file: File, repeat: Repeat) -> Result<(), Error> {
 		let mut encoder = Encoder::new(
 			file,
 			self.geometry.width as u16,
 			self.geometry.height as u16,
 			&[],
 		)?;
-		encoder.set(Repeat::Infinite)?;
+		encoder.set(repeat)?;
 		for frame in &self.frames {
 			encoder.write_frame(&frame)?;
 		}
