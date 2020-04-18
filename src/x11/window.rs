@@ -19,7 +19,7 @@ impl Window {
 		.set_geometry()
 	}
 
-	pub fn get_geometry(&self) -> Geometry {
+	fn get_geometry(&self) -> Geometry {
 		let mut root: xlib::Window = 0;
 		let (mut x, mut y, mut width, mut height, mut border_width, mut depth) =
 			(0, 0, 0, 0, 0, 0);
