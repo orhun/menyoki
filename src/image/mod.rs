@@ -1,6 +1,6 @@
 pub mod gif;
 
-/* Position and size (2D) */
+/* Position and size (2-D) */
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Geometry {
 	pub x: i32,
