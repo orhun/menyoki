@@ -1,16 +1,36 @@
 use crate::image::{Geometry, Image};
-use gif::{Encoder, Frame, Repeat, SetParameter};
+use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
 
-/* GIF frames, processing speed and geometric properties */
-pub struct Gif<'a> {
-	pub frames: Vec<Frame<'a>>,
-	pub speed: i32,
-	pub geometry: Geometry,
+pub struct Frame {
+	image: Image,
+	delay: u16,
 }
 
-impl Gif<'_> {
+impl Frame {
+	pub fn new(image: Image, delay: u16) -> Self {
+		Self { image, delay }
+	}
+	pub fn get(&self, speed: i32) -> GifFrame {
+		let mut frame = GifFrame::from_rgb_speed(
+			self.image.geometry.width as u16,
+			self.image.geometry.height as u16,
+			&self.image.data,
+			speed,
+		);
+		frame.delay = self.delay;
+		frame
+	}
+}
+
+/* GIF frames, processing speed and geometric properties */
+pub struct Gif {
+	encoder: Encoder<File>,
+	speed: i32,
+}
+
+impl Gif {
 	/**
 	 * Create a new Gif object.
 	 *
@@ -18,29 +38,16 @@ impl Gif<'_> {
 	 * @param  geometry
 	 * @return Gif
 	 */
-	pub fn new(speed: i32, geometry: Geometry) -> Self {
-		Self {
-			frames: Vec::new(),
-			speed,
-			geometry,
-		}
-	}
-
-	/**
-	 * Add a frame to the GIF.
-	 *
-	 * @param image
-	 * @param delay
-	 */
-	pub fn add_frame(&mut self, image: Image, delay: u16) {
-		let mut frame = Frame::from_rgb_speed(
-			self.geometry.width as u16,
-			self.geometry.height as u16,
-			&image.data,
-			self.speed,
-		);
-		frame.delay = delay;
-		self.frames.push(frame)
+	pub fn new(
+		file: File,
+		geometry: Geometry,
+		speed: i32,
+		repeat: Repeat,
+	) -> Result<Self, Error> {
+		let mut encoder =
+			Encoder::new(file, geometry.width as u16, geometry.height as u16, &[])?;
+		encoder.set(repeat)?;
+		Ok(Self { encoder, speed })
 	}
 
 	/**
@@ -50,17 +57,8 @@ impl Gif<'_> {
 	 * @param  repeat
 	 * @return Result
 	 */
-	pub fn save(&self, file: File, repeat: Repeat) -> Result<(), Error> {
-		let mut encoder = Encoder::new(
-			file,
-			self.geometry.width as u16,
-			self.geometry.height as u16,
-			&[],
-		)?;
-		encoder.set(repeat)?;
-		for frame in &self.frames {
-			encoder.write_frame(&frame)?;
-		}
+	pub fn write_frame(&mut self, frame: Frame) -> Result<(), Error> {
+		self.encoder.write_frame(&frame.get(self.speed))?;
 		Ok(())
 	}
 }
