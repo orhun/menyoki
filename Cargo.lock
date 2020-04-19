@@ -48,6 +48,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0dbbb57365263e881e805dc77d94697c9118fd94d8da011240555aa7b23445bd"
 
 [[package]]
+name = "fps_clock"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d62f07644333c61ff6ab8738366228ea076d6d7e0a6d974385153912a25f22f0"
+
+[[package]]
 name = "gif"
 version = "0.10.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -104,6 +110,7 @@ name = "tgif"
 version = "0.1.0"
 dependencies = [
  "clap",
+ "fps_clock",
  "gif",
  "x11",
 ]
