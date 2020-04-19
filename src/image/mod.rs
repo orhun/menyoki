@@ -1,5 +1,6 @@
 pub mod gif;
 
+/* Position and size (2D) */
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Geometry {
 	pub x: i32,
@@ -8,6 +9,7 @@ pub struct Geometry {
 	pub height: u32,
 }
 
+/* BGR color fields (and padding for XImage casting) */
 #[derive(Debug)]
 pub struct Bgr {
 	b: u8,
@@ -17,6 +19,12 @@ pub struct Bgr {
 }
 
 impl Bgr {
+	/**
+	 * Convert a BGR slice to RGB pixel vector.
+	 *
+	 * @param  bgr_data
+	 * @return Vector of u8
+	 */
 	pub fn get_rgb_pixels(bgr_data: &[Bgr]) -> Vec<u8> {
 		let mut pixels = Vec::new();
 		for bgr in bgr_data {
@@ -26,6 +34,7 @@ impl Bgr {
 	}
 }
 
+/* Image data and geometric properties */
 pub struct Image {
 	pub data: Vec<u8>,
 	pub geometry: Geometry,
