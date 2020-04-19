@@ -3,15 +3,30 @@ use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
 
+/* Frame image and delay (in units of 10 ms) */
 pub struct Frame {
 	image: Image,
 	delay: u16,
 }
 
 impl Frame {
+	/**
+	 * Create a new Frame object.
+	 *
+	 * @param  image
+	 * @param  delay
+	 * @return Frame
+	 */
 	pub fn new(image: Image, delay: u16) -> Self {
 		Self { image, delay }
 	}
+
+	/**
+	 * Get a GIF frame from the Frame object.
+	 *
+	 * @param  speed
+	 * @return GifFrame
+	 */
 	pub fn get(&self, speed: i32) -> GifFrame {
 		let mut frame = GifFrame::from_rgb_speed(
 			self.image.geometry.width as u16,
@@ -24,7 +39,7 @@ impl Frame {
 	}
 }
 
-/* GIF frames, processing speed and geometric properties */
+/* GIF encoder and processing speed */
 pub struct Gif {
 	encoder: Encoder<File>,
 	speed: i32,
@@ -34,9 +49,11 @@ impl Gif {
 	/**
 	 * Create a new Gif object.
 	 *
-	 * @param  speed
+	 * @param  file
 	 * @param  geometry
-	 * @return Gif
+	 * @param  speed
+	 * @param  repeat
+	 * @return Result (Gif)
 	 */
 	pub fn new(
 		file: File,
@@ -51,10 +68,9 @@ impl Gif {
 	}
 
 	/**
-	 * Process the frames and save GIF as a file.
+	 * Write a frame to the GIF file.
 	 *
-	 * @param  file
-	 * @param  repeat
+	 * @param  frame
 	 * @return Result
 	 */
 	pub fn write_frame(&mut self, frame: Frame) -> Result<(), Error> {
