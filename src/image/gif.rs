@@ -46,8 +46,9 @@ impl Gif<'_> {
 	/**
 	 * Process the frames and save GIF as a file.
 	 *
-	 * @param file
-	 * @param repeat
+	 * @param  file
+	 * @param  repeat
+	 * @return Result
 	 */
 	pub fn save(&self, file: File, repeat: Repeat) -> Result<(), Error> {
 		let mut encoder = Encoder::new(
