@@ -40,3 +40,7 @@ pub struct Image {
 	pub data: Vec<u8>,
 	pub geometry: Geometry,
 }
+
+pub trait ImageHandler {
+	fn get_image(&self) -> Option<Image>;
+}
