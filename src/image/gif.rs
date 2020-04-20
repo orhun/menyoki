@@ -41,7 +41,7 @@ impl Frame {
 	}
 }
 
-/* GIF encoder and processing speed */
+/* GIF encoder, processing speed and FPS values */
 pub struct Gif {
 	encoder: Encoder<File>,
 	clock: FpsClock,
@@ -55,6 +55,7 @@ impl Gif {
 	 *
 	 * @param  file
 	 * @param  geometry
+	 * @param  fps
 	 * @param  speed
 	 * @param  repeat
 	 * @return Result (Gif)
