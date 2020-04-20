@@ -1,4 +1,5 @@
 use crate::image::{Geometry, Image};
+use fps_clock::FpsClock;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
@@ -43,6 +44,8 @@ impl Frame {
 /* GIF encoder and processing speed */
 pub struct Gif {
 	encoder: Encoder<File>,
+	clock: FpsClock,
+	millis: f32,
 	speed: i32,
 }
 
@@ -59,13 +62,19 @@ impl Gif {
 	pub fn new(
 		file: File,
 		geometry: Geometry,
+		fps: u32,
 		speed: i32,
 		repeat: Repeat,
 	) -> Result<Self, Error> {
 		let mut encoder =
 			Encoder::new(file, geometry.width as u16, geometry.height as u16, &[])?;
 		encoder.set(repeat)?;
-		Ok(Self { encoder, speed })
+		Ok(Self {
+			encoder,
+			clock: FpsClock::new(fps),
+			millis: (1. / fps as f32) * 1_000.,
+			speed,
+		})
 	}
 
 	/**
