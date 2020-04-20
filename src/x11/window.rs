@@ -1,4 +1,4 @@
-use crate::image::{Bgr, Geometry, Image};
+use crate::image::{Bgr, Geometry, Image, ImageHandler};
 use std::slice;
 use x11::xlib;
 
@@ -72,13 +72,15 @@ impl Window {
 		self.geometry.x = 0;
 		self.geometry.y = 0;
 	}
+}
 
+impl ImageHandler for Window {
 	/**
 	 * Get the image of the window.
 	 *
 	 * @return Image (Option)
 	 */
-	pub fn get_image(&self) -> Option<Image> {
+	fn get_image(&self) -> Option<Image> {
 		let window_image = unsafe {
 			xlib::XGetImage(
 				self.display,
