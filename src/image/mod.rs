@@ -41,6 +41,6 @@ pub struct Image {
 	pub geometry: Geometry,
 }
 
-pub trait ImageHandler {
+pub trait Capture {
 	fn get_image(&self) -> Option<Image>;
 }
