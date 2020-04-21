@@ -1,4 +1,4 @@
-use crate::image::{Bgr, Geometry, Image, Capture};
+use crate::image::{Bgr, Capture, Geometry, Image};
 use std::slice;
 use x11::xlib;
 
@@ -9,6 +9,9 @@ pub struct Window {
 	pub display: *mut xlib::Display,
 	pub geometry: Geometry,
 }
+
+unsafe impl Sync for Window {}
+unsafe impl Send for Window {}
 
 impl Window {
 	/**
