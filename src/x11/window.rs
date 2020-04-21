@@ -1,4 +1,4 @@
-use crate::image::{Bgr, Geometry, Image, ImageHandler};
+use crate::image::{Bgr, Geometry, Image, Capture};
 use std::slice;
 use x11::xlib;
 
@@ -74,7 +74,7 @@ impl Window {
 	}
 }
 
-impl ImageHandler for Window {
+impl Capture for Window {
 	/**
 	 * Get the image of the window.
 	 *
