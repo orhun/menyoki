@@ -40,7 +40,7 @@ impl Frame {
 	}
 }
 
-/* GIF encoder, processing speed and FPS values */
+/* GIF encoder and processing speed */
 pub struct Gif {
 	encoder: Encoder<File>,
 	speed: i32,
@@ -52,7 +52,6 @@ impl Gif {
 	 *
 	 * @param  file
 	 * @param  geometry
-	 * @param  fps
 	 * @param  speed
 	 * @param  repeat
 	 * @return Result (Gif)
@@ -60,17 +59,13 @@ impl Gif {
 	pub fn new(
 		file: File,
 		geometry: Geometry,
-		fps: u32,
 		speed: i32,
 		repeat: Repeat,
 	) -> Result<Self, Error> {
 		let mut encoder =
 			Encoder::new(file, geometry.width as u16, geometry.height as u16, &[])?;
 		encoder.set(repeat)?;
-		Ok(Self {
-			encoder,
-			speed,
-		})
+		Ok(Self { encoder, speed })
 	}
 
 	/**
