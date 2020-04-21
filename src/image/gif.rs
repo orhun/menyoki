@@ -69,9 +69,9 @@ impl Gif {
 	}
 
 	/**
-	 * Write a frame to the GIF file.
+	 * Write frames to the GIF file.
 	 *
-	 * @param  frame
+	 * @param  frames
 	 * @return Result
 	 */
 	pub fn save(&mut self, frames: Vec<Frame>) -> Result<(), Error> {
