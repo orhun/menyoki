@@ -16,9 +16,9 @@ pub struct Recorder {
 }
 
 impl Recorder {
-	pub fn new(clock: FpsClock) -> Self {
+	pub fn new(fps: u32) -> Self {
 		Self {
-			clock,
+			clock: FpsClock::new(fps),
 			channel: mpsc::channel(),
 		}
 	}
