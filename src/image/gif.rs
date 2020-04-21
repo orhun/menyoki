@@ -1,5 +1,4 @@
 use crate::image::{Geometry, Image};
-use crate::record::fps::FpsClock;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
@@ -44,8 +43,6 @@ impl Frame {
 /* GIF encoder, processing speed and FPS values */
 pub struct Gif {
 	encoder: Encoder<File>,
-	clock: FpsClock,
-	millis: f32,
 	speed: i32,
 }
 
@@ -72,8 +69,6 @@ impl Gif {
 		encoder.set(repeat)?;
 		Ok(Self {
 			encoder,
-			clock: FpsClock::new(fps),
-			millis: (1. / fps as f32) * 1_000.,
 			speed,
 		})
 	}
