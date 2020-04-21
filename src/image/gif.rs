@@ -74,8 +74,10 @@ impl Gif {
 	 * @param  frame
 	 * @return Result
 	 */
-	pub fn write_frame(&mut self, frame: Frame) -> Result<(), Error> {
-		self.encoder.write_frame(&frame.get(self.speed))?;
+	pub fn save(&mut self, frames: Vec<Frame>) -> Result<(), Error> {
+		for frame in frames {
+			self.encoder.write_frame(&frame.get(self.speed))?;
+		}
 		Ok(())
 	}
 }
