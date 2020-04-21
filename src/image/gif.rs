@@ -1,5 +1,5 @@
 use crate::image::{Geometry, Image};
-use fps_clock::FpsClock;
+use crate::record::fps::FpsClock;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
