@@ -6,8 +6,17 @@ use std::sync::mpsc;
 use std::thread;
 
 pub struct RecordResult {
-	pub thread: thread::JoinHandle<Vec<Frame>>,
 	pub sender: mpsc::Sender<()>,
+	pub thread: thread::JoinHandle<Vec<Frame>>,
+}
+
+impl RecordResult {
+	pub fn new(
+		sender: mpsc::Sender<()>,
+		thread: thread::JoinHandle<Vec<Frame>>,
+	) -> Self {
+		Self { sender, thread }
+	}
 }
 
 pub struct Recorder {
@@ -30,9 +39,9 @@ impl Recorder {
 		let recorder = Box::leak(Box::new(self));
 		let mut tick = 0.0;
 		let mut frames = Vec::new();
-		RecordResult {
-			sender: recorder.channel.0.clone(),
-			thread: thread::spawn(move || {
+		RecordResult::new(
+			recorder.channel.0.clone(),
+			thread::spawn(move || {
 				while recorder.channel.1.try_recv().is_err() {
 					tick = if tick >= 0. {
 						recorder.clock.get_fps(TimeUnit::Millisecond)
@@ -47,6 +56,6 @@ impl Recorder {
 				}
 				frames
 			}),
-		}
+		)
 	}
 }
