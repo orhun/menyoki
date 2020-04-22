@@ -22,8 +22,8 @@ impl FpsClock {
 	 * @param  fps
 	 * @return FpsClock
 	 */
-	pub fn new(fps: u32) -> FpsClock {
-		FpsClock {
+	pub fn new(fps: u32) -> Self {
+		Self {
 			fps,
 			last_tick_time: time::Instant::now(),
 		}
