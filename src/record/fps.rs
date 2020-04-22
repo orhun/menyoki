@@ -1,12 +1,14 @@
 use std::thread;
 use std::time;
 
+/* Unit of time */
 #[derive(Debug)]
 pub enum TimeUnit {
 	Nanosecond,
 	Millisecond,
 }
 
+/* FPS controller */
 #[derive(Debug)]
 pub struct FpsClock {
 	fps: u32,
@@ -14,6 +16,12 @@ pub struct FpsClock {
 }
 
 impl FpsClock {
+    /**
+	 * Create a new FpsClock object.
+	 *
+	 * @param  fps
+	 * @return FpsClock
+	 */
 	pub fn new(fps: u32) -> FpsClock {
 		FpsClock {
 			fps,
@@ -21,6 +29,12 @@ impl FpsClock {
 		}
 	}
 
+	/**
+	 * Get the FPS value in the given time unit.
+	 *
+	 * @param  unit
+	 * @return f32
+	 */
 	pub fn get_fps(&self, unit: TimeUnit) -> f32 {
 		match unit {
 			TimeUnit::Nanosecond => (1. / self.fps as f32) * 1_000_000_000.,
@@ -28,6 +42,11 @@ impl FpsClock {
 		}
 	}
 
+	/**
+	 * Sleep the thread to run at the correct FPS.
+	 *
+	 * @return f32
+	 */
 	pub fn tick(&mut self) -> f32 {
 		let t = self.last_tick_time.elapsed();
 		let total_nanos = t.as_secs() * 1_000_000_000 + t.subsec_nanos() as u64;
