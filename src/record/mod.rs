@@ -6,18 +6,18 @@ use std::sync::mpsc;
 use std::thread;
 
 /* Sender and main thread of the Recorder */
-pub struct RecordResult {
+pub struct Record {
 	pub sender: mpsc::Sender<()>,
 	pub thread: thread::JoinHandle<Vec<Frame>>,
 }
 
-impl RecordResult {
+impl Record {
 	/**
-	 * Create a new RecordResult object.
+	 * Create a new Record object.
 	 *
 	 * @param  sender
 	 * @param  thread
-	 * @return RecordResult
+	 * @return Record
 	 */
 	pub fn new(
 		sender: mpsc::Sender<()>,
@@ -51,14 +51,14 @@ impl Recorder {
 	 * Start recording the frames.
 	 *
 	 * @param  get_image (Fn)
-	 * @return RecordResult
+	 * @return Record
 	 */
 	pub fn record(
 		mut self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
-	) -> RecordResult {
+	) -> Record {
 		let mut frames = Vec::new();
-		RecordResult::new(
+		Record::new(
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				while self.channel.1.try_recv().is_err() {
