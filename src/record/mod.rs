@@ -6,6 +6,7 @@ use std::sync::mpsc;
 use std::thread;
 
 /* Sender and main thread of the Recorder */
+#[derive(Debug)]
 pub struct Record {
 	pub sender: mpsc::Sender<()>,
 	pub thread: thread::JoinHandle<Vec<Frame>>,
@@ -28,6 +29,7 @@ impl Record {
 }
 
 /* Recorder with FPS clock and channel */
+#[derive(Debug)]
 pub struct Recorder {
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
