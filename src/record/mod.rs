@@ -5,12 +5,20 @@ use crate::record::fps::{FpsClock, TimeUnit};
 use std::sync::mpsc;
 use std::thread;
 
+/* Sender and main thread of the Recorder */
 pub struct RecordResult {
 	pub sender: mpsc::Sender<()>,
 	pub thread: thread::JoinHandle<Vec<Frame>>,
 }
 
 impl RecordResult {
+	/**
+	 * Create a new RecordResult object.
+	 *
+	 * @param  sender
+	 * @param  thread
+	 * @return RecordResult
+	 */
 	pub fn new(
 		sender: mpsc::Sender<()>,
 		thread: thread::JoinHandle<Vec<Frame>>,
@@ -19,12 +27,19 @@ impl RecordResult {
 	}
 }
 
+/* Recorder with FPS clock and channel */
 pub struct Recorder {
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
 }
 
 impl Recorder {
+	/**
+	 * Create a new Recorder object.
+	 *
+	 * @param  fps
+	 * @return Recorder
+	 */
 	pub fn new(fps: u32) -> Self {
 		Self {
 			clock: FpsClock::new(fps),
@@ -32,6 +47,12 @@ impl Recorder {
 		}
 	}
 
+	/**
+	 * Start recording the frames.
+	 *
+	 * @param  get_image (Fn)
+	 * @return RecordResult
+	 */
 	pub fn record(
 		mut self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
