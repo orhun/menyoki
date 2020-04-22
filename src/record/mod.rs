@@ -27,6 +27,11 @@ impl Record {
 		Self { sender, thread }
 	}
 
+	/**
+	 * Terminate the recording thread.
+	 *
+	 * @return Result
+	 */
 	pub fn stop(&self) -> Result<(), mpsc::SendError<()>>{
 		self.sender.send(())?;
 		Ok(())
