@@ -33,20 +33,19 @@ impl Recorder {
 	}
 
 	pub fn record(
-		self,
+		mut self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
 	) -> RecordResult {
-		let recorder = Box::leak(Box::new(self));
 		let mut frames = Vec::new();
 		RecordResult::new(
-			recorder.channel.0.clone(),
+			self.channel.0.clone(),
 			thread::spawn(move || {
-				while recorder.channel.1.try_recv().is_err() {
+				while self.channel.1.try_recv().is_err() {
 					frames.push(Frame::new(
 						get_image().unwrap(),
-						(recorder.clock.get_fps(TimeUnit::Millisecond) / 10.) as u16,
+						(self.clock.get_fps(TimeUnit::Millisecond) / 10.) as u16,
 					));
-					recorder.clock.tick();
+					self.clock.tick();
 				}
 				frames
 			}),
