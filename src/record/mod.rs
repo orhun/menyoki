@@ -26,6 +26,11 @@ impl Record {
 	) -> Self {
 		Self { sender, thread }
 	}
+
+	pub fn stop(&self) -> Result<(), mpsc::SendError<()>>{
+		self.sender.send(())?;
+		Ok(())
+	}
 }
 
 /* Recorder with FPS clock and channel */
