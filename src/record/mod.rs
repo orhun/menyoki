@@ -32,7 +32,7 @@ impl Record {
 	 *
 	 * @return Result
 	 */
-	pub fn finish(&self) -> Result<(), mpsc::SendError<()>>{
+	pub fn finish(&self) -> Result<(), mpsc::SendError<()>> {
 		self.sender.send(())?;
 		Ok(())
 	}
