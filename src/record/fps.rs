@@ -16,7 +16,7 @@ pub struct FpsClock {
 }
 
 impl FpsClock {
-    /**
+	/**
 	 * Create a new FpsClock object.
 	 *
 	 * @param  fps

@@ -62,10 +62,16 @@ impl Recorder {
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				while self.channel.1.try_recv().is_err() {
-					frames.push(Frame::new(
-						get_image().unwrap(),
-						(self.clock.get_fps(TimeUnit::Millisecond) / 10.) as u16,
-					));
+					match get_image() {
+						Some(image) => {
+							frames.push(Frame::new(
+								image,
+								(self.clock.get_fps(TimeUnit::Millisecond) / 10.)
+									as u16,
+							));
+						}
+						None => panic!("Failed to get the image"),
+					}
 					self.clock.tick();
 				}
 				frames
