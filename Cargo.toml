@@ -22,8 +22,8 @@ debug = true
 opt-level = 3
 debug = false
 panic = "abort"
-lto = true
-codegen-units = 1
+# lto = true
+# codegen-units = 1
 
 [profile.bench]
 opt-level = 3
