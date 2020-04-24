@@ -74,6 +74,7 @@ impl Recorder {
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				while self.channel.1.try_recv().is_err() {
+					self.clock.tick();
 					match get_image() {
 						Some(image) => {
 							frames.push(Frame::new(
@@ -84,7 +85,6 @@ impl Recorder {
 						}
 						None => panic!("Failed to get the image"),
 					}
-					self.clock.tick();
 				}
 				frames
 			}),
