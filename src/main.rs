@@ -27,12 +27,8 @@ fn main() -> Result<(), std::io::Error> {
 	let record = recorder.record(move || focused_window.get_image());
 	util::exec_cmd("kmon", &["-c", "blue"]).expect("Failed to run the command");
 	record.finish().expect("Failed to finish the recording");
-	match record.thread.join() {
-		Ok(frames) => {
-			println!("frames: {}", frames.len());
-			gif.save(frames)?;
-		}
-		Err(_) => panic!("Failed to retrieve the frames"),
-	};
+	let frames = record.thread.join().expect("Failed to retrieve the frames");
+	println!("frames: {}", frames.len());
+	gif.save(frames)?;
 	Ok(())
 }
