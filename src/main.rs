@@ -33,7 +33,7 @@ fn main() -> Result<(), std::io::Error> {
 			println!("frames: {}", frames.len());
 			gif.save(frames)?;
 		}
-		Err(_) => {panic!("Failed to retrieve the frames")}
+		Err(_) => panic!("Failed to retrieve the frames"),
 	};
 	Ok(())
 }
