@@ -8,7 +8,6 @@ use self::record::Recorder;
 use self::x11::display::Display;
 use gif::Repeat;
 use std::fs::File;
-use std::process::Command;
 
 fn main() -> Result<(), std::io::Error> {
 	let _args = util::parse_args();
