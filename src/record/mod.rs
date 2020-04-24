@@ -4,6 +4,7 @@ use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
 use std::sync::mpsc;
 use std::thread;
+use std::time::Duration;
 
 /* Sender and main thread of the Recorder */
 #[derive(Debug)]
@@ -73,6 +74,9 @@ impl Recorder {
 		Record::new(
 			self.channel.0.clone(),
 			thread::spawn(move || {
+				thread::sleep(Duration::from_millis(
+					self.clock.get_fps(TimeUnit::Millisecond) as u64,
+				));
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
 					match get_image() {
