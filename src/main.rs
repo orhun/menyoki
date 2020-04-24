@@ -26,13 +26,7 @@ fn main() -> Result<(), std::io::Error> {
 
 	let recorder = Recorder::new(20);
 	let record = recorder.record(move || focused_window.get_image());
-
-	match Command::new("kmon").spawn() {
-		Ok(mut child) => {
-			child.wait()?;
-		}
-		Err(_) => panic!("Failed to run the command."),
-	}
+	util::exec_cmd("kmon", &["-c", "blue"]).expect("Failed to run the command");
 	record.finish().expect("Failed to finish the recording");
 	match record.thread.join() {
 		Ok(frames) => {
