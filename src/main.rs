@@ -10,14 +10,15 @@ use gif::Repeat;
 use std::fs::File;
 
 fn main() -> Result<(), std::io::Error> {
-	let _args = util::parse_args();
+	let args = util::parse_args();
 	println!("thank god it's friday");
 
 	let display = Display::open().expect("Cannot open display");
 	let mut focused_window = display.get_focused_window();
 	focused_window.reset_position();
 	let mut gif = Gif::new(
-		File::create("target/test.gif").expect("Failed to create file"),
+		File::create(args.value_of("output").unwrap_or("t.gif"))
+			.expect("Failed to create file"),
 		focused_window.geometry,
 		15,
 		Repeat::Infinite,
