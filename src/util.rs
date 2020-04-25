@@ -1,4 +1,4 @@
-use clap::{App, ArgMatches};
+use clap::{App, Arg, ArgMatches};
 use std::io::Error;
 use std::process::Command;
 
@@ -12,6 +12,15 @@ pub fn parse_args() -> ArgMatches<'static> {
 		.version(env!("CARGO_PKG_VERSION"))
 		.author(env!("CARGO_PKG_AUTHORS"))
 		.about(env!("CARGO_PKG_DESCRIPTION"))
+		.arg(
+			Arg::with_name("output")
+				.short("o")
+				.long("output")
+				.value_name("FILE")
+				.default_value("t.gif")
+				.help("Set the output file")
+				.takes_value(true),
+		)
 		.get_matches()
 }
 
