@@ -14,12 +14,9 @@ pub fn parse_args() -> ArgMatches<'static> {
 		.about(env!("CARGO_PKG_DESCRIPTION"))
 		.arg(
 			Arg::with_name("output")
-				.short("o")
-				.long("output")
 				.value_name("FILE")
 				.default_value("t.gif")
-				.help("Set the output file")
-				.takes_value(true),
+				.help("Sets the output file"),
 		)
 		.get_matches()
 }
