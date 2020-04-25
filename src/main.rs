@@ -17,8 +17,11 @@ fn main() -> Result<(), std::io::Error> {
 	let mut focused_window = display.get_focused_window();
 	focused_window.reset_position();
 	let mut gif = Gif::new(
-		File::create(args.value_of("output").unwrap_or("t.gif"))
-			.expect("Failed to create file"),
+		File::create(match args.subcommand_matches("save") {
+			Some(matches) => matches.value_of("output").unwrap_or_default(),
+			_ => "t.gif",
+		})
+		.expect("Failed to create file"),
 		focused_window.geometry,
 		15,
 		Repeat::Infinite,
