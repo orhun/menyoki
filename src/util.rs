@@ -32,6 +32,12 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.short("t")
 						.long("timestamp")
 						.help("Adds timestamp to the file name"),
+				)
+				.arg(
+					Arg::with_name("prompt")
+						.short("p")
+						.long("prompt")
+						.help("Shows prompt for the file name input"),
 				),
 		)
 		.get_matches()
