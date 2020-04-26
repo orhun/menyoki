@@ -48,10 +48,15 @@ pub fn exec_cmd(cmd: &str, cmd_args: &[&str]) -> Result<(), Error> {
 }
 
 pub fn update_file_name(file_name: String, info: String) -> String {
-	if let Some(extension) = file_name.split('.').last() {
-		let extension = format!(".{}", extension);
-		file_name.replace(&extension, &format!("_{}{}", info, extension))
-	} else {
-		file_name
-	}
+	file_name
+		.split('.')
+		.enumerate()
+		.map(|(i, s)| {
+			if i == 0 {
+				format!("{}_{}", s, info)
+			} else {
+				format!(".{}", s)
+			}
+		})
+		.collect::<String>()
 }
