@@ -121,6 +121,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "05da548ad6865900e60eaba7f589cc0783590a92e940c26953ff81ddbab2d677"
 
 [[package]]
+name = "rprompt"
+version = "1.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b386f4748bdae2aefc96857f5fda07647f851d089420e577831e2a14b45230f8"
+
+[[package]]
 name = "strsim"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -142,6 +148,7 @@ dependencies = [
  "chrono",
  "clap",
  "gif",
+ "rprompt",
  "x11",
 ]
 

@@ -9,6 +9,7 @@ clap = "2.33.0"
 x11 = { version = "2.18.2", features = ["xlib"]}
 gif = "0.10.3"
 chrono = "0.4.11"
+rprompt = "1.0.5"
 
 [profile.dev]
 opt-level = 0
