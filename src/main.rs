@@ -8,6 +8,7 @@ use self::record::Recorder;
 use self::x11::display::Display;
 use chrono::Local;
 use gif::Repeat;
+use rprompt;
 use std::fs::File;
 
 fn main() -> Result<(), std::io::Error> {
@@ -20,8 +21,12 @@ fn main() -> Result<(), std::io::Error> {
 
 	let output_file = match args.subcommand_matches("save") {
 		Some(matches) => {
-			let file_name =
+			let mut file_name =
 				String::from(matches.value_of("output").unwrap_or_default());
+			if matches.is_present("prompt") {
+				file_name = rprompt::prompt_reply_stdout("Enter file name: ")
+					.unwrap_or(file_name);
+			}
 			if matches.is_present("date") || matches.is_present("timestamp") {
 				util::update_file_name(
 					file_name,
