@@ -20,6 +20,18 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.value_name("FILE")
 						.default_value("t.gif")
 						.help("Sets the output file"),
+				)
+				.arg(
+					Arg::with_name("date")
+						.short("d")
+						.long("date")
+						.help("Adds date and time to the file name"),
+				)
+				.arg(
+					Arg::with_name("timestamp")
+						.short("t")
+						.long("timestamp")
+						.help("Adds timestamp to the file name"),
 				),
 		)
 		.get_matches()
