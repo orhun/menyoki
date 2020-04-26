@@ -22,15 +22,14 @@ fn main() -> Result<(), std::io::Error> {
 		Some(matches) => {
 			let file_name =
 				String::from(matches.value_of("output").unwrap_or_default());
-			if matches.is_present("date") {
+			if matches.is_present("date") || matches.is_present("timestamp") {
 				util::update_file_name(
 					file_name,
-					Local::now().format("%Y%m%dT%H%M%S").to_string(),
-				)
-			} else if matches.is_present("timestamp") {
-				util::update_file_name(
-					file_name,
-					Local::now().timestamp().to_string(),
+					if matches.is_present("date") {
+						Local::now().format("%Y%m%dT%H%M%S").to_string()
+					} else {
+						Local::now().timestamp().to_string()
+					},
 				)
 			} else {
 				file_name
