@@ -6,6 +6,7 @@ use self::image::gif::Gif;
 use self::image::Capture;
 use self::record::Recorder;
 use self::x11::display::Display;
+use chrono::Local;
 use gif::Repeat;
 use std::fs::File;
 
@@ -16,12 +17,30 @@ fn main() -> Result<(), std::io::Error> {
 	let display = Display::open().expect("Cannot open display");
 	let mut focused_window = display.get_focused_window();
 	focused_window.reset_position();
+
+	let output_file = match args.subcommand_matches("save") {
+		Some(matches) => {
+			let file_name =
+				String::from(matches.value_of("output").unwrap_or_default());
+			if matches.is_present("date") {
+				util::update_file_name(
+					file_name,
+					Local::now().format("%Y%m%dT%H%M%S").to_string(),
+				)
+			} else if matches.is_present("timestamp") {
+				util::update_file_name(
+					file_name,
+					Local::now().timestamp().to_string(),
+				)
+			} else {
+				file_name
+			}
+		}
+		_ => String::from("t.gif"),
+	};
+
 	let mut gif = Gif::new(
-		File::create(match args.subcommand_matches("save") {
-			Some(matches) => matches.value_of("output").unwrap_or_default(),
-			_ => "t.gif",
-		})
-		.expect("Failed to create file"),
+		File::create(output_file).expect("Failed to create file"),
 		focused_window.geometry,
 		15,
 		Repeat::Infinite,
