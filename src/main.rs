@@ -43,8 +43,17 @@ fn main() -> Result<(), std::io::Error> {
 		None => String::from("t.gif"),
 	};
 
-	let mut speed = 15;
-	let mut repeat = Repeat::Infinite;
+	let fps = args
+		.value_of("fps")
+		.unwrap_or_default()
+		.parse()
+		.unwrap_or(10);
+	let command = args
+		.value_of("command")
+		.expect("No command specified to run");
+
+	let speed;
+	let repeat;
 
 	match args.subcommand_matches("gif") {
 		Some(matches) => {
@@ -58,7 +67,10 @@ fn main() -> Result<(), std::io::Error> {
 				None => Repeat::Infinite,
 			}
 		}
-		None => {}
+		None => {
+			speed = 10;
+			repeat = Repeat::Infinite;
+		}
 	}
 
 	let mut gif = Gif::new(
@@ -67,15 +79,6 @@ fn main() -> Result<(), std::io::Error> {
 		speed,
 		repeat,
 	)?;
-
-	let fps = args
-		.value_of("fps")
-		.unwrap_or_default()
-		.parse()
-		.unwrap_or(10);
-	let command = args
-		.value_of("command")
-		.expect("No command specified to run");
 
 	let recorder = Recorder::new(fps);
 	let record = recorder.record(move || focused_window.get_image());
