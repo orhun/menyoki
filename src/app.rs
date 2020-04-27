@@ -4,6 +4,7 @@ use crate::record::Recorder;
 use crate::util;
 use chrono::Local;
 use clap::ArgMatches;
+use rprompt;
 use std::fs::File;
 use std::io::Error;
 
