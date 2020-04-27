@@ -44,7 +44,7 @@ fn main() -> Result<(), std::io::Error> {
 	};
 
 	let mut speed = 15;
-	let repeat = Repeat::Infinite;
+	let mut repeat = Repeat::Infinite;
 
 	match args.subcommand_matches("gif") {
 		Some(matches) => {
@@ -53,6 +53,10 @@ fn main() -> Result<(), std::io::Error> {
 				.unwrap_or_default()
 				.parse()
 				.unwrap_or(10);
+			repeat = match matches.value_of("repeat") {
+				Some(num) => Repeat::Finite(num.parse().unwrap_or(1)),
+				None => Repeat::Infinite,
+			}
 		}
 		None => {}
 	}
