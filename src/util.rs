@@ -13,6 +13,12 @@ pub fn parse_args() -> ArgMatches<'static> {
 		.author(env!("CARGO_PKG_AUTHORS"))
 		.about(env!("CARGO_PKG_DESCRIPTION"))
 		.arg(
+			Arg::with_name("command")
+				.value_name("COMMAND")
+				.help("Sets the command to run")
+				.required(true),
+		)
+		.arg(
 			Arg::with_name("fps")
 				.short("f")
 				.long("fps")
