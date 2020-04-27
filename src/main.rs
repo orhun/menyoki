@@ -73,9 +73,13 @@ fn main() -> Result<(), std::io::Error> {
 		.unwrap_or_default()
 		.parse()
 		.unwrap_or(10);
+	let command = args
+		.value_of("command")
+		.expect("No command specified to run");
+
 	let recorder = Recorder::new(fps);
 	let record = recorder.record(move || focused_window.get_image());
-	util::exec_cmd("kmon", &["-c", "blue"]).expect("Failed to run the command");
+	util::exec_cmd("sh", &["-c", command]).expect("Failed to run the command");
 	record.finish().expect("Failed to finish the recording");
 	let frames = record.thread.join().expect("Failed to retrieve the frames");
 	println!("frames: {}", frames.len());
