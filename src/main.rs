@@ -2,12 +2,11 @@ mod image;
 mod record;
 mod util;
 mod x11;
-use self::image::gif::Gif;
+use self::image::gif::{FrameSettings, Gif};
 use self::image::Capture;
 use self::record::Recorder;
 use self::x11::display::Display;
 use chrono::Local;
-use gif::Repeat;
 use rprompt;
 use std::fs::File;
 
@@ -48,26 +47,21 @@ fn main() -> Result<(), std::io::Error> {
 		.value_of("command")
 		.expect("No command specified to run");
 
-	let speed;
-	let repeat;
-
-	match args.subcommand_matches("gif") {
-		Some(matches) => {
-			speed = matches
+	let frame_settings = match args.subcommand_matches("gif") {
+		Some(matches) => FrameSettings::new(
+			matches
+				.value_of("repeat")
+				.unwrap_or("-1")
+				.parse()
+				.unwrap_or_default(),
+			matches
 				.value_of("speed")
 				.unwrap_or_default()
 				.parse()
-				.unwrap_or(10);
-			repeat = match matches.value_of("repeat") {
-				Some(num) => Repeat::Finite(num.parse().unwrap_or(1)),
-				None => Repeat::Infinite,
-			}
-		}
-		None => {
-			speed = 10;
-			repeat = Repeat::Infinite;
-		}
-	}
+				.unwrap_or(10),
+		),
+		None => FrameSettings::new(-1, 10),
+	};
 
 	let display = Display::open().expect("Cannot open display");
 	let mut focused_window = display.get_focused_window();
@@ -75,19 +69,19 @@ fn main() -> Result<(), std::io::Error> {
 	let geometry = focused_window.geometry;
 	let get_image = move || focused_window.get_image();
 
-	let mut gif = Gif::new(
-		File::create(output_file).expect("Failed to create file"),
-		geometry,
-		speed,
-		repeat,
-	)?;
-
 	let recorder = Recorder::new(fps);
 	let record = recorder.record(get_image);
 	util::exec_cmd("sh", &["-c", command]).expect("Failed to run the command");
 	record.finish().expect("Failed to finish the recording");
 	let frames = record.thread.join().expect("Failed to retrieve the frames");
 	println!("frames: {}", frames.len());
+
+	let mut gif = Gif::new(
+		File::create(output_file).expect("Failed to create file"),
+		geometry,
+		frame_settings,
+	)?;
 	gif.save(frames)?;
+
 	Ok(())
 }
