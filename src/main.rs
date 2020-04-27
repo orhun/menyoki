@@ -40,14 +40,28 @@ fn main() -> Result<(), std::io::Error> {
 				file_name
 			}
 		}
-		_ => String::from("t.gif"),
+		None => String::from("t.gif"),
 	};
+
+	let mut speed = 15;
+	let repeat = Repeat::Infinite;
+
+	match args.subcommand_matches("gif") {
+		Some(matches) => {
+			speed = matches
+				.value_of("speed")
+				.unwrap_or_default()
+				.parse()
+				.unwrap_or(10);
+		}
+		None => {}
+	}
 
 	let mut gif = Gif::new(
 		File::create(output_file).expect("Failed to create file"),
 		focused_window.geometry,
-		15,
-		Repeat::Infinite,
+		speed,
+		repeat,
 	)?;
 
 	let fps = args
