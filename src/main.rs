@@ -15,10 +15,6 @@ fn main() -> Result<(), std::io::Error> {
 	let args = util::parse_args();
 	println!("thank god it's friday");
 
-	let display = Display::open().expect("Cannot open display");
-	let mut focused_window = display.get_focused_window();
-	focused_window.reset_position();
-
 	let output_file = match args.subcommand_matches("save") {
 		Some(matches) => {
 			let mut file_name =
@@ -73,15 +69,21 @@ fn main() -> Result<(), std::io::Error> {
 		}
 	}
 
+	let display = Display::open().expect("Cannot open display");
+	let mut focused_window = display.get_focused_window();
+	focused_window.reset_position();
+	let geometry = focused_window.geometry;
+	let get_image = move || focused_window.get_image();
+
 	let mut gif = Gif::new(
 		File::create(output_file).expect("Failed to create file"),
-		focused_window.geometry,
+		geometry,
 		speed,
 		repeat,
 	)?;
 
 	let recorder = Recorder::new(fps);
-	let record = recorder.record(move || focused_window.get_image());
+	let record = recorder.record(get_image);
 	util::exec_cmd("sh", &["-c", command]).expect("Failed to run the command");
 	record.finish().expect("Failed to finish the recording");
 	let frames = record.thread.join().expect("Failed to retrieve the frames");
