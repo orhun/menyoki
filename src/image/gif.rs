@@ -43,7 +43,7 @@ impl Frame {
 /* GIF encoder and processing speed */
 pub struct Gif {
 	encoder: Encoder<File>,
-	speed: i32,
+	speed: u32,
 }
 
 impl Gif {
@@ -59,7 +59,7 @@ impl Gif {
 	pub fn new(
 		file: File,
 		geometry: Geometry,
-		speed: i32,
+		speed: u32,
 		repeat: Repeat,
 	) -> Result<Self, Error> {
 		let mut encoder =
@@ -76,7 +76,7 @@ impl Gif {
 	 */
 	pub fn save(&mut self, frames: Vec<Frame>) -> Result<(), Error> {
 		for frame in frames {
-			self.encoder.write_frame(&frame.get(self.speed))?;
+			self.encoder.write_frame(&frame.get(self.speed as i32))?;
 		}
 		Ok(())
 	}
