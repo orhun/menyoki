@@ -4,13 +4,8 @@ mod record;
 mod util;
 mod x11;
 use self::app::App;
-use self::image::gif::{FrameSettings, Gif};
 use self::image::Capture;
-use self::record::Recorder;
 use self::x11::display::Display;
-use chrono::Local;
-use rprompt;
-use std::fs::File;
 
 fn main() -> Result<(), std::io::Error> {
 	let args = util::parse_args();
