@@ -4,8 +4,8 @@ use crate::record::Recorder;
 use crate::util;
 use chrono::Local;
 use clap::ArgMatches;
-use std::io::Error;
 use std::fs::File;
+use std::io::Error;
 
 pub struct App {
 	args: ArgMatches<'static>,
@@ -13,9 +13,7 @@ pub struct App {
 
 impl App {
 	pub fn new(args: ArgMatches<'static>) -> Self {
-		Self {
-			args
-		}
+		Self { args }
 	}
 
 	pub fn record(
@@ -39,20 +37,24 @@ impl App {
 					.expect("No command specified to run"),
 			],
 		)
-        .expect("Failed to run the command");
-        record.finish().expect("Failed to finish the recording");
-	    record.thread.join().expect("Failed to retrieve the frames")
-    }
+		.expect("Failed to run the command");
+		record.finish().expect("Failed to finish the recording");
+		record.thread.join().expect("Failed to retrieve the frames")
+	}
 
-    pub fn save_gif(&self, frames: Vec<Frame>, geometry: Geometry) -> Result<(), Error> {
-        let mut gif = Gif::new(
-            File::create(self.get_output_file()).expect("Failed to create file"),
-            geometry,
-            self.get_frame_settings(),
-        )?;
-        gif.save(frames)?;
-        Ok(())
-    }
+	pub fn save_gif(
+		&self,
+		frames: Vec<Frame>,
+		geometry: Geometry,
+	) -> Result<(), Error> {
+		let mut gif = Gif::new(
+			File::create(self.get_output_file()).expect("Failed to create file"),
+			geometry,
+			self.get_frame_settings(),
+		)?;
+		gif.save(frames)?;
+		Ok(())
+	}
 
 	fn get_output_file(&self) -> String {
 		match self.args.subcommand_matches("save") {
