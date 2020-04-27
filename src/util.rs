@@ -32,6 +32,15 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.default_value("10")
 						.help("Sets the frame encoding speed (1-30)")
 						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("repeat")
+						.short("r")
+						.long("repeat")
+						.value_name("REPEAT")
+						.default_value("\u{221E}")
+						.help("Sets the number of repetitions")
+						.takes_value(true),
 				),
 		)
 		.subcommand(
