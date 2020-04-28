@@ -97,6 +97,13 @@ pub fn exec_cmd(cmd: &str, cmd_args: &[&str]) -> Result<(), Error> {
 	}
 }
 
+/**
+ * Append the given information to the file name.
+ *
+ * @param  file_name
+ * @param  info
+ * @return String
+ */
 pub fn update_file_name(file_name: String, info: String) -> String {
 	file_name
 		.split('.')
