@@ -136,4 +136,11 @@ mod tests {
 		assert!(now.elapsed() >= sleep_time);
 		Ok(())
 	}
+	#[test]
+	fn test_update_file_name() {
+		assert_eq!(
+			"t_1588101718.gif",
+			update_file_name(String::from("t.gif"), String::from("1588101718"))
+		)
+	}
 }
