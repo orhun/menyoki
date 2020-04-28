@@ -117,3 +117,14 @@ pub fn update_file_name(file_name: String, info: String) -> String {
 		})
 		.collect::<String>()
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_parse_args() {
+		let matches = parse_args();
+		assert!(matches.args.len() > 0);
+		assert!(matches.usage.unwrap().lines().count() > 1);
+	}
+}
