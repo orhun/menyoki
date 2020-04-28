@@ -80,6 +80,13 @@ pub fn parse_args() -> ArgMatches<'static> {
 		.get_matches()
 }
 
+/**
+ * Execute command and wait for it to exit.
+ *
+ * @param  cmd
+ * @param  cmd_args
+ * @return Result
+ */
 pub fn exec_cmd(cmd: &str, cmd_args: &[&str]) -> Result<(), Error> {
 	match Command::new(cmd).args(cmd_args).spawn() {
 		Ok(mut child) => {
