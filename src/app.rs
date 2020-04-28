@@ -1,4 +1,4 @@
-use crate::image::gif::{Frame, Gif, GifSettings};
+use crate::image::gif::{Frame, Gif};
 use crate::image::{Geometry, Image};
 use crate::record::Recorder;
 use crate::util;
@@ -51,7 +51,7 @@ impl App {
 		let mut gif = Gif::new(
 			File::create(self.get_output_file()).expect("Failed to create file"),
 			geometry,
-			self.get_gif_settings(),
+			Gif::get_settings(&self.args),
 		)?;
 		gif.save(frames)?;
 		Ok(())
@@ -80,24 +80,6 @@ impl App {
 				}
 			}
 			None => String::from("t.gif"),
-		}
-	}
-
-	fn get_gif_settings(&self) -> GifSettings {
-		match self.args.subcommand_matches("gif") {
-			Some(matches) => GifSettings::new(
-				matches
-					.value_of("repeat")
-					.unwrap_or("-1")
-					.parse()
-					.unwrap_or_default(),
-				matches
-					.value_of("speed")
-					.unwrap_or_default()
-					.parse()
-					.unwrap_or(10),
-			),
-			None => GifSettings::new(-1, 10),
 		}
 	}
 }
