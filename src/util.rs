@@ -121,10 +121,19 @@ pub fn update_file_name(file_name: String, info: String) -> String {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use std::time::{Duration, Instant};
 	#[test]
 	fn test_parse_args() {
 		let matches = parse_args();
 		assert!(matches.args.len() > 0);
 		assert!(matches.usage.unwrap().lines().count() > 1);
+	}
+	#[test]
+	fn test_exec_cmd() -> Result<(), Error> {
+		let sleep_time = Duration::from_millis(10);
+		let now = Instant::now();
+		exec_cmd("sleep", &["0.01"])?;
+		assert!(now.elapsed() >= sleep_time);
+		Ok(())
 	}
 }
