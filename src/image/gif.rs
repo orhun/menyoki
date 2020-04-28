@@ -3,17 +3,6 @@ use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
 
-pub struct FrameSettings {
-	repeat: i32,
-	speed: u32,
-}
-
-impl FrameSettings {
-	pub fn new(repeat: i32, speed: u32) -> Self {
-		Self { repeat, speed }
-	}
-}
-
 /* Frame image and delay (in units of 10 ms) */
 #[derive(Clone, Debug)]
 pub struct Frame {
@@ -51,10 +40,21 @@ impl Frame {
 	}
 }
 
+pub struct GifSettings {
+	repeat: i32,
+	speed: u32,
+}
+
+impl GifSettings {
+	pub fn new(repeat: i32, speed: u32) -> Self {
+		Self { repeat, speed }
+	}
+}
+
 /* GIF encoder and processing speed */
 pub struct Gif {
 	encoder: Encoder<File>,
-	settings: FrameSettings,
+	settings: GifSettings,
 }
 
 impl Gif {
@@ -70,7 +70,7 @@ impl Gif {
 	pub fn new(
 		file: File,
 		geometry: Geometry,
-		settings: FrameSettings,
+		settings: GifSettings,
 	) -> Result<Self, Error> {
 		let mut encoder =
 			Encoder::new(file, geometry.width as u16, geometry.height as u16, &[])?;
