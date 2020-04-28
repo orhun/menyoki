@@ -72,8 +72,7 @@ impl Gif {
 	 *
 	 * @param  file
 	 * @param  geometry
-	 * @param  speed
-	 * @param  repeat
+	 * @param  settings
 	 * @return Result (Gif)
 	 */
 	pub fn new(
