@@ -103,6 +103,12 @@ impl Gif {
 		Ok(())
 	}
 
+	/**
+	 * Get GIF settings from parsed arguments.
+	 *
+	 * @param  args
+	 * @return GifSettings
+	 */
 	pub fn get_settings(args: &ArgMatches) -> GifSettings {
 		match args.subcommand_matches("gif") {
 			Some(matches) => GifSettings::new(
