@@ -1,4 +1,5 @@
 use crate::image::{Geometry, Image};
+use clap::ArgMatches;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;
@@ -93,5 +94,23 @@ impl Gif {
 				.write_frame(&frame.get(self.settings.speed as i32))?;
 		}
 		Ok(())
+	}
+
+	pub fn get_settings(args: &ArgMatches) -> GifSettings {
+		match args.subcommand_matches("gif") {
+			Some(matches) => GifSettings::new(
+				matches
+					.value_of("repeat")
+					.unwrap_or("-1")
+					.parse()
+					.unwrap_or_default(),
+				matches
+					.value_of("speed")
+					.unwrap_or_default()
+					.parse()
+					.unwrap_or(10),
+			),
+			None => GifSettings::new(-1, 10),
+		}
 	}
 }
