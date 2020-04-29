@@ -102,10 +102,7 @@ impl Capture for Window {
 			unsafe {
 				xlib::XDestroyImage(window_image as *mut _);
 			};
-			Some(Image {
-				geometry: self.geometry,
-				data,
-			})
+			Some(Image::new(data, self.geometry))
 		} else {
 			None
 		}
