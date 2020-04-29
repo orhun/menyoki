@@ -61,6 +61,12 @@ pub struct Image {
 	pub geometry: Geometry,
 }
 
+impl Image {
+	pub fn new(data: Vec<u8>, geometry: Geometry) -> Self {
+		Self { data, geometry }
+	}
+}
+
 /* Image capture methods */
 pub trait Capture {
 	fn get_image(&self) -> Option<Image>;
