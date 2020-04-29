@@ -10,6 +10,15 @@ pub struct Geometry {
 }
 
 impl Geometry {
+	/**
+	 * Create a new Geometry object.
+	 *
+	 * @param  x
+	 * @param  y
+	 * @param  width
+	 * @param  height
+	 * @return Geometry
+	 */
 	pub fn new(x: i32, y: i32, width: u32, height: u32) -> Self {
 		Self {
 			x,
