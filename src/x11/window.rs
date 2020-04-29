@@ -52,12 +52,7 @@ impl Window {
 				&mut depth,
 			);
 		}
-		Geometry {
-			x,
-			y,
-			width,
-			height,
-		}
+		Geometry::new(x, y, width, height)
 	}
 
 	/**
