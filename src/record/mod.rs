@@ -95,3 +95,24 @@ impl Recorder {
 		)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::image::Geometry;
+	use std::thread;
+	use std::time::Duration;
+	#[test]
+	fn test_record_mod() {
+		let recorder = Recorder::new(100);
+		let record = recorder.record(move || {
+			Some(Image::new(
+				vec![0, 0, 0, 255, 255, 255],
+				Geometry::new(0, 0, 1, 1),
+			))
+		});
+		thread::sleep(Duration::from_millis(20));
+		record.finish().unwrap();
+		assert!(record.thread.join().unwrap().len() > 0);
+	}
+}
