@@ -62,6 +62,13 @@ pub struct Image {
 }
 
 impl Image {
+	/**
+	 * Create a new Image object.
+	 *
+	 * @param  data
+	 * @param  geometry
+	 * @return Image
+	 */
 	pub fn new(data: Vec<u8>, geometry: Geometry) -> Self {
 		Self { data, geometry }
 	}
