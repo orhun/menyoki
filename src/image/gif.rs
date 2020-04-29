@@ -127,3 +127,22 @@ impl Gif {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::util;
+	#[test]
+	fn test_gif_mod() -> Result<(), Error> {
+		let geometry = Geometry::new(0, 0, 1, 2);
+		let settings = Gif::get_settings(&util::parse_args());
+		let frames = vec![
+			Frame::new(Image::new(vec![0, 0, 0, 255, 255, 255], geometry), 10),
+			Frame::new(Image::new(vec![255, 255, 255, 0, 0, 0], geometry), 10),
+		];
+		let mut gif = Gif::new(File::create("test.gif")?, geometry, settings)?;
+		gif.save(frames)?;
+		util::exec_cmd("rm", &["test.gif"])?;
+		Ok(())
+	}
+}
