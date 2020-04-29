@@ -83,3 +83,19 @@ impl App {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_app_mod() -> Result<(), Error> {
+		let app = App::new(util::parse_args());
+		let geometry = Geometry::new(0, 0, 1, 1);
+		let frames = app.record(move || {
+			Some(Image::new(vec![0, 0, 0, 255, 255, 255], geometry))
+		});
+		app.save_gif(frames, geometry)?;
+		util::exec_cmd("rm", &["t.gif"])?;
+		Ok(())
+	}
+}
