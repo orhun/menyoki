@@ -7,15 +7,28 @@ use clap::ArgMatches;
 use std::fs::File;
 use std::io::Error;
 
+/* Application and main functionalities */
 pub struct App {
 	args: ArgMatches<'static>,
 }
 
 impl App {
+	/**
+	 * Create a new App object.
+	 *
+	 * @param  args
+	 * @return App
+	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
 		Self { args }
 	}
 
+	/**
+	 * Start recording the frames.
+	 *
+	 * @param  get_image (Fn)
+	 * @return Vector of Frame
+	 */
 	pub fn record(
 		&self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
@@ -42,6 +55,13 @@ impl App {
 		record.thread.join().expect("Failed to retrieve the frames")
 	}
 
+	/**
+	 * Save frames as a GIF file.
+	 *
+	 * @param  frames
+	 * @param  geometry
+	 * @return Result
+	 */
 	pub fn save_gif(
 		&self,
 		frames: Vec<Frame>,
@@ -56,6 +76,11 @@ impl App {
 		Ok(())
 	}
 
+	/**
+	 * Get the output file from parsed arguments.
+	 *
+	 * @return String
+	 */
 	fn get_output_file(&self) -> String {
 		match self.args.subcommand_matches("save") {
 			Some(matches) => {
