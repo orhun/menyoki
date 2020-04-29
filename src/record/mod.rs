@@ -111,7 +111,7 @@ mod tests {
 				Geometry::new(0, 0, 1, 1),
 			))
 		});
-		thread::sleep(Duration::from_millis(20));
+		thread::sleep(Duration::from_millis(50));
 		record.finish().unwrap();
 		assert!(record.thread.join().unwrap().len() > 0);
 	}
