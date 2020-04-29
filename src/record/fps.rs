@@ -58,3 +58,20 @@ impl FpsClock {
 		diff
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use std::thread;
+	use std::time::Duration;
+	#[test]
+	fn test_fps_mod() {
+		let mut fps_clock = FpsClock::new(100);
+		assert_eq!(10., fps_clock.get_fps(TimeUnit::Millisecond));
+		assert_eq!(10_000_000., fps_clock.get_fps(TimeUnit::Nanosecond));
+		for i in 0..2 {
+			thread::sleep(Duration::from_nanos(i));
+			assert!(fps_clock.get_fps(TimeUnit::Nanosecond) > fps_clock.tick());
+		}
+	}
+}
