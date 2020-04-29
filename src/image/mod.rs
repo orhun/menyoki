@@ -78,3 +78,29 @@ impl Image {
 pub trait Capture {
 	fn get_image(&self) -> Option<Image>;
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_image_mod() {
+		let geometry = Geometry::new(0, 0, 200, 200);
+		let bgr_data: [Bgr; 2] = [
+			Bgr {
+				b: 128,
+				g: 128,
+				r: 128,
+				_p: 0,
+			},
+			Bgr {
+				b: 255,
+				g: 255,
+				r: 255,
+				_p: 0,
+			},
+		];
+		let data = Bgr::get_rgb_pixels(&bgr_data);
+		let image = Image::new(data, geometry);
+		assert!(image.data[0] == 128 && image.data[5] == 255)
+	}
+}
