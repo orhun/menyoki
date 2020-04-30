@@ -4,8 +4,8 @@ use std::process::Command as OsCommand;
 
 #[derive(Debug)]
 pub struct Command {
-	pub cmd: String,
-	pub args: Vec<String>,
+	cmd: String,
+	args: Vec<String>,
 }
 
 impl Command {
