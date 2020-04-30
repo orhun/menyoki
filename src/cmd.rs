@@ -10,6 +10,13 @@ pub struct Command {
 }
 
 impl Command {
+	/**
+	 * Create a new Command object.
+	 *
+	 * @param  cmd
+	 * @param  args
+	 * @return Command
+	 */
 	pub fn new(cmd: String, args: Vec<String>) -> Self {
 		Self { cmd, args }
 	}
