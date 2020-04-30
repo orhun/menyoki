@@ -2,6 +2,7 @@ use clap::ArgMatches;
 use std::io::Error;
 use std::process::Command as OsCommand;
 
+/* The command and its arguments */
 #[derive(Debug)]
 pub struct Command {
 	cmd: String,
