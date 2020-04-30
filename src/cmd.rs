@@ -28,10 +28,8 @@ impl Command {
 	}
 
 	/**
-	 * Execute command and wait for it to exit.
+	 * Execute the command and wait for it to exit.
 	 *
-	 * @param  cmd
-	 * @param  args
 	 * @return Result
 	 */
 	pub fn execute(&self) -> Result<(), Error> {
