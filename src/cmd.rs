@@ -13,6 +13,12 @@ impl Command {
 		Self { cmd, args }
 	}
 
+	/**
+	 * Get a Command object from parsed arguments.
+	 *
+	 * @param  args
+	 * @return Command
+	 */
 	pub fn get(args: &ArgMatches) -> Self {
 		match args.value_of("command") {
 			Some(cmd) => {
