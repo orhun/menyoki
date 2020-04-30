@@ -41,16 +41,8 @@ impl App {
 				.unwrap_or(10),
 		);
 		let record = recorder.record(get_image);
-		util::exec_cmd(
-			"sh",
-			&[
-				"-c",
-				self.args
-					.value_of("command")
-					.expect("No command specified to run"),
-			],
-		)
-		.expect("Failed to run the command");
+		let command = self.get_command();
+		util::exec_cmd(command.0, &command.1).expect("Failed to run the command");
 		record.finish().expect("Failed to finish the recording");
 		record.thread.join().expect("Failed to retrieve the frames")
 	}
@@ -74,6 +66,19 @@ impl App {
 		)?;
 		gif.save(frames)?;
 		Ok(())
+	}
+
+	fn get_command(&self) -> (&str, Vec<&str>) {
+		match self.args.value_of("command") {
+			Some(cmd) => {
+				if !cmd.contains(' ') {
+					(cmd, Vec::new())
+				} else {
+					("sh", vec!["-c", cmd])
+				}
+			}
+			None => panic!("No command specified to run"),
+		}
 	}
 
 	/**
