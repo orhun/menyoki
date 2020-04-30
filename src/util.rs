@@ -1,6 +1,4 @@
 use clap::{App, Arg, ArgMatches, SubCommand};
-use std::io::Error;
-use std::process::Command;
 
 /**
  * Parse command line arguments.
@@ -81,23 +79,6 @@ pub fn parse_args() -> ArgMatches<'static> {
 }
 
 /**
- * Execute command and wait for it to exit.
- *
- * @param  cmd
- * @param  cmd_args
- * @return Result
- */
-pub fn exec_cmd(cmd: &str, cmd_args: &[&str]) -> Result<(), Error> {
-	match Command::new(cmd).args(cmd_args).spawn() {
-		Ok(mut child) => {
-			child.wait()?;
-			Ok(())
-		}
-		Err(e) => Err(e),
-	}
-}
-
-/**
  * Append the given information to the file name.
  *
  * @param  file_name
@@ -127,14 +108,6 @@ mod tests {
 		let matches = parse_args();
 		assert!(matches.args.len() > 0);
 		assert!(matches.usage.unwrap().lines().count() > 1);
-	}
-	#[test]
-	fn test_exec_cmd() -> Result<(), Error> {
-		let sleep_time = Duration::from_millis(10);
-		let now = Instant::now();
-		exec_cmd("sleep", &["0.01"])?;
-		assert!(now.elapsed() >= sleep_time);
-		Ok(())
 	}
 	#[test]
 	fn test_update_file_name() {
