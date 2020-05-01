@@ -65,10 +65,10 @@ mod tests {
 	use super::*;
 	use std::time::{Duration, Instant};
 	#[test]
-	fn test_exec_cmd() -> Result<(), Error> {
+	fn test_cmd_mod() -> Result<(), Error> {
 		let sleep_time = Duration::from_millis(10);
 		let now = Instant::now();
-		exec_cmd("sleep", &["0.01"])?;
+		Command::new(String::from("sleep"), vec![String::from("0.01")]).execute()?;
 		assert!(now.elapsed() >= sleep_time);
 		Ok(())
 	}
