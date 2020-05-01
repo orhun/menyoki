@@ -113,7 +113,7 @@ mod tests {
 			Some(Image::new(vec![0, 0, 0, 255, 255, 255], geometry))
 		});
 		app.save_gif(frames, geometry)?;
-		util::exec_cmd("rm", &["t.gif"])?;
+		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
 	}
 }
