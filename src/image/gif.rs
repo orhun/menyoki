@@ -132,6 +132,7 @@ impl Gif {
 mod tests {
 	use super::*;
 	use crate::util;
+	use crate::cmd::Command;
 	#[test]
 	fn test_gif_mod() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2);
@@ -142,7 +143,8 @@ mod tests {
 		];
 		let mut gif = Gif::new(File::create("test.gif")?, geometry, settings)?;
 		gif.save(frames)?;
-		util::exec_cmd("rm", &["test.gif"])?;
+		Command::new(String::from("rm"), vec![String::from("test.gif")])
+			.execute()?;
 		Ok(())
 	}
 }
