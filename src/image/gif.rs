@@ -131,8 +131,8 @@ impl Gif {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::util;
 	use crate::cmd::Command;
+	use crate::util;
 	#[test]
 	fn test_gif_mod() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2);
