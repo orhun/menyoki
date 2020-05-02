@@ -63,9 +63,11 @@ impl Command {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::util;
 	use std::time::{Duration, Instant};
 	#[test]
 	fn test_cmd_mod() -> Result<(), Error> {
+		assert_eq!("test", Command::get(&util::parse_args()).cmd);
 		let sleep_time = Duration::from_millis(10);
 		let now = Instant::now();
 		Command::new(String::from("sleep"), vec![String::from("0.01")]).execute()?;
