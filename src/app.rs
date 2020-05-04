@@ -1,8 +1,8 @@
-use crate::cmd::Command;
 use crate::image::gif::{Frame, Gif};
 use crate::image::{Geometry, Image};
 use crate::record::Recorder;
 use crate::util;
+use crate::util::cmd::Command;
 use chrono::Local;
 use clap::ArgMatches;
 use std::fs::File;

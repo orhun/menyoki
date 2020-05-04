@@ -1,3 +1,4 @@
+pub mod cmd;
 use clap::{App, Arg, ArgMatches, SubCommand};
 
 /**

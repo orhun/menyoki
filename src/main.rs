@@ -1,5 +1,4 @@
 mod app;
-mod cmd;
 mod image;
 mod record;
 mod util;
