@@ -10,6 +10,7 @@ pub struct Window {
 	pub geometry: Geometry,
 }
 
+/* Implementations for thread-safe usage */
 unsafe impl Sync for Window {}
 unsafe impl Send for Window {}
 
