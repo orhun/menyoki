@@ -22,6 +22,10 @@ impl Display {
 		}
 	}
 
+	pub fn get(&self) -> *mut xlib::Display {
+		self.display
+	}
+
 	/**
 	 * Get the root window of the default screen.
 	 *
