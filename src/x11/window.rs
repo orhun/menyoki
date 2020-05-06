@@ -5,7 +5,7 @@ use x11::xlib;
 /* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
-	pub xid: usize,
+	pub xid: u64,
 	pub display: *mut xlib::Display,
 	pub geometry: Geometry,
 }
@@ -21,7 +21,7 @@ impl Window {
 	 * @param  display
 	 * @return Window
 	 */
-	pub fn new(xid: usize, display: *mut xlib::Display) -> Self {
+	pub fn new(xid: u64, display: *mut xlib::Display) -> Self {
 		Self {
 			xid,
 			display,
@@ -42,7 +42,7 @@ impl Window {
 		unsafe {
 			xlib::XGetGeometry(
 				self.display,
-				self.xid as u64,
+				self.xid,
 				&mut root,
 				&mut x,
 				&mut y,
@@ -82,7 +82,7 @@ impl Capture for Window {
 		let window_image = unsafe {
 			xlib::XGetImage(
 				self.display,
-				self.xid as u64,
+				self.xid,
 				self.geometry.x,
 				self.geometry.y,
 				self.geometry.width,

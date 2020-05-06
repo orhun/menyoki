@@ -34,7 +34,7 @@ impl Display {
 			let screen = xlib::XDefaultScreenOfDisplay(self.display);
 			root_window = xlib::XRootWindowOfScreen(screen) as usize;
 		};
-		Window::new(root_window, self.display)
+		Window::new(root_window as u64, self.display)
 	}
 
 	/**
@@ -48,7 +48,7 @@ impl Display {
 		unsafe {
 			xlib::XGetInputFocus(self.display, focus_window, revert_to_return);
 		};
-		Window::new(unsafe { *focus_window as usize }, self.display)
+		Window::new(unsafe { *focus_window }, self.display)
 	}
 }
 
