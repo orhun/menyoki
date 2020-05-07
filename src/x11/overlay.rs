@@ -19,14 +19,12 @@ impl Overlay {
 		}
 	}
 
-	unsafe fn get_default_screen(&self) -> i32 {
-		xlib::XDefaultScreen(self.display.get())
-	}
-
 	unsafe fn get_window_attributes(&self) -> xlib::XSetWindowAttributes {
 		let mut window_attributes: xlib::XSetWindowAttributes = std::mem::zeroed();
-		window_attributes.background_pixel =
-			xlib::XBlackPixel(self.display.get(), self.get_default_screen());
+		window_attributes.background_pixel = xlib::XBlackPixel(
+			self.display.get(),
+			self.display.get_default_screen() as i32,
+		);
 		window_attributes
 	}
 
