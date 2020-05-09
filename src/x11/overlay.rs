@@ -1,5 +1,6 @@
 use crate::x11::display::Display;
 use crate::x11::window::Window;
+use std::mem::{self, MaybeUninit};
 use std::os;
 use std::ptr;
 use x11::xlib;
@@ -48,6 +49,20 @@ impl Overlay {
 				&mut self.get_window_attributes(),
 			);
 			xlib::XMapWindow(self.display.get(), self.overlay_window);
+		}
+	}
+
+	pub fn handle_events(self) {
+		unsafe {
+			std::thread::spawn(move || {
+				let mut event: xlib::XEvent = MaybeUninit::uninit().assume_init();
+				loop {
+					xlib::XNextEvent(self.display.get(), &mut event);
+					match event.get_type() {
+						_ => {},
+					}
+				}
+			});
 		}
 	}
 }
