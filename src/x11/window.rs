@@ -1,5 +1,5 @@
 use crate::image::{Bgr, Capture, Geometry, Image};
-use core::ffi::c_void;
+use std::ffi::{c_void, CString};
 use std::mem;
 use std::slice;
 use x11::xlib;
@@ -100,6 +100,21 @@ impl Window {
 			}
 			xlib::XFree(children_return as *mut c_void);
 			Some(window_list)
+		}
+	}
+
+	pub fn get_window_name(&self) -> Option<String> {
+		unsafe {
+			let mut window_name = mem::MaybeUninit::uninit().assume_init();
+			if xlib::XFetchName(self.display, self.xid, &mut window_name) != 0 {
+				Some(
+					CString::from_raw(window_name)
+						.into_string()
+						.unwrap_or_default(),
+				)
+			} else {
+				None
+			}
 		}
 	}
 }
