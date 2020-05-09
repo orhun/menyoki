@@ -10,6 +10,9 @@ pub struct Overlay {
 	overlay_window: u64,
 }
 
+/* Implementations for thread-safe usage */
+unsafe impl Send for Overlay {}
+
 impl Overlay {
 	pub fn new(display: Display, parent_window: Window) -> Self {
 		Self {
