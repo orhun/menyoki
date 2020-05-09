@@ -39,11 +39,12 @@ impl Overlay {
 				self.parent_window.geometry.width,
 				0,
 				0,
-				xlib::InputOnly as os::raw::c_uint,
+				xlib::InputOutput as os::raw::c_uint,
 				ptr::null_mut(),
 				xlib::CWBackPixel,
 				&mut self.get_window_attributes(),
-			)
+			);
+			xlib::XMapWindow(self.display.get(), self.overlay_window);
 		}
 	}
 }
