@@ -39,8 +39,8 @@ impl Overlay {
 				self.parent_window.xid,
 				self.parent_window.geometry.x,
 				self.parent_window.geometry.y,
-				self.parent_window.geometry.height,
 				self.parent_window.geometry.width,
+				self.parent_window.geometry.height,
 				0,
 				0,
 				xlib::InputOutput as os::raw::c_uint,
@@ -59,7 +59,7 @@ impl Overlay {
 				loop {
 					xlib::XNextEvent(self.display.get(), &mut event);
 					match event.get_type() {
-						_ => {},
+						_ => {}
 					}
 				}
 			});
