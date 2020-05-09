@@ -1,4 +1,6 @@
 use crate::image::{Bgr, Capture, Geometry, Image};
+use core::ffi::c_void;
+use std::mem;
 use std::slice;
 use x11::xlib;
 
@@ -70,6 +72,35 @@ impl Window {
 	pub fn reset_position(&mut self) {
 		self.geometry.x = 0;
 		self.geometry.y = 0;
+	}
+
+	pub fn get_window_list(&self) -> Option<Vec<Window>> {
+		unsafe {
+			let mut root_window = mem::MaybeUninit::uninit().assume_init();
+			let mut parent_window = mem::MaybeUninit::uninit().assume_init();
+			let mut children_return = mem::MaybeUninit::uninit().assume_init();
+			let mut children_num = 0;
+			if xlib::XQueryTree(
+				self.display,
+				self.xid,
+				&mut root_window,
+				&mut parent_window,
+				&mut children_return,
+				&mut children_num,
+			) == 0
+			{
+				return None;
+			}
+			let mut window_list = Vec::new();
+			for i in 0..children_num {
+				window_list.push(Window::new(
+					*children_return.offset(i as isize),
+					self.display,
+				));
+			}
+			xlib::XFree(children_return as *mut c_void);
+			Some(window_list)
+		}
 	}
 }
 
