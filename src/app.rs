@@ -109,9 +109,7 @@ mod tests {
 	fn test_app_mod() -> Result<(), Error> {
 		let app = App::new(util::parse_args());
 		let geometry = Geometry::new(0, 0, 1, 1);
-		let frames = app.record(move || {
-			Some(Image::new(vec![0, 0, 0, 255, 255, 255], geometry))
-		});
+		let frames = app.record(move || Some(Image::new(vec![0, 0, 0], geometry)));
 		app.save_gif(frames, geometry)?;
 		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
