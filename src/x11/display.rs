@@ -7,6 +7,9 @@ pub struct Display {
 	display: *mut xlib::Display,
 }
 
+/* Implementations for thread-safe usage */
+unsafe impl Send for Display {}
+
 impl Display {
 	/**
 	 * Open a display.
