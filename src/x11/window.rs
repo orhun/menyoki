@@ -126,6 +126,20 @@ impl Window {
 			}
 		}
 	}
+
+	pub fn draw_borders(&self, gc: xlib::GC, padding: u32) {
+		unsafe {
+			xlib::XDrawRectangle(
+				self.display,
+				self.xid,
+				gc,
+				self.geometry.x + padding as i32,
+				self.geometry.y + padding as i32,
+				self.geometry.width - (padding * 2),
+				self.geometry.height - (padding * 2),
+			);
+		}
+	}
 }
 
 impl Capture for Window {
