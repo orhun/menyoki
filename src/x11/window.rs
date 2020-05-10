@@ -17,6 +17,7 @@ pub struct Window {
 unsafe impl Sync for Window {}
 unsafe impl Send for Window {}
 
+#[allow(dead_code)]
 impl Window {
 	/**
 	 * Create a new Window object.
