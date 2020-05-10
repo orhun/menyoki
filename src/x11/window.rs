@@ -8,9 +8,9 @@ use x11::xlib;
 /* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
-	pub xid: u64,
-	pub display: *mut xlib::Display,
-	pub geometry: Geometry,
+	xid: u64,
+	display: *mut xlib::Display,
+	geometry: Geometry,
 }
 
 /* Implementations for thread-safe usage */
