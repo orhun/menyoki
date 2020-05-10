@@ -1,6 +1,7 @@
 use crate::image::{Bgr, Capture, Geometry, Image};
 use std::ffi::{c_void, CString};
 use std::mem;
+use std::ptr;
 use std::slice;
 use x11::xlib;
 
@@ -72,6 +73,14 @@ impl Window {
 	pub fn reset_position(&mut self) {
 		self.geometry.x = 0;
 		self.geometry.y = 0;
+	}
+
+	pub fn create_gc(&self, color: u64) -> xlib::GC {
+		unsafe {
+			let gc = xlib::XCreateGC(self.display, self.xid, 0, ptr::null_mut());
+			xlib::XSetForeground(self.display, gc, color);
+			gc
+		}
 	}
 
 	pub fn get_window_list(&self) -> Option<Vec<Window>> {
