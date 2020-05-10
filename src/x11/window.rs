@@ -10,7 +10,7 @@ use x11::xlib;
 pub struct Window {
 	xid: u64,
 	display: *mut xlib::Display,
-	geometry: Geometry,
+	pub geometry: Geometry,
 }
 
 /* Implementations for thread-safe usage */
