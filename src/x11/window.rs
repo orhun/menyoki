@@ -86,9 +86,10 @@ impl Window {
 
 	pub fn get_window_list(&self) -> Option<Vec<Window>> {
 		unsafe {
-			let mut root_window = mem::MaybeUninit::uninit().assume_init();
-			let mut parent_window = mem::MaybeUninit::uninit().assume_init();
-			let mut children_return = mem::MaybeUninit::uninit().assume_init();
+			let mut root_window = mem::MaybeUninit::<u64>::uninit().assume_init();
+			let mut parent_window = mem::MaybeUninit::<u64>::uninit().assume_init();
+			let mut children_return =
+				mem::MaybeUninit::<*mut u64>::uninit().assume_init();
 			let mut children_num = 0;
 			if xlib::XQueryTree(
 				self.display,
@@ -115,7 +116,8 @@ impl Window {
 
 	pub fn get_window_name(&self) -> Option<String> {
 		unsafe {
-			let mut window_name = mem::MaybeUninit::uninit().assume_init();
+			let mut window_name =
+				mem::MaybeUninit::<*mut i8>::uninit().assume_init();
 			if xlib::XFetchName(self.display, self.xid, &mut window_name) != 0 {
 				Some(
 					CString::from_raw(window_name)
