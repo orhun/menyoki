@@ -8,8 +8,8 @@ use x11::xlib;
 /* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
-	xid: u64,
-	display: *mut xlib::Display,
+	pub xid: u64,
+	pub display: *mut xlib::Display,
 	pub geometry: Geometry,
 }
 
@@ -140,6 +140,20 @@ impl Window {
 				self.geometry.y + padding as i32,
 				self.geometry.width - (padding * 2),
 				self.geometry.height - (padding * 2),
+			);
+		}
+	}
+
+	pub fn clear_area(&self) {
+		unsafe {
+			xlib::XClearArea(
+				self.display,
+				self.xid,
+				self.geometry.x,
+				self.geometry.y,
+				self.geometry.width,
+				self.geometry.height,
+				xlib::True,
 			);
 		}
 	}
