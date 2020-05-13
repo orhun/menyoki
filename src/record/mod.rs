@@ -40,10 +40,10 @@ impl Record {
 }
 
 /* Recorder with FPS clock and channel */
-#[derive(Debug)]
 pub struct Recorder {
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
+	get_image: &'static (dyn Fn() -> Option<Image> + Sync + Send),
 }
 
 impl Recorder {
@@ -53,10 +53,25 @@ impl Recorder {
 	 * @param  fps
 	 * @return Recorder
 	 */
-	pub fn new(fps: u32) -> Self {
+	pub fn new(
+		fps: u32,
+		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
+	) -> Self {
 		Self {
 			clock: FpsClock::new(fps),
 			channel: mpsc::channel(),
+			get_image: Box::leak(Box::new(get_image)),
+		}
+	}
+
+	pub fn get_frame(&mut self) -> Frame {
+		self.clock.tick();
+		match (self.get_image)() {
+			Some(image) => Frame::new(
+				image,
+				(self.clock.get_fps(TimeUnit::Millisecond) / 10.) as u16,
+			),
+			None => panic!("Failed to get the image"),
 		}
 	}
 
@@ -66,10 +81,7 @@ impl Recorder {
 	 * @param  get_image (Fn)
 	 * @return Record
 	 */
-	pub fn record(
-		mut self,
-		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
-	) -> Record {
+	pub fn record(mut self) -> Record {
 		let mut frames = Vec::new();
 		Record::new(
 			self.channel.0.clone(),
@@ -78,17 +90,7 @@ impl Recorder {
 					self.clock.get_fps(TimeUnit::Millisecond) as u64,
 				));
 				while self.channel.1.try_recv().is_err() {
-					self.clock.tick();
-					match get_image() {
-						Some(image) => {
-							frames.push(Frame::new(
-								image,
-								(self.clock.get_fps(TimeUnit::Millisecond) / 10.)
-									as u16,
-							));
-						}
-						None => panic!("Failed to get the image"),
-					}
+					frames.push(self.get_frame())
 				}
 				frames
 			}),
