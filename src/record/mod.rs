@@ -67,7 +67,6 @@ impl Recorder {
 	}
 
 	pub fn get_frame(&mut self) -> Frame {
-		self.clock.tick();
 		match (self.get_image)() {
 			Some(image) => Frame::new(
 				image,
@@ -86,6 +85,7 @@ impl Recorder {
 		})
 		.expect("Failed to set the signal handler");
 		while recording.load(Ordering::SeqCst) {
+			self.clock.tick();
 			frames.push(self.get_frame());
 		}
 		frames
@@ -106,6 +106,7 @@ impl Recorder {
 					self.clock.get_fps(TimeUnit::Millisecond) as u64,
 				));
 				while self.channel.1.try_recv().is_err() {
+					self.clock.tick();
 					frames.push(self.get_frame())
 				}
 				frames
