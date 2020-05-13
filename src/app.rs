@@ -40,13 +40,18 @@ impl App {
 				.unwrap_or_default()
 				.parse()
 				.unwrap_or(10),
+			get_image,
 		);
-		let record = recorder.record(get_image);
-		Command::get(&self.args)
-			.execute()
-			.expect("Failed to run the command");
-		record.finish().expect("Failed to finish the recording");
-		record.thread.join().expect("Failed to retrieve the frames")
+		if self.args.is_present("command") {
+			let record = recorder.record_async();
+			Command::get(&self.args)
+				.execute()
+				.expect("Failed to run the command");
+			record.finish().expect("Failed to finish the recording");
+			record.thread.join().expect("Failed to retrieve the frames")
+		} else {
+			recorder.record_sync()
+		}
 	}
 
 	/**
