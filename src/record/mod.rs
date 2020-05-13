@@ -11,7 +11,7 @@ use std::time::Duration;
 /* Sender and main thread of the Recorder */
 #[derive(Debug)]
 pub struct Record {
-	pub sender: mpsc::Sender<()>,
+	sender: mpsc::Sender<()>,
 	pub thread: thread::JoinHandle<Vec<Frame>>,
 }
 
