@@ -2,7 +2,9 @@ pub mod fps;
 use crate::image::gif::Frame;
 use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
+use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
+use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
@@ -73,6 +75,20 @@ impl Recorder {
 			),
 			None => panic!("Failed to get the image"),
 		}
+	}
+
+	pub fn record_sync(&mut self) -> Vec<Frame> {
+		let mut frames = Vec::new();
+		let recording = Arc::new(AtomicBool::new(true));
+		let rec_state = recording.clone();
+		ctrlc::set_handler(move || {
+			rec_state.store(false, Ordering::SeqCst);
+		})
+		.expect("Failed to set the signal handler");
+		while recording.load(Ordering::SeqCst) {
+			frames.push(self.get_frame());
+		}
+		frames
 	}
 
 	/**
