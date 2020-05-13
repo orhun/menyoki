@@ -34,14 +34,7 @@ impl App {
 		&self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
 	) -> Vec<Frame> {
-		let recorder = Recorder::new(
-			self.args
-				.value_of("fps")
-				.unwrap_or_default()
-				.parse()
-				.unwrap_or(10),
-			get_image,
-		);
+		let mut recorder = Recorder::new(self.get_fps(), get_image);
 		if self.args.is_present("command") {
 			let record = recorder.record_async();
 			Command::get(&self.args)
@@ -73,6 +66,14 @@ impl App {
 		)?;
 		gif.save(frames)?;
 		Ok(())
+	}
+
+	fn get_fps(&self) -> u32 {
+		self.args
+			.value_of("fps")
+			.unwrap_or_default()
+			.parse()
+			.unwrap_or(10)
 	}
 
 	/**
