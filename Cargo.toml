@@ -11,6 +11,7 @@ gif = "0.10.3"
 chrono = "0.4.11"
 rprompt = "1.0.5"
 device_query = "0.2.4"
+ctrlc = { version = "3.1.4", features = ["termination"] }
 
 [profile.dev]
 opt-level = 0
