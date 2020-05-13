@@ -14,8 +14,7 @@ pub fn parse_args() -> ArgMatches<'static> {
 		.arg(
 			Arg::with_name("command")
 				.value_name("COMMAND")
-				.help("Sets the command to run")
-				.required(true),
+				.help("Sets the command to run"),
 		)
 		.arg(
 			Arg::with_name("fps")
