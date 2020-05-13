@@ -27,12 +27,14 @@ impl Window {
 	 * @return Window
 	 */
 	pub fn new(xid: u64, display: *mut xlib::Display) -> Self {
-		Self {
-			xid,
-			display,
-			geometry: Geometry::default(),
+		unsafe {
+			Self {
+				xid,
+				display,
+				geometry: Geometry::default(),
+			}
+			.set_geometry()
 		}
-		.set_geometry()
 	}
 
 	/**
@@ -40,23 +42,21 @@ impl Window {
 	 *
 	 * @return Geometry
 	 */
-	fn get_geometry(&self) -> Geometry {
+	unsafe fn get_geometry(&self) -> Geometry {
 		let mut root: xlib::Window = 0;
 		let (mut x, mut y, mut width, mut height, mut border_width, mut depth) =
 			(0, 0, 0, 0, 0, 0);
-		unsafe {
-			xlib::XGetGeometry(
-				self.display,
-				self.xid,
-				&mut root,
-				&mut x,
-				&mut y,
-				&mut width,
-				&mut height,
-				&mut border_width,
-				&mut depth,
-			);
-		}
+		xlib::XGetGeometry(
+			self.display,
+			self.xid,
+			&mut root,
+			&mut x,
+			&mut y,
+			&mut width,
+			&mut height,
+			&mut border_width,
+			&mut depth,
+		);
 		Geometry::new(x, y, width, height)
 	}
 
@@ -65,7 +65,7 @@ impl Window {
 	 *
 	 * @return Window
 	 */
-	fn set_geometry(&mut self) -> Self {
+	unsafe fn set_geometry(&mut self) -> Self {
 		self.geometry = self.get_geometry();
 		*self
 	}
