@@ -81,7 +81,7 @@ impl Recorder {
 	 * @param  get_image (Fn)
 	 * @return Record
 	 */
-	pub fn record(mut self) -> Record {
+	pub fn record_async(mut self) -> Record {
 		let mut frames = Vec::new();
 		Record::new(
 			self.channel.0.clone(),
