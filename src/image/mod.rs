@@ -57,8 +57,8 @@ impl Bgr {
 /* Image data and geometric properties */
 #[derive(Clone, Debug)]
 pub struct Image {
-	pub data: Vec<u8>,
-	pub geometry: Geometry,
+	data: Vec<u8>,
+	geometry: Geometry,
 }
 
 impl Image {
