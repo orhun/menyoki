@@ -29,8 +29,8 @@ impl Display {
 		self.display
 	}
 
-	pub unsafe fn get_default_screen(&self) -> i32 {
-		xlib::XDefaultScreen(self.get())
+	pub unsafe fn get_default_screen(&self) -> *mut xlib::Screen {
+		xlib::XDefaultScreenOfDisplay(self.get())
 	}
 
 	/**
@@ -42,10 +42,8 @@ impl Display {
 	pub fn get_root_window(&self) -> Window {
 		let root_window: usize;
 		unsafe {
-			root_window = xlib::XRootWindowOfScreen(xlib::XScreenOfDisplay(
-				self.get(),
-				self.get_default_screen(),
-			)) as usize;
+			root_window =
+				xlib::XRootWindowOfScreen(self.get_default_screen()) as usize;
 		};
 		Window::new(root_window as u64, self.display)
 	}
