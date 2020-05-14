@@ -86,17 +86,16 @@ impl Window {
 
 	pub fn get_window_list(&self) -> Option<Vec<Window>> {
 		unsafe {
-			let mut root_window = MaybeUninit::<u64>::uninit().assume_init();
-			let mut parent_window = MaybeUninit::<u64>::uninit().assume_init();
-			let mut children_return =
-				MaybeUninit::<*mut u64>::uninit().assume_init();
+			let mut root_window = MaybeUninit::<u64>::uninit();
+			let mut parent_window = MaybeUninit::<u64>::uninit();
+			let mut children_return = MaybeUninit::<*mut u64>::uninit();
 			let mut children_num = 0;
 			if xlib::XQueryTree(
 				self.display,
 				self.xid,
-				&mut root_window,
-				&mut parent_window,
-				&mut children_return,
+				root_window.as_mut_ptr(),
+				parent_window.as_mut_ptr(),
+				children_return.as_mut_ptr(),
 				&mut children_num,
 			) == 0
 			{
@@ -105,22 +104,23 @@ impl Window {
 			let mut window_list = Vec::new();
 			for i in 0..children_num {
 				window_list.push(Window::new(
-					*children_return.offset(i as isize),
+					*children_return.as_mut_ptr().offset(i as isize) as u64,
 					self.display,
 				));
 			}
-			xlib::XFree(children_return as *mut c_void);
+			xlib::XFree(children_return.as_mut_ptr() as *mut c_void);
 			Some(window_list)
 		}
 	}
 
 	pub fn get_window_name(&self) -> Option<String> {
 		unsafe {
-			let mut window_name =
-				MaybeUninit::<*mut i8>::uninit().assume_init();
-			if xlib::XFetchName(self.display, self.xid, &mut window_name) != 0 {
+			let mut window_name = MaybeUninit::<*mut i8>::uninit();
+			if xlib::XFetchName(self.display, self.xid, window_name.as_mut_ptr())
+				!= 0
+			{
 				Some(
-					CString::from_raw(window_name)
+					CString::from_raw(*window_name.as_ptr())
 						.into_string()
 						.unwrap_or_default(),
 				)
