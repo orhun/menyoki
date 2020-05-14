@@ -26,12 +26,8 @@ impl Display {
 		}
 	}
 
-	pub fn get(&self) -> *mut xlib::Display {
-		self.display
-	}
-
 	pub unsafe fn get_default_screen(&self) -> *mut xlib::Screen {
-		xlib::XDefaultScreenOfDisplay(self.get())
+		xlib::XDefaultScreenOfDisplay(self.display)
 	}
 
 	/**
