@@ -41,12 +41,12 @@ impl Display {
 	 */
 	#[allow(dead_code)]
 	pub fn get_root_window(&self) -> Window {
-		let root_window: usize;
 		unsafe {
-			root_window =
-				xlib::XRootWindowOfScreen(self.get_default_screen()) as usize;
-		};
-		Window::new(root_window as u64, self.display)
+			Window::new(
+				xlib::XRootWindowOfScreen(self.get_default_screen()),
+				self.display,
+			)
+		}
 	}
 
 	/**
