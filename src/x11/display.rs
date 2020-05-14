@@ -1,4 +1,5 @@
 use crate::x11::window::Window;
+use std::mem::MaybeUninit;
 use std::ptr;
 use x11::xlib;
 
@@ -54,12 +55,16 @@ impl Display {
 	 * @return Window
 	 */
 	pub fn get_focused_window(&self) -> Window {
-		let focus_window: *mut xlib::Window = &mut 0;
-		let revert_to_return: *mut i32 = &mut 0;
 		unsafe {
-			xlib::XGetInputFocus(self.display, focus_window, revert_to_return);
-		};
-		Window::new(unsafe { *focus_window }, self.display)
+			let mut focus_window = MaybeUninit::<u64>::uninit().assume_init();
+			let mut revert_to_return = MaybeUninit::<i32>::uninit().assume_init();
+			xlib::XGetInputFocus(
+				self.display,
+				&mut focus_window,
+				&mut revert_to_return,
+			);
+			Window::new(focus_window, self.display)
+		}
 	}
 }
 
