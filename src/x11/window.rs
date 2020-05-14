@@ -1,5 +1,5 @@
 use crate::image::{Bgr, Capture, Geometry, Image};
-use std::ffi::{c_void, CString};
+use std::ffi::CString;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
