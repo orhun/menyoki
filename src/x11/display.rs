@@ -52,14 +52,14 @@ impl Display {
 	 */
 	pub fn get_focused_window(&self) -> Window {
 		unsafe {
-			let mut focus_window = MaybeUninit::<u64>::uninit().assume_init();
-			let mut revert_to_return = MaybeUninit::<i32>::uninit().assume_init();
+			let mut focus_window = MaybeUninit::<u64>::uninit();
+			let mut revert_to_return = MaybeUninit::<i32>::uninit();
 			xlib::XGetInputFocus(
 				self.display,
-				&mut focus_window,
-				&mut revert_to_return,
+				focus_window.as_mut_ptr(),
+				revert_to_return.as_mut_ptr(),
 			);
-			Window::new(focus_window, self.display)
+			Window::new(*focus_window.as_ptr(), self.display)
 		}
 	}
 }
