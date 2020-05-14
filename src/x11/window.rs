@@ -17,7 +17,6 @@ pub struct Window {
 unsafe impl Sync for Window {}
 unsafe impl Send for Window {}
 
-#[allow(dead_code)]
 impl Window {
 	/**
 	 * Create a new Window object.
@@ -81,35 +80,6 @@ impl Window {
 			let gc = xlib::XCreateGC(self.display, self.xid, 0, ptr::null_mut());
 			xlib::XSetForeground(self.display, gc, color);
 			gc
-		}
-	}
-
-	pub fn get_window_list(&self) -> Option<Vec<Window>> {
-		unsafe {
-			let mut root_window = MaybeUninit::<u64>::uninit();
-			let mut parent_window = MaybeUninit::<u64>::uninit();
-			let mut children_return = MaybeUninit::<*mut u64>::uninit();
-			let mut children_num = 0;
-			if xlib::XQueryTree(
-				self.display,
-				self.xid,
-				root_window.as_mut_ptr(),
-				parent_window.as_mut_ptr(),
-				children_return.as_mut_ptr(),
-				&mut children_num,
-			) == 0
-			{
-				return None;
-			}
-			let mut window_list = Vec::new();
-			for i in 0..children_num {
-				window_list.push(Window::new(
-					*children_return.as_mut_ptr().offset(i as isize) as u64,
-					self.display,
-				));
-			}
-			xlib::XFree(children_return.as_mut_ptr() as *mut c_void);
-			Some(window_list)
 		}
 	}
 
