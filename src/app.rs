@@ -5,12 +5,14 @@ use crate::util;
 use crate::util::cmd::Command;
 use chrono::Local;
 use clap::ArgMatches;
+use device_query::DeviceState;
 use std::fs::File;
 use std::io::Error;
 
 /* Application and main functionalities */
 pub struct App {
 	args: ArgMatches<'static>,
+	pub device_state: DeviceState,
 }
 
 impl App {
@@ -21,7 +23,10 @@ impl App {
 	 * @return App
 	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
-		Self { args }
+		Self {
+			args,
+			device_state: DeviceState::new(),
+		}
 	}
 
 	/**
