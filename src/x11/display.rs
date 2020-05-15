@@ -66,8 +66,11 @@ impl Display {
 		}
 	}
 
-	pub fn select_focused_window(&self, gc: xlib::GC) -> Window {
-		let device_state = DeviceState::new();
+	pub fn select_focused_window(
+		&self,
+		device_state: DeviceState,
+		gc: xlib::GC,
+	) -> Window {
 		let mut mouse_state = device_state.get_mouse();
 		let mut focused_window = self.get_focused_window();
 		while !(mouse_state.button_pressed[1] || mouse_state.button_pressed[3]) {
