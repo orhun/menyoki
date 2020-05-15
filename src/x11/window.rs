@@ -83,7 +83,7 @@ impl Window {
 		}
 	}
 
-	pub fn get_window_name(&self) -> Option<String> {
+	pub fn get_name(&self) -> Option<String> {
 		unsafe {
 			let mut window_name = MaybeUninit::<*mut i8>::uninit();
 			if xlib::XFetchName(self.display, self.xid, window_name.as_mut_ptr())
