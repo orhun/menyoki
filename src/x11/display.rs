@@ -1,6 +1,9 @@
 use crate::x11::window::Window;
+use device_query::{DeviceQuery, DeviceState};
 use std::mem::MaybeUninit;
 use std::ptr;
+use std::thread;
+use std::time::Duration;
 use x11::xlib;
 
 /* X11 display */
@@ -61,6 +64,20 @@ impl Display {
 			);
 			Window::new(*focus_window.as_ptr(), self.display)
 		}
+	}
+
+	pub fn select_focused_window(&self, gc: xlib::GC) -> Window {
+		let device_state = DeviceState::new();
+		let mut mouse_state = device_state.get_mouse();
+		let mut focused_window = self.get_focused_window();
+		while !(mouse_state.button_pressed[1] || mouse_state.button_pressed[3]) {
+			focused_window = self.get_focused_window();
+			focused_window.draw_borders(gc, 5);
+			mouse_state = device_state.get_mouse();
+			thread::sleep(Duration::from_millis(10));
+		}
+		focused_window.clear_area();
+		focused_window
 	}
 }
 
