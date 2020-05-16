@@ -22,7 +22,7 @@ impl DeviceState {
 
 	pub fn get_mouse_clicked(&mut self) -> bool {
 		self.update_state();
-		self.mouse[1] && self.mouse[3]
+		self.mouse[1] || self.mouse[3]
 	}
 
 	pub fn get_exit_keys_pressed(&mut self) -> bool {
