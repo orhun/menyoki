@@ -1,5 +1,5 @@
+use crate::util::device::DeviceState;
 use crate::x11::window::Window;
-use device_query::{DeviceQuery, DeviceState, Keycode};
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::thread;
@@ -68,22 +68,25 @@ impl Display {
 
 	pub fn select_focused_window(
 		&self,
-		device_state: DeviceState,
+		mut device_state: DeviceState,
 		gc: xlib::GC,
 	) -> Option<Window> {
-		let mut mouse_state = device_state.get_mouse();
 		let mut focused_window = self.get_focused_window();
-		while !(mouse_state.button_pressed[1] || mouse_state.button_pressed[3]) {
-			if device_state.get_keys().contains(&Keycode::Escape) {
-				return None;
-			}
+		while !(device_state.mouse_clicked || device_state.exit_keys_pressed) {
 			focused_window = self.get_focused_window();
 			focused_window.draw_borders(gc, 5);
-			mouse_state = device_state.get_mouse();
+			device_state.update();
+			if device_state.exit_keys_pressed {
+				break;
+			}
 			thread::sleep(Duration::from_millis(10));
 		}
 		focused_window.clear_area();
-		Some(focused_window)
+		if !device_state.exit_keys_pressed {
+			Some(focused_window)
+		} else {
+			None
+		}
 	}
 }
 
