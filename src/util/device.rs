@@ -1,4 +1,4 @@
-use device_query::{DeviceQuery, DeviceState as DevState, Keycode, MouseState};
+use device_query::{DeviceQuery, DeviceState as DevState, Keycode};
 
 pub struct DeviceState {
 	state: DevState,
