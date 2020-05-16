@@ -3,8 +3,11 @@ use crate::x11::window::Window;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::thread;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 use x11::xlib;
+
+const SELECT_WINDOW_TIMEOUT: u128 = 30 * 1000;
+const SELECTION_INTERVAL: u64 = 10;
 
 /* X11 display */
 pub struct Display {
@@ -72,17 +75,22 @@ impl Display {
 		gc: xlib::GC,
 	) -> Option<Window> {
 		let mut focused_window = self.get_focused_window();
+		let mut selection_canceled = false;
+		let now = Instant::now();
 		while !(device_state.mouse_clicked || device_state.exit_keys_pressed) {
 			focused_window = self.get_focused_window();
 			focused_window.draw_borders(gc, 5);
 			device_state.update();
-			if device_state.exit_keys_pressed {
+			if device_state.exit_keys_pressed
+				|| now.elapsed().as_millis() > SELECT_WINDOW_TIMEOUT
+			{
+				selection_canceled = true;
 				break;
 			}
-			thread::sleep(Duration::from_millis(10));
+			thread::sleep(Duration::from_millis(SELECTION_INTERVAL));
 		}
 		focused_window.clear_area();
-		if !device_state.exit_keys_pressed {
+		if !selection_canceled {
 			Some(focused_window)
 		} else {
 			None
