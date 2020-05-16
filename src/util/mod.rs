@@ -1,4 +1,5 @@
 pub mod cmd;
+pub mod device;
 use clap::{App, Arg, ArgMatches, SubCommand};
 
 /**
