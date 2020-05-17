@@ -117,10 +117,8 @@ impl App {
 	 * @param  args
 	 * @return App
 	 */
-	pub fn new(args: ArgMatches<'static>) -> Self {
-		Self {
-			settings: AppSettings::new(args),
-		}
+	pub fn new(settings: AppSettings) -> Self {
+		Self { settings }
 	}
 
 	/**
