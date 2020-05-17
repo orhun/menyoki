@@ -106,12 +106,11 @@ impl Gif {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::util;
 	use crate::util::cmd::Command;
 	#[test]
 	fn test_gif_mod() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2);
-		let settings = Gif::get_settings(&util::parse_args());
+		let settings = GifSettings::new(-1, 10);
 		let frames = vec![
 			Frame::new(Image::new(vec![0, 0, 0, 255, 255, 255], geometry), 10),
 			Frame::new(Image::new(vec![255, 255, 255, 0, 0, 0], geometry), 10),
