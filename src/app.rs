@@ -92,7 +92,7 @@ impl App {
 		let mut recorder = Recorder::new(self.get_fps(), get_image);
 		if self.args.is_present("command") {
 			let record = recorder.record_async();
-			Command::get(&self.args)
+			self.settings.get_command()
 				.execute()
 				.expect("Failed to run the command");
 			record.finish().expect("Failed to finish the recording");
