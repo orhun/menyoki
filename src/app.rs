@@ -151,18 +151,13 @@ impl App {
 	 * Save frames as a GIF file.
 	 *
 	 * @param  frames
-	 * @param  geometry
 	 * @return Result
 	 */
-	pub fn save_gif(
-		&self,
-		frames: Vec<Frame>,
-		geometry: Geometry,
-	) -> Result<(), Error> {
+	pub fn save_gif(&self, frames: Vec<Frame>) -> Result<(), Error> {
 		let mut gif = Gif::new(
 			File::create(self.settings.get_output_file())
 				.expect("Failed to create file"),
-			geometry,
+			frames[0].image.geometry,
 			self.settings.get_gif_settings(),
 		)?;
 		gif.save(frames)?;
