@@ -1,5 +1,5 @@
 use crate::image::gif::{Frame, Gif, GifSettings};
-use crate::image::{Geometry, Image};
+use crate::image::Image;
 use crate::record::Recorder;
 use crate::util;
 use crate::util::cmd::Command;
