@@ -1,4 +1,3 @@
-use clap::ArgMatches;
 use std::io::Error;
 use std::process::Command as OsCommand;
 
@@ -19,26 +18,6 @@ impl Command {
 	 */
 	pub fn new(cmd: String, args: Vec<String>) -> Self {
 		Self { cmd, args }
-	}
-
-	/**
-	 * Get a Command object from parsed arguments.
-	 *
-	 * @param  args
-	 * @return Command
-	 */
-	pub fn get(args: &ArgMatches) -> Self {
-		match args.value_of("command") {
-			Some(cmd) => {
-				let cmd = String::from(cmd);
-				if !cmd.contains(' ') {
-					Command::new(cmd, Vec::new())
-				} else {
-					Command::new(String::from("sh"), vec![String::from("-c"), cmd])
-				}
-			}
-			None => panic!("No command specified to run"),
-		}
 	}
 
 	/**
