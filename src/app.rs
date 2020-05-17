@@ -51,6 +51,37 @@ impl Settings {
 	}
 
 	/**
+	 * Get the output file from parsed arguments.
+	 *
+	 * @return String
+	 */
+	fn get_output_file(&self) -> String {
+		match self.args.subcommand_matches("save") {
+			Some(matches) => {
+				let mut file_name =
+					String::from(matches.value_of("output").unwrap_or_default());
+				if matches.is_present("prompt") {
+					file_name = rprompt::prompt_reply_stdout("Enter file name: ")
+						.unwrap_or(file_name);
+				}
+				if matches.is_present("date") || matches.is_present("timestamp") {
+					util::update_file_name(
+						file_name,
+						if matches.is_present("date") {
+							Local::now().format("%Y%m%dT%H%M%S").to_string()
+						} else {
+							Local::now().timestamp().to_string()
+						},
+					)
+				} else {
+					file_name
+				}
+			}
+			None => String::from("t.gif"),
+		}
+	}
+
+	/**
 	 * Get GIF settings from parsed arguments.
 	 *
 	 * @return GifSettings
@@ -129,43 +160,13 @@ impl App {
 		geometry: Geometry,
 	) -> Result<(), Error> {
 		let mut gif = Gif::new(
-			File::create(self.get_output_file()).expect("Failed to create file"),
+			File::create(self.settings.get_output_file())
+				.expect("Failed to create file"),
 			geometry,
 			self.settings.get_gif_settings(),
 		)?;
 		gif.save(frames)?;
 		Ok(())
-	}
-
-	/**
-	 * Get the output file from parsed arguments.
-	 *
-	 * @return String
-	 */
-	fn get_output_file(&self) -> String {
-		match self.args.subcommand_matches("save") {
-			Some(matches) => {
-				let mut file_name =
-					String::from(matches.value_of("output").unwrap_or_default());
-				if matches.is_present("prompt") {
-					file_name = rprompt::prompt_reply_stdout("Enter file name: ")
-						.unwrap_or(file_name);
-				}
-				if matches.is_present("date") || matches.is_present("timestamp") {
-					util::update_file_name(
-						file_name,
-						if matches.is_present("date") {
-							Local::now().format("%Y%m%dT%H%M%S").to_string()
-						} else {
-							Local::now().timestamp().to_string()
-						},
-					)
-				} else {
-					file_name
-				}
-			}
-			None => String::from("t.gif"),
-		}
 	}
 }
 
