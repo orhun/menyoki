@@ -1,10 +1,10 @@
 pub mod display;
 pub mod window;
 
+use crate::app::AppSettings;
 use crate::image::{Capture, Image};
 use crate::util::device::DeviceState;
 use crate::x11::display::Display;
-use clap::ArgMatches;
 
 pub struct WindowSystem {
 	display: Display,
@@ -21,10 +21,10 @@ impl WindowSystem {
 
 	pub fn get_record_func(
 		&mut self,
-		args: ArgMatches,
+		settings: AppSettings,
 	) -> impl Fn() -> Option<Image> {
 		let mut focused_window = self.display.get_focused_window();
-		if !args.is_present("command") {
+		if !settings.args.is_present("command") {
 			focused_window = self
 				.display
 				.select_focused_window(
