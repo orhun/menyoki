@@ -8,7 +8,7 @@ use clap::ArgMatches;
 use std::fs::File;
 use std::io::Error;
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct AppSettings {
 	pub args: ArgMatches<'static>,
 }
