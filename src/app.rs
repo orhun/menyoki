@@ -9,11 +9,11 @@ use std::fs::File;
 use std::io::Error;
 
 #[derive(Debug)]
-pub struct Settings {
+pub struct AppSettings {
 	pub args: ArgMatches<'static>,
 }
 
-impl Settings {
+impl AppSettings {
 	pub fn new(args: ArgMatches<'static>) -> Self {
 		Self { args }
 	}
@@ -107,7 +107,7 @@ impl Settings {
 
 /* Application and main functionalities */
 pub struct App {
-	settings: Settings,
+	settings: AppSettings,
 }
 
 impl App {
@@ -119,7 +119,7 @@ impl App {
 	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
 		Self {
-			settings: Settings::new(args),
+			settings: AppSettings::new(args),
 		}
 	}
 
