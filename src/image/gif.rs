@@ -6,7 +6,7 @@ use std::io::Error;
 /* Frame image and delay (in units of 10 ms) */
 #[derive(Clone, Debug)]
 pub struct Frame {
-	image: Image,
+	pub image: Image,
 	delay: u16,
 }
 
