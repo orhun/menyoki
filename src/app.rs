@@ -40,7 +40,7 @@ impl Settings {
 
 /* Application and main functionalities */
 pub struct App {
-	args: ArgMatches<'static>,
+	settings: Settings,
 }
 
 impl App {
@@ -51,7 +51,9 @@ impl App {
 	 * @return App
 	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
-		Self { args }
+		Self {
+			settings: Settings::new(args),
+		}
 	}
 
 	/**
