@@ -10,7 +10,7 @@ use std::io::Error;
 
 #[derive(Debug)]
 pub struct Settings {
-	args: ArgMatches<'static>,
+	pub args: ArgMatches<'static>,
 }
 
 impl Settings {
@@ -134,7 +134,7 @@ impl App {
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
 	) -> Vec<Frame> {
 		let mut recorder = Recorder::new(self.settings.get_fps(), get_image);
-		if self.args.is_present("command") {
+		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
 				.get_command()
