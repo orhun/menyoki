@@ -8,6 +8,36 @@ use clap::ArgMatches;
 use std::fs::File;
 use std::io::Error;
 
+#[derive(Debug)]
+pub struct Settings {
+	args: ArgMatches<'static>,
+}
+
+impl Settings {
+	pub fn new(args: ArgMatches<'static>) -> Self {
+		Self { args }
+	}
+
+	/**
+	 * Get a Command object from parsed arguments.
+	 *
+	 * @return Command
+	 */
+	pub fn get_command(&self) -> Command {
+		match self.args.value_of("command") {
+			Some(cmd) => {
+				let cmd = String::from(cmd);
+				if !cmd.contains(' ') {
+					Command::new(cmd, Vec::new())
+				} else {
+					Command::new(String::from("sh"), vec![String::from("-c"), cmd])
+				}
+			}
+			None => panic!("No command specified to run"),
+		}
+	}
+}
+
 /* Application and main functionalities */
 pub struct App {
 	args: ArgMatches<'static>,
