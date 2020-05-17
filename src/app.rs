@@ -38,6 +38,19 @@ impl Settings {
 	}
 
 	/**
+	 * Get FPS value from parsed arguments.
+	 *
+	 * @return u32
+	 */
+	fn get_fps(&self) -> u32 {
+		self.args
+			.value_of("fps")
+			.unwrap_or_default()
+			.parse()
+			.unwrap_or(10)
+	}
+
+	/**
 	 * Get GIF settings from parsed arguments.
 	 *
 	 * @return GifSettings
@@ -89,10 +102,11 @@ impl App {
 		&self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
 	) -> Vec<Frame> {
-		let mut recorder = Recorder::new(self.get_fps(), get_image);
+		let mut recorder = Recorder::new(self.settings.get_fps(), get_image);
 		if self.args.is_present("command") {
 			let record = recorder.record_async();
-			self.settings.get_command()
+			self.settings
+				.get_command()
 				.execute()
 				.expect("Failed to run the command");
 			record.finish().expect("Failed to finish the recording");
@@ -121,14 +135,6 @@ impl App {
 		)?;
 		gif.save(frames)?;
 		Ok(())
-	}
-
-	fn get_fps(&self) -> u32 {
-		self.args
-			.value_of("fps")
-			.unwrap_or_default()
-			.parse()
-			.unwrap_or(10)
 	}
 
 	/**
