@@ -30,6 +30,15 @@ pub fn parse_args() -> ArgMatches<'static> {
 				.help("Sets the FPS (frames per second) value")
 				.takes_value(true),
 		)
+		.arg(
+			Arg::with_name("color")
+				.short("c")
+				.long("color")
+				.value_name("HEX")
+				.default_value("ffffff")
+				.help("Sets the main color to be used")
+				.takes_value(true),
+		)
 		.subcommand(
 			SubCommand::with_name("gif")
 				.about("Changes the GIF encoder settings")
