@@ -146,7 +146,7 @@ impl App {
 	}
 
 	/**
-	 * Save frames as a GIF file.
+	 * Save frames to a GIF file.
 	 *
 	 * @param  frames
 	 * @return Result
