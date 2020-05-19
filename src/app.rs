@@ -37,6 +37,11 @@ impl AppSettings {
 		}
 	}
 
+	pub fn get_color(&self) -> u64 {
+		u64::from_str_radix(self.args.value_of("color").unwrap_or("FF00FF"), 16)
+			.expect("Failed to parse the color HEX")
+	}
+
 	/**
 	 * Get FPS value from parsed arguments.
 	 *
