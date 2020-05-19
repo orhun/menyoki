@@ -35,7 +35,7 @@ pub fn parse_args() -> ArgMatches<'static> {
 				.short("c")
 				.long("color")
 				.value_name("HEX")
-				.default_value("ffffff")
+				.default_value("FF00FF")
 				.help("Sets the main color to be used")
 				.takes_value(true),
 		)
