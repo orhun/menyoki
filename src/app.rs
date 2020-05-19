@@ -91,7 +91,7 @@ impl AppSettings {
 	 *
 	 * @return GifSettings
 	 */
-	pub fn get_gif_settings(&self) -> GifSettings {
+	fn get_gif_settings(&self) -> GifSettings {
 		match self.args.subcommand_matches("gif") {
 			Some(matches) => GifSettings::new(
 				matches
