@@ -72,6 +72,7 @@ impl Display {
 	pub fn select_focused_window(&self, fg_color: u64) -> Option<Window> {
 		let mut device_state = DeviceState::new();
 		let mut focused_window = self.get_focused_window();
+		let mut xid = 0;
 		let mut selection_canceled = false;
 		let now = Instant::now();
 		while !(device_state.mouse_clicked || device_state.exit_keys_pressed) {
@@ -83,6 +84,16 @@ impl Display {
 			{
 				selection_canceled = true;
 				break;
+			}
+			if xid != focused_window.xid {
+				debug!("Window ID: {}", focused_window.xid);
+				info!(
+					"{:>4}x{:<4} ({})",
+					focused_window.geometry.width,
+					focused_window.geometry.height,
+					focused_window.get_name().unwrap_or_default()
+				);
+				xid = focused_window.xid;
 			}
 			thread::sleep(Duration::from_millis(SELECTION_INTERVAL));
 		}
