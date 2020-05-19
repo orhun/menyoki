@@ -56,8 +56,7 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.short("r")
 						.long("repeat")
 						.value_name("REPEAT")
-						.default_value("\u{221E}")
-						.help("Sets the number of repetitions")
+						.help("Sets the number of repetitions [default: \u{221E}]")
 						.takes_value(true),
 				),
 		)
