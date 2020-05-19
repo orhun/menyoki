@@ -75,14 +75,6 @@ impl Window {
 		self.geometry.y = 0;
 	}
 
-	pub fn create_gc(&self, color: u64) -> xlib::GC {
-		unsafe {
-			let gc = xlib::XCreateGC(self.display, self.xid, 0, ptr::null_mut());
-			xlib::XSetForeground(self.display, gc, color);
-			gc
-		}
-	}
-
 	pub fn get_name(&self) -> Option<String> {
 		unsafe {
 			let mut window_name = MaybeUninit::<*mut i8>::uninit();
@@ -100,12 +92,20 @@ impl Window {
 		}
 	}
 
-	pub fn draw_borders(&self, gc: xlib::GC, padding: u32) {
+	fn get_gc(&self, fg_color: u64) -> xlib::GC {
+		unsafe {
+			let gc = xlib::XCreateGC(self.display, self.xid, 0, ptr::null_mut());
+			xlib::XSetForeground(self.display, gc, fg_color);
+			gc
+		}
+	}
+
+	pub fn draw_borders(&self, fg_color: u64, padding: u32) {
 		unsafe {
 			xlib::XDrawRectangle(
 				self.display,
 				self.xid,
-				gc,
+				self.get_gc(fg_color),
 				self.geometry.x + padding as i32,
 				self.geometry.y + padding as i32,
 				self.geometry.width - (padding * 2),
