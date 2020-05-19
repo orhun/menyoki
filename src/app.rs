@@ -171,12 +171,16 @@ impl App {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::image::Geometry;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
-		let app = App::new(util::parse_args());
+		let settings = AppSettings::new(util::parse_args());
+		let app = App::new(settings);
 		let geometry = Geometry::new(0, 0, 1, 1);
-		let frames = app.record(move || Some(Image::new(vec![0, 0, 0], geometry)));
-		app.save_gif(frames, geometry)?;
+		let mut frames =
+			app.record(move || Some(Image::new(vec![0, 0, 0], geometry)));
+		frames.push(Frame::new(Image::new(vec![255, 255, 255], geometry), 0));
+		app.save_gif(frames)?;
 		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
 	}
