@@ -3,7 +3,6 @@ pub mod window;
 
 use crate::app::AppSettings;
 use crate::image::{Capture, Image};
-use crate::util::device::DeviceState;
 use crate::x11::display::Display;
 use std::ffi::CStr;
 use std::os::raw::c_char;
@@ -31,10 +30,7 @@ impl WindowSystem {
 		if !settings.args.is_present("command") {
 			focused_window = self
 				.display
-				.select_focused_window(
-					DeviceState::new(),
-					focused_window.create_gc(settings.get_color()),
-				)
+				.select_focused_window(settings.get_color())
 				.unwrap();
 		}
 		focused_window.reset_position();
