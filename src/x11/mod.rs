@@ -33,7 +33,7 @@ impl WindowSystem {
 				.display
 				.select_focused_window(
 					DeviceState::new(),
-					focused_window.create_gc(0x00ff_ffff),
+					focused_window.create_gc(settings.get_color()),
 				)
 				.unwrap();
 		}
