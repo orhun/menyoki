@@ -170,12 +170,12 @@ impl Capture for Window {
 			let image = unsafe { &mut *window_image };
 			let data = Bgr::get_rgb_pixels(unsafe {
 				slice::from_raw_parts::<Bgr>(
-					image.data as *const _,
+					image.data as *const Bgr,
 					image.width as usize * image.height as usize,
 				)
 			});
 			unsafe {
-				xlib::XDestroyImage(window_image as *mut _);
+				xlib::XDestroyImage(window_image);
 			};
 			Some(Image::new(data, self.geometry))
 		} else {
