@@ -154,8 +154,8 @@ impl Capture for Window {
 	 * @return Image (Option)
 	 */
 	fn get_image(&self) -> Option<Image> {
-		let window_image = unsafe {
-			xlib::XGetImage(
+		unsafe {
+			let window_image = xlib::XGetImage(
 				self.display,
 				self.xid,
 				self.geometry.x,
@@ -164,22 +164,18 @@ impl Capture for Window {
 				self.geometry.height,
 				xlib::XAllPlanes(),
 				xlib::ZPixmap,
-			)
-		};
-		if !window_image.is_null() {
-			let image = unsafe { &mut *window_image };
-			let data = Bgr::get_rgb_pixels(unsafe {
-				slice::from_raw_parts::<Bgr>(
+			);
+			if !window_image.is_null() {
+				let image = &mut *window_image;
+				let data = Bgr::get_rgb_pixels(slice::from_raw_parts::<Bgr>(
 					image.data as *const Bgr,
 					image.width as usize * image.height as usize,
-				)
-			});
-			unsafe {
+				));
 				xlib::XDestroyImage(window_image);
-			};
-			Some(Image::new(data, self.geometry))
-		} else {
-			None
+				Some(Image::new(data, self.geometry))
+			} else {
+				None
+			}
 		}
 	}
 }
