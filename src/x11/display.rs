@@ -19,15 +19,6 @@ pub struct Display {
 /* Implementation for thread-safe usage */
 unsafe impl Send for Display {}
 
-/* Close the display when Display object went out of scope. */
-impl Drop for Display {
-	fn drop(&mut self) {
-		unsafe {
-			xlib::XCloseDisplay(self.display);
-		}
-	}
-}
-
 impl Display {
 	/**
 	 * Open a display.
@@ -124,6 +115,15 @@ impl Display {
 			Some(focused_window)
 		} else {
 			None
+		}
+	}
+}
+
+/* Close the display when Display object went out of scope. */
+impl Drop for Display {
+	fn drop(&mut self) {
+		unsafe {
+			xlib::XCloseDisplay(self.display);
 		}
 	}
 }
