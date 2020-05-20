@@ -30,7 +30,7 @@ impl WindowSystem {
 		if !settings.args.is_present("command") {
 			focused_window = self
 				.display
-				.select_focused_window(settings.get_color())
+				.select_window(settings.get_color())
 				.unwrap();
 		}
 		focused_window.reset_position();
