@@ -28,10 +28,8 @@ impl WindowSystem {
 	) -> impl Fn() -> Option<Image> {
 		let mut focused_window = self.display.get_focused_window();
 		if !settings.args.is_present("command") {
-			focused_window = self
-				.display
-				.select_window(settings.get_color())
-				.unwrap();
+			focused_window =
+				self.display.select_window(settings.get_color()).unwrap();
 		}
 		focused_window.reset_position();
 		move || focused_window.get_image()
