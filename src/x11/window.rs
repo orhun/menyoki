@@ -75,6 +75,11 @@ impl Window {
 		self.geometry.y = 0;
 	}
 
+	/**
+	 * Get the name of the window.
+	 *
+	 * @return String (Option)
+	 */
 	pub fn get_name(&self) -> Option<String> {
 		unsafe {
 			let mut window_name = MaybeUninit::<*mut i8>::uninit();
@@ -92,6 +97,12 @@ impl Window {
 		}
 	}
 
+	/**
+	 * Get the graphics context from window.
+	 *
+	 * @param  fg_color
+	 * @return GC
+	 */
 	fn get_gc(&self, fg_color: u64) -> xlib::GC {
 		unsafe {
 			let gc = xlib::XCreateGC(self.display, self.xid, 0, ptr::null_mut());
@@ -100,6 +111,12 @@ impl Window {
 		}
 	}
 
+	/**
+	 * Draw a rectangle inside the window.
+	 *
+	 * @param fg_color
+	 * @param padding
+	 */
 	pub fn draw_borders(&self, fg_color: u64, padding: u32) {
 		unsafe {
 			xlib::XDrawRectangle(
@@ -114,6 +131,7 @@ impl Window {
 		}
 	}
 
+	/* Clear the area of the window and regenerate the Expose event. */
 	pub fn clear_area(&self) {
 		unsafe {
 			xlib::XClearArea(
