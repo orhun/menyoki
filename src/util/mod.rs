@@ -91,6 +91,11 @@ pub fn parse_args() -> ArgMatches<'static> {
 		.get_matches()
 }
 
+/**
+ * Initialize the logger library.
+ *
+ * @return Result
+ */
 pub fn init_logger() -> Result<(), SetLoggerError> {
 	let colors = ColoredLevelConfig::new()
 		.info(Color::Magenta)
