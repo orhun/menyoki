@@ -6,7 +6,9 @@ use std::thread;
 use std::time::{Duration, Instant};
 use x11::xlib;
 
+/* Timeout value for the window selection */
 const SELECT_WINDOW_TIMEOUT: u128 = 30 * 1000;
+/* Time interval between focused window checks */
 const SELECTION_INTERVAL: u64 = 10;
 
 /* X11 display */
@@ -14,8 +16,17 @@ pub struct Display {
 	display: *mut xlib::Display,
 }
 
-/* Implementations for thread-safe usage */
+/* Implementation for thread-safe usage */
 unsafe impl Send for Display {}
+
+/* Close the display when Display object went out of scope. */
+impl Drop for Display {
+	fn drop(&mut self) {
+		unsafe {
+			xlib::XCloseDisplay(self.display);
+		}
+	}
+}
 
 impl Display {
 	/**
@@ -32,6 +43,11 @@ impl Display {
 		}
 	}
 
+	/**
+	 * Get the default screen of display.
+	 *
+	 * @return Screen
+	 */
 	pub unsafe fn get_default_screen(&self) -> *mut xlib::Screen {
 		xlib::XDefaultScreenOfDisplay(self.display)
 	}
@@ -69,6 +85,12 @@ impl Display {
 		}
 	}
 
+	/**
+	 * Select a Window from the display with the user interaction.
+	 *
+	 * @param  fg_color
+	 * @return Window (Option)
+	 */
 	pub fn select_focused_window(&self, fg_color: u64) -> Option<Window> {
 		let mut device_state = DeviceState::new();
 		let mut focused_window = self.get_focused_window();
@@ -102,15 +124,6 @@ impl Display {
 			Some(focused_window)
 		} else {
 			None
-		}
-	}
-}
-
-/* Close the display when the Display object went out of scope. */
-impl Drop for Display {
-	fn drop(&mut self) {
-		unsafe {
-			xlib::XCloseDisplay(self.display);
 		}
 	}
 }
