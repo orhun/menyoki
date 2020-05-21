@@ -89,17 +89,18 @@ impl Display {
 		let mut selection_canceled = false;
 		let now = Instant::now();
 		while !(device_state.mouse_clicked || device_state.exit_keys_pressed)
-			|| !selection_canceled
+			&& !selection_canceled
 		{
 			focused_window = self.get_focused_window();
 			focused_window.draw_borders(fg_color, 5);
 			device_state.update();
-			if device_state.exit_keys_pressed
-				|| now.elapsed().as_millis() > SELECT_WINDOW_TIMEOUT
-			{
+			if device_state.exit_keys_pressed {
+				warn!("User interrupt detected. Have a good day!");
 				selection_canceled = true;
-			}
-			if xid != focused_window.xid {
+			} else if now.elapsed().as_millis() > SELECT_WINDOW_TIMEOUT {
+				warn!("The operation timed out. Have a good day!");
+				selection_canceled = true;
+			} else if xid != focused_window.xid {
 				debug!("Window ID: {:?}", focused_window.xid);
 				info!("{}", focused_window);
 				xid = focused_window.xid;
