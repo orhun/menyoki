@@ -1,5 +1,6 @@
 use crate::image::{Bgr, Capture, Geometry, Image};
 use std::ffi::CString;
+use std::fmt;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
@@ -16,6 +17,18 @@ pub struct Window {
 /* Implementations for thread-safe usage */
 unsafe impl Sync for Window {}
 unsafe impl Send for Window {}
+
+impl fmt::Display for Window {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		write!(
+			f,
+			"{:>4}x{:<4} ({})",
+			self.geometry.width,
+			self.geometry.height,
+			self.get_name().unwrap_or_default()
+		)
+	}
+}
 
 impl Window {
 	/**
