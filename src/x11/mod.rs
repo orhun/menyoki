@@ -4,6 +4,7 @@ pub mod window;
 use crate::app::AppSettings;
 use crate::image::{Capture, Image};
 use crate::x11::display::Display;
+use crate::x11::window::Window;
 use std::ffi::CStr;
 use std::os::raw::c_char;
 use x11::xlib;
@@ -30,18 +31,21 @@ impl WindowSystem {
 		}
 	}
 
+	fn get_window(&self) -> Option<Window> {
+		if self.settings.args.is_present("command") {
+			Some(self.display.get_focused_window())
+		} else {
+			self.display.select_window(self.settings.get_color())
+		}
+	}
+
 	/**
 	 * Get the window recording function of the selected window.
 	 *
 	 * @return Fn (Option)
 	 */
 	pub fn get_record_func(&mut self) -> Option<impl Fn() -> Option<Image>> {
-		let focused_window = if self.settings.args.is_present("command") {
-			Some(self.display.get_focused_window())
-		} else {
-			self.display.select_window(self.settings.get_color())
-		};
-		if let Some(mut window) = focused_window {
+		if let Some(mut window) = self.get_window() {
 			window.reset_position();
 			Some(move || window.get_image())
 		} else {
