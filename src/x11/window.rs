@@ -18,6 +18,7 @@ pub struct Window {
 unsafe impl Sync for Window {}
 unsafe impl Send for Window {}
 
+/* Display implementation for user-facing output */
 impl fmt::Display for Window {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		write!(
