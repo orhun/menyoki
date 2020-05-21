@@ -8,12 +8,18 @@ use clap::ArgMatches;
 use std::fs::File;
 use std::io::Error;
 
+/* General application settings */
 #[derive(Clone, Debug)]
 pub struct AppSettings {
 	pub args: ArgMatches<'static>,
 }
 
 impl AppSettings {
+	/**
+	 * Create a new AppSettings object.
+	 *
+	 * @return AppSettings
+	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
 		Self { args }
 	}
@@ -37,6 +43,11 @@ impl AppSettings {
 		}
 	}
 
+	/**
+	 * Get the main color from parsed arguments.
+	 *
+	 * @return u64
+	 */
 	pub fn get_color(&self) -> u64 {
 		u64::from_str_radix(self.args.value_of("color").unwrap_or("FF00FF"), 16)
 			.expect("Failed to parse the color HEX")
@@ -119,7 +130,7 @@ impl App {
 	/**
 	 * Create a new App object.
 	 *
-	 * @param  args
+	 * @param  settings
 	 * @return App
 	 */
 	pub fn new(settings: AppSettings) -> Self {
