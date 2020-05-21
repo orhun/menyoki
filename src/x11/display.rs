@@ -99,13 +99,8 @@ impl Display {
 				break;
 			}
 			if xid != focused_window.xid {
-				debug!("Window ID: {}", focused_window.xid);
-				info!(
-					"{:>4}x{:<4} ({})",
-					focused_window.geometry.width,
-					focused_window.geometry.height,
-					focused_window.get_name().unwrap_or_default()
-				);
+				debug!("Window ID: {:?}", focused_window.xid);
+				info!("{}", focused_window);
 				xid = focused_window.xid;
 			}
 			thread::sleep(Duration::from_millis(SELECTION_INTERVAL));
