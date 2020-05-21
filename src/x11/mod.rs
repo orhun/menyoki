@@ -31,6 +31,11 @@ impl WindowSystem {
 		}
 	}
 
+	/**
+	 * Get the window to record.
+	 *
+	 * @return Window (Option)
+	 */
 	fn get_window(&self) -> Option<Window> {
 		if self.settings.args.is_present("command") {
 			Some(self.display.get_focused_window())
