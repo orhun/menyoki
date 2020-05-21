@@ -8,11 +8,17 @@ use std::ffi::CStr;
 use std::os::raw::c_char;
 use x11::xlib;
 
+/* X11 window system */
 pub struct WindowSystem {
 	display: Display,
 }
 
 impl WindowSystem {
+	/**
+	 * Initialize the X11 window system.
+	 *
+	 * @return WindowSystem (Option)
+	 */
 	pub fn init() -> Option<Self> {
 		if let Some(display) = Display::open() {
 			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
@@ -22,6 +28,12 @@ impl WindowSystem {
 		}
 	}
 
+	/**
+	 * Get the window recording function of the selected window.
+	 *
+	 * @param  settings
+	 * @return Fn
+	 */
 	pub fn get_record_func(
 		&mut self,
 		settings: AppSettings,
@@ -36,6 +48,7 @@ impl WindowSystem {
 	}
 }
 
+/* Error handler implemention for X11 */
 unsafe extern "C" fn x11_error_handler(
 	display: *mut xlib::Display,
 	error: *mut xlib::XErrorEvent,
