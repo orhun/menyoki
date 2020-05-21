@@ -36,7 +36,7 @@ impl WindowSystem {
 	 *
 	 * @return Window (Option)
 	 */
-	fn get_window(&self) -> Option<Window> {
+	fn get_record_window(&self) -> Option<Window> {
 		if self.settings.args.is_present("command") {
 			Some(self.display.get_focused_window())
 		} else {
@@ -50,7 +50,7 @@ impl WindowSystem {
 	 * @return Fn (Option)
 	 */
 	pub fn get_record_func(&mut self) -> Option<impl Fn() -> Option<Image>> {
-		if let Some(mut window) = self.get_window() {
+		if let Some(mut window) = self.get_record_window() {
 			window.reset_position();
 			Some(move || window.get_image())
 		} else {
