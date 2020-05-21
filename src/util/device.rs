@@ -1,5 +1,6 @@
 use device_query::{DeviceQuery, DeviceState as DevState, Keycode};
 
+/* State of the mouse and keyboard */
 pub struct DeviceState {
 	state: DevState,
 	mouse: Vec<bool>,
@@ -9,6 +10,11 @@ pub struct DeviceState {
 }
 
 impl DeviceState {
+	/**
+	 * Create a new DeviceState object.
+	 *
+	 * @return DeviceState
+	 */
 	pub fn new() -> Self {
 		Self {
 			state: DevState::new(),
@@ -19,6 +25,7 @@ impl DeviceState {
 		}
 	}
 
+	/* Update the keyboard and mouse states. */
 	pub fn update(&mut self) {
 		self.mouse = self.state.get_mouse().button_pressed;
 		self.keys = self.state.get_keys();
@@ -26,10 +33,20 @@ impl DeviceState {
 		self.exit_keys_pressed = self.check_exit_keys_pressed();
 	}
 
+	/**
+	 * Check if the mouse left/right clicked.
+	 *
+	 * @return bool
+	 */
 	fn check_mouse_clicked(&mut self) -> bool {
 		self.mouse[1] || self.mouse[3]
 	}
 
+	/**
+	 * Check if the exit keys are pressed.
+	 *
+	 * @return bool
+	 */
 	fn check_exit_keys_pressed(&mut self) -> bool {
 		self.keys.contains(&Keycode::Escape)
 			|| (self.keys.contains(&Keycode::LControl)
