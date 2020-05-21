@@ -72,7 +72,7 @@ impl Recorder {
 	 *
 	 * @return Frame
 	 */
-	pub fn get_frame(&mut self) -> Frame {
+	fn get_frame(&mut self) -> Frame {
 		match (self.get_image)() {
 			Some(image) => Frame::new(
 				image,
