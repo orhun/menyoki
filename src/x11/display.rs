@@ -88,7 +88,9 @@ impl Display {
 		let mut xid = 0;
 		let mut selection_canceled = false;
 		let now = Instant::now();
-		while !(device_state.mouse_clicked || device_state.exit_keys_pressed) {
+		while !(device_state.mouse_clicked || device_state.exit_keys_pressed)
+			|| !selection_canceled
+		{
 			focused_window = self.get_focused_window();
 			focused_window.draw_borders(fg_color, 5);
 			device_state.update();
@@ -96,7 +98,6 @@ impl Display {
 				|| now.elapsed().as_millis() > SELECT_WINDOW_TIMEOUT
 			{
 				selection_canceled = true;
-				break;
 			}
 			if xid != focused_window.xid {
 				debug!("Window ID: {:?}", focused_window.xid);
