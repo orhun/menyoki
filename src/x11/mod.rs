@@ -11,18 +11,20 @@ use x11::xlib;
 /* X11 window system */
 pub struct WindowSystem {
 	display: Display,
+	settings: AppSettings,
 }
 
 impl WindowSystem {
 	/**
 	 * Initialize the X11 window system.
 	 *
+	 * @param  settings
 	 * @return WindowSystem (Option)
 	 */
-	pub fn init() -> Option<Self> {
+	pub fn init(settings: AppSettings) -> Option<Self> {
 		if let Some(display) = Display::open() {
 			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
-			Some(Self { display })
+			Some(Self { display, settings })
 		} else {
 			None
 		}
@@ -31,17 +33,13 @@ impl WindowSystem {
 	/**
 	 * Get the window recording function of the selected window.
 	 *
-	 * @param  settings
-	 * @return Fn
+	 * @return Fn (Option)
 	 */
-	pub fn get_record_func(
-		&mut self,
-		settings: AppSettings,
-	) -> Option<impl Fn() -> Option<Image>> {
-		let focused_window = if settings.args.is_present("command") {
+	pub fn get_record_func(&mut self) -> Option<impl Fn() -> Option<Image>> {
+		let focused_window = if self.settings.args.is_present("command") {
 			Some(self.display.get_focused_window())
 		} else {
-			self.display.select_window(settings.get_color())
+			self.display.select_window(self.settings.get_color())
 		};
 		if let Some(mut window) = focused_window {
 			window.reset_position();
