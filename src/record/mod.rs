@@ -53,6 +53,7 @@ impl Recorder {
 	 * Create a new Recorder object.
 	 *
 	 * @param  fps
+	 * @param  get_image (Fn)
 	 * @return Recorder
 	 */
 	pub fn new(
@@ -66,6 +67,11 @@ impl Recorder {
 		}
 	}
 
+	/**
+	 * Get a frame from calling the image function.
+	 *
+	 * @return Frame
+	 */
 	pub fn get_frame(&mut self) -> Frame {
 		match (self.get_image)() {
 			Some(image) => Frame::new(
@@ -76,6 +82,11 @@ impl Recorder {
 		}
 	}
 
+	/**
+	 * Record frames synchronously with blocking the current thread.
+	 *
+	 * @return Vector of Frame
+	 */
 	pub fn record_sync(&mut self) -> Vec<Frame> {
 		let mut frames = Vec::new();
 		let recording = Arc::new(AtomicBool::new(true));
@@ -92,9 +103,8 @@ impl Recorder {
 	}
 
 	/**
-	 * Start recording the frames.
+	 * Record frames asynchronously and without blocking.
 	 *
-	 * @param  get_image (Fn)
 	 * @return Record
 	 */
 	pub fn record_async(mut self) -> Record {
