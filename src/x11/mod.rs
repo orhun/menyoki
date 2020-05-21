@@ -37,14 +37,18 @@ impl WindowSystem {
 	pub fn get_record_func(
 		&mut self,
 		settings: AppSettings,
-	) -> impl Fn() -> Option<Image> {
-		let mut focused_window = if settings.args.is_present("command") {
-			self.display.get_focused_window()
+	) -> Option<impl Fn() -> Option<Image>> {
+		let focused_window = if settings.args.is_present("command") {
+			Some(self.display.get_focused_window())
 		} else {
-			self.display.select_window(settings.get_color()).unwrap()
+			self.display.select_window(settings.get_color())
 		};
-		focused_window.reset_position();
-		move || focused_window.get_image()
+		if let Some(mut window) = focused_window {
+			window.reset_position();
+			Some(move || window.get_image())
+		} else {
+			None
+		}
 	}
 }
 
