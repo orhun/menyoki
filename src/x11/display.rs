@@ -88,8 +88,9 @@ impl Display {
 		let mut xid = 0;
 		let mut selection_canceled = false;
 		let now = Instant::now();
-		while !(device_state.mouse_clicked || device_state.exit_keys_pressed)
-			&& !selection_canceled
+		while !(device_state.mouse_clicked
+			|| device_state.exit_keys_pressed
+			|| selection_canceled)
 		{
 			focused_window = self.get_focused_window();
 			focused_window.draw_borders(fg_color, 5);
