@@ -104,8 +104,6 @@ impl Display {
 				debug!("Window ID: {:?}", focused_window.xid);
 				info!("{}", focused_window);
 				xid = focused_window.xid;
-			} else if cfg!(test) {
-				selection_canceled = true;
 			}
 			thread::sleep(Duration::from_millis(SELECTION_INTERVAL));
 		}
