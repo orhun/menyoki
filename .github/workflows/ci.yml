@@ -31,17 +31,17 @@ jobs:
         with:
           toolchain: stable
           override: true
-      - name: Install Xvfb and set DISPLAY
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y -qq xvfb
-          Xvfb :1 -ac &
-          export DISPLAY=:1
-      - run: xvfb-run cargo test --all "test"
-      - name: Run cargo-tarpaulin
-        uses: actions-rs/tarpaulin@v0.1
-        with:
-          args: -v -- "test"
+      - name: Run tests
+      - run: |
+        sudo apt-get update
+        sudo apt-get install -y -qq xvfb
+        curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest \
+        | grep "browser_download_url.*tar.gz" \
+        | cut -d : -f 2,3 \
+        | tr -d \" \
+        | wget -qi -
+        tar -xzf cargo-tarpaulin-*.tar.gz
+        xvfb-run ./cargo-tarpaulin --out Xml -v -- "test"
       - name: Upload reports to codecov.io
         uses: codecov/codecov-action@v1.0.6
         with:
