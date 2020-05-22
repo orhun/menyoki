@@ -134,6 +134,6 @@ mod tests {
 	fn test_display_mod() {
 		let display = Display::open().unwrap();
 		assert!(display.get_root_window().xid > 0);
-		assert!(display.select_window(0x00ff_00ff).is_none());
+		assert!(display.get_focused_window().xid > 0);
 	}
 }
