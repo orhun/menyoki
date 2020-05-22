@@ -104,6 +104,8 @@ impl Display {
 				debug!("Window ID: {:?}", focused_window.xid);
 				info!("{}", focused_window);
 				xid = focused_window.xid;
+			} else if cfg!(test) {
+				selection_canceled = true;
 			}
 			thread::sleep(Duration::from_millis(SELECTION_INTERVAL));
 		}
@@ -122,5 +124,16 @@ impl Drop for Display {
 		unsafe {
 			xlib::XCloseDisplay(self.display);
 		}
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_display_mod() {
+		let display = Display::open().unwrap();
+		assert!(display.get_root_window().xid > 0);
+		assert!(display.select_window(0x00ff_00ff).is_none());
 	}
 }
