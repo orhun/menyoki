@@ -35,7 +35,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y -qq xvfb
-          Xvfb :1 &
+          Xvfb :1 -ac &
           export DISPLAY=:1
       - run: xvfb-run cargo test --all "test"
       - name: Run cargo-tarpaulin
