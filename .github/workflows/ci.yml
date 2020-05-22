@@ -32,7 +32,7 @@ jobs:
           toolchain: stable
           override: true
       - name: Run tests
-      - run: |
+        run: |
         sudo apt-get update
         sudo apt-get install -y -qq xvfb
         curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest \
