@@ -62,16 +62,20 @@ impl Display {
 	 *
 	 * @return Window
 	 */
-	pub fn get_focused_window(&self) -> Window {
+	pub fn get_focused_window(&self) -> Option<Window> {
 		unsafe {
 			let mut focus_window = MaybeUninit::<u64>::uninit();
-			let mut revert_to_return = MaybeUninit::<i32>::uninit();
+			let mut focus_state = MaybeUninit::<i32>::uninit();
 			xlib::XGetInputFocus(
 				self.display,
 				focus_window.as_mut_ptr(),
-				revert_to_return.as_mut_ptr(),
+				focus_state.as_mut_ptr(),
 			);
-			Window::new(*focus_window.as_ptr(), self.display)
+			if focus_state.assume_init() != xlib::RevertToNone {
+				Some(Window::new(*focus_window.as_ptr(), self.display))
+			} else {
+				None
+			}
 		}
 	}
 
@@ -83,7 +87,9 @@ impl Display {
 	 */
 	pub fn select_window(&self, fg_color: u64) -> Option<Window> {
 		let mut device_state = DeviceState::new();
-		let mut focused_window = self.get_focused_window();
+		let mut focused_window = self
+			.get_focused_window()
+			.expect("Failed to get the focused window");
 		let mut xid = 0;
 		let mut selection_canceled = false;
 		let now = Instant::now();
@@ -91,7 +97,9 @@ impl Display {
 			|| device_state.exit_keys_pressed
 			|| selection_canceled)
 		{
-			focused_window = self.get_focused_window();
+			focused_window = self
+				.get_focused_window()
+				.expect("Failed to get the focused window");
 			focused_window.draw_borders(fg_color, 5);
 			device_state.update();
 			if device_state.exit_keys_pressed {
