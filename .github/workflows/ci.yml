@@ -33,15 +33,14 @@ jobs:
           override: true
       - name: Run tests
         run: |
-        sudo apt-get update
-        sudo apt-get install -y -qq xvfb
-        curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest \
-        | grep "browser_download_url.*tar.gz" \
-        | cut -d : -f 2,3 \
-        | tr -d \" \
-        | wget -qi -
-        tar -xzf cargo-tarpaulin-*.tar.gz
-        xvfb-run ./cargo-tarpaulin --out Xml -v -- "test"
+          sudo apt-get update
+          sudo apt-get install -y -qq xvfb
+          bash -c "$repo | $get"
+          tar -xzf cargo-tarpaulin-*.tar.gz
+          xvfb-run ./cargo-tarpaulin --out Xml -v -- "test"
+        env:
+        - repo='curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
+        - get='grep "browser_download_url.*tar.gz" | tr -d \" | wget -qi -'
       - name: Upload reports to codecov.io
         uses: codecov/codecov-action@v1.0.6
         with:
