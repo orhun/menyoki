@@ -22,6 +22,12 @@ pub fn parse_args() -> ArgMatches<'static> {
 				.help("Sets the command to run"),
 		)
 		.arg(
+			Arg::with_name("root")
+				.short("r")
+				.long("root")
+				.help("Records the root window"),
+		)
+		.arg(
 			Arg::with_name("fps")
 				.short("f")
 				.long("fps")
