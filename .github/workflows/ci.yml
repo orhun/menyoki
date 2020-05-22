@@ -37,10 +37,7 @@ jobs:
           sudo apt-get install -y -qq xvfb
           Xvfb :1 &
           export DISPLAY=:1
-      - uses: actions-rs/cargo@v1
-        with:
-          command: test
-          args: --all "test"
+      - run: xvfb-run cargo test --all "test"
       - name: Run cargo-tarpaulin
         uses: actions-rs/tarpaulin@v0.1
         with:
