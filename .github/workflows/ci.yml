@@ -36,7 +36,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y -qq xvfb
           export DISPLAY=:1
-          Xvfb :1 &
+          Xvfb :1
       - uses: actions-rs/cargo@v1
         with:
           command: test
