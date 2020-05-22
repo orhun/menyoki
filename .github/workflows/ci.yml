@@ -38,7 +38,7 @@ jobs:
           bash -c "curl -s $repo | $parse | wget -qi -"
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
-          xvfb-run cargo tarpaulin tarpaulin --out Xml -v -- "test"
+          xvfb-run cargo tarpaulin --out Xml -v -- "test"
         env:
           repo: 'https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
           parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
