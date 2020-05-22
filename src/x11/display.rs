@@ -48,7 +48,6 @@ impl Display {
 	 *
 	 * @return Window
 	 */
-	#[allow(dead_code)]
 	pub fn get_root_window(&self) -> Window {
 		unsafe {
 			Window::new(
