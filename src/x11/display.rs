@@ -178,5 +178,7 @@ mod tests {
 			display.get_focused_window().unwrap().xid
 		);
 		assert!(display.select_window(0x00ff_00ff).is_none());
+		assert_eq!(SELECT_WINDOW_TIMEOUT, DisplaySettings::default().timeout);
+		assert_eq!(SELECTION_INTERVAL, DisplaySettings::default().interval);
 	}
 }
