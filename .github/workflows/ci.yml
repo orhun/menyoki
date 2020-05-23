@@ -38,10 +38,12 @@ jobs:
           bash -c "curl -s $repo | $parse | wget -qi -"
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
-          xvfb-run cargo tarpaulin --out Xml -v -- "test"
+          bash -c "$xvfb $test"
         env:
           repo: 'https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
           parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
+          xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
+          test: 'cargo tarpaulin --out Xml -v -- "test"'
       - name: Upload reports to Codecov
         uses: codecov/codecov-action@v1.0.7
         with:
