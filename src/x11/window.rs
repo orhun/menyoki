@@ -210,6 +210,8 @@ mod tests {
 				CString::new("root-window").unwrap_or_default().as_ptr(),
 			);
 		};
+		window.draw_borders(0x00ff_0ff, 0);
+		window.clear_area();
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
 		assert_eq!("root-window", window.get_name().unwrap());
 	}
