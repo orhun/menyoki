@@ -193,3 +193,16 @@ impl Capture for Window {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::x11::display::Display;
+	#[test]
+	fn test_window_mod() {
+		let display = Display::open(None).unwrap();
+		let mut window = display.get_root_window();
+		window.reset_position();
+		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
+	}
+}
