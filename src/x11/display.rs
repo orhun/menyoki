@@ -11,9 +11,30 @@ const SELECT_WINDOW_TIMEOUT: u128 = 30 * 1000;
 /* Time interval between focused window checks */
 const SELECTION_INTERVAL: u64 = 10;
 
+pub struct DisplaySettings {
+	timeout: u128,
+	interval: u64,
+}
+
+impl DisplaySettings {
+	fn new(timeout: u128, interval: u64) -> Self {
+		Self { timeout, interval }
+	}
+}
+
+impl Default for DisplaySettings {
+	fn default() -> Self {
+		Self {
+			timeout: SELECT_WINDOW_TIMEOUT,
+			interval: SELECTION_INTERVAL,
+		}
+	}
+}
+
 /* X11 display */
 pub struct Display {
 	display: *mut xlib::Display,
+	settings: DisplaySettings,
 }
 
 /* Implementation for thread-safe usage */
@@ -23,12 +44,16 @@ impl Display {
 	/**
 	 * Open a display.
 	 *
+	 * @param  settings (Option)
 	 * @return Display (Option)
 	 */
-	pub fn open() -> Option<Self> {
+	pub fn open(settings: Option<DisplaySettings>) -> Option<Self> {
 		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
 		if !display.is_null() {
-			Some(Self { display })
+			Some(Self {
+				display,
+				settings: settings.unwrap_or_default(),
+			})
 		} else {
 			None
 		}
@@ -105,7 +130,7 @@ impl Display {
 			if device_state.exit_keys_pressed {
 				warn!("User interrupt detected. Have a good day!");
 				selection_canceled = true;
-			} else if now.elapsed().as_millis() > SELECT_WINDOW_TIMEOUT {
+			} else if now.elapsed().as_millis() > self.settings.timeout {
 				warn!("The operation timed out. Have a good day!");
 				selection_canceled = true;
 			} else if xid != focused_window.xid {
@@ -113,7 +138,7 @@ impl Display {
 				info!("{}", focused_window);
 				xid = focused_window.xid;
 			}
-			thread::sleep(Duration::from_millis(SELECTION_INTERVAL));
+			thread::sleep(Duration::from_millis(self.settings.interval));
 		}
 		focused_window.clear_area();
 		if !selection_canceled {
