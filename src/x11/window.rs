@@ -203,6 +203,14 @@ mod tests {
 		let display = Display::open(None).unwrap();
 		let mut window = display.get_root_window();
 		window.reset_position();
+		unsafe {
+			xlib::XStoreName(
+				window.display,
+				window.xid,
+				CString::new("root-window").unwrap_or_default().as_ptr(),
+			);
+		};
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
+		assert_eq!("root-window", window.get_name().unwrap());
 	}
 }
