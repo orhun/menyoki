@@ -212,6 +212,7 @@ mod tests {
 		};
 		window.draw_borders(0x00ff_0ff, 0);
 		window.clear_area();
+		assert_eq!("1366x768  (root-window)", format!("{}", window));
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
 		assert_eq!("root-window", window.get_name().unwrap());
 	}
