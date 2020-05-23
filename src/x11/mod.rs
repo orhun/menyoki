@@ -23,7 +23,7 @@ impl WindowSystem {
 	 * @return WindowSystem (Option)
 	 */
 	pub fn init(settings: AppSettings) -> Option<Self> {
-		if let Some(display) = Display::open() {
+		if let Some(display) = Display::open(None) {
 			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
 			Some(Self { display, settings })
 		} else {
