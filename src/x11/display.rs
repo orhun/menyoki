@@ -18,6 +18,7 @@ pub struct DisplaySettings {
 }
 
 impl DisplaySettings {
+	#![allow(dead_code)]
 	/**
 	 * Create a new DisplaySettings object.
 	 *
@@ -25,7 +26,6 @@ impl DisplaySettings {
 	 * @param  interval
 	 * @return DisplaySettings
 	 */
-	#![allow(dead_code)]
 	fn new(timeout: u128, interval: u64) -> Self {
 		Self { timeout, interval }
 	}
