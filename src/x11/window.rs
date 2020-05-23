@@ -215,5 +215,6 @@ mod tests {
 		assert_eq!("1366x768  (root-window)", format!("{}", window));
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
 		assert_eq!("root-window", window.get_name().unwrap());
+		assert_eq!(1366 * 768 * 3, window.get_image().unwrap().data.len());
 	}
 }
