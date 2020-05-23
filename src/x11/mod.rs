@@ -3,7 +3,6 @@ pub mod window;
 
 use crate::app::AppSettings;
 use crate::image::{Capture, Image};
-use crate::util::device::DeviceState;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
 use std::ffi::CStr;
@@ -47,8 +46,7 @@ impl WindowSystem {
 					.expect("Failed to get the focused window"),
 			)
 		} else {
-			self.display
-				.select_window(&mut DeviceState::new(), self.settings.get_color())
+			self.display.select_window(self.settings.get_color())
 		}
 	}
 
