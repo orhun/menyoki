@@ -17,6 +17,7 @@ pub struct DisplaySettings {
 }
 
 impl DisplaySettings {
+	#![allow(dead_code)]
 	fn new(timeout: u128, interval: u64) -> Self {
 		Self { timeout, interval }
 	}
@@ -163,7 +164,7 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_display_mod() {
-		let display = Display::open().unwrap();
+		let display = Display::open(Some(DisplaySettings::new(20, 10))).unwrap();
 		unsafe {
 			xlib::XSetInputFocus(
 				display.display,
@@ -176,5 +177,6 @@ mod tests {
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
 		);
+		assert!(display.select_window(0x00ff_00ff).is_none());
 	}
 }
