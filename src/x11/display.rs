@@ -11,18 +11,27 @@ const SELECT_WINDOW_TIMEOUT: u128 = 30 * 1000;
 /* Time interval between focused window checks */
 const SELECTION_INTERVAL: u64 = 10;
 
+/* Display settings regarding to window selection */
 pub struct DisplaySettings {
 	timeout: u128,
 	interval: u64,
 }
 
+#![allow(dead_code)]
 impl DisplaySettings {
-	#![allow(dead_code)]
+	/**
+	 * Create a new DisplaySettings object.
+	 *
+	 * @param  timeout
+	 * @param  interval
+	 * @return DisplaySettings
+	 */
 	fn new(timeout: u128, interval: u64) -> Self {
 		Self { timeout, interval }
 	}
 }
 
+/* Default state of the display settings */
 impl Default for DisplaySettings {
 	fn default() -> Self {
 		Self {
