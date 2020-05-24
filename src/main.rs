@@ -1,7 +1,7 @@
 #[macro_use]
 extern crate log;
 mod app;
-mod image;
+mod encode;
 mod record;
 mod util;
 mod x11;

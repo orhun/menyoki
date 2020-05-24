@@ -1,4 +1,4 @@
-use crate::image::{Geometry, Image};
+use crate::encode::{Geometry, Image};
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
 use std::io::Error;

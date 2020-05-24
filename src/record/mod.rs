@@ -1,6 +1,6 @@
 pub mod fps;
-use crate::image::gif::Frame;
-use crate::image::Image;
+use crate::encode::gif::Frame;
+use crate::encode::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
@@ -128,7 +128,7 @@ impl Recorder {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::Geometry;
+	use crate::encode::Geometry;
 	use std::thread;
 	use std::time::Duration;
 	#[test]

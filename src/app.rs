@@ -1,5 +1,5 @@
-use crate::image::gif::{Frame, Gif, GifSettings};
-use crate::image::Image;
+use crate::encode::gif::{Frame, Gif, GifSettings};
+use crate::encode::Image;
 use crate::record::Recorder;
 use crate::util;
 use crate::util::cmd::Command;
@@ -186,7 +186,7 @@ impl App {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::Geometry;
+	use crate::encode::Geometry;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let settings = AppSettings::new(util::parse_args());

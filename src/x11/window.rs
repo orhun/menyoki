@@ -1,4 +1,4 @@
-use crate::image::{Bgr, Capture, Geometry, Image};
+use crate::encode::{Bgr, Capture, Geometry, Image};
 use std::ffi::CString;
 use std::fmt;
 use std::mem::MaybeUninit;
