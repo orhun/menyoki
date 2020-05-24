@@ -2,8 +2,8 @@ pub mod display;
 pub mod settings;
 pub mod window;
 
-use crate::app::AppSettings;
 use crate::encode::{Capture, Image};
+use crate::settings::AppSettings;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
 use std::ffi::CStr;

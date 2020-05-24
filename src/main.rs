@@ -3,9 +3,11 @@ extern crate log;
 mod app;
 mod encode;
 mod record;
+mod settings;
 mod util;
 mod x11;
-use self::app::{App, AppSettings};
+use self::app::App;
+use self::settings::AppSettings;
 use self::x11::WindowSystem;
 use std::io::Error;
 
