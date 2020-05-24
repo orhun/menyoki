@@ -42,7 +42,7 @@ impl Command {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::app::AppSettings;
+	use crate::settings::AppSettings;
 	use crate::util;
 	use std::time::{Duration, Instant};
 	#[test]
