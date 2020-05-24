@@ -171,7 +171,7 @@ impl App {
 		let mut gif = Gif::new(
 			File::create(self.settings.get_output_file())
 				.expect("Failed to create file"),
-			frames[0].image.geometry,
+			frames.first().expect("No frames found to save").image.geometry,
 			self.settings.get_gif_settings(),
 		)?;
 		gif.save(frames)?;
