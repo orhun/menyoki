@@ -145,6 +145,20 @@ impl Window {
 		}
 	}
 
+	fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
+		unsafe {
+			xlib::XDrawString(
+				self.display,
+				self.xid,
+				self.get_gc(fg_color),
+				x,
+				y,
+				CString::new(text).unwrap_or_default().as_ptr(),
+				text.len() as i32,
+			);
+		}
+	}
+
 	/* Clear the area of the window and regenerate the Expose event. */
 	pub fn clear_area(&self) {
 		unsafe {
