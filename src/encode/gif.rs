@@ -1,3 +1,4 @@
+use crate::encode::settings::GifSettings;
 use crate::encode::{Geometry, Image};
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::fs::File;
@@ -37,25 +38,6 @@ impl Frame {
 		);
 		frame.delay = self.delay;
 		frame
-	}
-}
-
-/* GIF and frame settings */
-pub struct GifSettings {
-	repeat: i32,
-	speed: u32,
-}
-
-impl GifSettings {
-	/**
-	 * Create a new GifSettings object.
-	 *
-	 * @param  repeat
-	 * @param  speed
-	 * @return GifSettings
-	 */
-	pub fn new(repeat: i32, speed: u32) -> Self {
-		Self { repeat, speed }
 	}
 }
 

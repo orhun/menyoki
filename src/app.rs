@@ -1,4 +1,5 @@
-use crate::encode::gif::{Frame, Gif, GifSettings};
+use crate::encode::gif::{Frame, Gif};
+use crate::encode::settings::GifSettings;
 use crate::encode::Image;
 use crate::record::Recorder;
 use crate::util;

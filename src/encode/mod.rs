@@ -1,4 +1,5 @@
 pub mod gif;
+pub mod settings;
 
 /* Position and size (2-D) */
 #[derive(Clone, Copy, Debug, Default)]
