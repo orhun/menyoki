@@ -102,10 +102,17 @@ mod tests {
 	#[test]
 	fn test_x11_mod() {
 		let settings = AppSettings::new(util::parse_args());
-		let window_system = WindowSystem::init(settings).unwrap();
+		let mut window_system = WindowSystem::init(settings).unwrap();
 		window_system.display.set_focused_window(
 			window_system.display.get_root_window().xid,
 			xlib::RevertToParent,
+		);
+		assert_eq!(
+			1366 * 768 * 3,
+			(window_system.get_record_func().unwrap())()
+				.unwrap()
+				.data
+				.len()
 		);
 	}
 }
