@@ -71,6 +71,8 @@ impl App {
 mod tests {
 	use super::*;
 	use crate::encode::Geometry;
+	use crate::util;
+	use crate::util::cmd::Command;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let settings = AppSettings::new(util::parse_args());
