@@ -1,45 +1,11 @@
 use crate::util::device::DeviceState;
+use crate::x11::settings::DisplaySettings;
 use crate::x11::window::Window;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::thread;
 use std::time::{Duration, Instant};
 use x11::xlib;
-
-/* Timeout value for the window selection */
-const SELECT_WINDOW_TIMEOUT: u128 = 30 * 1000;
-/* Time interval between focused window checks */
-const SELECTION_INTERVAL: u64 = 10;
-
-/* Display settings regarding to window selection */
-pub struct DisplaySettings {
-	timeout: u128,
-	interval: u64,
-}
-
-impl DisplaySettings {
-	/**
-	 * Create a new DisplaySettings object.
-	 *
-	 * @param  timeout
-	 * @param  interval
-	 * @return DisplaySettings
-	 */
-	#[allow(dead_code)]
-	fn new(timeout: u128, interval: u64) -> Self {
-		Self { timeout, interval }
-	}
-}
-
-/* Default state of the display settings */
-impl Default for DisplaySettings {
-	fn default() -> Self {
-		Self {
-			timeout: SELECT_WINDOW_TIMEOUT,
-			interval: SELECTION_INTERVAL,
-		}
-	}
-}
 
 /* X11 display */
 pub struct Display {

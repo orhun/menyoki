@@ -1,4 +1,5 @@
 pub mod display;
+pub mod settings;
 pub mod window;
 
 use crate::app::AppSettings;
