@@ -32,3 +32,13 @@ impl Default for DisplaySettings {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_display_settings() {
+		assert_eq!(SELECT_WINDOW_TIMEOUT, DisplaySettings::default().timeout);
+		assert_eq!(SELECTION_INTERVAL, DisplaySettings::default().interval);
+	}
+}
