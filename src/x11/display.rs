@@ -115,6 +115,18 @@ impl Display {
 	}
 
 	/**
+	 * Set the focused window.
+	 *
+	 * @param  xid
+	 * @param  focus_state
+	 */
+	pub fn set_focused_window(&self, xid: u64, focus_state: i32) {
+		unsafe {
+			xlib::XSetInputFocus(self.display, xid, focus_state, xlib::CurrentTime)
+		};
+	}
+
+	/**
 	 * Select a Window from the display with the user interaction.
 	 *
 	 * @param  fg_color
@@ -174,14 +186,8 @@ mod tests {
 	#[test]
 	fn test_display_mod() {
 		let display = Display::open(Some(DisplaySettings::new(20, 10))).unwrap();
-		unsafe {
-			xlib::XSetInputFocus(
-				display.display,
-				display.get_root_window().xid,
-				xlib::RevertToParent,
-				xlib::CurrentTime,
-			)
-		};
+		display
+			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);
 		assert_eq!(
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
