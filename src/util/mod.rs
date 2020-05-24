@@ -162,4 +162,9 @@ mod tests {
 			update_file_name(String::from("t.gif"), String::from("1588101718"))
 		)
 	}
+	#[test]
+	fn test_init_logger() -> Result<(), SetLoggerError> {
+		init_logger()?;
+		Ok(())
+	}
 }
