@@ -22,7 +22,11 @@ fn main() -> Result<(), Error> {
 	if let Some(record_func) = window_system.get_record_func() {
 		let frames = app.record(record_func);
 		info!("frames: {}", frames.len());
-		app.save_gif(frames)?;
+		if !frames.is_empty() {
+			app.save_gif(frames)?;
+		} else {
+			warn!("No frames found to save.");
+		}
 	}
 	Ok(())
 }
