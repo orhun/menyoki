@@ -18,7 +18,6 @@ pub struct DisplaySettings {
 }
 
 impl DisplaySettings {
-	#![allow(dead_code)]
 	/**
 	 * Create a new DisplaySettings object.
 	 *
@@ -26,6 +25,7 @@ impl DisplaySettings {
 	 * @param  interval
 	 * @return DisplaySettings
 	 */
+	#[allow(dead_code)]
 	fn new(timeout: u128, interval: u64) -> Self {
 		Self { timeout, interval }
 	}
@@ -120,6 +120,7 @@ impl Display {
 	 * @param  xid
 	 * @param  focus_state
 	 */
+	#[allow(dead_code)]
 	pub fn set_focused_window(&self, xid: u64, focus_state: i32) {
 		unsafe {
 			xlib::XSetInputFocus(self.display, xid, focus_state, xlib::CurrentTime)
