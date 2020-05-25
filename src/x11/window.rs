@@ -145,6 +145,14 @@ impl Window {
 		}
 	}
 
+	/**
+	 * Draw a text on the window.
+	 *
+	 * @param text
+	 * @param fg_color
+	 * @param x
+	 * @param y
+	 */
 	fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
