@@ -140,8 +140,8 @@ impl Window {
 				self.display,
 				self.xid,
 				self.get_gc(fg_color),
-				self.geometry.x + padding as i32,
-				self.geometry.y + padding as i32,
+				self.geometry.x + i32::try_from(padding).unwrap_or_default(),
+				self.geometry.y + i32::try_from(padding).unwrap_or_default(),
 				self.geometry.width - (padding * 2),
 				self.geometry.height - (padding * 2),
 			);
@@ -165,7 +165,7 @@ impl Window {
 				x,
 				y,
 				CString::new(text).unwrap_or_default().as_ptr(),
-				text.len() as i32,
+				i32::try_from(text.len()).unwrap_or_default(),
 			);
 		}
 	}
