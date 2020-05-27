@@ -1,9 +1,12 @@
 use crate::encode::{Bgr, Capture, Geometry, Image};
+use std::convert::TryFrom;
 use std::ffi::CString;
 use std::fmt;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
+use std::thread;
+use std::time::Duration;
 use x11::xlib;
 
 /* X11 window id, geometric properties and its display */
@@ -153,7 +156,7 @@ impl Window {
 	 * @param x
 	 * @param y
 	 */
-	pub fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
+	fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
 				self.display,
@@ -165,6 +168,22 @@ impl Window {
 				text.len() as i32,
 			);
 		}
+	}
+
+	pub fn show_countdown(&self, count: u64, fg_color: u64) {
+		for i in 0..count {
+			self.clear_area();
+			for _ in 0..1000 {
+				self.draw_string(
+					&format!("[{}]", count - i),
+					fg_color,
+					i32::try_from(self.geometry.width - 25).unwrap_or(20),
+					20,
+				);
+				thread::sleep(Duration::from_millis(1));
+			}
+		}
+		self.clear_area();
 	}
 
 	/* Clear the area of the window and regenerate the Expose event. */
