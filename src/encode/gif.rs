@@ -29,7 +29,7 @@ impl Frame {
 	 * @param  speed
 	 * @return GifFrame
 	 */
-	pub fn get(&self, speed: i32) -> GifFrame {
+	pub fn get(&self, speed: i32) -> GifFrame<'_> {
 		let mut frame = GifFrame::from_rgb_speed(
 			self.image.geometry.width as u16,
 			self.image.geometry.height as u16,
