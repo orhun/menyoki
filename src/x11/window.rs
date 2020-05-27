@@ -153,7 +153,7 @@ impl Window {
 	 * @param x
 	 * @param y
 	 */
-	fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
+	pub fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
 				self.display,
