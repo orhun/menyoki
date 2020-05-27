@@ -1,6 +1,7 @@
 use crate::encode::settings::GifSettings;
 use crate::encode::{Geometry, Image};
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
+use std::convert::TryFrom;
 use std::fs::File;
 use std::io::Error;
 
@@ -31,8 +32,8 @@ impl Frame {
 	 */
 	pub fn get(&self, speed: i32) -> GifFrame<'_> {
 		let mut frame = GifFrame::from_rgb_speed(
-			self.image.geometry.width as u16,
-			self.image.geometry.height as u16,
+			u16::try_from(self.image.geometry.width).unwrap_or_default(),
+			u16::try_from(self.image.geometry.height).unwrap_or_default(),
 			&self.image.data,
 			speed,
 		);
@@ -61,10 +62,14 @@ impl Gif {
 		geometry: Geometry,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
-		let mut encoder =
-			Encoder::new(file, geometry.width as u16, geometry.height as u16, &[])?;
+		let mut encoder = Encoder::new(
+			file,
+			u16::try_from(geometry.width).unwrap_or_default(),
+			u16::try_from(geometry.height).unwrap_or_default(),
+			&[],
+		)?;
 		encoder.set(match settings.repeat {
-			n if n >= 0 => Repeat::Finite(n as u16),
+			n if n >= 0 => Repeat::Finite(u16::try_from(n).unwrap_or_default()),
 			_ => Repeat::Infinite,
 		})?;
 		Ok(Self { encoder, settings })
@@ -78,8 +83,9 @@ impl Gif {
 	 */
 	pub fn save(&mut self, frames: Vec<Frame>) -> Result<(), Error> {
 		for frame in frames {
-			self.encoder
-				.write_frame(&frame.get(self.settings.speed as i32))?;
+			self.encoder.write_frame(
+				&frame.get(i32::try_from(self.settings.speed).unwrap_or_default()),
+			)?;
 		}
 		Ok(())
 	}
