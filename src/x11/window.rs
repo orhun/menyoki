@@ -1,5 +1,5 @@
 use crate::encode::{Bgr, Capture, Geometry, Image};
-use std::convert::TryFrom;
+use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
 use std::fmt;
 use std::mem::MaybeUninit;
@@ -165,7 +165,7 @@ impl Window {
 				x,
 				y,
 				CString::new(text).unwrap_or_default().as_ptr(),
-				i32::try_from(text.len()).unwrap_or_default(),
+				text.len().try_into().unwrap_or_default(),
 			);
 		}
 	}
@@ -177,7 +177,7 @@ impl Window {
 				self.draw_string(
 					&format!("[{}]", count - i),
 					fg_color,
-					i32::try_from(self.geometry.width - 25).unwrap_or(20),
+					(self.geometry.width - 25).try_into().unwrap_or(20),
 					20,
 				);
 				thread::sleep(Duration::from_millis(1));
