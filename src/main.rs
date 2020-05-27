@@ -1,3 +1,6 @@
+#![deny(clippy::tabs_in_doc_comments)]
+#![warn(rust_2018_idioms)]
+
 #[macro_use]
 extern crate log;
 mod app;
