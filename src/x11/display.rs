@@ -131,6 +131,7 @@ impl Display {
 		}
 		focused_window.clear_area();
 		if !selection_canceled {
+			focused_window.show_countdown(3, fg_color);
 			Some(focused_window)
 		} else {
 			None
