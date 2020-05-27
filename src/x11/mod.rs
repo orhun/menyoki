@@ -6,7 +6,7 @@ use crate::encode::{Capture, Image};
 use crate::settings::AppSettings;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
-use std::convert::TryFrom;
+use std::convert::TryInto;
 use std::ffi::CStr;
 use std::os::raw::c_char;
 use x11::xlib;
@@ -76,9 +76,9 @@ unsafe extern "C" fn x11_error_handler(
 	let mut error_text: Vec<u8> = Vec::with_capacity(1024);
 	if xlib::XGetErrorText(
 		display,
-		i32::try_from((*error).error_code).unwrap_or_default(),
+		(*error).error_code.try_into().unwrap_or_default(),
 		error_text.as_mut_ptr() as *mut c_char,
-		i32::try_from(error_text.capacity()).unwrap_or_default(),
+		error_text.capacity().try_into().unwrap_or_default(),
 	) == 0
 	{
 		error_msg += &format!(
