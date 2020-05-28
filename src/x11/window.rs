@@ -170,6 +170,12 @@ impl Window {
 		}
 	}
 
+	/**
+	 * Show a countdown on the corner of window.
+	 *
+	 * @param count
+	 * @param fg_color
+	 */
 	pub fn show_countdown(&self, count: u64, fg_color: u64) {
 		for i in 0..count {
 			self.clear_area();
