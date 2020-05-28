@@ -119,7 +119,7 @@ impl Display {
 			if device_state.exit_keys_pressed {
 				warn!("User interrupt detected. Have a good day!");
 				selection_canceled = true;
-			} else if now.elapsed().as_millis() > self.settings.timeout {
+			} else if now.elapsed().as_secs() > self.settings.timeout {
 				warn!("The operation timed out. Have a good day!");
 				selection_canceled = true;
 			} else if xid != focused_window.xid {
