@@ -1,5 +1,4 @@
 pub mod display;
-pub mod settings;
 pub mod window;
 
 use crate::encode::{Capture, Image};
@@ -40,6 +39,7 @@ impl WindowSystem {
 	 */
 	fn get_record_window(&self) -> Option<Window> {
 		if self.settings.args.is_present("root") {
+			//
 			Some(self.display.get_root_window())
 		} else if self.settings.args.is_present("command") {
 			Some(

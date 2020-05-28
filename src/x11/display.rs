@@ -1,5 +1,5 @@
+use crate::record::settings::RecordSettings;
 use crate::util::device::DeviceState;
-use crate::x11::settings::DisplaySettings;
 use crate::x11::window::Window;
 use std::mem::MaybeUninit;
 use std::ptr;
@@ -10,7 +10,7 @@ use x11::xlib;
 /* X11 display */
 pub struct Display {
 	display: *mut xlib::Display,
-	settings: DisplaySettings,
+	settings: RecordSettings,
 }
 
 /* Implementation for thread-safe usage */
@@ -23,7 +23,7 @@ impl Display {
 	 * @param  settings (Option)
 	 * @return Display (Option)
 	 */
-	pub fn open(settings: Option<DisplaySettings>) -> Option<Self> {
+	pub fn open(settings: Option<RecordSettings>) -> Option<Self> {
 		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
 		if !display.is_null() {
 			Some(Self {
