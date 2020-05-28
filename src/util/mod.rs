@@ -21,6 +21,15 @@ pub fn parse_args() -> ArgMatches<'static> {
 				.value_name("COMMAND")
 				.help("Sets the command to run"),
 		)
+		.arg(
+			Arg::with_name("color")
+				.short("c")
+				.long("color")
+				.value_name("HEX")
+				.default_value("FF00FF")
+				.help("Sets the main color to use")
+				.takes_value(true),
+		)
 		.subcommand(
 			SubCommand::with_name("record")
 				.about("Changes the recording settings")
@@ -37,15 +46,6 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.value_name("FPS")
 						.default_value("10")
 						.help("Sets the FPS (frames per second) value")
-						.takes_value(true),
-				)
-				.arg(
-					Arg::with_name("color")
-						.short("c")
-						.long("color")
-						.value_name("HEX")
-						.default_value("FF00FF")
-						.help("Sets the main color to be used")
 						.takes_value(true),
 				)
 				.arg(
