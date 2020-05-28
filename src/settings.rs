@@ -55,11 +55,14 @@ impl AppSettings {
 	 * @return u32
 	 */
 	pub fn get_fps(&self) -> u32 {
-		self.args
-			.value_of("fps")
-			.unwrap_or_default()
-			.parse()
-			.unwrap_or(10)
+		match self.args.subcommand_matches("record") {
+			Some(matches) => matches
+				.value_of("fps")
+				.unwrap_or_default()
+				.parse()
+				.unwrap_or(10),
+			None => 10,
+		}
 	}
 
 	/**
