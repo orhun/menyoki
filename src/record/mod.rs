@@ -4,6 +4,7 @@ pub mod settings;
 use crate::encode::gif::Frame;
 use crate::encode::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
+use crate::record::settings::RecordSettings;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -54,16 +55,16 @@ impl Recorder {
 	/**
 	 * Create a new Recorder object.
 	 *
-	 * @param  fps
+	 * @param  settings
 	 * @param  get_image (Fn)
 	 * @return Recorder
 	 */
 	pub fn new(
-		fps: u32,
+		settings: RecordSettings,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
 	) -> Self {
 		Self {
-			clock: FpsClock::new(fps),
+			clock: FpsClock::new(settings.fps),
 			channel: mpsc::channel(),
 			get_image: Box::leak(Box::new(get_image)),
 		}
