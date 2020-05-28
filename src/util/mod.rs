@@ -65,6 +65,15 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.default_value("30")
 						.help("Sets the timeout for window selection")
 						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("countdown")
+						.short("c")
+						.long("countdown")
+						.value_name("S")
+						.default_value("3")
+						.help("Sets the countdown value for recording")
+						.takes_value(true),
 				),
 		)
 		.subcommand(
