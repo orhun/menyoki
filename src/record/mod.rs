@@ -1,4 +1,6 @@
 pub mod fps;
+pub mod settings;
+
 use crate::encode::gif::Frame;
 use crate::encode::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
