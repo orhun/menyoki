@@ -21,29 +21,51 @@ pub fn parse_args() -> ArgMatches<'static> {
 				.value_name("COMMAND")
 				.help("Sets the command to run"),
 		)
-		.arg(
-			Arg::with_name("root")
-				.short("r")
-				.long("root")
-				.help("Records the root window"),
-		)
-		.arg(
-			Arg::with_name("fps")
-				.short("f")
-				.long("fps")
-				.value_name("FPS")
-				.default_value("10")
-				.help("Sets the FPS (frames per second) value")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("color")
-				.short("c")
-				.long("color")
-				.value_name("HEX")
-				.default_value("FF00FF")
-				.help("Sets the main color to be used")
-				.takes_value(true),
+		.subcommand(
+			SubCommand::with_name("record")
+				.about("Changes the recording settings")
+				.arg(
+					Arg::with_name("root")
+						.short("r")
+						.long("root")
+						.help("Records the root window"),
+				)
+				.arg(
+					Arg::with_name("fps")
+						.short("f")
+						.long("fps")
+						.value_name("FPS")
+						.default_value("10")
+						.help("Sets the FPS (frames per second) value")
+						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("color")
+						.short("c")
+						.long("color")
+						.value_name("HEX")
+						.default_value("FF00FF")
+						.help("Sets the main color to be used")
+						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("interval")
+						.short("i")
+						.long("interval")
+						.value_name("MS")
+						.default_value("10")
+						.help("Sets the interval time for window selection")
+						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("timeout")
+						.short("t")
+						.long("timeout")
+						.value_name("S")
+						.default_value("30")
+						.help("Sets the timeout for window selection")
+						.takes_value(true),
+				),
 		)
 		.subcommand(
 			SubCommand::with_name("gif")
