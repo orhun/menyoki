@@ -31,13 +31,13 @@ impl RecordSettings {
 		match args {
 			Some(matches) => {
 				let settings_parser = SettingsParser::new(matches.clone());
-				Self {
-					fps: settings_parser.get_arg::<u32>("fps", 10),
-					timeout: settings_parser.get_arg::<u128>("timeout", 30),
-					interval: settings_parser.get_arg::<u64>("interval", 10),
-					countdown: settings_parser.get_arg::<u64>("countdown", 3),
+				Self::new(
+					settings_parser.get_arg::<u32>("fps", 10),
+					settings_parser.get_arg::<u128>("timeout", 30),
+					settings_parser.get_arg::<u64>("interval", 10),
+					settings_parser.get_arg::<u64>("countdown", 3),
 					color,
-				}
+				)
 			}
 			None => RecordSettings::default(),
 		}
