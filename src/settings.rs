@@ -1,8 +1,10 @@
 use crate::encode::settings::GifSettings;
+use crate::record::settings::RecordSettings;
 use crate::util;
 use crate::util::cmd::Command;
 use chrono::Local;
 use clap::ArgMatches;
+use std::str::FromStr;
 
 /* General application settings */
 #[derive(Clone, Debug)]
@@ -50,22 +52,6 @@ impl AppSettings {
 	}
 
 	/**
-	 * Get FPS value from parsed arguments.
-	 *
-	 * @return u32
-	 */
-	pub fn get_fps(&self) -> u32 {
-		match self.args.subcommand_matches("record") {
-			Some(matches) => matches
-				.value_of("fps")
-				.unwrap_or_default()
-				.parse()
-				.unwrap_or(10),
-			None => 10,
-		}
-	}
-
-	/**
 	 * Get the output file from parsed arguments.
 	 *
 	 * @return String
@@ -96,6 +82,13 @@ impl AppSettings {
 		}
 	}
 
+	pub fn get_record_settings(&self) -> RecordSettings {
+		RecordSettings::from_args(
+			self.args.subcommand_matches("record"),
+			self.get_color(),
+		)
+	}
+
 	/**
 	 * Get GIF settings from parsed arguments.
 	 *
@@ -117,5 +110,29 @@ impl AppSettings {
 			),
 			None => GifSettings::new(-1, 10),
 		}
+	}
+}
+
+#[derive(Clone, Debug)]
+pub struct SettingsParser {
+	pub args: ArgMatches<'static>,
+}
+
+impl SettingsParser {
+	pub fn new(args: ArgMatches<'static>) -> Self {
+		Self { args }
+	}
+
+	/**
+	 * Get an argument value from parsed arguments.
+	 *
+	 * @return T
+	 */
+	pub fn get_arg<T: FromStr>(&self, arg: &str, default: T) -> T {
+		self.args
+			.value_of(arg)
+			.unwrap_or_default()
+			.parse()
+			.unwrap_or(default)
 	}
 }
