@@ -96,10 +96,9 @@ impl Display {
 	/**
 	 * Select a Window from the display with the user interaction.
 	 *
-	 * @param  fg_color
 	 * @return Window (Option)
 	 */
-	pub fn select_window(&self, fg_color: u64) -> Option<Window> {
+	pub fn select_window(&self) -> Option<Window> {
 		let mut device_state = DeviceState::new();
 		let mut focused_window = self
 			.get_focused_window()

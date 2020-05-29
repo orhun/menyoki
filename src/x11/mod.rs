@@ -47,7 +47,7 @@ impl WindowSystem {
 					.expect("Failed to get the focused window"),
 			)
 		} else {
-			self.display.select_window(self.settings.get_color())
+			self.display.select_window()
 		}
 	}
 
