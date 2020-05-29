@@ -10,6 +10,8 @@ use std::str::FromStr;
 #[derive(Clone, Debug)]
 pub struct AppSettings {
 	pub args: ArgMatches<'static>,
+	pub gif: GifSettings,
+	pub record: RecordSettings,
 }
 
 impl AppSettings {
@@ -19,7 +21,11 @@ impl AppSettings {
 	 * @return AppSettings
 	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
-		Self { args }
+		Self {
+			args,
+			gif: Self::get_gif_settings(args),
+			record: Self::get_record_settings(args),
+		}
 	}
 
 	/**
@@ -39,16 +45,6 @@ impl AppSettings {
 			}
 			None => panic!("No command specified to run"),
 		}
-	}
-
-	/**
-	 * Get the main color from parsed arguments.
-	 *
-	 * @return u64
-	 */
-	pub fn get_color(&self) -> u64 {
-		u64::from_str_radix(self.args.value_of("color").unwrap_or("FF00FF"), 16)
-			.expect("Failed to parse the color HEX")
 	}
 
 	/**
@@ -82,10 +78,11 @@ impl AppSettings {
 		}
 	}
 
-	pub fn get_record_settings(&self) -> RecordSettings {
+	fn get_record_settings(args: ArgMatches<'static>) -> RecordSettings {
 		RecordSettings::from_args(
-			self.args.subcommand_matches("record"),
-			self.get_color(),
+			args.subcommand_matches("record"),
+			u64::from_str_radix(args.value_of("color").unwrap_or("FF00FF"), 16)
+				.expect("Failed to parse the color HEX"),
 		)
 	}
 
@@ -94,21 +91,14 @@ impl AppSettings {
 	 *
 	 * @return GifSettings
 	 */
-	pub fn get_gif_settings(&self) -> GifSettings {
-		match self.args.subcommand_matches("gif") {
+	pub fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
+		let settings_parser = SettingsParser::new(args);
+		match args.subcommand_matches("gif") {
 			Some(matches) => GifSettings::new(
-				matches
-					.value_of("repeat")
-					.unwrap_or("-1")
-					.parse()
-					.unwrap_or_default(),
-				matches
-					.value_of("speed")
-					.unwrap_or_default()
-					.parse()
-					.unwrap_or(10),
+				settings_parser.get_arg("repeat", -1),
+				settings_parser.get_arg("speed", 10),
 			),
-			None => GifSettings::new(-1, 10),
+			None => GifSettings::default(),
 		}
 	}
 }
