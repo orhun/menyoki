@@ -8,6 +8,7 @@ pub struct RecordSettings {
 	pub interval: u64,
 	pub countdown: u64,
 	pub color: u64,
+	pub record_root: bool,
 }
 
 impl RecordSettings {
@@ -17,6 +18,7 @@ impl RecordSettings {
 		interval: u64,
 		countdown: u64,
 		color: u64,
+		record_root: bool,
 	) -> Self {
 		Self {
 			fps,
@@ -24,6 +26,7 @@ impl RecordSettings {
 			interval,
 			countdown,
 			color,
+			record_root,
 		}
 	}
 
@@ -37,6 +40,7 @@ impl RecordSettings {
 					settings_parser.get_arg::<u64>("interval", 10),
 					settings_parser.get_arg::<u64>("countdown", 3),
 					color,
+					matches.is_present("root"),
 				)
 			}
 			None => RecordSettings::default(),
@@ -52,6 +56,7 @@ impl Default for RecordSettings {
 			interval: 10,
 			countdown: 3,
 			color: 0x00ff_00ff,
+			record_root: false,
 		}
 	}
 }
