@@ -41,11 +41,7 @@ impl WindowSystem {
 		if self.settings.record.record_root {
 			Some(self.display.get_root_window())
 		} else if self.settings.args.is_present("command") {
-			Some(
-				self.display
-					.get_focused_window()
-					.expect("Failed to get the focused window"),
-			)
+			self.display.get_focused_window()
 		} else {
 			self.display.select_window()
 		}
