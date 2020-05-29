@@ -21,7 +21,7 @@ impl Display {
 	 * Open a display.
 	 *
 	 * @param  settings (Option)
-	 * @return Display (Option)
+	 * @return Display  (Option)
 	 */
 	pub fn open(settings: Option<RecordSettings>) -> Option<Self> {
 		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
