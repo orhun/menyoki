@@ -32,6 +32,8 @@ fn main() -> Result<(), Error> {
 		} else {
 			warn!("No frames found to save.");
 		}
+	} else {
+		error!("Cannot the record the window.")
 	}
 	Ok(())
 }
