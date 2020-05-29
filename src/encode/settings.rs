@@ -1,5 +1,5 @@
 /* GIF and frame settings */
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug)]
 pub struct GifSettings {
 	pub repeat: i32,
 	pub speed: u32,
@@ -15,5 +15,14 @@ impl GifSettings {
 	 */
 	pub fn new(repeat: i32, speed: u32) -> Self {
 		Self { repeat, speed }
+	}
+}
+
+impl Default for GifSettings {
+	fn default() -> Self {
+		Self {
+			repeat: -1,
+			speed: 10,
+		}
 	}
 }
