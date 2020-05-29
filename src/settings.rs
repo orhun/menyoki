@@ -22,8 +22,8 @@ impl AppSettings {
 	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
 		Self {
-			args,
-			gif: Self::get_gif_settings(args),
+			args: args.clone(),
+			gif: Self::get_gif_settings(args.clone()),
 			record: Self::get_record_settings(args),
 		}
 	}
@@ -92,12 +92,14 @@ impl AppSettings {
 	 * @return GifSettings
 	 */
 	pub fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
-		let settings_parser = SettingsParser::new(args);
 		match args.subcommand_matches("gif") {
-			Some(matches) => GifSettings::new(
-				settings_parser.get_arg("repeat", -1),
-				settings_parser.get_arg("speed", 10),
-			),
+			Some(matches) => {
+				let settings_parser = SettingsParser::new(matches.clone());
+				GifSettings::new(
+					settings_parser.get_arg("repeat", -1),
+					settings_parser.get_arg("speed", 10),
+				)
+			}
 			None => GifSettings::default(),
 		}
 	}
