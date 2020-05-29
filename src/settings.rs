@@ -91,7 +91,7 @@ impl AppSettings {
 	 *
 	 * @return GifSettings
 	 */
-	pub fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
+	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
 		match args.subcommand_matches("gif") {
 			Some(matches) => {
 				let settings_parser = SettingsParser::new(matches.clone());
