@@ -1,4 +1,5 @@
 /* GIF and frame settings */
+#[derive(Clone, Copy, Debug, Default)]
 pub struct GifSettings {
 	pub repeat: i32,
 	pub speed: u32,
