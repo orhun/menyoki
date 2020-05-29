@@ -43,7 +43,11 @@ impl RecordSettings {
 					matches.is_present("root"),
 				)
 			}
-			None => RecordSettings::default(),
+			None => {
+				let mut settings = RecordSettings::default();
+				settings.color = color;
+				settings
+			}
 		}
 	}
 }
