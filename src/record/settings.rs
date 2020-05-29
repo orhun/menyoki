@@ -1,7 +1,7 @@
 use crate::settings::SettingsParser;
 use clap::ArgMatches;
 
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
 	pub fps: u32,
 	pub timeout: u64,
