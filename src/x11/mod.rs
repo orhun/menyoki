@@ -24,7 +24,7 @@ impl WindowSystem {
 	 * @return WindowSystem (Option)
 	 */
 	pub fn init(settings: AppSettings) -> Option<Self> {
-		if let Some(display) = Display::open(Some(settings.get_record_settings())) {
+		if let Some(display) = Display::open(Some(settings.record)) {
 			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
 			Some(Self { display, settings })
 		} else {
@@ -38,7 +38,7 @@ impl WindowSystem {
 	 * @return Window (Option)
 	 */
 	fn get_record_window(&self) -> Option<Window> {
-		if self.settings.get_record_settings().record_root {
+		if self.settings.record.record_root {
 			Some(self.display.get_root_window())
 		} else if self.settings.args.is_present("command") {
 			Some(

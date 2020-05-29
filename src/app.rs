@@ -31,8 +31,7 @@ impl App {
 		&self,
 		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
 	) -> Vec<Frame> {
-		let mut recorder =
-			Recorder::new(self.settings.get_record_settings(), get_image);
+		let mut recorder = Recorder::new(self.settings.record, get_image);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
@@ -61,7 +60,7 @@ impl App {
 				.expect("No frames found to save")
 				.image
 				.geometry,
-			self.settings.get_gif_settings(),
+			self.settings.gif,
 		)?;
 		gif.save(frames)?;
 		Ok(())
