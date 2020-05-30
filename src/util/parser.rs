@@ -1,3 +1,6 @@
+use clap::ArgMatches;
+use std::str::FromStr;
+
 #[derive(Debug)]
 pub struct ArgParser<'a> {
 	pub args: &'a ArgMatches<'a>,
