@@ -1,4 +1,4 @@
-use crate::settings::ArgParser;
+use crate::util::parser::ArgParser;
 use clap::ArgMatches;
 
 /* Recording and window settings */
