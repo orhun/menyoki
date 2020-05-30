@@ -18,6 +18,7 @@ impl AppSettings {
 	/**
 	 * Create a new AppSettings object.
 	 *
+	 * @param  args
 	 * @return AppSettings
 	 */
 	pub fn new(args: ArgMatches<'static>) -> Self {
@@ -78,6 +79,12 @@ impl AppSettings {
 		}
 	}
 
+	/**
+	 * Get recording settings from parsed arguments.
+	 *
+	 * @param  args
+	 * @return RecordSettings
+	 */
 	fn get_record_settings(args: ArgMatches<'static>) -> RecordSettings {
 		RecordSettings::from_args(
 			args.subcommand_matches("record"),
@@ -89,6 +96,7 @@ impl AppSettings {
 	/**
 	 * Get GIF settings from parsed arguments.
 	 *
+	 * @param  args
 	 * @return GifSettings
 	 */
 	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
