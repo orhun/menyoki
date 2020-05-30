@@ -18,6 +18,7 @@ impl GifSettings {
 	}
 }
 
+/* Default initialization values for GifSettings */
 impl Default for GifSettings {
 	fn default() -> Self {
 		Self {
