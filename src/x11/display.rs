@@ -116,10 +116,10 @@ impl Display {
 			focused_window.draw_borders(self.settings.color, 5);
 			device_state.update();
 			if device_state.exit_keys_pressed {
-				warn!("User interrupt detected. Have a good day!");
+				warn!("User interrupt detected.");
 				selection_canceled = true;
 			} else if now.elapsed().as_secs() > self.settings.timeout {
-				warn!("The operation timed out. Have a good day!");
+				warn!("The operation timed out.");
 				selection_canceled = true;
 			} else if xid != focused_window.xid {
 				debug!("Window ID: {:?}", focused_window.xid);
