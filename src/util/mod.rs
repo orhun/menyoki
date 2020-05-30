@@ -1,5 +1,6 @@
 pub mod cmd;
 pub mod device;
+pub mod parser;
 use chrono::Local;
 use clap::{App, Arg, ArgMatches, SubCommand};
 use fern::colors::{Color, ColoredLevelConfig};
