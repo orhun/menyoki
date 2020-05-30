@@ -61,7 +61,7 @@ impl Display {
 	/**
 	 * Get the focused window.
 	 *
-	 * @return Window
+	 * @return Window (Option)
 	 */
 	pub fn get_focused_window(&self) -> Option<Window> {
 		unsafe {
@@ -94,7 +94,7 @@ impl Display {
 	}
 
 	/**
-	 * Select a Window from the display with the user interaction.
+	 * Select a Window from display with user interaction.
 	 *
 	 * @return Window (Option)
 	 */
@@ -139,7 +139,7 @@ impl Display {
 	}
 }
 
-/* Close the display when Display object went out of scope. */
+/* Close the display when Display object goes out of scope */
 impl Drop for Display {
 	fn drop(&mut self) {
 		unsafe {
