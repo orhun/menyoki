@@ -42,7 +42,7 @@ impl Frame {
 	}
 }
 
-/* GIF encoder and processing speed */
+/* GIF encoder and settings */
 pub struct Gif {
 	encoder: Encoder<File>,
 	settings: GifSettings,
