@@ -102,10 +102,10 @@ impl AppSettings {
 	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
 		match args.subcommand_matches("gif") {
 			Some(matches) => {
-				let settings_parser = SettingsParser::new(matches.clone());
+				let parser = ArgParser::new(&matches);
 				GifSettings::new(
-					settings_parser.get_arg("repeat", -1),
-					settings_parser.get_arg("speed", 10),
+					parser.parse("repeat", -1),
+					parser.parse("speed", 10),
 				)
 			}
 			None => GifSettings::default(),
@@ -113,26 +113,21 @@ impl AppSettings {
 	}
 }
 
-#[derive(Clone, Debug)]
-pub struct SettingsParser {
-	pub args: ArgMatches<'static>,
+#[derive(Debug)]
+pub struct ArgParser<'a> {
+	pub args: &'a ArgMatches<'a>,
 }
 
-impl SettingsParser {
-	pub fn new(args: ArgMatches<'static>) -> Self {
+impl<'a> ArgParser<'a> {
+	pub fn new(args: &'a ArgMatches<'a>) -> Self {
 		Self { args }
 	}
 
-	/**
-	 * Get an argument value from parsed arguments.
-	 *
-	 * @return T
-	 */
-	pub fn get_arg<T: FromStr>(&self, arg: &str, default: T) -> T {
+	pub fn parse<T: FromStr>(&self, arg: &str, default_value: T) -> T {
 		self.args
 			.value_of(arg)
 			.unwrap_or_default()
 			.parse()
-			.unwrap_or(default)
+			.unwrap_or(default_value)
 	}
 }

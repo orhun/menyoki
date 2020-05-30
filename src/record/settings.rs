@@ -1,4 +1,4 @@
-use crate::settings::SettingsParser;
+use crate::settings::ArgParser;
 use clap::ArgMatches;
 
 /* Recording and window settings */
@@ -52,12 +52,12 @@ impl RecordSettings {
 	pub fn from_args(args: Option<&ArgMatches<'static>>, color: u64) -> Self {
 		match args {
 			Some(matches) => {
-				let settings_parser = SettingsParser::new(matches.clone());
+				let parser = ArgParser::new(&matches);
 				Self::new(
-					settings_parser.get_arg::<u32>("fps", 10),
-					settings_parser.get_arg::<u64>("timeout", 30),
-					settings_parser.get_arg::<u64>("interval", 10),
-					settings_parser.get_arg::<u64>("countdown", 3),
+					parser.parse::<u32>("fps", 10),
+					parser.parse::<u64>("timeout", 30),
+					parser.parse::<u64>("interval", 10),
+					parser.parse::<u64>("countdown", 3),
 					color,
 					matches.is_present("root"),
 				)
