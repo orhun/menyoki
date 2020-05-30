@@ -1,7 +1,7 @@
 pub mod gif;
 pub mod settings;
 
-/* Position and size (2-D) */
+/* Position and size in 2D */
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Geometry {
 	pub x: i32,
@@ -30,7 +30,7 @@ impl Geometry {
 	}
 }
 
-/* BGR color fields (and padding for XImage casting) */
+/* BGR color fields and padding */
 #[derive(Debug)]
 pub struct Bgr {
 	b: u8,
