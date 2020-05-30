@@ -1,6 +1,7 @@
 use crate::settings::SettingsParser;
 use clap::ArgMatches;
 
+/* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
 	pub fps: u32,
@@ -12,6 +13,17 @@ pub struct RecordSettings {
 }
 
 impl RecordSettings {
+	/**
+	 * Create a new RecordSettings object.
+	 *
+	 * @param  fps
+	 * @param  timeout
+	 * @param  interval
+	 * @param  countdown
+	 * @param  color
+	 * @param  record_root
+	 * @return RecordSettings
+	 */
 	pub fn new(
 		fps: u32,
 		timeout: u64,
@@ -30,6 +42,13 @@ impl RecordSettings {
 		}
 	}
 
+	/**
+	 * Create a RecordSettings object from parsed arguments.
+	 *
+	 * @param  args
+	 * @param  color
+	 * @return RecordSettings
+	 */
 	pub fn from_args(args: Option<&ArgMatches<'static>>, color: u64) -> Self {
 		match args {
 			Some(matches) => {
@@ -52,6 +71,7 @@ impl RecordSettings {
 	}
 }
 
+/* Default initialization values for RecordSettings */
 impl Default for RecordSettings {
 	fn default() -> Self {
 		Self {
