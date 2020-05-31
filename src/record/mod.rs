@@ -136,14 +136,14 @@ mod tests {
 	use std::time::Duration;
 	#[test]
 	fn test_record_mod() {
-		let recorder = Recorder::new(100, move || {
+		let recorder = Recorder::new(RecordSettings::default(), move || {
 			Some(Image::new(
 				vec![0, 0, 0, 255, 255, 255],
 				Geometry::new(0, 0, 1, 1),
 			))
 		});
 		let record = recorder.record_async();
-		thread::sleep(Duration::from_millis(50));
+		thread::sleep(Duration::from_millis(200));
 		record.finish().unwrap();
 		assert!(record.thread.join().unwrap().len() > 0);
 	}
