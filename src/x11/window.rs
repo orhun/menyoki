@@ -156,7 +156,7 @@ impl Window {
 	 * @param x
 	 * @param y
 	 */
-	fn draw_string(&self, text: &str, fg_color: u64, x: i32, y: i32) {
+	fn draw_string(&self, text: String, fg_color: u64, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
 				self.display,
@@ -164,7 +164,7 @@ impl Window {
 				self.get_gc(fg_color),
 				x,
 				y,
-				CString::new(text).unwrap_or_default().as_ptr(),
+				CString::new(text.as_str()).unwrap_or_default().as_ptr(),
 				text.len().try_into().unwrap_or_default(),
 			);
 		}
@@ -177,11 +177,15 @@ impl Window {
 	 * @param fg_color
 	 */
 	pub fn show_countdown(&self, count: u64, fg_color: u64) {
-		for i in 0..count {
+		for i in 0..(count + 1) {
 			self.clear_area();
 			for _ in 0..1000 {
 				self.draw_string(
-					&format!("[{}]", count - i),
+					if i != count {
+						format!("[{}]", count - i)
+					} else {
+						String::new()
+					},
 					fg_color,
 					(self.geometry.width - 25).try_into().unwrap_or(20),
 					20,
