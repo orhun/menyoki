@@ -11,7 +11,7 @@ use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
-/* Sender and main thread of the Recorder */
+/* Asynchronous recording result */
 #[derive(Debug)]
 pub struct RecordResult<T> {
 	sender: mpsc::Sender<()>,
