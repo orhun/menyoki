@@ -153,13 +153,14 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_display_mod() {
-		let display = Display::open(Some(DisplaySettings::new(20, 10))).unwrap();
+		let settings = RecordSettings::new(10, 20, 10, 0, 0x00ff_00ff, false);
+		let display = Display::open(Some(settings)).unwrap();
 		display
 			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);
 		assert_eq!(
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
 		);
-		assert!(display.select_window(0x00ff_00ff).is_none());
+		assert!(display.select_window().is_none());
 	}
 }
