@@ -1,12 +1,11 @@
 use crate::encode::{Bgr, Capture, Geometry, Image};
+use crate::record::fps::FpsClock;
 use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
 use std::fmt;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
-use std::thread;
-use std::time::Duration;
 use x11::xlib;
 
 /* X11 window id, geometric properties and its display */
@@ -178,21 +177,24 @@ impl Window {
 	 * @param fg_color
 	 */
 	pub fn show_countdown(&self, count: u64, fg_color: u64) {
-		for i in 0..(count + 1) {
-			self.clear_area();
-			let text = if i != count {
-				Some(format!("[{}]", count - i))
-			} else {
-				None
-			};
-			for _ in 0..1000 {
-				self.draw_text(
-					text.clone(),
-					fg_color,
-					(self.geometry.width - 25).try_into().unwrap_or(20),
-					20,
-				);
-				thread::sleep(Duration::from_millis(1));
+		if count != 0 {
+			let mut clock = FpsClock::new(1000);
+			for i in 0..(count + 1) {
+				self.clear_area();
+				let text = if i != count {
+					Some(format!("[{}]", count - i))
+				} else {
+					None
+				};
+				for _ in 0..clock.fps {
+					self.draw_text(
+						text.clone(),
+						fg_color,
+						(self.geometry.width - 25).try_into().unwrap_or(20),
+						20,
+					);
+					clock.tick();
+				}
 			}
 		}
 		self.clear_area();
