@@ -1,5 +1,5 @@
 use std::thread;
-use std::time;
+use std::time::{Duration, Instant};
 
 /* Unit of time */
 #[derive(Debug)]
@@ -12,7 +12,7 @@ pub enum TimeUnit {
 #[derive(Debug)]
 pub struct FpsClock {
 	pub fps: u32,
-	last_tick_time: time::Instant,
+	last_tick_time: Instant,
 }
 
 impl FpsClock {
@@ -25,7 +25,7 @@ impl FpsClock {
 	pub fn new(fps: u32) -> Self {
 		Self {
 			fps,
-			last_tick_time: time::Instant::now(),
+			last_tick_time: Instant::now(),
 		}
 	}
 
@@ -52,9 +52,9 @@ impl FpsClock {
 		let total_nanos = t.as_secs() * 1_000_000_000 + t.subsec_nanos() as u64;
 		let diff = self.get_fps(TimeUnit::Nanosecond) - (total_nanos as f32);
 		if diff > 0. {
-			thread::sleep(time::Duration::new(0, diff as u32))
+			thread::sleep(Duration::new(0, diff as u32))
 		};
-		self.last_tick_time = time::Instant::now();
+		self.last_tick_time = Instant::now();
 		diff
 	}
 }
@@ -63,7 +63,6 @@ impl FpsClock {
 mod tests {
 	use super::*;
 	use std::thread;
-	use std::time::Duration;
 	#[test]
 	fn test_fps_mod() {
 		let mut fps_clock = FpsClock::new(100);
