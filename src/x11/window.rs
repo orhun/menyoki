@@ -279,7 +279,8 @@ mod tests {
 				CString::new("root-window").unwrap_or_default().as_ptr(),
 			);
 		};
-		window.draw_borders(0x00ff_0ff, 0);
+		window.draw_borders(0x00ff_00ff, 0);
+		window.show_countdown(1, 0x00ff_00ff);
 		window.clear_area();
 		assert_eq!("1366x768  (root-window)", format!("{}", window));
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
