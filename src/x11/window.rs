@@ -156,7 +156,7 @@ impl Window {
 	 * @param x
 	 * @param y
 	 */
-	fn draw_string(&self, text: String, fg_color: u64, x: i32, y: i32) {
+	fn draw_text(&self, text: String, fg_color: u64, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
 				self.display,
@@ -180,7 +180,7 @@ impl Window {
 		for i in 0..(count + 1) {
 			self.clear_area();
 			for _ in 0..1000 {
-				self.draw_string(
+				self.draw_text(
 					if i != count {
 						format!("[{}]", count - i)
 					} else {
