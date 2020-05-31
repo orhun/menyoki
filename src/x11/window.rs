@@ -150,7 +150,7 @@ impl Window {
 	/**
 	 * Draw a text on the window.
 	 *
-	 * @param text (Option)
+	 * @param text
 	 * @param fg_color
 	 * @param x
 	 * @param y
@@ -169,6 +169,13 @@ impl Window {
 		}
 	}
 
+	/**
+	 * Show a text on the window for a given duration.
+	 *
+	 * @param  text (Option)
+	 * @param  fg_color
+	 * @param  clock
+	 */
 	fn show_text(&self, text: Option<String>, fg_color: u64, mut clock: FpsClock) {
 		let text = text.unwrap_or_default();
 		for _ in 0..clock.fps {
