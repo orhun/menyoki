@@ -151,12 +151,13 @@ impl Window {
 	/**
 	 * Draw a text on the window.
 	 *
-	 * @param text
+	 * @param text (Option)
 	 * @param fg_color
 	 * @param x
 	 * @param y
 	 */
-	fn draw_text(&self, text: String, fg_color: u64, x: i32, y: i32) {
+	fn draw_text(&self, text: Option<String>, fg_color: u64, x: i32, y: i32) {
+		let text = text.unwrap_or_default();
 		unsafe {
 			xlib::XDrawString(
 				self.display,
