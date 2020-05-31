@@ -13,18 +13,18 @@ use std::time::Duration;
 
 /* Sender and main thread of the Recorder */
 #[derive(Debug)]
-pub struct Record {
+pub struct RecordResult {
 	sender: mpsc::Sender<()>,
 	pub thread: thread::JoinHandle<Vec<Frame>>,
 }
 
-impl Record {
+impl RecordResult {
 	/**
-	 * Create a new Record object.
+	 * Create a new RecordResult object.
 	 *
 	 * @param  sender
 	 * @param  thread
-	 * @return Record
+	 * @return RecordResult
 	 */
 	pub fn new(
 		sender: mpsc::Sender<()>,
@@ -108,11 +108,11 @@ impl Recorder {
 	/**
 	 * Record frames asynchronously and without blocking.
 	 *
-	 * @return Record
+	 * @return RecordResult
 	 */
-	pub fn record_async(mut self) -> Record {
+	pub fn record_async(mut self) -> RecordResult {
 		let mut frames = Vec::new();
-		Record::new(
+		RecordResult::new(
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				thread::sleep(Duration::from_millis(
