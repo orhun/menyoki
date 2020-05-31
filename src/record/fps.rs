@@ -11,7 +11,7 @@ pub enum TimeUnit {
 /* FPS controller */
 #[derive(Debug)]
 pub struct FpsClock {
-	fps: u32,
+	pub fps: u32,
 	last_tick_time: time::Instant,
 }
 
