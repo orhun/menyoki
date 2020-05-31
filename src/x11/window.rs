@@ -155,8 +155,7 @@ impl Window {
 	 * @param x
 	 * @param y
 	 */
-	fn draw_text(&self, text: Option<String>, fg_color: u64, x: i32, y: i32) {
-		let text = text.unwrap_or_default();
+	fn draw_text(&self, text: &str, fg_color: u64, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
 				self.display,
@@ -164,9 +163,22 @@ impl Window {
 				self.get_gc(fg_color),
 				x,
 				y,
-				CString::new(text.as_str()).unwrap_or_default().as_ptr(),
+				CString::new(text).unwrap_or_default().as_ptr(),
 				text.len().try_into().unwrap_or_default(),
 			);
+		}
+	}
+
+	fn show_text(&self, text: Option<String>, fg_color: u64, mut clock: FpsClock) {
+		let text = text.unwrap_or_default();
+		for _ in 0..clock.fps {
+			self.draw_text(
+				text.as_str(),
+				fg_color,
+				(self.geometry.width - 25).try_into().unwrap_or(20),
+				20,
+			);
+			clock.tick();
 		}
 	}
 
@@ -178,23 +190,18 @@ impl Window {
 	 */
 	pub fn show_countdown(&self, count: u64, fg_color: u64) {
 		if count != 0 {
-			let mut clock = FpsClock::new(1000);
+			let clock = FpsClock::new(1000);
 			for i in 0..(count + 1) {
 				self.clear_area();
-				let text = if i != count {
-					Some(format!("[{}]", count - i))
-				} else {
-					None
-				};
-				for _ in 0..clock.fps {
-					self.draw_text(
-						text.clone(),
-						fg_color,
-						(self.geometry.width - 25).try_into().unwrap_or(20),
-						20,
-					);
-					clock.tick();
-				}
+				self.show_text(
+					if i != count {
+						Some(format!("[{}]", count - i))
+					} else {
+						None
+					},
+					fg_color,
+					clock,
+				);
 			}
 		}
 		self.clear_area();
