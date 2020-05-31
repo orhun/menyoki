@@ -180,13 +180,14 @@ impl Window {
 	pub fn show_countdown(&self, count: u64, fg_color: u64) {
 		for i in 0..(count + 1) {
 			self.clear_area();
+			let text = if i != count {
+				Some(format!("[{}]", count - i))
+			} else {
+				None
+			};
 			for _ in 0..1000 {
 				self.draw_text(
-					if i != count {
-						format!("[{}]", count - i)
-					} else {
-						String::new()
-					},
+					text.clone(),
 					fg_color,
 					(self.geometry.width - 25).try_into().unwrap_or(20),
 					20,
