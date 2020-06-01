@@ -28,9 +28,9 @@ impl App {
 	 */
 	pub fn record<T>(&self, window: T) -> Vec<Frame>
 	where
-		T: Record + Send + Sync + 'static,
+		T: Record + Send + Sync + Copy + 'static,
 	{
-		let mut recorder = Recorder::new(self.settings.record.fps, window);
+		let mut recorder = Recorder::new(self.settings.record, window);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
@@ -42,6 +42,7 @@ impl App {
 				None => Vec::new(),
 			}
 		} else {
+			window.show_countdown(self.settings.record);
 			recorder.record_sync()
 		}
 	}
