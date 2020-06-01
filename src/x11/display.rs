@@ -1,4 +1,5 @@
 use crate::record::settings::RecordSettings;
+use crate::record::Record;
 use crate::util::device::DeviceState;
 use crate::x11::window::Window;
 use std::mem::MaybeUninit;

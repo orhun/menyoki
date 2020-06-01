@@ -4,6 +4,7 @@ pub mod settings;
 use crate::encode::gif::Frame;
 use crate::encode::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
+use crate::record::settings::RecordSettings;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -13,6 +14,7 @@ use std::time::Duration;
 /* Required window methods for recording */
 pub trait Record {
 	fn get_image(&self) -> Option<Image>;
+	fn show_countdown(&self, settings: RecordSettings);
 }
 
 /* Asynchronous recording result */

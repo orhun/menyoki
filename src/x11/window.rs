@@ -197,30 +197,6 @@ impl Window {
 		}
 	}
 
-	/**
-	 * Show a countdown on the corner of window.
-	 *
-	 * @param settings
-	 */
-	pub fn show_countdown(&self, settings: RecordSettings) {
-		if settings.countdown != 0 {
-			let clock = FpsClock::new(1000);
-			for i in 0..(settings.countdown + 1) {
-				self.clear_area();
-				self.show_text(
-					if i != settings.countdown {
-						Some(format!("[{}]", settings.countdown - i))
-					} else {
-						None
-					},
-					settings,
-					clock,
-				);
-			}
-		}
-		self.clear_area();
-	}
-
 	/* Clear the area of the window and regenerate the Expose event. */
 	pub fn clear_area(&self) {
 		unsafe {
@@ -267,6 +243,30 @@ impl Record for Window {
 				None
 			}
 		}
+	}
+
+	/**
+	 * Show a countdown on the corner of window.
+	 *
+	 * @param settings
+	 */
+	fn show_countdown(&self, settings: RecordSettings) {
+		if settings.countdown != 0 {
+			let clock = FpsClock::new(1000);
+			for i in 0..(settings.countdown + 1) {
+				self.clear_area();
+				self.show_text(
+					if i != settings.countdown {
+						Some(format!("[{}]", settings.countdown - i))
+					} else {
+						None
+					},
+					settings,
+					clock,
+				);
+			}
+		}
+		self.clear_area();
 	}
 }
 
