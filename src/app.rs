@@ -30,7 +30,7 @@ impl App {
 	where
 		T: Record + Send + Sync + 'static,
 	{
-		let mut recorder = Recorder::new(self.settings.record, window);
+		let mut recorder = Recorder::new(self.settings.record.fps, window);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
