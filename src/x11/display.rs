@@ -1,5 +1,4 @@
 use crate::record::settings::RecordSettings;
-use crate::record::Record;
 use crate::util::device::DeviceState;
 use crate::x11::window::Window;
 use std::mem::MaybeUninit;
@@ -131,7 +130,6 @@ impl Display {
 		}
 		focused_window.clear_area();
 		if !selection_canceled {
-			focused_window.show_countdown(self.settings);
 			Some(focused_window)
 		} else {
 			None
