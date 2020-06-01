@@ -50,28 +50,28 @@ impl<T> RecordResult<T> {
 }
 
 /* Recorder with FPS clock and channel */
-pub struct Recorder {
+pub struct Recorder<T> {
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
-	get_image: &'static (dyn Fn() -> Option<Image> + Sync + Send),
+	window: T,
 }
 
-impl Recorder {
+impl<T> Recorder<T>
+where
+	T: Record + Send + Sync + 'static,
+{
 	/**
 	 * Create a new Recorder object.
 	 *
 	 * @param  settings
-	 * @param  get_image (Fn)
+	 * @param  window
 	 * @return Recorder
 	 */
-	pub fn new(
-		settings: RecordSettings,
-		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
-	) -> Self {
+	pub fn new(settings: RecordSettings, window: T) -> Self {
 		Self {
 			clock: FpsClock::new(settings.fps),
 			channel: mpsc::channel(),
-			get_image: Box::leak(Box::new(get_image)),
+			window,
 		}
 	}
 
@@ -81,7 +81,7 @@ impl Recorder {
 	 * @return Frame
 	 */
 	fn get_frame(&mut self) -> Frame {
-		match (self.get_image)() {
+		match self.window.get_image() {
 			Some(image) => Frame::new(
 				image,
 				(self.clock.get_fps(TimeUnit::Millisecond) / 10.) as u16,
