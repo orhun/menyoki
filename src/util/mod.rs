@@ -41,6 +41,15 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.help("Records the root window"),
 				)
 				.arg(
+					Arg::with_name("countdown")
+						.short("c")
+						.long("countdown")
+						.value_name("S")
+						.default_value("3")
+						.help("Sets the countdown value for recording")
+						.takes_value(true),
+				)
+				.arg(
 					Arg::with_name("fps")
 						.short("f")
 						.long("fps")
@@ -59,21 +68,21 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.takes_value(true),
 				)
 				.arg(
+					Arg::with_name("padding")
+						.short("p")
+						.long("padding")
+						.value_name("PADDING")
+						.default_value("5")
+						.help("Sets the padding value for recording")
+						.takes_value(true),
+				)
+				.arg(
 					Arg::with_name("timeout")
 						.short("t")
 						.long("timeout")
 						.value_name("S")
 						.default_value("30")
 						.help("Sets the timeout for window selection")
-						.takes_value(true),
-				)
-				.arg(
-					Arg::with_name("countdown")
-						.short("c")
-						.long("countdown")
-						.value_name("S")
-						.default_value("3")
-						.help("Sets the countdown value for recording")
 						.takes_value(true),
 				),
 		)
