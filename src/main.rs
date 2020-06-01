@@ -22,10 +22,9 @@ fn main() -> Result<(), Error> {
 
 	let settings = AppSettings::new(args);
 	let app = App::new(settings.clone());
-	let mut window_system =
-		WindowSystem::init(settings).expect("Cannot open display");
-	if let Some(record_func) = window_system.get_record_func() {
-		let frames = app.record(record_func);
+	let window_system = WindowSystem::init(settings).expect("Cannot open display");
+	if let Some(window) = window_system.get_record_window() {
+		let frames = app.record(window);
 		info!("frames: {}", frames.len());
 		if !frames.is_empty() {
 			app.save_gif(frames)?;
