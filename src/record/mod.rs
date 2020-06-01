@@ -15,7 +15,7 @@ use std::time::Duration;
 #[derive(Debug)]
 pub struct RecordResult<T> {
 	sender: mpsc::Sender<()>,
-	pub thread: thread::JoinHandle<T>,
+	thread: thread::JoinHandle<T>,
 }
 
 impl<T> RecordResult<T> {
@@ -31,13 +31,16 @@ impl<T> RecordResult<T> {
 	}
 
 	/**
-	 * Terminate the recording thread.
+	 * Stop the thread and retrieve values.
 	 *
-	 * @return Result
+	 * @return Option
 	 */
-	pub fn finish(&self) -> Result<(), mpsc::SendError<()>> {
-		self.sender.send(())?;
-		Ok(())
+	pub fn get(self) -> Option<thread::Result<T>> {
+		if self.sender.send(()).is_ok() {
+			Some(self.thread.join())
+		} else {
+			None
+		}
 	}
 }
 
