@@ -52,9 +52,10 @@ impl<T> RecordResult<T> {
 
 /* Recorder with FPS clock and channel */
 pub struct Recorder<T> {
+	settings: RecordSettings,
+	window: T,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
-	window: T,
 }
 
 impl<T> Recorder<T>
@@ -64,15 +65,16 @@ where
 	/**
 	 * Create a new Recorder object.
 	 *
-	 * @param  fps
+	 * @param  settings
 	 * @param  window
 	 * @return Recorder
 	 */
-	pub fn new(fps: u32, window: T) -> Self {
+	pub fn new(settings: RecordSettings, window: T) -> Self {
 		Self {
-			clock: FpsClock::new(fps),
-			channel: mpsc::channel(),
+			settings,
 			window,
+			clock: FpsClock::new(settings.fps),
+			channel: mpsc::channel(),
 		}
 	}
 
@@ -121,6 +123,7 @@ where
 		RecordResult::new(
 			self.channel.0.clone(),
 			thread::spawn(move || {
+				self.window.show_countdown(self.settings);
 				thread::sleep(Duration::from_millis(
 					self.clock.get_fps(TimeUnit::Millisecond) as u64,
 				));
