@@ -1,5 +1,6 @@
 use crate::encode::{Bgr, Geometry, Image};
 use crate::record::fps::FpsClock;
+use crate::record::settings::RecordSettings;
 use crate::record::Record;
 use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
@@ -131,15 +132,15 @@ impl Window {
 	/**
 	 * Draw a rectangle inside the window.
 	 *
-	 * @param fg_color
+	 * @param settings
 	 * @param padding
 	 */
-	pub fn draw_borders(&self, fg_color: u64, padding: u32) {
+	pub fn draw_borders(&self, settings: RecordSettings, padding: u32) {
 		unsafe {
 			xlib::XDrawRectangle(
 				self.display,
 				self.xid,
-				self.get_gc(fg_color),
+				self.get_gc(settings.color),
 				self.geometry.x + i32::try_from(padding).unwrap_or_default(),
 				self.geometry.y + i32::try_from(padding).unwrap_or_default(),
 				self.geometry.width - (padding * 2),
@@ -174,15 +175,20 @@ impl Window {
 	 * Show a text on the window for a given duration.
 	 *
 	 * @param  text (Option)
-	 * @param  fg_color
+	 * @param  settings
 	 * @param  clock
 	 */
-	fn show_text(&self, text: Option<String>, fg_color: u64, mut clock: FpsClock) {
+	fn show_text(
+		&self,
+		text: Option<String>,
+		settings: RecordSettings,
+		mut clock: FpsClock,
+	) {
 		let text = text.unwrap_or_default();
 		for _ in 0..clock.fps {
 			self.draw_text(
 				text.as_str(),
-				fg_color,
+				settings.color,
 				(self.geometry.width - 25).try_into().unwrap_or(20),
 				20,
 			);
@@ -193,21 +199,20 @@ impl Window {
 	/**
 	 * Show a countdown on the corner of window.
 	 *
-	 * @param count
-	 * @param fg_color
+	 * @param settings
 	 */
-	pub fn show_countdown(&self, count: u64, fg_color: u64) {
-		if count != 0 {
+	pub fn show_countdown(&self, settings: RecordSettings) {
+		if settings.countdown != 0 {
 			let clock = FpsClock::new(1000);
-			for i in 0..(count + 1) {
+			for i in 0..(settings.countdown + 1) {
 				self.clear_area();
 				self.show_text(
-					if i != count {
-						Some(format!("[{}]", count - i))
+					if i != settings.countdown {
+						Some(format!("[{}]", settings.countdown - i))
 					} else {
 						None
 					},
-					fg_color,
+					settings,
 					clock,
 				);
 			}

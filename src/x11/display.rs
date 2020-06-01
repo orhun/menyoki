@@ -113,7 +113,7 @@ impl Display {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
-			focused_window.draw_borders(self.settings.color, 5);
+			focused_window.draw_borders(self.settings, 5);
 			device_state.update();
 			if device_state.exit_keys_pressed {
 				warn!("User interrupt detected.");
@@ -130,8 +130,7 @@ impl Display {
 		}
 		focused_window.clear_area();
 		if !selection_canceled {
-			focused_window
-				.show_countdown(self.settings.countdown, self.settings.color);
+			focused_window.show_countdown(self.settings);
 			Some(focused_window)
 		} else {
 			None
