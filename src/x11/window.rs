@@ -133,18 +133,19 @@ impl Window {
 	 * Draw a rectangle inside the window.
 	 *
 	 * @param settings
-	 * @param padding
 	 */
-	pub fn draw_borders(&self, settings: RecordSettings, padding: u32) {
+	pub fn draw_borders(&self, settings: RecordSettings) {
 		unsafe {
 			xlib::XDrawRectangle(
 				self.display,
 				self.xid,
 				self.get_gc(settings.color),
-				self.geometry.x + i32::try_from(padding).unwrap_or_default(),
-				self.geometry.y + i32::try_from(padding).unwrap_or_default(),
-				self.geometry.width - (padding * 2),
-				self.geometry.height - (padding * 2),
+				self.geometry.x
+					+ i32::try_from(settings.padding).unwrap_or_default(),
+				self.geometry.y
+					+ i32::try_from(settings.padding).unwrap_or_default(),
+				self.geometry.width - (settings.padding * 2),
+				self.geometry.height - (settings.padding * 2),
 			);
 		}
 	}

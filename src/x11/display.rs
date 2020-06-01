@@ -113,7 +113,7 @@ impl Display {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
-			focused_window.draw_borders(self.settings, 5);
+			focused_window.draw_borders(self.settings);
 			device_state.update();
 			if device_state.exit_keys_pressed {
 				warn!("User interrupt detected.");
