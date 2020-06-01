@@ -144,7 +144,6 @@ mod tests {
 		});
 		let record = recorder.record_async();
 		thread::sleep(Duration::from_millis(200));
-		record.finish().unwrap();
-		assert!(record.thread.join().unwrap().len() > 0);
+		assert!(record.get().unwrap().unwrap().len() > 0);
 	}
 }
