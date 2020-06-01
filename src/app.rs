@@ -1,6 +1,5 @@
 use crate::encode::gif::{Frame, Gif};
-use crate::encode::Image;
-use crate::record::Recorder;
+use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use std::fs::File;
 use std::io::Error;
@@ -24,14 +23,14 @@ impl App {
 	/**
 	 * Start recording the frames.
 	 *
-	 * @param  get_image (Fn)
+	 * @param  window
 	 * @return Vector of Frame
 	 */
-	pub fn record(
-		&self,
-		get_image: impl Fn() -> Option<Image> + Sync + Send + 'static,
-	) -> Vec<Frame> {
-		let mut recorder = Recorder::new(self.settings.record, get_image);
+	pub fn record<T>(&self, window: T) -> Vec<Frame>
+	where
+		T: Record + Send + Sync + 'static,
+	{
+		let mut recorder = Recorder::new(self.settings.record, window);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
