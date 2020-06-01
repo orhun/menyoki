@@ -5,6 +5,16 @@ pub struct GifSettings {
 	pub speed: u32,
 }
 
+/* Default initialization values for GifSettings */
+impl Default for GifSettings {
+	fn default() -> Self {
+		Self {
+			repeat: -1,
+			speed: 10,
+		}
+	}
+}
+
 impl GifSettings {
 	/**
 	 * Create a new GifSettings object.
@@ -15,15 +25,5 @@ impl GifSettings {
 	 */
 	pub fn new(repeat: i32, speed: u32) -> Self {
 		Self { repeat, speed }
-	}
-}
-
-/* Default initialization values for GifSettings */
-impl Default for GifSettings {
-	fn default() -> Self {
-		Self {
-			repeat: -1,
-			speed: 10,
-		}
 	}
 }
