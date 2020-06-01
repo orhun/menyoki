@@ -9,7 +9,6 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::thread;
-use std::time::Duration;
 
 /* Required window methods for recording */
 pub trait Record {
@@ -124,9 +123,6 @@ where
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				self.window.show_countdown(self.settings);
-				thread::sleep(Duration::from_millis(
-					self.clock.get_fps(TimeUnit::Millisecond) as u64,
-				));
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
 					frames.push(self.get_frame())
