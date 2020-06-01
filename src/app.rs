@@ -38,8 +38,10 @@ impl App {
 				.get_command()
 				.execute()
 				.expect("Failed to run the command");
-			record.finish().expect("Failed to finish the recording");
-			record.thread.join().expect("Failed to retrieve the frames")
+			match record.get() {
+				Some(frames) => frames.expect("Failed to retrieve the frames"),
+				None => Vec::new(),
+			}
 		} else {
 			recorder.record_sync()
 		}
