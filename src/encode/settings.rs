@@ -41,8 +41,8 @@ impl GifSettings {
 			Some(matches) => {
 				let parser = ArgParser::new(&matches);
 				Self::new(
-					parser.parse::<i32>("repeat", Self::default().repeat),
-					parser.parse::<u32>("speed", Self::default().speed),
+					parser.parse("repeat", Self::default().repeat),
+					parser.parse("speed", Self::default().speed),
 				)
 			}
 			None => GifSettings::default(),

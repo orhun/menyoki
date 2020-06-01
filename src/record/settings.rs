@@ -73,11 +73,11 @@ impl RecordSettings {
 			Some(matches) => {
 				let parser = ArgParser::new(&matches);
 				Self::new(
-					parser.parse::<u32>("fps", Self::default().fps),
-					parser.parse::<u32>("padding", Self::default().padding),
-					parser.parse::<u64>("timeout", Self::default().timeout),
-					parser.parse::<u64>("interval", Self::default().interval),
-					parser.parse::<u64>("countdown", Self::default().countdown),
+					parser.parse("fps", Self::default().fps),
+					parser.parse("padding", Self::default().padding),
+					parser.parse("timeout", Self::default().timeout),
+					parser.parse("interval", Self::default().interval),
+					parser.parse("countdown", Self::default().countdown),
 					color,
 					matches.is_present("root"),
 				)
