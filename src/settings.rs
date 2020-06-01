@@ -2,7 +2,6 @@ use crate::encode::settings::GifSettings;
 use crate::record::settings::RecordSettings;
 use crate::util;
 use crate::util::cmd::Command;
-use crate::util::parser::ArgParser;
 use chrono::Local;
 use clap::ArgMatches;
 
@@ -100,15 +99,6 @@ impl AppSettings {
 	 * @return GifSettings
 	 */
 	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
-		match args.subcommand_matches("gif") {
-			Some(matches) => {
-				let parser = ArgParser::new(&matches);
-				GifSettings::new(
-					parser.parse("repeat", -1),
-					parser.parse("speed", 10),
-				)
-			}
-			None => GifSettings::default(),
-		}
+		GifSettings::from_args(args.subcommand_matches("gif"))
 	}
 }

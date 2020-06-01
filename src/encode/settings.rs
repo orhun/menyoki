@@ -1,3 +1,6 @@
+use crate::util::parser::ArgParser;
+use clap::ArgMatches;
+
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]
 pub struct GifSettings {
@@ -25,5 +28,24 @@ impl GifSettings {
 	 */
 	pub fn new(repeat: i32, speed: u32) -> Self {
 		Self { repeat, speed }
+	}
+
+	/**
+	 * Create a GifSettings object from parsed arguments.
+	 *
+	 * @param  args
+	 * @return RecordSettings
+	 */
+	pub fn from_args(args: Option<&ArgMatches<'static>>) -> Self {
+		match args {
+			Some(matches) => {
+				let parser = ArgParser::new(&matches);
+				Self::new(
+					parser.parse::<i32>("repeat", Self::default().repeat),
+					parser.parse::<u32>("speed", Self::default().speed),
+				)
+			}
+			None => GifSettings::default(),
+		}
 	}
 }
