@@ -1,7 +1,8 @@
 pub mod display;
 pub mod window;
 
-use crate::encode::{Capture, Image};
+use crate::encode::Image;
+use crate::record::Record;
 use crate::settings::AppSettings;
 use crate::x11::display::Display;
 use crate::x11::window::Window;

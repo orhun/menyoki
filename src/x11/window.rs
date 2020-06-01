@@ -1,5 +1,6 @@
-use crate::encode::{Bgr, Capture, Geometry, Image};
+use crate::encode::{Bgr, Geometry, Image};
 use crate::record::fps::FpsClock;
+use crate::record::Record;
 use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
 use std::fmt;
@@ -230,7 +231,7 @@ impl Window {
 	}
 }
 
-impl Capture for Window {
+impl Record for Window {
 	/**
 	 * Get the image of the window.
 	 *

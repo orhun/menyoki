@@ -75,11 +75,6 @@ impl Image {
 	}
 }
 
-/* Image capture methods */
-pub trait Capture {
-	fn get_image(&self) -> Option<Image>;
-}
-
 #[cfg(test)]
 mod tests {
 	use super::*;

@@ -11,6 +11,11 @@ use std::sync::Arc;
 use std::thread;
 use std::time::Duration;
 
+/* Required window methods for recording */
+pub trait Record {
+	fn get_image(&self) -> Option<Image>;
+}
+
 /* Asynchronous recording result */
 #[derive(Debug)]
 pub struct RecordResult<T> {
