@@ -1,8 +1,6 @@
 pub mod display;
 pub mod window;
 
-use crate::encode::Image;
-use crate::record::Record;
 use crate::settings::AppSettings;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
@@ -38,27 +36,13 @@ impl WindowSystem {
 	 *
 	 * @return Window (Option)
 	 */
-	fn get_record_window(&self) -> Option<Window> {
+	pub fn get_record_window(&self) -> Option<Window> {
 		if self.settings.record.record_root {
 			Some(self.display.get_root_window())
 		} else if self.settings.args.is_present("command") {
 			self.display.get_focused_window()
 		} else {
 			self.display.select_window()
-		}
-	}
-
-	/**
-	 * Get the window recording function of the selected window.
-	 *
-	 * @return Fn (Option)
-	 */
-	pub fn get_record_func(&mut self) -> Option<impl Fn() -> Option<Image>> {
-		if let Some(mut window) = self.get_record_window() {
-			window.reset_position();
-			Some(move || window.get_image())
-		} else {
-			None
 		}
 	}
 }
