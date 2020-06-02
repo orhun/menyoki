@@ -27,11 +27,7 @@ fn main() -> Result<(), Error> {
 	if let Some(window) = window_system.get_record_window() {
 		let frames = app.record(window);
 		info!("frames: {}", frames.len());
-		if !frames.is_empty() {
-			app.save_gif(frames)?;
-		} else {
-			warn!("No frames found to save.");
-		}
+		app.save_gif(frames)?;
 	} else {
 		error!("Cannot the record the window.")
 	}
