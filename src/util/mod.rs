@@ -41,6 +41,13 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.help("Records the root window"),
 				)
 				.arg(
+					Arg::with_name("focus")
+						.short("w")
+						.long("focus")
+						.conflicts_with("root")
+						.help("Records the focus window"),
+				)
+				.arg(
 					Arg::with_name("countdown")
 						.short("c")
 						.long("countdown")

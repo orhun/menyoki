@@ -11,6 +11,7 @@ pub struct RecordSettings {
 	pub countdown: u64,
 	pub color: u64,
 	pub record_root: bool,
+	pub record_focus: bool,
 }
 
 /* Default initialization values for RecordSettings */
@@ -24,6 +25,7 @@ impl Default for RecordSettings {
 			countdown: 3,
 			color: 0x00ff_00ff,
 			record_root: false,
+			record_focus: false,
 		}
 	}
 }
@@ -39,6 +41,7 @@ impl RecordSettings {
 	 * @param  countdown
 	 * @param  color
 	 * @param  record_root
+	 * @param  record_focus
 	 * @return RecordSettings
 	 */
 	pub fn new(
@@ -49,6 +52,7 @@ impl RecordSettings {
 		countdown: u64,
 		color: u64,
 		record_root: bool,
+		record_focus: bool,
 	) -> Self {
 		Self {
 			fps,
@@ -58,6 +62,7 @@ impl RecordSettings {
 			countdown,
 			color,
 			record_root,
+			record_focus,
 		}
 	}
 
@@ -80,6 +85,7 @@ impl RecordSettings {
 					parser.parse("countdown", Self::default().countdown),
 					color,
 					matches.is_present("root"),
+					matches.is_present("focus"),
 				)
 			}
 			None => {

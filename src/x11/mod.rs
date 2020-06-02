@@ -39,7 +39,9 @@ impl WindowSystem {
 	pub fn get_record_window(&self) -> Option<Window> {
 		if self.settings.record.record_root {
 			Some(self.display.get_root_window())
-		} else if self.settings.args.is_present("command") {
+		} else if self.settings.args.is_present("command")
+			|| self.settings.record.record_focus
+		{
 			self.display.get_focused_window()
 		} else {
 			self.display.select_window()
