@@ -68,12 +68,12 @@ pub fn parse_args() -> ArgMatches<'static> {
 						.takes_value(true),
 				)
 				.arg(
-					Arg::with_name("padding")
-						.short("p")
-						.long("padding")
-						.value_name("PADDING")
+					Arg::with_name("border")
+						.short("b")
+						.long("border")
+						.value_name("BORDER")
 						.default_value("5")
-						.help("Sets the padding value for recording")
+						.help("Sets the border padding value")
 						.takes_value(true),
 				)
 				.arg(

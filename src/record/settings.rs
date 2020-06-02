@@ -5,7 +5,7 @@ use clap::ArgMatches;
 #[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
 	pub fps: u32,
-	pub padding: u32,
+	pub border: u32,
 	pub timeout: u64,
 	pub interval: u64,
 	pub countdown: u64,
@@ -18,7 +18,7 @@ impl Default for RecordSettings {
 	fn default() -> Self {
 		Self {
 			fps: 10,
-			padding: 5,
+			border: 5,
 			timeout: 30,
 			interval: 10,
 			countdown: 3,
@@ -33,7 +33,7 @@ impl RecordSettings {
 	 * Create a new RecordSettings object.
 	 *
 	 * @param  fps
-	 * @param  padding
+	 * @param  border
 	 * @param  timeout
 	 * @param  interval
 	 * @param  countdown
@@ -43,7 +43,7 @@ impl RecordSettings {
 	 */
 	pub fn new(
 		fps: u32,
-		padding: u32,
+		border: u32,
 		timeout: u64,
 		interval: u64,
 		countdown: u64,
@@ -52,7 +52,7 @@ impl RecordSettings {
 	) -> Self {
 		Self {
 			fps,
-			padding,
+			border,
 			timeout,
 			interval,
 			countdown,
@@ -74,7 +74,7 @@ impl RecordSettings {
 				let parser = ArgParser::new(&matches);
 				Self::new(
 					parser.parse("fps", Self::default().fps),
-					parser.parse("padding", Self::default().padding),
+					parser.parse("border", Self::default().border),
 					parser.parse("timeout", Self::default().timeout),
 					parser.parse("interval", Self::default().interval),
 					parser.parse("countdown", Self::default().countdown),

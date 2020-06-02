@@ -141,12 +141,10 @@ impl Window {
 				self.display,
 				self.xid,
 				self.get_gc(settings.color),
-				self.geometry.x
-					+ i32::try_from(settings.padding).unwrap_or_default(),
-				self.geometry.y
-					+ i32::try_from(settings.padding).unwrap_or_default(),
-				self.geometry.width - (settings.padding * 2),
-				self.geometry.height - (settings.padding * 2),
+				self.geometry.x + i32::try_from(settings.border).unwrap_or_default(),
+				self.geometry.y + i32::try_from(settings.border).unwrap_or_default(),
+				self.geometry.width - (settings.border * 2),
+				self.geometry.height - (settings.border * 2),
 			);
 		}
 	}
