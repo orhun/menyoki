@@ -72,17 +72,17 @@ impl App {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::encode::Geometry;
+	use crate::encode::Image;
+	use crate::test::TestWindow;
 	use crate::util;
 	use crate::util::cmd::Command;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let settings = AppSettings::new(util::parse_args());
 		let app = App::new(settings);
-		let geometry = Geometry::new(0, 0, 1, 1);
-		let mut frames =
-			app.record(move || Some(Image::new(vec![0, 0, 0], geometry)));
-		frames.push(Frame::new(Image::new(vec![255, 255, 255], geometry), 0));
+		let window = TestWindow::default();
+		let mut frames = app.record(window);
+		frames.push(Frame::new(Image::new(vec![0, 0, 0], window.geometry), 0));
 		app.save_gif(frames)?;
 		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
