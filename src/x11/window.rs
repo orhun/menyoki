@@ -1,4 +1,5 @@
-use crate::encode::{Bgr, Geometry, Image};
+use crate::image::bgr::Bgr;
+use crate::image::{Geometry, Image};
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::record::Record;

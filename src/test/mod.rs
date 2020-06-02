@@ -1,4 +1,4 @@
-use crate::encode::{Geometry, Image};
+use crate::image::{Geometry, Image};
 use crate::record::settings::RecordSettings;
 use crate::record::Record;
 

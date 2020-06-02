@@ -1,5 +1,5 @@
 use crate::encode::settings::GifSettings;
-use crate::encode::{Geometry, Image};
+use crate::image::{Geometry, Image};
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::convert::TryInto;
 use std::fs::File;

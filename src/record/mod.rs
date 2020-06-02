@@ -2,7 +2,7 @@ pub mod fps;
 pub mod settings;
 
 use crate::encode::gif::Frame;
-use crate::encode::Image;
+use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
 use crate::record::settings::RecordSettings;
 use std::sync::atomic::{AtomicBool, Ordering};

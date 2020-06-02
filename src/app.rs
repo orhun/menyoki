@@ -72,7 +72,7 @@ impl App {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::encode::Image;
+	use crate::image::Image;
 	use crate::test::TestWindow;
 	use crate::util;
 	use crate::util::cmd::Command;
