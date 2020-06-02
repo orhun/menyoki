@@ -7,6 +7,7 @@ mod app;
 mod encode;
 mod record;
 mod settings;
+mod test;
 mod util;
 mod x11;
 use self::app::App;
