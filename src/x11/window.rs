@@ -213,6 +213,7 @@ impl Window {
 	}
 }
 
+/* Record implementation for X11 Window */
 impl Record for Window {
 	/**
 	 * Get the image of the window.
