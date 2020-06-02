@@ -80,6 +80,7 @@ unsafe extern "C" fn x11_error_handler(
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::record::Record;
 	use crate::util;
 	#[test]
 	fn test_x11_mod() {
@@ -91,7 +92,10 @@ mod tests {
 		);
 		assert_eq!(
 			1366 * 768 * 3,
-			(window_system.get_record_func().unwrap())()
+			window_system
+				.get_record_window()
+				.unwrap()
+				.get_image()
 				.unwrap()
 				.data
 				.len()
