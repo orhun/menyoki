@@ -1,4 +1,4 @@
-use crate::encode::gif::{Frame, Gif};
+use crate::gif::{Frame, Gif};
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use std::fs::File;

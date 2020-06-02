@@ -1,4 +1,5 @@
-use crate::encode::settings::GifSettings;
+pub mod settings;
+use crate::gif::settings::GifSettings;
 use crate::image::{Geometry, Image};
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::convert::TryInto;

@@ -1,4 +1,4 @@
-use crate::encode::settings::GifSettings;
+use crate::gif::settings::GifSettings;
 use crate::record::settings::RecordSettings;
 use crate::util;
 use crate::util::cmd::Command;

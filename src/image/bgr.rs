@@ -16,7 +16,7 @@ impl Bgr {
 	 * @param  r
 	 * @return Bgr
 	 */
-    #[allow(dead_code)]
+	#[allow(dead_code)]
 	pub fn new(b: u8, g: u8, r: u8) -> Self {
 		Self { b, g, r, _p: 0 }
 	}

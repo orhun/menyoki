@@ -4,7 +4,7 @@
 #[macro_use]
 extern crate log;
 mod app;
-mod encode;
+mod gif;
 mod image;
 mod record;
 mod settings;
