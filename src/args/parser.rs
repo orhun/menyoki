@@ -31,9 +31,7 @@ impl<'a> ArgParser<'a> {
 	) -> Self {
 		let mut matches = args.subcommand_matches(subcommands[0]);
 		for subcommand in subcommands.iter().skip(1) {
-			matches = matches.and_then(|args| {
-				args.subcommand_matches(subcommand).map(|args| args)
-			});
+			matches = matches.and_then(|args| args.subcommand_matches(subcommand));
 		}
 		Self::new(matches)
 	}
