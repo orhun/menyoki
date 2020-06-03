@@ -25,7 +25,10 @@ impl<'a> ArgParser<'a> {
 	 * @param  subcommands
 	 * @return ArgParser
 	 */
-	pub fn from_subcommand(args: &'a ArgMatches<'a>, subcommands: &[&str]) -> Self {
+	pub fn from_subcommand(
+		args: &'a ArgMatches<'a>,
+		subcommands: Vec<&str>,
+	) -> Self {
 		let mut matches = args.subcommand_matches(subcommands[0]);
 		for subcommand in subcommands.iter().skip(1) {
 			matches = matches.and_then(|args| {
