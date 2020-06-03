@@ -38,7 +38,7 @@ impl GifSettings {
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(_) => Self::new(
-				parser.parse("repeat", Self::default().repeat),
+				parser.parse("repeat", Self::default().repeat) - 1,
 				parser.parse("speed", Self::default().speed),
 			),
 			None => GifSettings::default(),
