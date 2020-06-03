@@ -13,11 +13,12 @@ mod util;
 mod x11;
 use self::app::App;
 use self::settings::AppSettings;
+use self::util::args::Args;
 use self::x11::WindowSystem;
 use std::io::Error;
 
 fn main() -> Result<(), Error> {
-	let args = util::parse_args();
+	let args = Args::parse();
 	util::init_logger().expect("Failed to initialize the logger");
 
 	println!("thank god it's friday");
