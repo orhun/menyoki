@@ -54,8 +54,7 @@ impl AppSettings {
 	 * @return String
 	 */
 	pub fn get_output_file(&self) -> String {
-		match ArgParser::new(self.args.clone())
-			.parse_subcommand(&["record", "gif", "save"])
+		match ArgParser::from_subcommand(&self.args, &["record", "gif", "save"]).args
 		{
 			Some(matches) => {
 				let mut file_name =
@@ -89,7 +88,7 @@ impl AppSettings {
 	 */
 	fn get_record_settings(args: ArgMatches<'static>) -> RecordSettings {
 		RecordSettings::from_args(
-			ArgParser::new(args.clone()).parse_subcommand(&["record"]),
+			ArgParser::from_subcommand(&args, &["record"]),
 			u64::from_str_radix(args.value_of("color").unwrap_or("FF00FF"), 16)
 				.expect("Failed to parse the color HEX"),
 		)
@@ -102,8 +101,6 @@ impl AppSettings {
 	 * @return GifSettings
 	 */
 	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
-		GifSettings::from_args(
-			ArgParser::new(args).parse_subcommand(&["record", "gif"]),
-		)
+		GifSettings::from_args(ArgParser::from_subcommand(&args, &["record", "gif"]))
 	}
 }

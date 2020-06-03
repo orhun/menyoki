@@ -1,5 +1,4 @@
 use crate::util::parser::ArgParser;
-use clap::ArgMatches;
 
 /* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
@@ -69,25 +68,22 @@ impl RecordSettings {
 	/**
 	 * Create a RecordSettings object from parsed arguments.
 	 *
-	 * @param  args
+	 * @param  parser
 	 * @param  color
 	 * @return RecordSettings
 	 */
-	pub fn from_args(args: Option<&ArgMatches<'static>>, color: u64) -> Self {
-		match args {
-			Some(matches) => {
-				let parser = ArgParser::new(matches.clone());
-				Self::new(
-					parser.parse("fps", Self::default().fps),
-					parser.parse("border", Self::default().border),
-					parser.parse("timeout", Self::default().timeout),
-					parser.parse("interval", Self::default().interval),
-					parser.parse("countdown", Self::default().countdown),
-					color,
-					matches.is_present("root"),
-					matches.is_present("focus"),
-				)
-			}
+	pub fn from_args(parser: ArgParser<'_>, color: u64) -> Self {
+		match parser.args {
+			Some(matches) => Self::new(
+				parser.parse("fps", Self::default().fps),
+				parser.parse("border", Self::default().border),
+				parser.parse("timeout", Self::default().timeout),
+				parser.parse("interval", Self::default().interval),
+				parser.parse("countdown", Self::default().countdown),
+				color,
+				matches.is_present("root"),
+				matches.is_present("focus"),
+			),
 			None => {
 				let mut settings = RecordSettings::default();
 				settings.color = color;
