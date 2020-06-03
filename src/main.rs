@@ -13,8 +13,8 @@ mod test;
 mod util;
 mod x11;
 use self::app::App;
+use self::args::Args;
 use self::settings::AppSettings;
-use self::util::args::Args;
 use self::x11::WindowSystem;
 use std::io::Error;
 

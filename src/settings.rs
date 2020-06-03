@@ -2,7 +2,7 @@ use crate::gif::settings::GifSettings;
 use crate::record::settings::RecordSettings;
 use crate::util;
 use crate::util::cmd::Command;
-use crate::util::parser::ArgParser;
+use crate::args::parser::ArgParser;
 use chrono::Local;
 use clap::ArgMatches;
 

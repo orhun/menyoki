@@ -1,4 +1,4 @@
-use crate::util::parser::ArgParser;
+use crate::args::parser::ArgParser;
 
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]

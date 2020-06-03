@@ -1,4 +1,4 @@
-use crate::util::parser::ArgParser;
+use crate::args::parser::ArgParser;
 
 /* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
