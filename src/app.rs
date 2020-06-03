@@ -72,13 +72,13 @@ impl App {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::args::Args;
 	use crate::image::Image;
 	use crate::test::TestWindow;
-	use crate::util;
 	use crate::util::cmd::Command;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
-		let settings = AppSettings::new(util::parse_args());
+		let settings = AppSettings::new(Args::parse());
 		let app = App::new(settings);
 		let window = TestWindow::default();
 		let mut frames = app.record(window);
