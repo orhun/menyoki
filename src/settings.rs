@@ -99,6 +99,9 @@ impl AppSettings {
 	 * @return GifSettings
 	 */
 	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
-		GifSettings::from_args(args.subcommand_matches("gif"))
+		GifSettings::from_args(
+			args.subcommand_matches("record")
+				.and_then(|args| args.subcommand_matches("gif").map(|args| args)),
+		)
 	}
 }
