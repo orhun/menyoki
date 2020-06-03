@@ -1,7 +1,6 @@
-pub mod args;
 pub mod cmd;
 pub mod device;
-pub mod parser;
+
 use chrono::Local;
 use fern::colors::{Color, ColoredLevelConfig};
 use fern::Dispatch;

@@ -1,3 +1,4 @@
+pub mod parser;
 use clap::{App, Arg, ArgMatches, SubCommand};
 
 /* Command-line arguments */
