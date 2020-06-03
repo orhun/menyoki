@@ -82,11 +82,11 @@ unsafe extern "C" fn x11_error_handler(
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::args::Args;
 	use crate::record::Record;
-	use crate::util;
 	#[test]
 	fn test_x11_mod() {
-		let settings = AppSettings::new(util::parse_args());
+		let settings = AppSettings::new(Args::parse());
 		let window_system = WindowSystem::init(settings).unwrap();
 		window_system.display.set_focused_window(
 			window_system.display.get_root_window().xid,
