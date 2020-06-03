@@ -1,6 +1,5 @@
 pub mod cmd;
 pub mod device;
-
 use chrono::Local;
 use fern::colors::{Color, ColoredLevelConfig};
 use fern::Dispatch;
@@ -58,12 +57,6 @@ pub fn update_file_name(file_name: String, info: String) -> String {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	#[test]
-	fn test_parse_args() {
-		let matches = parse_args();
-		assert!(matches.args.len() > 0);
-		assert!(matches.usage.unwrap().lines().count() > 1);
-	}
 	#[test]
 	fn test_update_file_name() {
 		assert_eq!(
