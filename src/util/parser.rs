@@ -1,7 +1,7 @@
 use clap::ArgMatches;
 use std::str::FromStr;
 
-/* Clap argument parser */
+/* Clap single argument parser */
 #[derive(Debug)]
 pub struct ArgParser<'a> {
 	pub args: &'a ArgMatches<'a>,
