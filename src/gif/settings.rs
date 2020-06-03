@@ -39,7 +39,7 @@ impl GifSettings {
 	pub fn from_args(args: Option<&ArgMatches<'static>>) -> Self {
 		match args {
 			Some(matches) => {
-				let parser = ArgParser::new(&matches);
+				let parser = ArgParser::new(matches.clone());
 				Self::new(
 					parser.parse("repeat", Self::default().repeat),
 					parser.parse("speed", Self::default().speed),

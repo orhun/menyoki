@@ -76,7 +76,7 @@ impl RecordSettings {
 	pub fn from_args(args: Option<&ArgMatches<'static>>, color: u64) -> Self {
 		match args {
 			Some(matches) => {
-				let parser = ArgParser::new(&matches);
+				let parser = ArgParser::new(matches.clone());
 				Self::new(
 					parser.parse("fps", Self::default().fps),
 					parser.parse("border", Self::default().border),

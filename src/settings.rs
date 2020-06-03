@@ -2,6 +2,7 @@ use crate::gif::settings::GifSettings;
 use crate::record::settings::RecordSettings;
 use crate::util;
 use crate::util::cmd::Command;
+use crate::util::parser::ArgParser;
 use chrono::Local;
 use clap::ArgMatches;
 
@@ -53,7 +54,9 @@ impl AppSettings {
 	 * @return String
 	 */
 	pub fn get_output_file(&self) -> String {
-		match self.args.subcommand_matches("save") {
+		match ArgParser::new(self.args.clone())
+			.parse_subcommand(&["record", "gif", "save"])
+		{
 			Some(matches) => {
 				let mut file_name =
 					String::from(matches.value_of("output").unwrap_or_default());
@@ -86,7 +89,7 @@ impl AppSettings {
 	 */
 	fn get_record_settings(args: ArgMatches<'static>) -> RecordSettings {
 		RecordSettings::from_args(
-			args.subcommand_matches("record"),
+			ArgParser::new(args.clone()).parse_subcommand(&["record"]),
 			u64::from_str_radix(args.value_of("color").unwrap_or("FF00FF"), 16)
 				.expect("Failed to parse the color HEX"),
 		)
@@ -100,8 +103,7 @@ impl AppSettings {
 	 */
 	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
 		GifSettings::from_args(
-			args.subcommand_matches("record")
-				.and_then(|args| args.subcommand_matches("gif").map(|args| args)),
+			ArgParser::new(args).parse_subcommand(&["record", "gif"]),
 		)
 	}
 }

@@ -4,7 +4,7 @@ use std::str::FromStr;
 /* Clap single argument parser */
 #[derive(Debug)]
 pub struct ArgParser<'a> {
-	pub args: &'a ArgMatches<'a>,
+	pub args: ArgMatches<'a>,
 }
 
 impl<'a> ArgParser<'a> {
@@ -14,7 +14,7 @@ impl<'a> ArgParser<'a> {
 	 * @param  args
 	 * @return ArgParser
 	 */
-	pub fn new(args: &'a ArgMatches<'a>) -> Self {
+	pub fn new(args: ArgMatches<'a>) -> Self {
 		Self { args }
 	}
 
@@ -31,5 +31,15 @@ impl<'a> ArgParser<'a> {
 			.unwrap_or_default()
 			.parse()
 			.unwrap_or(default_value)
+	}
+
+	pub fn parse_subcommand(&self, subcommands: &[&str]) -> Option<&ArgMatches<'a>> {
+		let mut matches = self.args.subcommand_matches(subcommands[0]);
+		for subcommand in subcommands.iter().skip(1) {
+			matches = matches.and_then(|args| {
+				args.subcommand_matches(subcommand).map(|args| args)
+			})
+		}
+		matches
 	}
 }
