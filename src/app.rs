@@ -30,7 +30,7 @@ impl App {
 	where
 		T: Record + Send + Sync + Copy + 'static,
 	{
-		let mut recorder = Recorder::new(self.settings.record, window);
+		let mut recorder = Recorder::new(self.settings.record.fps, window);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
@@ -42,7 +42,7 @@ impl App {
 				None => Vec::new(),
 			}
 		} else {
-			window.show_countdown(self.settings.record);
+			window.show_countdown();
 			recorder.record_sync()
 		}
 	}

@@ -1,5 +1,4 @@
 use crate::image::{Geometry, Image, Padding};
-use crate::record::settings::RecordSettings;
 use crate::record::Record;
 
 #[derive(Clone, Copy, Debug)]
@@ -38,5 +37,5 @@ impl Record for TestWindow {
 	}
 
 	/* Do not show countdown for testing window. */
-	fn show_countdown(&self, _: RecordSettings) {}
+	fn show_countdown(&self) {}
 }

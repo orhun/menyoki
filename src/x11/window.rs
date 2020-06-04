@@ -17,6 +17,7 @@ pub struct Window {
 	pub xid: u64,
 	pub display: *mut xlib::Display,
 	pub geometry: Geometry,
+	pub settings: RecordSettings,
 }
 
 /* Implementations for thread-safe usage */
@@ -42,14 +43,20 @@ impl Window {
 	 *
 	 * @param  xid
 	 * @param  display
+	 * @param  settings
 	 * @return Window
 	 */
-	pub fn new(xid: u64, display: *mut xlib::Display) -> Self {
+	pub fn new(
+		xid: u64,
+		display: *mut xlib::Display,
+		settings: RecordSettings,
+	) -> Self {
 		unsafe {
 			Self {
 				xid,
 				display,
 				geometry: Geometry::default(),
+				settings,
 			}
 			.set_geometry()
 		}
@@ -124,21 +131,19 @@ impl Window {
 		}
 	}
 
-	/**
-	 * Draw a rectangle inside the window.
-	 *
-	 * @param settings
-	 */
-	pub fn draw_borders(&self, settings: RecordSettings) {
+	/* Draw a rectangle inside the window. */
+	pub fn draw_borders(&self) {
 		unsafe {
 			xlib::XDrawRectangle(
 				self.display,
 				self.xid,
-				self.get_gc(settings.color),
-				self.geometry.x + i32::try_from(settings.border).unwrap_or_default(),
-				self.geometry.y + i32::try_from(settings.border).unwrap_or_default(),
-				self.geometry.width - (settings.border * 2),
-				self.geometry.height - (settings.border * 2),
+				self.get_gc(self.settings.color),
+				self.geometry.x
+					+ i32::try_from(self.settings.border).unwrap_or_default(),
+				self.geometry.y
+					+ i32::try_from(self.settings.border).unwrap_or_default(),
+				self.geometry.width - (self.settings.border * 2),
+				self.geometry.height - (self.settings.border * 2),
 			);
 		}
 	}
@@ -169,20 +174,14 @@ impl Window {
 	 * Show a text on the window for a given duration.
 	 *
 	 * @param  text (Option)
-	 * @param  settings
 	 * @param  clock
 	 */
-	fn show_text(
-		&self,
-		text: Option<String>,
-		settings: RecordSettings,
-		mut clock: FpsClock,
-	) {
+	fn show_text(&self, text: Option<String>, mut clock: FpsClock) {
 		let text = text.unwrap_or_default();
 		for _ in 0..clock.fps {
 			self.draw_text(
 				text.as_str(),
-				settings.color,
+				self.settings.color,
 				(self.geometry.width - 25).try_into().unwrap_or(20),
 				20,
 			);
@@ -239,23 +238,18 @@ impl Record for Window {
 		}
 	}
 
-	/**
-	 * Show a countdown on the corner of window.
-	 *
-	 * @param settings
-	 */
-	fn show_countdown(&self, settings: RecordSettings) {
-		if settings.countdown != 0 {
+	/* Show a countdown on the corner of window. */
+	fn show_countdown(&self) {
+		if self.settings.countdown != 0 {
 			let clock = FpsClock::new(1000);
-			for i in 0..(settings.countdown + 1) {
+			for i in 0..(self.settings.countdown + 1) {
 				self.clear_area();
 				self.show_text(
-					if i != settings.countdown {
-						Some(format!("[{}]", settings.countdown - i))
+					if i != self.settings.countdown {
+						Some(format!("[{}]", self.settings.countdown - i))
 					} else {
 						None
 					},
-					settings,
 					clock,
 				);
 			}

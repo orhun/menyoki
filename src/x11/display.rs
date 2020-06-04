@@ -54,6 +54,7 @@ impl Display {
 			Window::new(
 				xlib::XRootWindowOfScreen(self.get_default_screen()),
 				self.display,
+				self.settings,
 			)
 		}
 	}
@@ -73,7 +74,11 @@ impl Display {
 				focus_state.as_mut_ptr(),
 			);
 			if focus_state.assume_init() != xlib::RevertToNone {
-				Some(Window::new(*focus_window.as_ptr(), self.display))
+				Some(Window::new(
+					*focus_window.as_ptr(),
+					self.display,
+					self.settings,
+				))
 			} else {
 				None
 			}
@@ -113,7 +118,7 @@ impl Display {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
-			focused_window.draw_borders(self.settings);
+			focused_window.draw_borders();
 			device_state.update();
 			if device_state.exit_keys_pressed {
 				warn!("User interrupt detected.");

@@ -4,7 +4,6 @@ pub mod settings;
 use crate::gif::Frame;
 use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
-use crate::record::settings::RecordSettings;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -13,7 +12,7 @@ use std::thread;
 /* Required window methods for recording */
 pub trait Record {
 	fn get_image(&self) -> Option<Image>;
-	fn show_countdown(&self, settings: RecordSettings);
+	fn show_countdown(&self);
 }
 
 /* Asynchronous recording result */
@@ -51,7 +50,6 @@ impl<T> RecordResult<T> {
 
 /* Recorder with FPS clock and channel */
 pub struct Recorder<T> {
-	settings: RecordSettings,
 	window: T,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
@@ -64,15 +62,14 @@ where
 	/**
 	 * Create a new Recorder object.
 	 *
-	 * @param  settings
+	 * @param  fps
 	 * @param  window
 	 * @return Recorder
 	 */
-	pub fn new(settings: RecordSettings, window: T) -> Self {
+	pub fn new(fps: u32, window: T) -> Self {
 		Self {
-			settings,
 			window,
-			clock: FpsClock::new(settings.fps),
+			clock: FpsClock::new(fps),
 			channel: mpsc::channel(),
 		}
 	}
@@ -122,7 +119,7 @@ where
 		RecordResult::new(
 			self.channel.0.clone(),
 			thread::spawn(move || {
-				self.window.show_countdown(self.settings);
+				self.window.show_countdown();
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
 					frames.push(self.get_frame())
