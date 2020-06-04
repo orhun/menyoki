@@ -1,5 +1,13 @@
 use crate::args::parser::ArgParser;
 
+/* Window to record */
+#[derive(Clone, Copy, Debug)]
+pub enum RecordWindow {
+	Focus,
+	Root,
+	None,
+}
+
 /* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
@@ -9,8 +17,7 @@ pub struct RecordSettings {
 	pub interval: u64,
 	pub countdown: u64,
 	pub color: u64,
-	pub record_root: bool,
-	pub record_focus: bool,
+	pub window: RecordWindow,
 }
 
 /* Default initialization values for RecordSettings */
@@ -23,8 +30,7 @@ impl Default for RecordSettings {
 			interval: 10,
 			countdown: 3,
 			color: 0x00ff_00ff,
-			record_root: false,
-			record_focus: false,
+			window: RecordWindow::None,
 		}
 	}
 }
@@ -39,8 +45,7 @@ impl RecordSettings {
 	 * @param  interval
 	 * @param  countdown
 	 * @param  color
-	 * @param  record_root
-	 * @param  record_focus
+	 * @param  window
 	 * @return RecordSettings
 	 */
 	pub fn new(
@@ -50,8 +55,7 @@ impl RecordSettings {
 		interval: u64,
 		countdown: u64,
 		color: u64,
-		record_root: bool,
-		record_focus: bool,
+		window: RecordWindow,
 	) -> Self {
 		Self {
 			fps,
@@ -60,8 +64,7 @@ impl RecordSettings {
 			interval,
 			countdown,
 			color,
-			record_root,
-			record_focus,
+			window,
 		}
 	}
 
@@ -81,8 +84,13 @@ impl RecordSettings {
 				parser.parse("interval", Self::default().interval),
 				parser.parse("countdown", Self::default().countdown),
 				color,
-				matches.is_present("root"),
-				matches.is_present("focus"),
+				if matches.is_present("focus") {
+					RecordWindow::Focus
+				} else if matches.is_present("root") {
+					RecordWindow::Root
+				} else {
+					RecordWindow::None
+				},
 			),
 			None => {
 				let mut settings = RecordSettings::default();
