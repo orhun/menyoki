@@ -149,10 +149,11 @@ impl Drop for Display {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::record::settings::RecordWindow;
 	#[test]
 	fn test_display_mod() {
 		let settings =
-			RecordSettings::new(10, 0, 0, 10, 0, 0x00ff_00ff, false, false);
+			RecordSettings::new(10, 0, 0, 10, 0, 0x00ff_00ff, RecordWindow::None);
 		let display = Display::open(Some(settings)).unwrap();
 		display
 			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);

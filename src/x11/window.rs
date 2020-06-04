@@ -273,11 +273,12 @@ impl Record for Window {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::record::settings::RecordWindow;
 	use crate::x11::display::Display;
 	#[test]
 	fn test_window_mod() {
 		let settings =
-			RecordSettings::new(10, 0, 0, 10, 1, 0x00ff_00ff, false, false);
+			RecordSettings::new(10, 0, 0, 10, 1, 0x00ff_00ff, RecordWindow::None);
 		let display = Display::open(Some(settings)).unwrap();
 		let mut window = display.get_root_window();
 		window.reset_position();
