@@ -10,6 +10,26 @@ pub struct Padding {
 	left: u32,
 }
 
+impl Padding {
+	/**
+	 * Create a new Padding object.
+	 *
+	 * @param  top
+	 * @param  right
+	 * @param  bottom
+	 * @param  left
+	 * @return Padding
+	 */
+	pub fn new(top: u32, right: u32, bottom: u32, left: u32) -> Self {
+		Self {
+			top,
+			right,
+			bottom,
+			left,
+		}
+	}
+}
+
 /* Position and size in 2D */
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Geometry {
