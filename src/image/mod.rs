@@ -1,4 +1,5 @@
 pub mod bgr;
+use std::convert::TryFrom;
 
 /* Padding properties */
 #[derive(Clone, Copy, Debug, Default)]
@@ -26,14 +27,15 @@ impl Geometry {
 	 * @param  y
 	 * @param  width
 	 * @param  height
+	 * @param  padding
 	 * @return Geometry
 	 */
-	pub fn new(x: i32, y: i32, width: u32, height: u32) -> Self {
+	pub fn new(x: i32, y: i32, width: u32, height: u32, padding: Padding) -> Self {
 		Self {
-			x,
-			y,
-			width,
-			height,
+			x: x + i32::try_from(padding.right).unwrap_or_default(),
+			y: y + i32::try_from(padding.top).unwrap_or_default(),
+			width: width - (padding.right + padding.left),
+			height: height - (padding.top + padding.bottom),
 		}
 	}
 }
