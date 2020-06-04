@@ -171,6 +171,15 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("padding")
+					.short("p")
+					.long("padding")
+					.value_name("PADDING")
+					.default_value("\"0:0:0:0\"")
+					.help("Sets the recording area padding value")
+					.takes_value(true),
+			)
+			.arg(
 				Arg::with_name("timeout")
 					.short("t")
 					.long("timeout")
