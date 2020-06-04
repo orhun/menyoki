@@ -1,5 +1,14 @@
 pub mod bgr;
 
+/* Padding properties */
+#[derive(Clone, Copy, Debug, Default)]
+pub struct Padding {
+	top: u32,
+	right: u32,
+	bottom: u32,
+	left: u32,
+}
+
 /* Position and size in 2D */
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Geometry {
