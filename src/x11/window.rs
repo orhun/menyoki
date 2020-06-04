@@ -1,5 +1,5 @@
 use crate::image::bgr::Bgr;
-use crate::image::{Geometry, Image};
+use crate::image::{Geometry, Image, Padding};
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::record::Record;
@@ -75,7 +75,7 @@ impl Window {
 			&mut border_width,
 			&mut depth,
 		);
-		Geometry::new(0, 0, width, height)
+		Geometry::new(0, 0, width, height, Padding::default())
 	}
 
 	/**
