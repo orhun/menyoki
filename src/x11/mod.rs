@@ -1,6 +1,7 @@
 pub mod display;
 pub mod window;
 
+use crate::record::settings::RecordWindow;
 use crate::settings::AppSettings;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
@@ -37,14 +38,16 @@ impl WindowSystem {
 	 * @return Window (Option)
 	 */
 	pub fn get_record_window(&self) -> Option<Window> {
-		if self.settings.record.record_root {
-			Some(self.display.get_root_window())
-		} else if self.settings.args.is_present("command")
-			|| self.settings.record.record_focus
-		{
-			self.display.get_focused_window()
-		} else {
-			self.display.select_window()
+		match self.settings.record.window {
+			RecordWindow::Focus => self.display.get_focused_window(),
+			RecordWindow::Root => Some(self.display.get_root_window()),
+			RecordWindow::None => {
+				if self.settings.args.is_present("command") {
+					self.display.get_focused_window()
+				} else {
+					self.display.select_window()
+				}
+			}
 		}
 	}
 }
