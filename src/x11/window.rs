@@ -88,12 +88,6 @@ impl Window {
 		*self
 	}
 
-	/* Set (x, y) of the window geometry to (0, 0) */
-	pub fn reset_position(&mut self) {
-		self.geometry.x = 0;
-		self.geometry.y = 0;
-	}
-
 	/**
 	 * Get the name of the window.
 	 *
