@@ -88,11 +88,7 @@ impl AppSettings {
 	 * @return RecordSettings
 	 */
 	fn get_record_settings(args: ArgMatches<'static>) -> RecordSettings {
-		RecordSettings::from_args(
-			ArgParser::from_subcommand(&args, vec!["record"]),
-			u64::from_str_radix(args.value_of("color").unwrap_or("FF00FF"), 16)
-				.expect("Failed to parse the color HEX"),
-		)
+		RecordSettings::from_args(ArgParser::from_subcommand(&args, vec!["record"]))
 	}
 
 	/**

@@ -72,10 +72,9 @@ impl RecordSettings {
 	 * Create a RecordSettings object from parsed arguments.
 	 *
 	 * @param  parser
-	 * @param  color
 	 * @return RecordSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>, color: u64) -> Self {
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
 				parser.parse("fps", Self::default().fps),
@@ -83,7 +82,11 @@ impl RecordSettings {
 				parser.parse("timeout", Self::default().timeout),
 				parser.parse("interval", Self::default().interval),
 				parser.parse("countdown", Self::default().countdown),
-				color,
+				u64::from_str_radix(
+					matches.value_of("color").unwrap_or_default(),
+					16,
+				)
+				.unwrap_or(Self::default().color),
 				if matches.is_present("focus") {
 					RecordWindow::Focus
 				} else if matches.is_present("root") {
@@ -92,11 +95,7 @@ impl RecordSettings {
 					RecordWindow::None
 				},
 			),
-			None => {
-				let mut settings = RecordSettings::default();
-				settings.color = color;
-				settings
-			}
+			None => RecordSettings::default(),
 		}
 	}
 }
