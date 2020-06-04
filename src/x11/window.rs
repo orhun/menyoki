@@ -75,7 +75,7 @@ impl Window {
 			&mut border_width,
 			&mut depth,
 		);
-		Geometry::new(x, y, width, height)
+		Geometry::new(0, 0, width, height)
 	}
 
 	/**
