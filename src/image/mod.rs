@@ -1,5 +1,6 @@
 pub mod bgr;
 use std::convert::TryFrom;
+use std::iter::FromIterator;
 
 /* Padding properties */
 #[derive(Clone, Copy, Debug, Default)]
@@ -27,6 +28,32 @@ impl Padding {
 			bottom,
 			left,
 		}
+	}
+
+	/**
+	 * Parse padding from a string.
+	 *
+	 * @param  padding
+	 * @return Padding
+	 */
+	pub fn parse(padding: &str) -> Self {
+		padding
+			.split(':')
+			.map(|p| p.parse::<u32>().unwrap_or_default())
+			.collect()
+	}
+}
+
+/* Implementation for building Padding from an iterator */
+impl FromIterator<u32> for Padding {
+	fn from_iter<I: IntoIterator<Item = u32>>(iter: I) -> Self {
+		let mut iter = iter.into_iter();
+		Self::new(
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+		)
 	}
 }
 
