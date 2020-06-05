@@ -133,13 +133,14 @@ where
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::record::settings::RecordSettings;
 	use crate::test::TestWindow;
 	use std::thread;
 	use std::time::Duration;
 	#[test]
 	fn test_record_mod() {
 		let recorder =
-			Recorder::new(RecordSettings::default(), TestWindow::default());
+			Recorder::new(RecordSettings::default().fps, TestWindow::default());
 		let record = recorder.record_async();
 		thread::sleep(Duration::from_millis(200));
 		assert!(record.get().unwrap().unwrap().len() > 0);
