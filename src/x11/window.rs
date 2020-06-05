@@ -82,7 +82,7 @@ impl Window {
 			&mut border_width,
 			&mut depth,
 		);
-		Geometry::new(0, 0, width, height, self.settings.padding)
+		Geometry::new(0, 0, width, height, Some(self.settings.padding))
 	}
 
 	/**
