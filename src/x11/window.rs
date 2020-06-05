@@ -1,5 +1,6 @@
 use crate::image::bgr::Bgr;
-use crate::image::{Geometry, Image};
+use crate::image::geometry::Geometry;
+use crate::image::Image;
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::record::Record;
@@ -262,7 +263,7 @@ impl Record for Window {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::Padding;
+	use crate::image::padding::Padding;
 	use crate::record::settings::{RecordTime, RecordWindow};
 	use crate::x11::display::Display;
 	#[test]

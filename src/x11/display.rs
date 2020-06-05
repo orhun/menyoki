@@ -154,7 +154,7 @@ impl Drop for Display {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::Padding;
+	use crate::image::padding::Padding;
 	use crate::record::settings::{RecordTime, RecordWindow};
 	#[test]
 	fn test_display_mod() {

@@ -1,5 +1,5 @@
 use crate::args::parser::ArgParser;
-use crate::image::Padding;
+use crate::image::padding::Padding;
 
 /* Window to record */
 #[derive(Clone, Copy, Debug)]

@@ -1,6 +1,7 @@
 pub mod settings;
 use crate::gif::settings::GifSettings;
-use crate::image::{Geometry, Image};
+use crate::image::geometry::Geometry;
+use crate::image::Image;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::convert::TryInto;
 use std::fs::File;

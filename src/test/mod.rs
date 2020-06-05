@@ -1,4 +1,5 @@
-use crate::image::{Geometry, Image};
+use crate::image::geometry::Geometry;
+use crate::image::Image;
 use crate::record::Record;
 
 #[derive(Clone, Copy, Debug)]
