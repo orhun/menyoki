@@ -1,4 +1,5 @@
 use crate::args::parser::ArgParser;
+use crate::image::Padding;
 
 /* Window to record */
 #[derive(Clone, Copy, Debug)]
@@ -17,6 +18,7 @@ pub struct RecordSettings {
 	pub interval: u64,
 	pub countdown: u64,
 	pub color: u64,
+	pub padding: Padding,
 	pub window: RecordWindow,
 }
 
@@ -30,6 +32,7 @@ impl Default for RecordSettings {
 			interval: 10,
 			countdown: 3,
 			color: 0x00ff_00ff,
+			padding: Padding::default(),
 			window: RecordWindow::None,
 		}
 	}
@@ -45,6 +48,7 @@ impl RecordSettings {
 	 * @param  interval
 	 * @param  countdown
 	 * @param  color
+	 * @param  padding
 	 * @param  window
 	 * @return RecordSettings
 	 */
@@ -55,6 +59,7 @@ impl RecordSettings {
 		interval: u64,
 		countdown: u64,
 		color: u64,
+		padding: Padding,
 		window: RecordWindow,
 	) -> Self {
 		Self {
@@ -64,6 +69,7 @@ impl RecordSettings {
 			interval,
 			countdown,
 			color,
+			padding,
 			window,
 		}
 	}
@@ -87,6 +93,7 @@ impl RecordSettings {
 					16,
 				)
 				.unwrap_or(Self::default().color),
+				Padding::parse(matches.value_of("padding").unwrap_or_default()),
 				if matches.is_present("focus") {
 					RecordWindow::Focus
 				} else if matches.is_present("root") {
