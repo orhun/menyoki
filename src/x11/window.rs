@@ -262,15 +262,21 @@ impl Record for Window {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::record::settings::RecordWindow;
+	use crate::image::Padding;
+	use crate::record::settings::{RecordTime, RecordWindow};
 	use crate::x11::display::Display;
 	#[test]
 	fn test_window_mod() {
-		let settings =
-			RecordSettings::new(10, 0, 0, 10, 1, 0x00ff_00ff, RecordWindow::None);
+		let settings = RecordSettings::new(
+			10,
+			0x00ff_00ff,
+			0,
+			Padding::default(),
+			RecordTime::new(0, 10, 0),
+			RecordWindow::None,
+		);
 		let display = Display::open(Some(settings)).unwrap();
-		let mut window = display.get_root_window();
-		window.reset_position();
+		let window = display.get_root_window();
 		unsafe {
 			xlib::XStoreName(
 				window.display,
@@ -278,8 +284,8 @@ mod tests {
 				CString::new("root-window").unwrap_or_default().as_ptr(),
 			);
 		};
-		window.draw_borders(settings);
-		window.show_countdown(settings);
+		window.draw_borders();
+		window.show_countdown();
 		window.clear_area();
 		assert_eq!("1366x768  (root-window)", format!("{}", window));
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
