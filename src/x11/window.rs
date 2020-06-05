@@ -241,13 +241,13 @@ impl Record for Window {
 
 	/* Show a countdown on the corner of window. */
 	fn show_countdown(&self) {
-		if self.settings.countdown != 0 {
+		if self.settings.time.countdown != 0 {
 			let clock = FpsClock::new(1000);
-			for i in 0..(self.settings.countdown + 1) {
+			for i in 0..(self.settings.time.countdown + 1) {
 				self.clear_area();
 				self.show_text(
-					if i != self.settings.countdown {
-						Some(format!("[{}]", self.settings.countdown - i))
+					if i != self.settings.time.countdown {
+						Some(format!("[{}]", self.settings.time.countdown - i))
 					} else {
 						None
 					},
