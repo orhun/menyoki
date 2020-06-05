@@ -182,8 +182,9 @@ impl Window {
 			self.draw_text(
 				text.as_str(),
 				self.settings.color,
-				(self.geometry.width - 25).try_into().unwrap_or(20),
-				20,
+				self.geometry.x
+					+ (self.geometry.width - 25).try_into().unwrap_or(20),
+				self.geometry.y + 20,
 			);
 			clock.tick();
 		}
