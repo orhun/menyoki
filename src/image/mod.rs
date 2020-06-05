@@ -77,7 +77,14 @@ impl Geometry {
 	 * @param  padding
 	 * @return Geometry
 	 */
-	pub fn new(x: i32, y: i32, width: u32, height: u32, padding: Padding) -> Self {
+	pub fn new(
+		x: i32,
+		y: i32,
+		width: u32,
+		height: u32,
+		padding: Option<Padding>,
+	) -> Self {
+		let padding = padding.unwrap_or_default();
 		Self {
 			x: x + i32::try_from(padding.right).unwrap_or_default(),
 			y: y + i32::try_from(padding.top).unwrap_or_default(),
@@ -113,7 +120,7 @@ mod tests {
 	use crate::image::bgr::Bgr;
 	#[test]
 	fn test_image_mod() {
-		let geometry = Geometry::new(0, 0, 200, 200);
+		let geometry = Geometry::new(0, 0, 200, 200, None);
 		let bgr_data: [Bgr; 2] = [Bgr::new(128, 128, 128), Bgr::new(255, 255, 255)];
 		let data = Bgr::get_rgb_pixels(&bgr_data);
 		let image = Image::new(data, geometry);
