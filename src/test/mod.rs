@@ -1,4 +1,4 @@
-use crate::image::{Geometry, Image, Padding};
+use crate::image::{Geometry, Image};
 use crate::record::Record;
 
 #[derive(Clone, Copy, Debug)]
@@ -9,7 +9,7 @@ pub struct TestWindow {
 /* Default initialization values for TestWindow */
 impl Default for TestWindow {
 	fn default() -> Self {
-		Self::new(Geometry::new(0, 0, 1, 1, Padding::default()))
+		Self::new(Geometry::new(0, 0, 1, 1, None))
 	}
 }
 
