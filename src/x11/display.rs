@@ -123,7 +123,7 @@ impl Display {
 			if device_state.exit_keys_pressed {
 				warn!("User interrupt detected.");
 				selection_canceled = true;
-			} else if now.elapsed().as_secs() > self.settings.timeout {
+			} else if now.elapsed().as_secs() > self.settings.time.timeout {
 				warn!("The operation timed out.");
 				selection_canceled = true;
 			} else if xid != focused_window.xid {
@@ -131,7 +131,7 @@ impl Display {
 				info!("{}", focused_window);
 				xid = focused_window.xid;
 			}
-			thread::sleep(Duration::from_millis(self.settings.interval));
+			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
 		focused_window.clear_area();
 		if !selection_canceled {
