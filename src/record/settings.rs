@@ -110,7 +110,10 @@ impl RecordSettings {
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
-				parser.parse("fps", Self::default().fps),
+				match parser.parse("fps", Self::default().fps) {
+					fps if fps > 0 => fps,
+					_ => Self::default().fps,
+				},
 				u64::from_str_radix(
 					matches.value_of("color").unwrap_or_default(),
 					16,
