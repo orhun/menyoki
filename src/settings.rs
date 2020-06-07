@@ -3,29 +3,32 @@ use crate::gif::settings::GifSettings;
 use crate::record::settings::RecordSettings;
 use crate::util;
 use crate::util::cmd::Command;
+use crate::util::settings::SaveSettings;
 use chrono::Local;
 use clap::ArgMatches;
 
 /* General application settings */
-#[derive(Clone, Debug)]
-pub struct AppSettings {
-	pub args: ArgMatches<'static>,
+#[derive(Debug)]
+pub struct AppSettings<'a> {
+	pub args: ArgMatches<'a>,
 	pub gif: GifSettings,
 	pub record: RecordSettings,
+	pub save: SaveSettings,
 }
 
-impl AppSettings {
+impl<'a> AppSettings<'a> {
 	/**
 	 * Create a new AppSettings object.
 	 *
 	 * @param  args
 	 * @return AppSettings
 	 */
-	pub fn new(args: ArgMatches<'static>) -> Self {
+	pub fn new(args: ArgMatches<'a>) -> Self {
 		Self {
 			args: args.clone(),
 			gif: Self::get_gif_settings(args.clone()),
-			record: Self::get_record_settings(args),
+			record: Self::get_record_settings(args.clone()),
+			save: Self::get_save_settings(args),
 		}
 	}
 
@@ -87,8 +90,21 @@ impl AppSettings {
 	 * @param  args
 	 * @return RecordSettings
 	 */
-	fn get_record_settings(args: ArgMatches<'static>) -> RecordSettings {
+	fn get_record_settings(args: ArgMatches<'a>) -> RecordSettings {
 		RecordSettings::from_args(ArgParser::from_subcommand(&args, vec!["record"]))
+	}
+
+	/**
+	 * Get save settings from parsed arguments.
+	 *
+	 * @param  args
+	 * @return SaveSettings
+	 */
+	fn get_save_settings(args: ArgMatches<'a>) -> SaveSettings {
+		SaveSettings::from_args(ArgParser::from_subcommand(
+			&args,
+			vec!["record", "gif", "save"],
+		))
 	}
 
 	/**
@@ -97,7 +113,7 @@ impl AppSettings {
 	 * @param  args
 	 * @return GifSettings
 	 */
-	fn get_gif_settings(args: ArgMatches<'static>) -> GifSettings {
+	fn get_gif_settings(args: ArgMatches<'a>) -> GifSettings {
 		GifSettings::from_args(ArgParser::from_subcommand(
 			&args,
 			vec!["record", "gif"],
