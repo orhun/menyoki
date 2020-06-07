@@ -2,15 +2,17 @@ use crate::args::parser::ArgParser;
 use chrono::Local;
 
 /* Output file settings */
-#[derive(Clone, Copy, Debug)]
+#[derive(Debug)]
 pub struct SaveSettings {
-	file: &'static str,
+	file: String,
 }
 
 /* Default initialization values for SaveSettings */
 impl Default for SaveSettings {
 	fn default() -> Self {
-		Self { file: "t.gif" }
+		Self {
+			file: String::from("t.gif"),
+		}
 	}
 }
 
@@ -22,7 +24,7 @@ impl SaveSettings {
 	 * @return SaveSettings
 	 */
 	pub fn new(file: String) -> Self {
-		Self { file: &file }
+		Self { file }
 	}
 
 	/**
