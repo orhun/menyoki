@@ -25,7 +25,10 @@ impl<'a> ArgParser<'a> {
 	 * @return ArgParser
 	 */
 	pub fn args_from_subcommand(&self, subcommands: Vec<&str>) -> Self {
-		let mut matches = self.args.unwrap().subcommand_matches(subcommands[0]);
+		let mut matches = self
+			.args
+			.expect("Invalid arguments")
+			.subcommand_matches(subcommands[0]);
 		for subcommand in subcommands.iter().skip(1) {
 			matches = matches.and_then(|args| args.subcommand_matches(subcommand));
 		}
@@ -41,7 +44,7 @@ impl<'a> ArgParser<'a> {
 	 */
 	pub fn parse<T: FromStr>(&self, arg: &str, default_value: T) -> T {
 		self.args
-			.unwrap()
+			.expect("Invalid arguments")
 			.value_of(arg)
 			.unwrap_or_default()
 			.parse()
