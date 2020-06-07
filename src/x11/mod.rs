@@ -11,19 +11,19 @@ use std::os::raw::c_char;
 use x11::xlib;
 
 /* X11 window system */
-pub struct WindowSystem {
+pub struct WindowSystem<'a> {
 	display: Display,
-	settings: AppSettings,
+	settings: &'a AppSettings<'a>,
 }
 
-impl WindowSystem {
+impl<'a> WindowSystem<'a> {
 	/**
 	 * Initialize the X11 window system.
 	 *
 	 * @param  settings
 	 * @return WindowSystem (Option)
 	 */
-	pub fn init(settings: AppSettings) -> Option<Self> {
+	pub fn init(settings: &'a AppSettings<'a>) -> Option<Self> {
 		if let Some(display) = Display::open(Some(settings.record)) {
 			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
 			Some(Self { display, settings })
