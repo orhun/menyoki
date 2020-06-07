@@ -274,7 +274,7 @@ mod tests {
 			0,
 			Padding::default(),
 			RecordTime::new(0, 10, 0),
-			RecordWindow::None,
+			RecordWindow::Select,
 		);
 		let display = Display::open(Some(settings)).unwrap();
 		let window = display.get_root_window();
