@@ -9,8 +9,8 @@ use clap::ArgMatches;
 #[derive(Debug)]
 pub struct AppSettings<'a> {
 	pub args: &'a ArgMatches<'a>,
-	pub gif: GifSettings,
 	pub record: RecordSettings,
+	pub gif: GifSettings,
 	pub save: SaveSettings,
 }
 
@@ -24,9 +24,18 @@ impl<'a> AppSettings<'a> {
 	pub fn new(args: &'a ArgMatches<'a>) -> Self {
 		Self {
 			args,
-			gif: Self::get_gif_settings(args),
-			record: Self::get_record_settings(args),
-			save: Self::get_save_settings(args),
+			record: RecordSettings::from_args(ArgParser::from_subcommand(
+				args,
+				vec!["record"],
+			)),
+			gif: GifSettings::from_args(ArgParser::from_subcommand(
+				args,
+				vec!["record", "gif"],
+			)),
+			save: SaveSettings::from_args(ArgParser::from_subcommand(
+				args,
+				vec!["record", "gif", "save"],
+			)),
 		}
 	}
 
@@ -47,41 +56,5 @@ impl<'a> AppSettings<'a> {
 			}
 			None => panic!("No command specified to run"),
 		}
-	}
-
-	/**
-	 * Get recording settings from parsed arguments.
-	 *
-	 * @param  args
-	 * @return RecordSettings
-	 */
-	fn get_record_settings(args: &'a ArgMatches<'a>) -> RecordSettings {
-		RecordSettings::from_args(ArgParser::from_subcommand(&args, vec!["record"]))
-	}
-
-	/**
-	 * Get GIF settings from parsed arguments.
-	 *
-	 * @param  args
-	 * @return GifSettings
-	 */
-	fn get_gif_settings(args: &'a ArgMatches<'a>) -> GifSettings {
-		GifSettings::from_args(ArgParser::from_subcommand(
-			&args,
-			vec!["record", "gif"],
-		))
-	}
-
-	/**
-	 * Get output file settings from parsed arguments.
-	 *
-	 * @param  args
-	 * @return SaveSettings
-	 */
-	fn get_save_settings(args: &'a ArgMatches<'a>) -> SaveSettings {
-		SaveSettings::from_args(ArgParser::from_subcommand(
-			&args,
-			vec!["record", "gif", "save"],
-		))
 	}
 }
