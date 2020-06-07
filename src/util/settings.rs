@@ -1,5 +1,46 @@
 use crate::args::parser::ArgParser;
 use chrono::Local;
+use clap::ArgMatches;
+use std::fmt;
+
+/* Information to include in file name */
+#[derive(Debug)]
+enum FileInfo {
+	Date,
+	Timestamp,
+}
+
+impl FileInfo {
+	/**
+	 * Create a FileInfo enum from parsed arguments.
+	 *
+	 * @param  args
+	 * @return FileInfo (Option)
+	 */
+	fn from_args(args: &ArgMatches<'_>) -> Option<Self> {
+		if args.is_present("date") {
+			Some(Self::Date)
+		} else if args.is_present("timestamp") {
+			Some(Self::Timestamp)
+		} else {
+			None
+		}
+	}
+}
+
+/* Display implementation for user-facing output */
+impl fmt::Display for FileInfo {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				FileInfo::Date => Local::now().format("%Y%m%dT%H%M%S").to_string(),
+				FileInfo::Timestamp => Local::now().timestamp().to_string(),
+			}
+		)
+	}
+}
 
 /* Output file settings */
 #[derive(Debug)]
@@ -39,26 +80,26 @@ impl SaveSettings {
 				let mut file_name =
 					String::from(matches.value_of("output").unwrap_or_default());
 				if matches.is_present("prompt") {
-					file_name = rprompt::prompt_reply_stdout("Enter file name: ")
-						.unwrap_or(file_name);
+					file_name = Self::read_input().unwrap_or(file_name);
 				}
-				SaveSettings::new(
-					if matches.is_present("date") || matches.is_present("timestamp")
-					{
-						Self::update_file_name(
-							file_name,
-							if matches.is_present("date") {
-								Local::now().format("%Y%m%dT%H%M%S").to_string()
-							} else {
-								Local::now().timestamp().to_string()
-							},
-						)
-					} else {
-						file_name
-					},
-				)
+				if let Some(info) = FileInfo::from_args(&matches) {
+					file_name = Self::add_file_info(&file_name, info);
+				}
+				SaveSettings::new(file_name)
 			}
 			None => SaveSettings::default(),
+		}
+	}
+
+	/**
+	 * Read input from stdin with prompt.
+	 *
+	 * @return String (Option)
+	 */
+	fn read_input() -> Option<String> {
+		match rprompt::prompt_reply_stdout("Enter file name: ") {
+			Ok(v) if !v.is_empty() => Some(v),
+			_ => None,
 		}
 	}
 
@@ -69,7 +110,7 @@ impl SaveSettings {
 	 * @param  info
 	 * @return String
 	 */
-	fn update_file_name(file_name: String, info: String) -> String {
+	fn add_file_info(file_name: &str, info: FileInfo) -> String {
 		file_name
 			.split('.')
 			.enumerate()
