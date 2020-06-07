@@ -41,7 +41,7 @@ impl<'a> WindowSystem<'a> {
 		match self.settings.record.window {
 			RecordWindow::Focus => self.display.get_focused_window(),
 			RecordWindow::Root => Some(self.display.get_root_window()),
-			RecordWindow::None => {
+			RecordWindow::Select => {
 				if self.settings.args.is_present("command") {
 					self.display.get_focused_window()
 				} else {

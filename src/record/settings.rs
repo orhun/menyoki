@@ -6,7 +6,7 @@ use crate::image::padding::Padding;
 pub enum RecordWindow {
 	Focus,
 	Root,
-	None,
+	Select,
 }
 
 /* Time related recording settings */
@@ -66,7 +66,7 @@ impl Default for RecordSettings {
 			border: 5,
 			padding: Padding::default(),
 			time: RecordTime::default(),
-			window: RecordWindow::None,
+			window: RecordWindow::Select,
 		}
 	}
 }
@@ -131,7 +131,7 @@ impl RecordSettings {
 				} else if matches.is_present("root") {
 					RecordWindow::Root
 				} else {
-					RecordWindow::None
+					RecordWindow::Select
 				},
 			),
 			None => RecordSettings::default(),
