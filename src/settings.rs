@@ -1,10 +1,8 @@
 use crate::args::parser::ArgParser;
 use crate::gif::settings::GifSettings;
 use crate::record::settings::RecordSettings;
-use crate::util;
 use crate::util::cmd::Command;
 use crate::util::settings::SaveSettings;
-use chrono::Local;
 use clap::ArgMatches;
 
 /* General application settings */
@@ -52,39 +50,6 @@ impl<'a> AppSettings<'a> {
 	}
 
 	/**
-	 * Get the output file from parsed arguments.
-	 *
-	 * @return String
-	 */
-	pub fn get_output_file(&self) -> String {
-		match ArgParser::from_subcommand(&self.args, vec!["record", "gif", "save"])
-			.args
-		{
-			Some(matches) => {
-				let mut file_name =
-					String::from(matches.value_of("output").unwrap_or_default());
-				if matches.is_present("prompt") {
-					file_name = rprompt::prompt_reply_stdout("Enter file name: ")
-						.unwrap_or(file_name);
-				}
-				if matches.is_present("date") || matches.is_present("timestamp") {
-					util::update_file_name(
-						file_name,
-						if matches.is_present("date") {
-							Local::now().format("%Y%m%dT%H%M%S").to_string()
-						} else {
-							Local::now().timestamp().to_string()
-						},
-					)
-				} else {
-					file_name
-				}
-			}
-			None => String::from("t.gif"),
-		}
-	}
-
-	/**
 	 * Get recording settings from parsed arguments.
 	 *
 	 * @param  args
@@ -92,19 +57,6 @@ impl<'a> AppSettings<'a> {
 	 */
 	fn get_record_settings(args: ArgMatches<'a>) -> RecordSettings {
 		RecordSettings::from_args(ArgParser::from_subcommand(&args, vec!["record"]))
-	}
-
-	/**
-	 * Get save settings from parsed arguments.
-	 *
-	 * @param  args
-	 * @return SaveSettings
-	 */
-	fn get_save_settings(args: ArgMatches<'a>) -> SaveSettings {
-		SaveSettings::from_args(ArgParser::from_subcommand(
-			&args,
-			vec!["record", "gif", "save"],
-		))
 	}
 
 	/**
@@ -117,6 +69,19 @@ impl<'a> AppSettings<'a> {
 		GifSettings::from_args(ArgParser::from_subcommand(
 			&args,
 			vec!["record", "gif"],
+		))
+	}
+
+	/**
+	 * Get output file settings from parsed arguments.
+	 *
+	 * @param  args
+	 * @return SaveSettings
+	 */
+	fn get_save_settings(args: ArgMatches<'a>) -> SaveSettings {
+		SaveSettings::from_args(ArgParser::from_subcommand(
+			&args,
+			vec!["record", "gif", "save"],
 		))
 	}
 }
