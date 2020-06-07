@@ -8,7 +8,7 @@ use clap::ArgMatches;
 /* General application settings */
 #[derive(Debug)]
 pub struct AppSettings<'a> {
-	pub args: ArgMatches<'a>,
+	pub args: &'a ArgMatches<'a>,
 	pub gif: GifSettings,
 	pub record: RecordSettings,
 	pub save: SaveSettings,
@@ -21,11 +21,11 @@ impl<'a> AppSettings<'a> {
 	 * @param  args
 	 * @return AppSettings
 	 */
-	pub fn new(args: ArgMatches<'a>) -> Self {
+	pub fn new(args: &'a ArgMatches<'a>) -> Self {
 		Self {
-			args: args.clone(),
-			gif: Self::get_gif_settings(args.clone()),
-			record: Self::get_record_settings(args.clone()),
+			args,
+			gif: Self::get_gif_settings(args),
+			record: Self::get_record_settings(args),
 			save: Self::get_save_settings(args),
 		}
 	}
@@ -55,7 +55,7 @@ impl<'a> AppSettings<'a> {
 	 * @param  args
 	 * @return RecordSettings
 	 */
-	fn get_record_settings(args: ArgMatches<'a>) -> RecordSettings {
+	fn get_record_settings(args: &'a ArgMatches<'a>) -> RecordSettings {
 		RecordSettings::from_args(ArgParser::from_subcommand(&args, vec!["record"]))
 	}
 
@@ -65,7 +65,7 @@ impl<'a> AppSettings<'a> {
 	 * @param  args
 	 * @return GifSettings
 	 */
-	fn get_gif_settings(args: ArgMatches<'a>) -> GifSettings {
+	fn get_gif_settings(args: &'a ArgMatches<'a>) -> GifSettings {
 		GifSettings::from_args(ArgParser::from_subcommand(
 			&args,
 			vec!["record", "gif"],
@@ -78,7 +78,7 @@ impl<'a> AppSettings<'a> {
 	 * @param  args
 	 * @return SaveSettings
 	 */
-	fn get_save_settings(args: ArgMatches<'a>) -> SaveSettings {
+	fn get_save_settings(args: &'a ArgMatches<'a>) -> SaveSettings {
 		SaveSettings::from_args(ArgParser::from_subcommand(
 			&args,
 			vec!["record", "gif", "save"],

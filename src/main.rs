@@ -24,7 +24,7 @@ fn main() -> Result<(), Error> {
 
 	println!("thank god it's friday");
 
-	let settings = AppSettings::new(args);
+	let settings = AppSettings::new(&args);
 	let app = App::new(&settings);
 	let window_system = WindowSystem::init(&settings).expect("Cannot open display");
 	if let Some(window) = window_system.get_record_window() {
