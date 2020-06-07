@@ -89,8 +89,9 @@ mod tests {
 	use crate::record::Record;
 	#[test]
 	fn test_x11_mod() {
-		let settings = AppSettings::new(Args::parse());
-		let window_system = WindowSystem::init(settings).unwrap();
+		let args = Args::parse();
+		let settings = AppSettings::new(&args);
+		let window_system = WindowSystem::init(&settings).unwrap();
 		window_system.display.set_focused_window(
 			window_system.display.get_root_window().xid,
 			xlib::RevertToParent,

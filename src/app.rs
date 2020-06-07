@@ -77,8 +77,9 @@ mod tests {
 	use crate::util::cmd::Command;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
-		let settings = AppSettings::new(Args::parse());
-		let app = App::new(settings);
+		let args = Args::parse();
+		let settings = AppSettings::new(&args);
+		let app = App::new(&settings);
 		let window = TestWindow::default();
 		let mut frames = app.record(window);
 		frames.push(Frame::new(Image::new(vec![0, 0, 0], window.geometry), 0));
