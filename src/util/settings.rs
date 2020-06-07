@@ -4,7 +4,7 @@ use chrono::Local;
 /* Output file settings */
 #[derive(Debug)]
 pub struct SaveSettings {
-	file: String,
+	pub file: String,
 }
 
 /* Default initialization values for SaveSettings */

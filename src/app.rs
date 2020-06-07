@@ -55,8 +55,7 @@ impl<'a> App<'a> {
 	 */
 	pub fn save_gif(&self, frames: Vec<Frame>) -> Result<(), Error> {
 		let mut gif = Gif::new(
-			File::create(self.settings.get_output_file())
-				.expect("Failed to create file"),
+			File::create(&self.settings.save.file).expect("Failed to create file"),
 			frames
 				.first()
 				.expect("No frames found to save")
