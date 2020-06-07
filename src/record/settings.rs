@@ -36,6 +36,17 @@ pub struct RecordTime {
 	pub countdown: u64,
 }
 
+/* Default initialization values for RecordTime */
+impl Default for RecordTime {
+	fn default() -> Self {
+		Self {
+			timeout: 30,
+			interval: 10,
+			countdown: 3,
+		}
+	}
+}
+
 impl RecordTime {
 	/**
 	 * Create a new RecordTime object.
@@ -52,16 +63,19 @@ impl RecordTime {
 			countdown,
 		}
 	}
-}
 
-/* Default initialization values for RecordTime */
-impl Default for RecordTime {
-	fn default() -> Self {
-		Self {
-			timeout: 30,
-			interval: 10,
-			countdown: 3,
-		}
+	/**
+	 * Create a RecordTime object from parsed arguments.
+	 *
+	 * @param  parser
+	 * @return RecordTime
+	 */
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
+		RecordTime::new(
+			parser.parse("timeout", Self::default().timeout),
+			parser.parse("interval", Self::default().interval),
+			parser.parse("countdown", Self::default().countdown),
+		)
 	}
 }
 
@@ -140,11 +154,7 @@ impl RecordSettings {
 				.unwrap_or(Self::default().color),
 				parser.parse("border", Self::default().border),
 				Padding::parse(matches.value_of("padding").unwrap_or_default()),
-				RecordTime::new(
-					parser.parse("timeout", Self::default().time.timeout),
-					parser.parse("interval", Self::default().time.interval),
-					parser.parse("countdown", Self::default().time.countdown),
-				),
+				RecordTime::from_args(parser),
 				RecordWindow::from_args(matches),
 			),
 			None => RecordSettings::default(),
