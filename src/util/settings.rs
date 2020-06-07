@@ -124,18 +124,3 @@ impl SaveSettings {
 			.collect::<String>()
 	}
 }
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-	#[test]
-	fn test_save_settings() {
-		assert_eq!(
-			"t_1588101718.gif",
-			SaveSettings::update_file_name(
-				String::from("t.gif"),
-				String::from("1588101718")
-			)
-		)
-	}
-}
