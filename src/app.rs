@@ -5,18 +5,18 @@ use std::fs::File;
 use std::io::Error;
 
 /* Application and main functionalities */
-pub struct App {
-	settings: AppSettings,
+pub struct App<'a> {
+	settings: &'a AppSettings<'a>,
 }
 
-impl App {
+impl<'a> App<'a> {
 	/**
 	 * Create a new App object.
 	 *
 	 * @param  settings
 	 * @return App
 	 */
-	pub fn new(settings: AppSettings) -> Self {
+	pub fn new(settings: &'a AppSettings<'a>) -> Self {
 		Self { settings }
 	}
 
