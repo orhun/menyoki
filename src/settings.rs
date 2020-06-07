@@ -22,20 +22,18 @@ impl<'a> AppSettings<'a> {
 	 * @return AppSettings
 	 */
 	pub fn new(args: &'a ArgMatches<'a>) -> Self {
+		let parser = ArgParser::new(Some(args));
 		Self {
 			args,
-			record: RecordSettings::from_args(ArgParser::from_subcommand(
-				args,
-				vec!["record"],
-			)),
-			gif: GifSettings::from_args(ArgParser::from_subcommand(
-				args,
-				vec!["record", "gif"],
-			)),
-			save: SaveSettings::from_args(ArgParser::from_subcommand(
-				args,
-				vec!["record", "gif", "save"],
-			)),
+			record: RecordSettings::from_args(
+				parser.args_from_subcommand(vec!["record"]),
+			),
+			gif: GifSettings::from_args(
+				parser.args_from_subcommand(vec!["record", "gif"]),
+			),
+			save: SaveSettings::from_args(
+				parser.args_from_subcommand(vec!["record", "gif", "save"]),
+			),
 		}
 	}
 

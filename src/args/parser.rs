@@ -11,7 +11,7 @@ impl<'a> ArgParser<'a> {
 	/**
 	 * Create a new ArgParser object.
 	 *
-	 * @param  args
+	 * @param  args (Option)
 	 * @return ArgParser
 	 */
 	pub fn new(args: Option<&'a ArgMatches<'a>>) -> Self {
@@ -21,15 +21,11 @@ impl<'a> ArgParser<'a> {
 	/**
 	 * Create a new ArgParser object from a number of subcommands.
 	 *
-	 * @param  args
 	 * @param  subcommands
 	 * @return ArgParser
 	 */
-	pub fn from_subcommand(
-		args: &'a ArgMatches<'a>,
-		subcommands: Vec<&str>,
-	) -> Self {
-		let mut matches = args.subcommand_matches(subcommands[0]);
+	pub fn args_from_subcommand(&self, subcommands: Vec<&str>) -> Self {
+		let mut matches = self.args.unwrap().subcommand_matches(subcommands[0]);
 		for subcommand in subcommands.iter().skip(1) {
 			matches = matches.and_then(|args| args.subcommand_matches(subcommand));
 		}
