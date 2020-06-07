@@ -1,5 +1,6 @@
 use crate::args::parser::ArgParser;
 use crate::image::padding::Padding;
+use clap::ArgMatches;
 
 /* Window to record */
 #[derive(Clone, Copy, Debug)]
@@ -7,6 +8,24 @@ pub enum RecordWindow {
 	Focus,
 	Root,
 	Select,
+}
+
+impl RecordWindow {
+	/**
+	 * Create a RecordWindow enum from parsed arguments.
+	 *
+	 * @param  args
+	 * @return RecordWindow
+	 */
+	fn from_args(args: &ArgMatches<'_>) -> Self {
+		if args.is_present("focus") {
+			Self::Focus
+		} else if args.is_present("root") {
+			Self::Root
+		} else {
+			Self::Select
+		}
+	}
 }
 
 /* Time related recording settings */
@@ -126,13 +145,7 @@ impl RecordSettings {
 					parser.parse("interval", Self::default().time.interval),
 					parser.parse("countdown", Self::default().time.countdown),
 				),
-				if matches.is_present("focus") {
-					RecordWindow::Focus
-				} else if matches.is_present("root") {
-					RecordWindow::Root
-				} else {
-					RecordWindow::Select
-				},
+				RecordWindow::from_args(matches),
 			),
 			None => RecordSettings::default(),
 		}
