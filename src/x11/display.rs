@@ -108,33 +108,30 @@ impl Display {
 		let mut focused_window = self
 			.get_focused_window()
 			.expect("Failed to get the focused window");
-		let mut xid = 0;
-		let mut selection_canceled = false;
+		let mut xid = None;
 		let now = Instant::now();
-		while !(device_state.mouse_clicked
-			|| device_state.cancel_keys_pressed
-			|| selection_canceled)
-		{
+		while !device_state.mouse_clicked() {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
 			focused_window.draw_borders();
-			device_state.update();
-			if device_state.cancel_keys_pressed {
+			if device_state.cancel_pressed() {
 				warn!("User interrupt detected.");
-				selection_canceled = true;
+				xid = None;
+				break;
 			} else if now.elapsed().as_secs() > self.settings.time.timeout {
 				warn!("The operation timed out.");
-				selection_canceled = true;
-			} else if xid != focused_window.xid {
+				xid = None;
+				break;
+			} else if xid != Some(focused_window.xid) {
 				debug!("Window ID: {:?}", focused_window.xid);
 				info!("{}", focused_window);
-				xid = focused_window.xid;
+				xid = Some(focused_window.xid);
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
 		focused_window.clear_area();
-		if !selection_canceled {
+		if xid.is_some() {
 			Some(focused_window)
 		} else {
 			None
