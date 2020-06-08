@@ -24,13 +24,25 @@ impl DeviceState {
 	}
 
 	/**
-	 * Check if the mouse left/right button clicked.
+	 * Check if the mouse left/right buttons are clicked.
 	 *
 	 * @return bool
 	 */
 	pub fn check_mouse_click(&mut self) -> bool {
 		self.mouse = self.state.get_mouse().button_pressed;
 		self.mouse[1] || self.mouse[3]
+	}
+
+	/**
+	 * Check if the cancel keys are pressed.
+	 *
+	 * @return bool
+	 */
+	pub fn check_cancel_press(&mut self) -> bool {
+		self.keys = self.state.get_keys();
+		self.keys.contains(&Keycode::Escape)
+			|| (self.keys.contains(&Keycode::LControl)
+				&& self.keys.contains(&Keycode::D))
 	}
 
 	/**
@@ -46,18 +58,6 @@ impl DeviceState {
 		})
 		.expect("Failed to set the signal handler");
 		exit_pressed
-	}
-
-	/**
-	 * Check if the cancel keys are pressed.
-	 *
-	 * @return bool
-	 */
-	pub fn check_cancel_press(&mut self) -> bool {
-		self.keys = self.state.get_keys();
-		self.keys.contains(&Keycode::Escape)
-			|| (self.keys.contains(&Keycode::LControl)
-				&& self.keys.contains(&Keycode::D))
 	}
 }
 
