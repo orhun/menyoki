@@ -88,6 +88,7 @@ impl Gif {
 		let mut device_state = DeviceState::new();
 		for frame in frames {
 			if device_state.check_cancel_pressed() {
+				warn!("User interrupt detected.");
 				break;
 			}
 			self.encoder.write_frame(
