@@ -2,6 +2,7 @@ pub mod settings;
 use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
+use crate::util::device::DeviceState;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::convert::TryInto;
 use std::fs::File;
@@ -84,7 +85,11 @@ impl Gif {
 	 * @return Result
 	 */
 	pub fn save(&mut self, frames: Vec<Frame>) -> Result<(), Error> {
+		let mut device_state = DeviceState::new();
 		for frame in frames {
+			if device_state.check_cancel_pressed() {
+				break;
+			}
 			self.encoder.write_frame(
 				&frame.get(self.settings.speed.try_into().unwrap_or_default()),
 			)?;
