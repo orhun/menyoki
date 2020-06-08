@@ -5,8 +5,6 @@ pub struct DeviceState {
 	state: DevState,
 	mouse: Vec<bool>,
 	keys: Vec<Keycode>,
-	pub mouse_clicked: bool,
-	pub cancel_keys_pressed: bool,
 }
 
 impl DeviceState {
@@ -20,25 +18,26 @@ impl DeviceState {
 			state: DevState::new(),
 			mouse: Vec::new(),
 			keys: Vec::new(),
-			mouse_clicked: false,
-			cancel_keys_pressed: false,
 		}
 	}
 
-	/* Update the keyboard and mouse states. */
-	pub fn update(&mut self) {
-		self.mouse = self.state.get_mouse().button_pressed;
-		self.keys = self.state.get_keys();
-		self.mouse_clicked = self.mouse[1] || self.mouse[3];
-		self.cancel_keys_pressed = self.check_cancel_keys_pressed();
-	}
-
 	/**
-	 * Check if the exit keys are pressed.
+	 * Check if the mouse left/right button clicked.
 	 *
 	 * @return bool
 	 */
-	fn check_cancel_keys_pressed(&mut self) -> bool {
+	pub fn mouse_clicked(&mut self) -> bool {
+		self.mouse = self.state.get_mouse().button_pressed;
+		self.mouse[1] || self.mouse[3]
+	}
+
+	/**
+	 * Check if the cancel keys are pressed.
+	 *
+	 * @return bool
+	 */
+	pub fn cancel_pressed(&mut self) -> bool {
+		self.keys = self.state.get_keys();
 		self.keys.contains(&Keycode::Escape)
 			|| (self.keys.contains(&Keycode::LControl)
 				&& self.keys.contains(&Keycode::D))
