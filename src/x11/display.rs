@@ -110,12 +110,12 @@ impl Display {
 			.expect("Failed to get the focused window");
 		let mut xid = None;
 		let now = Instant::now();
-		while !device_state.check_mouse_click() {
+		while !device_state.check_mouse_clicked() {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
 			focused_window.draw_borders();
-			if device_state.check_cancel_press() {
+			if device_state.check_cancel_pressed() {
 				warn!("User interrupt detected.");
 				xid = None;
 				break;
