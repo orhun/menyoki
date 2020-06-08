@@ -55,7 +55,6 @@ pub struct Recorder<T> {
 	window: T,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
-	settings: RecordSettings,
 }
 
 impl<T> Recorder<T>
@@ -74,7 +73,6 @@ where
 			window,
 			clock: FpsClock::new(settings.fps),
 			channel: mpsc::channel(),
-			settings,
 		}
 	}
 
