@@ -29,17 +29,8 @@ impl DeviceState {
 	pub fn update(&mut self) {
 		self.mouse = self.state.get_mouse().button_pressed;
 		self.keys = self.state.get_keys();
-		self.mouse_clicked = self.check_mouse_clicked();
+		self.mouse_clicked = self.mouse[1] || self.mouse[3];
 		self.cancel_keys_pressed = self.check_cancel_keys_pressed();
-	}
-
-	/**
-	 * Check if the mouse left/right clicked.
-	 *
-	 * @return bool
-	 */
-	fn check_mouse_clicked(&mut self) -> bool {
-		self.mouse[1] || self.mouse[3]
 	}
 
 	/**
