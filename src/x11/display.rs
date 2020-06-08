@@ -112,7 +112,7 @@ impl Display {
 		let mut selection_canceled = false;
 		let now = Instant::now();
 		while !(device_state.mouse_clicked
-			|| device_state.exit_keys_pressed
+			|| device_state.cancel_keys_pressed
 			|| selection_canceled)
 		{
 			focused_window = self
@@ -120,7 +120,7 @@ impl Display {
 				.expect("Failed to get the focused window");
 			focused_window.draw_borders();
 			device_state.update();
-			if device_state.exit_keys_pressed {
+			if device_state.cancel_keys_pressed {
 				warn!("User interrupt detected.");
 				selection_canceled = true;
 			} else if now.elapsed().as_secs() > self.settings.time.timeout {

@@ -6,7 +6,7 @@ pub struct DeviceState {
 	mouse: Vec<bool>,
 	keys: Vec<Keycode>,
 	pub mouse_clicked: bool,
-	pub exit_keys_pressed: bool,
+	pub cancel_keys_pressed: bool,
 }
 
 impl DeviceState {
@@ -21,7 +21,7 @@ impl DeviceState {
 			mouse: Vec::new(),
 			keys: Vec::new(),
 			mouse_clicked: false,
-			exit_keys_pressed: false,
+			cancel_keys_pressed: false,
 		}
 	}
 
@@ -30,7 +30,7 @@ impl DeviceState {
 		self.mouse = self.state.get_mouse().button_pressed;
 		self.keys = self.state.get_keys();
 		self.mouse_clicked = self.check_mouse_clicked();
-		self.exit_keys_pressed = self.check_exit_keys_pressed();
+		self.cancel_keys_pressed = self.check_cancel_keys_pressed();
 	}
 
 	/**
@@ -47,7 +47,7 @@ impl DeviceState {
 	 *
 	 * @return bool
 	 */
-	fn check_exit_keys_pressed(&mut self) -> bool {
+	fn check_cancel_keys_pressed(&mut self) -> bool {
 		self.keys.contains(&Keycode::Escape)
 			|| (self.keys.contains(&Keycode::LControl)
 				&& self.keys.contains(&Keycode::D))
@@ -62,6 +62,6 @@ mod tests {
 		let mut device_state = DeviceState::new();
 		device_state.update();
 		assert!(!device_state.check_mouse_clicked());
-		assert!(!device_state.check_exit_keys_pressed());
+		assert!(!device_state.check_cancel_keys_pressed());
 	}
 }
