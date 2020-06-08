@@ -27,7 +27,7 @@ impl<'a> App<'a> {
 	 * @param  window
 	 * @return Vector of Frame
 	 */
-	pub fn record<T>(&self, window: T) -> Vec<Frame>
+	pub fn record<T>(self, window: T) -> Vec<Frame>
 	where
 		T: Record + Send + Sync + Copy + 'static,
 	{
@@ -54,7 +54,7 @@ impl<'a> App<'a> {
 	 * @param  frames
 	 * @return Result
 	 */
-	pub fn save_gif(&self, frames: Vec<Frame>) -> Result<(), Error> {
+	pub fn save_gif(self, frames: Vec<Frame>) -> Result<(), Error> {
 		let mut gif = Gif::new(
 			File::create(&self.settings.save.file).expect("Failed to create file"),
 			frames
