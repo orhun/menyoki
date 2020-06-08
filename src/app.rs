@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::Error;
 
 /* Application and main functionalities */
+#[derive(Clone, Copy, Debug)]
 pub struct App<'a> {
 	settings: &'a AppSettings<'a>,
 }
