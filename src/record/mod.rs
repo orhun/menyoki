@@ -4,6 +4,7 @@ pub mod settings;
 use crate::gif::Frame;
 use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
+use crate::util::device::DeviceState;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -96,6 +97,7 @@ where
 	 */
 	pub fn record_sync(&mut self) -> Vec<Frame> {
 		let mut frames = Vec::new();
+		let mut device_state = DeviceState::new();
 		let recording = Arc::new(AtomicBool::new(true));
 		let rec_state = recording.clone();
 		ctrlc::set_handler(move || {
@@ -103,8 +105,13 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		while recording.load(Ordering::SeqCst) {
-			self.clock.tick();
-			frames.push(self.get_frame());
+			if device_state.check_cancel_pressed() {
+				frames.clear();
+				break;
+			} else {
+				self.clock.tick();
+				frames.push(self.get_frame());
+			}
 		}
 		frames
 	}
