@@ -96,8 +96,7 @@ where
 	 */
 	pub fn record_sync(&mut self) -> Vec<Frame> {
 		let mut frames = Vec::new();
-		let mut device_state = DeviceState::new();
-		let exit_pressed = device_state.check_exit_pressed();
+		let exit_pressed = DeviceState::new().check_exit_pressed();
 		while exit_pressed.load(Ordering::SeqCst) {
 			self.clock.tick();
 			frames.push(self.get_frame());
