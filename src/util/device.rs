@@ -26,7 +26,7 @@ impl DeviceState {
 	 *
 	 * @return bool
 	 */
-	pub fn mouse_clicked(&mut self) -> bool {
+	pub fn check_mouse_click(&mut self) -> bool {
 		self.mouse = self.state.get_mouse().button_pressed;
 		self.mouse[1] || self.mouse[3]
 	}
@@ -36,7 +36,7 @@ impl DeviceState {
 	 *
 	 * @return bool
 	 */
-	pub fn cancel_pressed(&mut self) -> bool {
+	pub fn check_cancel_press(&mut self) -> bool {
 		self.keys = self.state.get_keys();
 		self.keys.contains(&Keycode::Escape)
 			|| (self.keys.contains(&Keycode::LControl)
