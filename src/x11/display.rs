@@ -170,6 +170,6 @@ mod tests {
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
 		);
-		assert!(display.select_window().is_none());
+		assert!(display.select_window(&InputState::new()).is_none());
 	}
 }
