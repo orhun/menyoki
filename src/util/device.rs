@@ -1,10 +1,20 @@
 use device_query::{DeviceQuery, DeviceState as DevState, Keycode};
+use std::fmt;
 
 /* State of the mouse and keyboard */
 pub struct DeviceState {
 	state: DevState,
 	mouse: Vec<bool>,
 	keys: Vec<Keycode>,
+}
+
+impl fmt::Debug for DeviceState {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		f.debug_struct("DeviceState")
+			.field("mouse", &self.mouse)
+			.field("keys", &self.keys)
+			.finish()
+	}
 }
 
 impl DeviceState {
