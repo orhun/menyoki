@@ -45,7 +45,7 @@ impl<'a> WindowSystem<'a> {
 				if self.settings.args.is_present("command") {
 					self.display.get_focused_window()
 				} else {
-					self.display.select_window()
+					self.display.select_window(&self.settings.device_state)
 				}
 			}
 		}

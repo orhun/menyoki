@@ -101,10 +101,10 @@ impl Display {
 	/**
 	 * Select a Window from display with user interaction.
 	 *
+	 * @param  device_state
 	 * @return Window (Option)
 	 */
-	pub fn select_window(&self) -> Option<Window> {
-		let mut device_state = DeviceState::new();
+	pub fn select_window(&self, device_state: &DeviceState) -> Option<Window> {
 		let mut focused_window = self
 			.get_focused_window()
 			.expect("Failed to get the focused window");
