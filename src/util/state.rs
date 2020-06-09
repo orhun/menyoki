@@ -1,30 +1,30 @@
-use device_query::{DeviceQuery, DeviceState as DevState, Keycode};
+use device_query::{DeviceQuery, DeviceState, Keycode};
 use std::fmt;
 
-/* State of the mouse and keyboard */
-pub struct DeviceState {
-	state: DevState,
+/* State of the mouse and keyboard inputs */
+pub struct InputState {
+	state: DeviceState,
 }
 
 /* Debug implementation for programmer-facing output */
-impl fmt::Debug for DeviceState {
+impl fmt::Debug for InputState {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		f.debug_struct("DeviceState")
+		f.debug_struct("InputState")
 			.field("mouse", &self.state.get_mouse())
 			.field("keys", &self.state.get_keys())
 			.finish()
 	}
 }
 
-impl DeviceState {
+impl InputState {
 	/**
-	 * Create a new DeviceState object.
+	 * Create a new InputState object.
 	 *
-	 * @return DeviceState
+	 * @return InputState
 	 */
 	pub fn new() -> Self {
 		Self {
-			state: DevState::new(),
+			state: DeviceState::new(),
 		}
 	}
 

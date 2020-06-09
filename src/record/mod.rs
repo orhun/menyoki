@@ -5,7 +5,7 @@ use crate::gif::Frame;
 use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
 use crate::record::settings::RecordSettings;
-use crate::util::device::DeviceState;
+use crate::util::state::InputState;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::mpsc;
 use std::sync::Arc;
@@ -94,10 +94,10 @@ where
 	/**
 	 * Record frames synchronously with blocking the current thread.
 	 *
-	 * @param  device_state
+	 * @param  input_state
 	 * @return Vector of Frame
 	 */
-	pub fn record_sync(&mut self, device_state: &DeviceState) -> Vec<Frame> {
+	pub fn record_sync(&mut self, input_state: &InputState) -> Vec<Frame> {
 		let mut frames = Vec::new();
 		let recording = Arc::new(AtomicBool::new(true));
 		let rec_state = recording.clone();
@@ -106,7 +106,7 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		while recording.load(Ordering::SeqCst) {
-			if device_state.check_cancel_pressed() {
+			if input_state.check_cancel_pressed() {
 				frames.clear();
 				break;
 			} else {

@@ -1,5 +1,5 @@
 use crate::record::settings::RecordSettings;
-use crate::util::device::DeviceState;
+use crate::util::state::InputState;
 use crate::x11::window::Window;
 use std::mem::MaybeUninit;
 use std::ptr;
@@ -101,21 +101,21 @@ impl Display {
 	/**
 	 * Select a Window from display with user interaction.
 	 *
-	 * @param  device_state
+	 * @param  input_state
 	 * @return Window (Option)
 	 */
-	pub fn select_window(&self, device_state: &DeviceState) -> Option<Window> {
+	pub fn select_window(&self, input_state: &InputState) -> Option<Window> {
 		let mut focused_window = self
 			.get_focused_window()
 			.expect("Failed to get the focused window");
 		let mut xid = None;
 		let now = Instant::now();
-		while !device_state.check_mouse_clicked() {
+		while !input_state.check_mouse_clicked() {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
 			focused_window.draw_borders();
-			if device_state.check_cancel_pressed() {
+			if input_state.check_cancel_pressed() {
 				warn!("User interrupt detected.");
 				xid = None;
 				break;

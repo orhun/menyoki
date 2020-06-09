@@ -44,7 +44,7 @@ impl<'a> App<'a> {
 			}
 		} else {
 			window.show_countdown();
-			recorder.record_sync(&self.settings.device_state)
+			recorder.record_sync(&self.settings.input_state)
 		}
 	}
 
@@ -64,7 +64,7 @@ impl<'a> App<'a> {
 				.geometry,
 			self.settings.gif,
 		)?;
-		gif.save(frames, &self.settings.device_state)?;
+		gif.save(frames, &self.settings.input_state)?;
 		Ok(())
 	}
 }

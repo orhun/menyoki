@@ -2,7 +2,7 @@ pub mod settings;
 use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
-use crate::util::device::DeviceState;
+use crate::util::state::InputState;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::convert::TryInto;
 use std::fs::File;
@@ -82,16 +82,16 @@ impl Gif {
 	 * Write frames to the GIF file.
 	 *
 	 * @param  frames
-	 * @param  device_state
+	 * @param  input_state
 	 * @return Result
 	 */
 	pub fn save(
 		&mut self,
 		frames: Vec<Frame>,
-		device_state: &DeviceState,
+		input_state: &InputState,
 	) -> Result<(), Error> {
 		for frame in frames {
-			if device_state.check_cancel_pressed() {
+			if input_state.check_cancel_pressed() {
 				warn!("User interrupt detected.");
 				break;
 			}
