@@ -44,7 +44,7 @@ impl<'a> App<'a> {
 			}
 		} else {
 			window.show_countdown();
-			recorder.record_sync()
+			recorder.record_sync(&self.settings.device_state)
 		}
 	}
 

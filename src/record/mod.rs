@@ -94,11 +94,11 @@ where
 	/**
 	 * Record frames synchronously with blocking the current thread.
 	 *
+	 * @param  device_state
 	 * @return Vector of Frame
 	 */
-	pub fn record_sync(&mut self) -> Vec<Frame> {
+	pub fn record_sync(&mut self, device_state: &DeviceState) -> Vec<Frame> {
 		let mut frames = Vec::new();
-		let mut device_state = DeviceState::new();
 		let recording = Arc::new(AtomicBool::new(true));
 		let rec_state = recording.clone();
 		ctrlc::set_handler(move || {
