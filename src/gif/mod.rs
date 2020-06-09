@@ -82,10 +82,14 @@ impl Gif {
 	 * Write frames to the GIF file.
 	 *
 	 * @param  frames
+	 * @param  device_state
 	 * @return Result
 	 */
-	pub fn save(&mut self, frames: Vec<Frame>) -> Result<(), Error> {
-		let mut device_state = DeviceState::new();
+	pub fn save(
+		&mut self,
+		frames: Vec<Frame>,
+		device_state: &DeviceState,
+	) -> Result<(), Error> {
 		for frame in frames {
 			if device_state.check_cancel_pressed() {
 				warn!("User interrupt detected.");

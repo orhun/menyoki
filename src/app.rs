@@ -64,7 +64,7 @@ impl<'a> App<'a> {
 				.geometry,
 			self.settings.gif,
 		)?;
-		gif.save(frames)?;
+		gif.save(frames, &self.settings.device_state)?;
 		Ok(())
 	}
 }
