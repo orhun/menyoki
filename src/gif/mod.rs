@@ -91,7 +91,7 @@ impl Gif {
 		input_state: &InputState,
 	) -> Result<(), Error> {
 		for frame in frames {
-			if input_state.check_cancel_pressed() {
+			if input_state.check_keys() {
 				warn!("User interrupt detected.");
 				break;
 			}

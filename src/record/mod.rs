@@ -106,7 +106,7 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		while recording.load(Ordering::SeqCst) {
-			if input_state.check_cancel_pressed() {
+			if input_state.check_keys() {
 				frames.clear();
 				break;
 			} else {

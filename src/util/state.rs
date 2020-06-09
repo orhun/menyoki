@@ -33,7 +33,7 @@ impl InputState {
 	 *
 	 * @return bool
 	 */
-	pub fn check_mouse_clicked(&self) -> bool {
+	pub fn check_mouse(&self) -> bool {
 		let mouse = self.state.get_mouse().button_pressed;
 		mouse[1] || mouse[3]
 	}
@@ -43,7 +43,7 @@ impl InputState {
 	 *
 	 * @return bool
 	 */
-	pub fn check_cancel_pressed(&self) -> bool {
+	pub fn check_keys(&self) -> bool {
 		let keys = self.state.get_keys();
 		keys.contains(&Keycode::Escape)
 			|| (keys.contains(&Keycode::LControl) && keys.contains(&Keycode::D))
