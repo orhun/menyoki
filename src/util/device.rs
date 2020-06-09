@@ -4,15 +4,14 @@ use std::fmt;
 /* State of the mouse and keyboard */
 pub struct DeviceState {
 	state: DevState,
-	mouse: Vec<bool>,
-	keys: Vec<Keycode>,
 }
 
+/* Debug implementation for programmer-facing output */
 impl fmt::Debug for DeviceState {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		f.debug_struct("DeviceState")
-			.field("mouse", &self.mouse)
-			.field("keys", &self.keys)
+			.field("mouse", &self.state.get_mouse())
+			.field("keys", &self.state.get_keys())
 			.finish()
 	}
 }
@@ -26,8 +25,6 @@ impl DeviceState {
 	pub fn new() -> Self {
 		Self {
 			state: DevState::new(),
-			mouse: Vec::new(),
-			keys: Vec::new(),
 		}
 	}
 
@@ -37,8 +34,8 @@ impl DeviceState {
 	 * @return bool
 	 */
 	pub fn check_mouse_clicked(&mut self) -> bool {
-		self.mouse = self.state.get_mouse().button_pressed;
-		self.mouse[1] || self.mouse[3]
+		let mouse = self.state.get_mouse().button_pressed;
+		mouse[1] || mouse[3]
 	}
 
 	/**
@@ -47,10 +44,9 @@ impl DeviceState {
 	 * @return bool
 	 */
 	pub fn check_cancel_pressed(&mut self) -> bool {
-		self.keys = self.state.get_keys();
-		self.keys.contains(&Keycode::Escape)
-			|| (self.keys.contains(&Keycode::LControl)
-				&& self.keys.contains(&Keycode::D))
+		let keys = self.state.get_keys();
+		keys.contains(&Keycode::Escape)
+			|| (keys.contains(&Keycode::LControl) && keys.contains(&Keycode::D))
 	}
 }
 
