@@ -2,6 +2,7 @@ use crate::args::parser::ArgParser;
 use crate::gif::settings::GifSettings;
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
+use crate::util::device::DeviceState;
 use crate::util::settings::SaveSettings;
 use clap::ArgMatches;
 
@@ -12,6 +13,7 @@ pub struct AppSettings<'a> {
 	pub record: RecordSettings,
 	pub gif: GifSettings,
 	pub save: SaveSettings,
+	pub device_state: DeviceState,
 }
 
 impl<'a> AppSettings<'a> {
@@ -34,6 +36,7 @@ impl<'a> AppSettings<'a> {
 			save: SaveSettings::from_args(
 				parser.args_from_subcommand(vec!["record", "gif", "save"]),
 			),
+			device_state: DeviceState::new(),
 		}
 	}
 
