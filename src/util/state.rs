@@ -54,10 +54,9 @@ impl InputState {
 mod tests {
 	use super::*;
 	#[test]
-	fn test_device_mod() {
-		let mut device_state = DeviceState::new();
-		device_state.update();
-		assert!(!device_state.check_mouse_clicked());
-		assert!(!device_state.check_cancel_keys_pressed());
+	fn test_input_state() {
+		let input_state = InputState::new();
+		assert!(!input_state.check_mouse());
+		assert!(!input_state.check_keys());
 	}
 }
