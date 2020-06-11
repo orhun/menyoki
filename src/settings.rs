@@ -27,15 +27,9 @@ impl<'a> AppSettings<'a> {
 		let parser = ArgParser::new(Some(args));
 		Self {
 			args,
-			record: RecordSettings::from_args(
-				parser.args_from_subcommand(vec!["record"]),
-			),
-			gif: GifSettings::from_args(
-				parser.args_from_subcommand(vec!["record", "gif"]),
-			),
-			save: SaveSettings::from_args(
-				parser.args_from_subcommand(vec!["record", "gif", "save"]),
-			),
+			record: RecordSettings::from_args(parser.from_subcommand("record")),
+			gif: GifSettings::from_args(parser.from_subcommand("gif")),
+			save: SaveSettings::from_args(parser.from_subcommand("save")),
 			input_state: InputState::new(),
 		}
 	}

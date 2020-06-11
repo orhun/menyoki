@@ -19,20 +19,20 @@ impl<'a> ArgParser<'a> {
 	}
 
 	/**
-	 * Create a new ArgParser object from a number of subcommands.
+	 * Create a new ArgParser object from a name of subcommand.
 	 *
-	 * @param  subcommands
+	 * @param  name
 	 * @return ArgParser
 	 */
-	pub fn args_from_subcommand(&self, subcommands: Vec<&str>) -> Self {
-		let mut matches = self
-			.args
-			.expect("Invalid arguments")
-			.subcommand_matches(subcommands[0]);
-		for subcommand in subcommands.iter().skip(1) {
-			matches = matches.and_then(|args| args.subcommand_matches(subcommand));
+	pub fn from_subcommand(&self, name: &str) -> Self {
+		let mut args = self.args.expect("Invalid arguments").subcommand();
+		while args.0 != name {
+			args = match args.1 {
+				Some(subcommand) => subcommand.subcommand(),
+				None => break,
+			}
 		}
-		Self::new(matches)
+		Self::new(args.1)
 	}
 
 	/**
