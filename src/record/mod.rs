@@ -108,11 +108,11 @@ where
 		while recording.load(Ordering::SeqCst) {
 			if input_state.check_keys() {
 				frames.clear();
+				warn!("User interrupt detected.");
 				break;
-			} else {
-				self.clock.tick();
-				frames.push(self.get_frame());
 			}
+			self.clock.tick();
+			frames.push(self.get_frame());
 		}
 		frames
 	}
