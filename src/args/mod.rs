@@ -39,10 +39,10 @@ impl fmt::Display for BaseCommand {
 
 /* Command-line arguments */
 pub struct Args<'a, 'b> {
-	save: App<'a, 'b>,
-	gif: App<'a, 'b>,
 	record: App<'a, 'b>,
 	capture: App<'a, 'b>,
+	gif: App<'a, 'b>,
+	save: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -56,10 +56,10 @@ where
 	 */
 	fn init() -> Self {
 		Self {
-			save: Self::get_save_args(),
-			gif: Self::get_gif_args(),
 			record: Self::get_record_args(),
 			capture: Self::get_capture_args(),
+			gif: Self::get_gif_args(),
+			save: Self::get_save_args(),
 		}
 	}
 
@@ -82,70 +82,6 @@ where
 			.subcommand(args.record.subcommand(args.gif.subcommand(args.save)))
 			.subcommand(args.capture)
 			.get_matches()
-	}
-
-	/**
-	 * Get save subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_save_args() -> App<'a, 'b> {
-		SubCommand::with_name("save")
-			.about("Changes the output file settings")
-			.arg(
-				Arg::with_name("output")
-					.value_name("FILE")
-					.default_value("t.gif")
-					.help("Sets the output file"),
-			)
-			.arg(
-				Arg::with_name("date")
-					.short("d")
-					.long("date")
-					.help("Adds date and time to the file name")
-					.display_order(1),
-			)
-			.arg(
-				Arg::with_name("timestamp")
-					.short("t")
-					.long("timestamp")
-					.help("Adds timestamp to the file name")
-					.display_order(2),
-			)
-			.arg(
-				Arg::with_name("prompt")
-					.short("p")
-					.long("prompt")
-					.help("Shows prompt for the file name input")
-					.display_order(3),
-			)
-	}
-
-	/**
-	 * Get gif subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_gif_args() -> App<'a, 'b> {
-		SubCommand::with_name("gif")
-			.about("Changes the GIF encoder settings")
-			.arg(
-				Arg::with_name("speed")
-					.short("s")
-					.long("speed")
-					.value_name("SPEED")
-					.default_value("10")
-					.help("Sets the frame encoding speed (1-30)")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("repeat")
-					.short("r")
-					.long("repeat")
-					.value_name("REPEAT")
-					.help("Sets the number of repetitions [default: \u{221E}]")
-					.takes_value(true),
-			)
 	}
 
 	/**
@@ -260,6 +196,70 @@ where
 					.conflicts_with("root")
 					.help("Records the focus window")
 					.display_order(2),
+			)
+	}
+
+	/**
+	 * Get gif subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_gif_args() -> App<'a, 'b> {
+		SubCommand::with_name("gif")
+			.about("Changes the GIF encoder settings")
+			.arg(
+				Arg::with_name("speed")
+					.short("s")
+					.long("speed")
+					.value_name("SPEED")
+					.default_value("10")
+					.help("Sets the frame encoding speed (1-30)")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("repeat")
+					.short("r")
+					.long("repeat")
+					.value_name("REPEAT")
+					.help("Sets the number of repetitions [default: \u{221E}]")
+					.takes_value(true),
+			)
+	}
+
+	/**
+	 * Get save subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_save_args() -> App<'a, 'b> {
+		SubCommand::with_name("save")
+			.about("Changes the output file settings")
+			.arg(
+				Arg::with_name("output")
+					.value_name("FILE")
+					.default_value("t.gif")
+					.help("Sets the output file"),
+			)
+			.arg(
+				Arg::with_name("date")
+					.short("d")
+					.long("date")
+					.help("Adds date and time to the file name")
+					.display_order(1),
+			)
+			.arg(
+				Arg::with_name("timestamp")
+					.short("t")
+					.long("timestamp")
+					.help("Adds timestamp to the file name")
+					.display_order(2),
+			)
+			.arg(
+				Arg::with_name("prompt")
+					.short("p")
+					.long("prompt")
+					.help("Shows prompt for the file name input")
+					.display_order(3),
 			)
 	}
 }
