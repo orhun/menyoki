@@ -27,7 +27,12 @@ impl<'a> AppSettings<'a> {
 		Self {
 			args,
 			record: RecordSettings::from_args(ArgParser::from_subcommand(
-				args, "record",
+				args,
+				if args.is_present("capture") {
+					"capture"
+				} else {
+					"record"
+				},
 			)),
 			gif: GifSettings::from_args(ArgParser::from_subcommand(args, "gif")),
 			save: SaveSettings::from_args(ArgParser::from_subcommand(args, "save")),
