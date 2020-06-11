@@ -42,6 +42,7 @@ pub struct Args<'a, 'b> {
 	save: App<'a, 'b>,
 	gif: App<'a, 'b>,
 	record: App<'a, 'b>,
+	capture: App<'a, 'b>,
 }
 
 /* Default initialization values for Args */
@@ -51,6 +52,7 @@ impl Default for Args<'_, '_> {
 			save: Self::get_save_args(),
 			gif: Self::get_gif_args(),
 			record: Self::get_record_args(),
+			capture: Self::get_capture_args(),
 		}
 	}
 }
@@ -76,6 +78,7 @@ where
 					.help("Sets the command to run"),
 			)
 			.subcommand(args.record.subcommand(args.gif.subcommand(args.save)))
+			.subcommand(args.capture)
 			.get_matches()
 	}
 
@@ -146,8 +149,34 @@ where
 	 * @return App
 	 */
 	fn get_record_args() -> App<'a, 'b> {
-		SubCommand::with_name("record")
-			.about("Changes the recording settings")
+		Self::get_base_args(BaseCommand::Record).arg(
+			Arg::with_name("fps")
+				.short("f")
+				.long("fps")
+				.value_name("FPS")
+				.default_value("10")
+				.help("Sets the FPS (frames per second) value")
+				.takes_value(true),
+		)
+	}
+
+	/**
+	 * Get capture subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_capture_args() -> App<'a, 'b> {
+		Self::get_base_args(BaseCommand::Capture)
+	}
+
+	/**
+	 * Get the main subcommand arguments from BaseCommand.
+	 *
+	 * @return App
+	 */
+	fn get_base_args(base_command: BaseCommand) -> App<'a, 'b> {
+		SubCommand::with_name(&base_command.to_string())
+			.about(base_command.get_description())
 			.arg(
 				Arg::with_name("root")
 					.short("r")
@@ -177,15 +206,6 @@ where
 					.value_name("HEX")
 					.default_value("FF00FF")
 					.help("Sets the main color to use")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("fps")
-					.short("f")
-					.long("fps")
-					.value_name("FPS")
-					.default_value("10")
-					.help("Sets the FPS (frames per second) value")
 					.takes_value(true),
 			)
 			.arg(
