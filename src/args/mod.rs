@@ -180,43 +180,12 @@ where
 		SubCommand::with_name(&base_command.to_string())
 			.about(base_command.get_description())
 			.arg(
-				Arg::with_name("root")
-					.short("r")
-					.long("root")
-					.help("Records the root window"),
-			)
-			.arg(
-				Arg::with_name("focus")
-					.short("w")
-					.long("focus")
-					.conflicts_with("root")
-					.help("Records the focus window"),
-			)
-			.arg(
-				Arg::with_name("countdown")
-					.short("c")
-					.long("countdown")
-					.value_name("S")
-					.default_value("3")
-					.help("Sets the countdown value for recording")
-					.takes_value(true),
-			)
-			.arg(
 				Arg::with_name("color")
 					.short("x")
 					.long("color")
 					.value_name("HEX")
 					.default_value("FF00FF")
 					.help("Sets the main color to use")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("interval")
-					.short("i")
-					.long("interval")
-					.value_name("MS")
-					.default_value("10")
-					.help("Sets the interval time for window selection")
 					.takes_value(true),
 			)
 			.arg(
@@ -245,6 +214,37 @@ where
 					.default_value("30")
 					.help("Sets the timeout for window selection")
 					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("interval")
+					.short("i")
+					.long("interval")
+					.value_name("MS")
+					.default_value("10")
+					.help("Sets the interval time for window selection")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("countdown")
+					.short("c")
+					.long("countdown")
+					.value_name("S")
+					.default_value("3")
+					.help("Sets the countdown value for recording")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("root")
+					.short("r")
+					.long("root")
+					.help("Records the root window"),
+			)
+			.arg(
+				Arg::with_name("focus")
+					.short("w")
+					.long("focus")
+					.conflicts_with("root")
+					.help("Records the focus window"),
 			)
 	}
 }
