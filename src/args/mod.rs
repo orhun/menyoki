@@ -102,19 +102,22 @@ where
 				Arg::with_name("date")
 					.short("d")
 					.long("date")
-					.help("Adds date and time to the file name"),
+					.help("Adds date and time to the file name")
+					.display_order(1),
 			)
 			.arg(
 				Arg::with_name("timestamp")
 					.short("t")
 					.long("timestamp")
-					.help("Adds timestamp to the file name"),
+					.help("Adds timestamp to the file name")
+					.display_order(2),
 			)
 			.arg(
 				Arg::with_name("prompt")
 					.short("p")
 					.long("prompt")
-					.help("Shows prompt for the file name input"),
+					.help("Shows prompt for the file name input")
+					.display_order(3),
 			)
 	}
 
@@ -158,7 +161,8 @@ where
 				.value_name("FPS")
 				.default_value("10")
 				.help("Sets the FPS (frames per second) value")
-				.takes_value(true),
+				.takes_value(true)
+				.display_order(0),
 		)
 	}
 
@@ -186,7 +190,8 @@ where
 					.value_name("HEX")
 					.default_value("FF00FF")
 					.help("Sets the main color to use")
-					.takes_value(true),
+					.takes_value(true)
+					.display_order(1),
 			)
 			.arg(
 				Arg::with_name("border")
@@ -195,7 +200,8 @@ where
 					.value_name("BORDER")
 					.default_value("5")
 					.help("Sets the border padding value")
-					.takes_value(true),
+					.takes_value(true)
+					.display_order(2),
 			)
 			.arg(
 				Arg::with_name("padding")
@@ -204,7 +210,8 @@ where
 					.value_name("PADDING")
 					.default_value("\"0:0:0:0\"")
 					.help("Sets the recording area padding value")
-					.takes_value(true),
+					.takes_value(true)
+					.display_order(3),
 			)
 			.arg(
 				Arg::with_name("timeout")
@@ -213,7 +220,8 @@ where
 					.value_name("S")
 					.default_value("30")
 					.help("Sets the timeout for window selection")
-					.takes_value(true),
+					.takes_value(true)
+					.display_order(4),
 			)
 			.arg(
 				Arg::with_name("interval")
@@ -222,7 +230,8 @@ where
 					.value_name("MS")
 					.default_value("10")
 					.help("Sets the interval time for window selection")
-					.takes_value(true),
+					.takes_value(true)
+					.display_order(5),
 			)
 			.arg(
 				Arg::with_name("countdown")
@@ -234,20 +243,23 @@ where
 						_ => "0",
 					})
 					.help("Sets the countdown value for recording")
-					.takes_value(true),
+					.takes_value(true)
+					.display_order(6),
 			)
 			.arg(
 				Arg::with_name("root")
 					.short("r")
 					.long("root")
-					.help("Records the root window"),
+					.help("Records the root window")
+					.display_order(1),
 			)
 			.arg(
 				Arg::with_name("focus")
 					.short("w")
 					.long("focus")
 					.conflicts_with("root")
-					.help("Records the focus window"),
+					.help("Records the focus window")
+					.display_order(2),
 			)
 	}
 }
