@@ -105,6 +105,7 @@ where
 			rec_state.store(false, Ordering::SeqCst);
 		})
 		.expect("Failed to set the signal handler");
+		self.window.show_countdown();
 		while recording.load(Ordering::SeqCst) {
 			if input_state.check_keys() {
 				frames.clear();
