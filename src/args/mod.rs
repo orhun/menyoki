@@ -214,26 +214,6 @@ where
 					.display_order(3),
 			)
 			.arg(
-				Arg::with_name("timeout")
-					.short("t")
-					.long("timeout")
-					.value_name("S")
-					.default_value("30")
-					.help("Sets the timeout for window selection")
-					.takes_value(true)
-					.display_order(4),
-			)
-			.arg(
-				Arg::with_name("interval")
-					.short("i")
-					.long("interval")
-					.value_name("MS")
-					.default_value("10")
-					.help("Sets the interval time for window selection")
-					.takes_value(true)
-					.display_order(5),
-			)
-			.arg(
 				Arg::with_name("countdown")
 					.short("c")
 					.long("countdown")
@@ -243,6 +223,26 @@ where
 						_ => "0",
 					})
 					.help("Sets the countdown value for recording")
+					.takes_value(true)
+					.display_order(4),
+			)
+			.arg(
+				Arg::with_name("timeout")
+					.short("t")
+					.long("timeout")
+					.value_name("S")
+					.default_value("30")
+					.help("Sets the timeout for window selection")
+					.takes_value(true)
+					.display_order(5),
+			)
+			.arg(
+				Arg::with_name("interval")
+					.short("i")
+					.long("interval")
+					.value_name("MS")
+					.default_value("10")
+					.help("Sets the interval time for window selection")
 					.takes_value(true)
 					.display_order(6),
 			)
