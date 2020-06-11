@@ -45,9 +45,16 @@ pub struct Args<'a, 'b> {
 	capture: App<'a, 'b>,
 }
 
-/* Default initialization values for Args */
-impl Default for Args<'_, '_> {
-	fn default() -> Self {
+impl<'a, 'b> Args<'a, 'b>
+where
+	'a: 'b,
+{
+	/**
+	 * Initialize the arguments for parsing.
+	 *
+	 * @return Args
+	 */
+	fn init() -> Self {
 		Self {
 			save: Self::get_save_args(),
 			gif: Self::get_gif_args(),
@@ -55,19 +62,14 @@ impl Default for Args<'_, '_> {
 			capture: Self::get_capture_args(),
 		}
 	}
-}
 
-impl<'a, 'b> Args<'a, 'b>
-where
-	'a: 'b,
-{
 	/**
 	 * Parse command line arguments.
 	 *
 	 * @return ArgMatches
 	 */
 	pub fn parse() -> ArgMatches<'a> {
-		let args = Self::default();
+		let args = Self::init();
 		App::new(env!("CARGO_PKG_NAME"))
 			.version(env!("CARGO_PKG_VERSION"))
 			.author(env!("CARGO_PKG_AUTHORS"))
