@@ -2,6 +2,7 @@ pub mod parser;
 use clap::{App, Arg, ArgMatches, SubCommand};
 use std::fmt;
 
+/* Main SubCommand for the app */
 #[derive(Debug)]
 enum BaseCommand {
 	Record,
