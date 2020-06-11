@@ -1,5 +1,26 @@
 pub mod parser;
 use clap::{App, Arg, ArgMatches, SubCommand};
+use std::fmt;
+
+#[derive(Debug)]
+enum BaseCommand {
+	Record,
+	Capture,
+}
+
+/* Display implementation for user-facing output */
+impl fmt::Display for BaseCommand {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		write!(
+			f,
+			"{}",
+			match self {
+				Self::Record => "Records a window",
+				Self::Capture => "Takes a screenshot of a window",
+			}
+		)
+	}
+}
 
 /* Command-line arguments */
 pub struct Args<'a, 'b> {
