@@ -24,12 +24,13 @@ impl<'a> AppSettings<'a> {
 	 * @return AppSettings
 	 */
 	pub fn new(args: &'a ArgMatches<'a>) -> Self {
-		let parser = ArgParser::new(Some(args));
 		Self {
 			args,
-			record: RecordSettings::from_args(parser.from_subcommand("record")),
-			gif: GifSettings::from_args(parser.from_subcommand("gif")),
-			save: SaveSettings::from_args(parser.from_subcommand("save")),
+			record: RecordSettings::from_args(ArgParser::from_subcommand(
+				args, "record",
+			)),
+			gif: GifSettings::from_args(ArgParser::from_subcommand(args, "gif")),
+			save: SaveSettings::from_args(ArgParser::from_subcommand(args, "save")),
 			input_state: InputState::new(),
 		}
 	}

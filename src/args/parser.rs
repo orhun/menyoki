@@ -24,8 +24,8 @@ impl<'a> ArgParser<'a> {
 	 * @param  name
 	 * @return ArgParser
 	 */
-	pub fn from_subcommand(&self, name: &str) -> Self {
-		let mut args = self.args.expect("Invalid arguments").subcommand();
+	pub fn from_subcommand(args: &'a ArgMatches<'a>, name: &str) -> Self {
+		let mut args = args.subcommand();
 		while args.0 != name {
 			args = match args.1 {
 				Some(subcommand) => subcommand.subcommand(),
