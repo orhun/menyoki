@@ -9,6 +9,20 @@ enum BaseCommand {
 	Capture,
 }
 
+impl<'a> BaseCommand {
+	/**
+	 * Get the description of a BaseCommand field.
+	 *
+	 * @return str
+	 */
+	fn get_description(&self) -> &'a str {
+		match self {
+			Self::Record => "Records a window",
+			Self::Capture => "Takes a screenshot of a window",
+		}
+	}
+}
+
 /* Display implementation for user-facing output */
 impl fmt::Display for BaseCommand {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -16,8 +30,8 @@ impl fmt::Display for BaseCommand {
 			f,
 			"{}",
 			match self {
-				Self::Record => "Records a window",
-				Self::Capture => "Takes a screenshot of a window",
+				Self::Record => "record",
+				Self::Capture => "capture",
 			}
 		)
 	}
