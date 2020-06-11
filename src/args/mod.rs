@@ -229,7 +229,10 @@ where
 					.short("c")
 					.long("countdown")
 					.value_name("S")
-					.default_value("3")
+					.default_value(match base_command {
+						BaseCommand::Record => "3",
+						_ => "0",
+					})
 					.help("Sets the countdown value for recording")
 					.takes_value(true),
 			)
