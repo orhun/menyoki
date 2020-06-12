@@ -37,7 +37,7 @@ impl<'a> WindowSystem<'a> {
 	 *
 	 * @return Window (Option)
 	 */
-	pub fn get_record_window(&self) -> Option<Window> {
+	pub fn get_window(&self) -> Option<Window> {
 		match self.settings.record.window {
 			RecordWindow::Focus => self.display.get_focused_window(),
 			RecordWindow::Root => Some(self.display.get_root_window()),
