@@ -42,6 +42,7 @@ pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
 	capture: App<'a, 'b>,
 	gif: App<'a, 'b>,
+	png: App<'a, 'b>,
 	save: App<'a, 'b>,
 }
 
@@ -59,6 +60,7 @@ where
 			record: Self::get_record_args(),
 			capture: Self::get_capture_args(),
 			gif: Self::get_gif_args(),
+			png: Self::get_png_args(),
 			save: Self::get_save_args(),
 		}
 	}
@@ -80,7 +82,7 @@ where
 					.help("Sets the command to run"),
 			)
 			.subcommand(args.record.subcommand(args.gif.subcommand(args.save)))
-			.subcommand(args.capture)
+			.subcommand(args.capture.subcommand(args.png))
 			.get_matches()
 	}
 
@@ -223,6 +225,38 @@ where
 					.value_name("REPEAT")
 					.help("Sets the number of repetitions [default: \u{221E}]")
 					.takes_value(true),
+			)
+	}
+
+	/**
+	 * Get png subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_png_args() -> App<'a, 'b> {
+		SubCommand::with_name("png")
+			.about("Changes the PNG encoder settings")
+			.arg(
+				Arg::with_name("compression")
+					.short("c")
+					.long("compress")
+					.value_name("COMPRESSION")
+					.possible_values(&["default", "fast", "best", "huffman", "rle"])
+					.default_value("fast")
+					.help("Sets the compression level of PNG encoder")
+					.takes_value(true)
+					.display_order(1),
+			)
+			.arg(
+				Arg::with_name("filter")
+					.short("f")
+					.long("filter")
+					.value_name("FILTER")
+					.possible_values(&["none", "sub", "up", "avg", "paeth"])
+					.default_value("sub")
+					.help("Sets the filter algorithm that processes the image data")
+					.takes_value(true)
+					.display_order(2),
 			)
 	}
 
