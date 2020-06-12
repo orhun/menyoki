@@ -51,15 +51,15 @@ impl<T> RecordResult<T> {
 }
 
 /* Recorder with FPS clock and channel */
-pub struct Recorder<T> {
-	window: T,
+pub struct Recorder<Window> {
+	window: Window,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
 }
 
-impl<T> Recorder<T>
+impl<Window> Recorder<Window>
 where
-	T: Record + Send + Sync + 'static,
+	Window: Record + Send + Sync + 'static,
 {
 	/**
 	 * Create a new Recorder object.
@@ -68,7 +68,7 @@ where
 	 * @param  window
 	 * @return Recorder
 	 */
-	pub fn new(settings: RecordSettings, window: T) -> Self {
+	pub fn new(settings: RecordSettings, window: Window) -> Self {
 		Self {
 			window,
 			clock: FpsClock::new(settings.fps),
