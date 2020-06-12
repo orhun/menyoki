@@ -27,6 +27,22 @@ where
 		Self { settings, window }
 	}
 
+	/**
+	 * Start the application.
+	 *
+	 * @return Result
+	 */
+	pub fn start(&self) -> Result<(), Error> {
+		if self.settings.args.is_present("capture") {
+			self.capture();
+		} else {
+			let frames = self.record();
+			info!("frames: {}", frames.len());
+			self.save_gif(frames)?;
+		}
+		Ok(())
+	}
+
 	/* Capture the image of window and save it to a file. */
 	pub fn capture(self) {
 		self.window.show_countdown();
