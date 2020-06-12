@@ -11,7 +11,7 @@ enum BaseCommand {
 
 impl<'a> BaseCommand {
 	/**
-	 * Get the description of a BaseCommand field.
+	 * Get the description of a BaseCommand.
 	 *
 	 * @return str
 	 */
