@@ -81,11 +81,11 @@ where
 			)
 			.subcommand(
 				args.record
-					.subcommand(args.gif.subcommand(Self::get_save_args())),
+					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif"))),
 			)
 			.subcommand(
 				args.capture
-					.subcommand(args.png.subcommand(Self::get_save_args())),
+					.subcommand(args.png.subcommand(Self::get_save_args("t.png"))),
 			)
 			.get_matches()
 	}
@@ -286,15 +286,16 @@ where
 	/**
 	 * Get save subcommand arguments.
 	 *
+	 * @param  default_file
 	 * @return App
 	 */
-	fn get_save_args() -> App<'a, 'b> {
+	fn get_save_args(default_file: &'a str) -> App<'a, 'b> {
 		SubCommand::with_name("save")
 			.about("Changes the output file settings")
 			.arg(
 				Arg::with_name("output")
 					.value_name("FILE")
-					.default_value("t.gif")
+					.default_value(default_file)
 					.help("Sets the output file"),
 			)
 			.arg(
