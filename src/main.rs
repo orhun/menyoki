@@ -7,6 +7,7 @@ mod app;
 mod args;
 mod gif;
 mod image;
+mod png;
 mod record;
 mod settings;
 mod test;
@@ -25,14 +26,13 @@ fn main() -> Result<(), Error> {
 	println!("thank god it's friday");
 
 	let settings = AppSettings::new(&args);
-	let app = App::new(&settings);
-	let window_system = WindowSystem::init(&settings).expect("Cannot open display");
-	if let Some(window) = window_system.get_record_window() {
-		let frames = app.record(window);
-		info!("frames: {}", frames.len());
-		app.save_gif(frames)?;
-	} else {
-		error!("Cannot the record the window.")
-	}
-	Ok(())
+	let window_system =
+		WindowSystem::init(&settings).expect("Failed to access the window system");
+	App::new(
+		&settings,
+		window_system
+			.get_window()
+			.expect("Failed to get the window"),
+	)
+	.start()
 }
