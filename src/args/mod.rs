@@ -120,6 +120,7 @@ where
 	/**
 	 * Get the main subcommand arguments from BaseCommand.
 	 *
+	 * @param  base_command
 	 * @return App
 	 */
 	fn get_base_args(base_command: BaseCommand) -> App<'a, 'b> {
