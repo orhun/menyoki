@@ -1,4 +1,7 @@
+pub mod settings;
+
 use crate::image::Image;
+use crate::png::settings::PngSettings;
 use image::error::ImageError;
 use image::png::PNGEncoder;
 use image::ColorType;
@@ -16,12 +19,18 @@ impl<W: Write> Png<W> {
 	 *
 	 * @param  image
 	 * @param  file
+	 * @param  settings
 	 * @return Png
 	 */
-	pub fn new(image: Image, file: W) -> Self {
+	pub fn new(image: Image, file: W, settings: PngSettings) -> Self {
+		info!("{:?}", settings);
 		Self {
 			image,
-			encoder: PNGEncoder::new(file),
+			encoder: PNGEncoder::new_with_quality(
+				file,
+				settings.compression,
+				settings.filter,
+			),
 		}
 	}
 
