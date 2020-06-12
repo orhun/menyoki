@@ -1,5 +1,6 @@
 use crate::args::parser::ArgParser;
 use crate::gif::settings::GifSettings;
+use crate::png::settings::PngSettings;
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
 use crate::util::settings::SaveSettings;
@@ -12,6 +13,7 @@ pub struct AppSettings<'a> {
 	pub args: &'a ArgMatches<'a>,
 	pub record: RecordSettings,
 	pub gif: GifSettings,
+	pub png: PngSettings,
 	pub save: SaveSettings,
 	pub input_state: InputState,
 }
@@ -35,6 +37,7 @@ impl<'a> AppSettings<'a> {
 				},
 			)),
 			gif: GifSettings::from_args(ArgParser::from_subcommand(args, "gif")),
+			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
 			save: SaveSettings::from_args(ArgParser::from_subcommand(args, "save")),
 			input_state: InputState::new(),
 		}
