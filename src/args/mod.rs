@@ -43,7 +43,6 @@ pub struct Args<'a, 'b> {
 	capture: App<'a, 'b>,
 	gif: App<'a, 'b>,
 	png: App<'a, 'b>,
-	save: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -61,7 +60,6 @@ where
 			capture: Self::get_capture_args(),
 			gif: Self::get_gif_args(),
 			png: Self::get_png_args(),
-			save: Self::get_save_args(),
 		}
 	}
 
@@ -81,8 +79,14 @@ where
 					.value_name("COMMAND")
 					.help("Sets the command to run"),
 			)
-			.subcommand(args.record.subcommand(args.gif.subcommand(args.save)))
-			.subcommand(args.capture.subcommand(args.png))
+			.subcommand(
+				args.record
+					.subcommand(args.gif.subcommand(Self::get_save_args())),
+			)
+			.subcommand(
+				args.capture
+					.subcommand(args.png.subcommand(Self::get_save_args())),
+			)
 			.get_matches()
 	}
 
