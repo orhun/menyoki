@@ -7,33 +7,33 @@ use std::io::Error;
 
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
-pub struct App<'a> {
+pub struct App<'a, Window> {
 	settings: &'a AppSettings<'a>,
+	window: Window,
 }
 
-impl<'a> App<'a> {
+impl<'a, Window> App<'a, Window>
+where
+	Window: Record + Send + Sync + Copy + 'static,
+{
 	/**
 	 * Create a new App object.
 	 *
 	 * @param  settings
+	 * @param  window
 	 * @return App
 	 */
-	pub fn new(settings: &'a AppSettings<'a>) -> Self {
-		Self { settings }
+	pub fn new(settings: &'a AppSettings<'a>, window: Window) -> Self {
+		Self { settings, window }
 	}
 
-	/**
-	 * Capture the image of window and save it to a file.
-	 *
-	 * @param  window
-	 */
-	pub fn capture<T>(self, window: T)
-	where
-		T: Record,
-	{
-		window.show_countdown();
+	/* Capture the image of window and save it to a file. */
+	pub fn capture(self) {
+		self.window.show_countdown();
 		Png::new(
-			window.get_image().expect("Failed to get the window image"),
+			self.window
+				.get_image()
+				.expect("Failed to get the window image"),
 			File::create(&self.settings.save.file).expect("Failed to create file"),
 			self.settings.png,
 		)
@@ -44,14 +44,10 @@ impl<'a> App<'a> {
 	/**
 	 * Start recording the frames.
 	 *
-	 * @param  window
 	 * @return Vector of Frame
 	 */
-	pub fn record<T>(self, window: T) -> Vec<Frame>
-	where
-		T: Record + Send + Sync + Copy + 'static,
-	{
-		let mut recorder = Recorder::new(self.settings.record, window);
+	pub fn record(self) -> Vec<Frame> {
+		let mut recorder = Recorder::new(self.settings.record, self.window);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
