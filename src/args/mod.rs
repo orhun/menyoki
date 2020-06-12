@@ -147,7 +147,12 @@ where
 					.long("padding")
 					.value_name("PADDING")
 					.default_value("\"0:0:0:0\"")
-					.help("Sets the recording area padding value")
+					.help(match base_command {
+						BaseCommand::Record => "Sets the record area padding value",
+						BaseCommand::Capture => {
+							"Sets the capture area padding value"
+						}
+					})
 					.takes_value(true)
 					.display_order(3),
 			)
@@ -158,9 +163,16 @@ where
 					.value_name("S")
 					.default_value(match base_command {
 						BaseCommand::Record => "3",
-						_ => "0",
+						BaseCommand::Capture => "0",
 					})
-					.help("Sets the countdown value for recording")
+					.help(match base_command {
+						BaseCommand::Record => {
+							"Sets the countdown value for recording"
+						}
+						BaseCommand::Capture => {
+							"Sets the countdown value for capturing"
+						}
+					})
 					.takes_value(true)
 					.display_order(4),
 			)
@@ -188,7 +200,10 @@ where
 				Arg::with_name("root")
 					.short("r")
 					.long("root")
-					.help("Records the root window")
+					.help(match base_command {
+						BaseCommand::Record => "Records the root window",
+						BaseCommand::Capture => "Captures the root window",
+					})
 					.display_order(1),
 			)
 			.arg(
@@ -196,7 +211,10 @@ where
 					.short("w")
 					.long("focus")
 					.conflicts_with("root")
-					.help("Records the focus window")
+					.help(match base_command {
+						BaseCommand::Record => "Records the focus window",
+						BaseCommand::Capture => "Captures the focus window",
+					})
 					.display_order(2),
 			)
 	}
