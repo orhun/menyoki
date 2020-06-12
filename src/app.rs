@@ -63,7 +63,6 @@ impl<'a> App<'a> {
 				None => Vec::new(),
 			}
 		} else {
-			window.show_countdown();
 			recorder.record_sync(&self.settings.input_state)
 		}
 	}
