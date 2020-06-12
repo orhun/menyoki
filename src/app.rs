@@ -1,4 +1,5 @@
 use crate::gif::{Frame, Gif};
+use crate::png::Png;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use std::fs::File;
@@ -19,6 +20,25 @@ impl<'a> App<'a> {
 	 */
 	pub fn new(settings: &'a AppSettings<'a>) -> Self {
 		Self { settings }
+	}
+
+	/**
+	 * Capture the image of window and save it to a file.
+	 *
+	 * @param  window
+	 */
+	pub fn capture<T>(self, window: T)
+	where
+		T: Record,
+	{
+		window.show_countdown();
+		Png::new(
+			window.get_image().expect("Failed to get the window image"),
+			File::create(&self.settings.save.file).expect("Failed to create file"),
+			self.settings.png,
+		)
+		.encode()
+		.expect("Failed to encode the image");
 	}
 
 	/**
