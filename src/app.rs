@@ -105,7 +105,6 @@ mod tests {
 	use super::*;
 	use crate::args::Args;
 	use crate::test::TestWindow;
-	use crate::util::cmd::Command;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let args = Args::parse();
