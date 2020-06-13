@@ -84,7 +84,7 @@ impl RecordTime {
 pub struct RecordSettings {
 	pub fps: u32,
 	pub color: u64,
-	pub border: u32,
+	pub border: Option<u32>,
 	pub padding: Padding,
 	pub time: RecordTime,
 	pub window: RecordWindow,
@@ -96,7 +96,7 @@ impl Default for RecordSettings {
 		Self {
 			fps: 10,
 			color: 0x00ff_00ff,
-			border: 5,
+			border: Some(5),
 			padding: Padding::default(),
 			time: RecordTime::default(),
 			window: RecordWindow::Select,
@@ -110,7 +110,7 @@ impl RecordSettings {
 	 *
 	 * @param  fps
 	 * @param  color
-	 * @param  border
+	 * @param  border (Option)
 	 * @param  padding
 	 * @param  time
 	 * @param  window
@@ -119,7 +119,7 @@ impl RecordSettings {
 	pub fn new(
 		fps: u32,
 		color: u64,
-		border: u32,
+		border: Option<u32>,
 		padding: Padding,
 		time: RecordTime,
 		window: RecordWindow,
@@ -142,21 +142,30 @@ impl RecordSettings {
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
-			Some(matches) => Self::new(
-				match parser.parse("fps", Self::default().fps) {
-					fps if fps > 0 => fps,
-					_ => Self::default().fps,
-				},
-				u64::from_str_radix(
-					matches.value_of("color").unwrap_or_default(),
-					16,
+			Some(matches) => {
+				Self::new(
+					match parser.parse("fps", Self::default().fps) {
+						fps if fps > 0 => fps,
+						_ => Self::default().fps,
+					},
+					u64::from_str_radix(
+						matches.value_of("color").unwrap_or_default(),
+						16,
+					)
+					.unwrap_or(Self::default().color),
+					if matches.is_present("no-border") {
+						None
+					} else {
+						Some(parser.parse(
+							"border",
+							Self::default().border.unwrap_or_default(),
+						))
+					},
+					Padding::parse(matches.value_of("padding").unwrap_or_default()),
+					RecordTime::from_args(parser),
+					RecordWindow::from_args(matches),
 				)
-				.unwrap_or(Self::default().color),
-				parser.parse("border", Self::default().border),
-				Padding::parse(matches.value_of("padding").unwrap_or_default()),
-				RecordTime::from_args(parser),
-				RecordWindow::from_args(matches),
-			),
+			}
 			None => RecordSettings::default(),
 		}
 	}
