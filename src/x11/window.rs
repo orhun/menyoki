@@ -134,18 +134,18 @@ impl Window {
 
 	/* Draw a rectangle inside the window. */
 	pub fn draw_borders(&self) {
-		unsafe {
-			xlib::XDrawRectangle(
-				self.display,
-				self.xid,
-				self.get_gc(self.settings.color),
-				self.geometry.x
-					+ i32::try_from(self.settings.border).unwrap_or_default(),
-				self.geometry.y
-					+ i32::try_from(self.settings.border).unwrap_or_default(),
-				self.geometry.width - (self.settings.border * 2),
-				self.geometry.height - (self.settings.border * 2),
-			);
+		if let Some(border) = self.settings.border {
+			unsafe {
+				xlib::XDrawRectangle(
+					self.display,
+					self.xid,
+					self.get_gc(self.settings.color),
+					self.geometry.x + i32::try_from(border).unwrap_or_default(),
+					self.geometry.y + i32::try_from(border).unwrap_or_default(),
+					self.geometry.width - (border * 2),
+					self.geometry.height - (border * 2),
+				);
+			}
 		}
 	}
 
