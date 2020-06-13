@@ -1,3 +1,4 @@
+use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::util::state::InputState;
 use crate::x11::window::Window;
@@ -130,7 +131,10 @@ impl Display {
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
-		focused_window.clear_area();
+		if self.settings.border.is_some() {
+			focused_window.clear_area();
+			focused_window.show_text(Some(String::from(" ")), FpsClock::new(500));
+		}
 		if xid.is_some() {
 			Some(focused_window)
 		} else {
