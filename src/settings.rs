@@ -38,7 +38,10 @@ impl<'a> AppSettings<'a> {
 			)),
 			gif: GifSettings::from_args(ArgParser::from_subcommand(args, "gif")),
 			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
-			save: SaveSettings::from_args(ArgParser::from_subcommand(args, "save")),
+			save: SaveSettings::from_args(
+				ArgParser::from_subcommand(args, "save"),
+				args,
+			),
 			input_state: InputState::new(),
 		}
 	}

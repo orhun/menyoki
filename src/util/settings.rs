@@ -48,15 +48,6 @@ pub struct SaveSettings {
 	pub file: String,
 }
 
-/* Default initialization values for SaveSettings */
-impl Default for SaveSettings {
-	fn default() -> Self {
-		Self {
-			file: String::from("t.gif"),
-		}
-	}
-}
-
 impl SaveSettings {
 	/**
 	 * Create a new SaveSettings object.
@@ -72,9 +63,10 @@ impl SaveSettings {
 	 * Create a SaveSettings object from parsed arguments.
 	 *
 	 * @param  parser
+	 * @param  args
 	 * @return SaveSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_args<'a>(parser: ArgParser<'_>, args: &'a ArgMatches<'a>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let mut file_name =
@@ -87,7 +79,11 @@ impl SaveSettings {
 				}
 				Self::new(file_name)
 			}
-			None => Self::default(),
+			None => Self::new(if args.is_present("record") {
+				String::from("t.gif")
+			} else {
+				String::from("t.png")
+			}),
 		}
 	}
 
