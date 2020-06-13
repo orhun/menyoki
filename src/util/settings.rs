@@ -85,9 +85,9 @@ impl SaveSettings {
 				if let Some(info) = FileInfo::from_args(&matches) {
 					file_name = Self::add_file_info(&file_name, info);
 				}
-				SaveSettings::new(file_name)
+				Self::new(file_name)
 			}
-			None => SaveSettings::default(),
+			None => Self::default(),
 		}
 	}
 
