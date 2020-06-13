@@ -115,7 +115,7 @@ mod tests {
 			Frame::new(Image::new(vec![0, 0, 0, 255, 255, 255], geometry), 10),
 			Frame::new(Image::new(vec![255, 255, 255, 0, 0, 0], geometry), 10),
 		];
-		let mut gif = Gif::new(File::create("test.gif")?, geometry, settings)?;
+		let mut gif = Gif::new(geometry, File::create("test.gif")?, settings)?;
 		gif.save(frames, &InputState::new())?;
 		Command::new(String::from("rm"), vec![String::from("test.gif")])
 			.execute()?;
