@@ -79,11 +79,21 @@ impl SaveSettings {
 				}
 				Self::new(file_name)
 			}
-			None => Self::new(if args.is_present("record") {
-				String::from("t.gif")
-			} else {
-				String::from("t.png")
-			}),
+			None => Self::new(Self::get_default_file(args)),
+		}
+	}
+
+	/**
+	 * Get the default file name from arguments.
+	 *
+	 * @param  args
+	 * @return String
+	 */
+	fn get_default_file<'a>(args: &'a ArgMatches<'a>) -> String {
+		if args.is_present("record") {
+			String::from("t.gif")
+		} else {
+			String::from("t.png")
 		}
 	}
 
