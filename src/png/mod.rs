@@ -48,3 +48,22 @@ impl<W: Write> Png<W> {
 		Ok(())
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::image::geometry::Geometry;
+	use crate::util::cmd::Command;
+	use std::fs::File;
+	#[test]
+	fn test_png_mod() -> Result<(), ImageError> {
+		let geometry = Geometry::new(0, 0, 1, 2, None);
+		let image = Image::new(vec![0, 0, 0, 255, 255, 255], geometry);
+		let settings = PngSettings::default();
+		let png = Png::new(image, File::create("test.png")?, settings);
+		png.encode()?;
+		Command::new(String::from("rm"), vec![String::from("test.png")])
+			.execute()?;
+		Ok(())
+	}
+}
