@@ -87,12 +87,12 @@ where
 	 */
 	fn save_gif(self, frames: Vec<Frame>) -> Result<(), Error> {
 		let mut gif = Gif::new(
-			File::create(&self.settings.save.file).expect("Failed to create file"),
 			frames
 				.first()
 				.expect("No frames found to save")
 				.image
 				.geometry,
+			File::create(&self.settings.save.file).expect("Failed to create file"),
 			self.settings.gif,
 		)?;
 		gif.save(frames, &self.settings.input_state)?;

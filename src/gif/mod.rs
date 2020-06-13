@@ -55,14 +55,14 @@ impl Gif {
 	/**
 	 * Create a new Gif object.
 	 *
-	 * @param  file
 	 * @param  geometry
+	 * @param  file
 	 * @param  settings
 	 * @return Result (Gif)
 	 */
 	pub fn new(
-		file: File,
 		geometry: Geometry,
+		file: File,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
 		let mut encoder = Encoder::new(
