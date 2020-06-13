@@ -176,7 +176,7 @@ impl Window {
 	 * @param  text (Option)
 	 * @param  clock
 	 */
-	fn show_text(&self, text: Option<String>, mut clock: FpsClock) {
+	pub fn show_text(&self, text: Option<String>, mut clock: FpsClock) {
 		let text = text.unwrap_or_default();
 		for _ in 0..clock.fps {
 			self.draw_text(
