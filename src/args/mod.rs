@@ -222,6 +222,13 @@ where
 					})
 					.display_order(2),
 			)
+			.arg(
+				Arg::with_name("no-border")
+					.short("n")
+					.long("no-border")
+					.help("Shows no border for window selection")
+					.display_order(3),
+			)
 	}
 
 	/**
