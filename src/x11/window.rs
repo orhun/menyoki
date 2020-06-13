@@ -153,16 +153,15 @@ impl Window {
 	 * Draw a text on the window.
 	 *
 	 * @param text
-	 * @param fg_color
 	 * @param x
 	 * @param y
 	 */
-	fn draw_text(&self, text: &str, fg_color: u64, x: i32, y: i32) {
+	fn draw_text(&self, text: &str, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
 				self.display,
 				self.xid,
-				self.get_gc(fg_color),
+				self.get_gc(self.settings.color),
 				x,
 				y,
 				CString::new(text).unwrap_or_default().as_ptr(),
@@ -182,7 +181,6 @@ impl Window {
 		for _ in 0..clock.fps {
 			self.draw_text(
 				text.as_str(),
-				self.settings.color,
 				self.geometry.x
 					+ (self.geometry.width - 25).try_into().unwrap_or(20),
 				self.geometry.y + 20,
