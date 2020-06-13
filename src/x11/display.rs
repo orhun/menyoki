@@ -164,7 +164,7 @@ mod tests {
 			0x00ff_00ff,
 			Some(0),
 			Padding::default(),
-			RecordTime::new(0, 10, 0),
+			RecordTime::new(0, 0, 10),
 			RecordWindow::Select,
 		);
 		let display = Display::open(Some(settings)).unwrap();
