@@ -99,7 +99,7 @@ mod tests {
 		assert_eq!(
 			1366 * 768 * 3,
 			window_system
-				.get_record_window()
+				.get_window()
 				.unwrap()
 				.get_image()
 				.unwrap()
