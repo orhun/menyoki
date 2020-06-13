@@ -44,7 +44,7 @@ where
 	}
 
 	/* Capture the image of window and save it to a file. */
-	pub fn capture(self) {
+	fn capture(self) {
 		self.window.show_countdown();
 		Png::new(
 			self.window
@@ -62,7 +62,7 @@ where
 	 *
 	 * @return Vector of Frame
 	 */
-	pub fn record(self) -> Vec<Frame> {
+	fn record(self) -> Vec<Frame> {
 		let mut recorder = Recorder::new(self.settings.record, self.window);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
@@ -85,7 +85,7 @@ where
 	 * @param  frames
 	 * @return Result
 	 */
-	pub fn save_gif(self, frames: Vec<Frame>) -> Result<(), Error> {
+	fn save_gif(self, frames: Vec<Frame>) -> Result<(), Error> {
 		let mut gif = Gif::new(
 			File::create(&self.settings.save.file).expect("Failed to create file"),
 			frames
