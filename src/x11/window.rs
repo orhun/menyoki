@@ -269,7 +269,7 @@ mod tests {
 		let settings = RecordSettings::new(
 			10,
 			0x00ff_00ff,
-			0,
+			Some(0),
 			Padding::default(),
 			RecordTime::new(0, 10, 0),
 			RecordWindow::Select,
