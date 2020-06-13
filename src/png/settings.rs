@@ -43,7 +43,7 @@ impl PngSettings {
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
-				match matches.value_of("compression3") {
+				match matches.value_of("compression") {
 					Some("default") => CompressionType::Default,
 					Some("fast") => CompressionType::Fast,
 					Some("best") => CompressionType::Best,
