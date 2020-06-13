@@ -23,7 +23,6 @@ impl<W: Write> Png<W> {
 	 * @return Png
 	 */
 	pub fn new(image: Image, file: W, settings: PngSettings) -> Self {
-		info!("{:?}", settings);
 		Self {
 			image,
 			encoder: PNGEncoder::new_with_quality(
