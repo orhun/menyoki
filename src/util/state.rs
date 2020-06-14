@@ -53,10 +53,16 @@ impl InputState {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use enigo::*;
 	#[test]
 	fn test_input_state() {
 		let input_state = InputState::new();
-		assert!(!input_state.check_mouse());
-		assert!(!input_state.check_keys());
+		let mut enigo = Enigo::new();
+		enigo.key_down(Key::Escape);
+		assert!(input_state.check_keys());
+		enigo.key_up(Key::Escape);
+		enigo.mouse_down(MouseButton::Left);
+		assert!(input_state.check_mouse());
+		enigo.mouse_up(MouseButton::Left);
 	}
 }
