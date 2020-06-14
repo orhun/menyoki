@@ -15,6 +15,7 @@ ctrlc = { version = "3.1.4", features = ["termination"] }
 fern = { version = "0.6.0", features = ["colored"] }
 log = "0.4.8"
 image = "0.23.5"
+enigo = "0.0.14"
 
 [profile.dev]
 opt-level = 0
