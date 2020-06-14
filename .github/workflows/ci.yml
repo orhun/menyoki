@@ -34,7 +34,7 @@ jobs:
       - name: Run tests
         run: |
           sudo apt-get update
-          sudo apt-get install -y -qq xvfb xdotool
+          sudo apt-get install -y -qq xvfb xdo
           bash -c "curl -s $repo | $parse | wget -qi -"
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
