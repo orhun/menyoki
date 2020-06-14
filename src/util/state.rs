@@ -62,7 +62,9 @@ mod tests {
 		assert!(input_state.check_keys());
 		enigo.key_up(Key::Escape);
 		enigo.mouse_down(MouseButton::Left);
+		enigo.mouse_down(MouseButton::Right);
 		assert!(input_state.check_mouse());
 		enigo.mouse_up(MouseButton::Left);
+		enigo.mouse_down(MouseButton::Right);
 	}
 }
