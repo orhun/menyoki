@@ -157,7 +157,7 @@ mod tests {
 		let mut recorder = Recorder::new(RecordSettings::default(), window);
 		let mut enigo = Enigo::new();
 		enigo.key_down(Key::Escape);
-		assert!(recorder.record_sync(&InputState::new()).len());
+		assert_eq!(0, recorder.record_sync(&InputState::new()).len());
 		enigo.key_up(Key::Escape);
 	}
 }
