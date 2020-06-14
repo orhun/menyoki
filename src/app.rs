@@ -116,6 +116,7 @@ mod tests {
 		let mut frames = app.record();
 		frames.push(Frame::new(Image::new(vec![0, 0, 0], window.geometry), 0));
 		app.save_gif(frames)?;
+		app.capture();
 		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
 	}
