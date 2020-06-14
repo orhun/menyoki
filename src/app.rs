@@ -104,13 +104,19 @@ where
 mod tests {
 	use super::*;
 	use crate::args::Args;
+	use crate::image::Image;
 	use crate::test::TestWindow;
+	use crate::util::cmd::Command;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let args = Args::parse();
 		let settings = AppSettings::new(&args);
-		let app = App::new(&settings, TestWindow::default());
-		app.start()?;
+		let window = TestWindow::default();
+		let app = App::new(&settings, window);
+		let mut frames = app.record();
+		frames.push(Frame::new(Image::new(vec![0, 0, 0], window.geometry), 0));
+		app.save_gif(frames)?;
+		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
 	}
 }
