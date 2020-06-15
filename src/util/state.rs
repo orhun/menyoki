@@ -66,5 +66,11 @@ mod tests {
 		assert!(input_state.check_mouse());
 		enigo.mouse_up(MouseButton::Left);
 		enigo.mouse_down(MouseButton::Right);
+		enigo.mouse_move_to(0, 0);
+		assert_eq!(
+			format!("{:?}", input_state),
+			"InputState { mouse: MouseState { coords: (0, 0), \
+			button_pressed: [false, false, false, true, false, false] }, keys: [] }"
+		);
 	}
 }
