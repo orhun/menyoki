@@ -9,6 +9,19 @@ pub struct Padding {
 	pub left: u32,
 }
 
+/* Implementation for building Padding from an iterator */
+impl FromIterator<u32> for Padding {
+	fn from_iter<I: IntoIterator<Item = u32>>(iter: I) -> Self {
+		let mut iter = iter.into_iter();
+		Self::new(
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+		)
+	}
+}
+
 impl Padding {
 	/**
 	 * Create a new Padding object.
@@ -39,18 +52,5 @@ impl Padding {
 			.split(':')
 			.map(|p| p.parse::<u32>().unwrap_or_default())
 			.collect()
-	}
-}
-
-/* Implementation for building Padding from an iterator */
-impl FromIterator<u32> for Padding {
-	fn from_iter<I: IntoIterator<Item = u32>>(iter: I) -> Self {
-		let mut iter = iter.into_iter();
-		Self::new(
-			iter.next().unwrap_or_default(),
-			iter.next().unwrap_or_default(),
-			iter.next().unwrap_or_default(),
-			iter.next().unwrap_or_default(),
-		)
 	}
 }
