@@ -116,7 +116,7 @@ impl Display {
 				.get_focused_window()
 				.expect("Failed to get the focused window");
 			focused_window.draw_borders();
-			if input_state.check_keys() {
+			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				xid = None;
 				break;

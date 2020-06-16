@@ -43,7 +43,7 @@ impl InputState {
 	 *
 	 * @return bool
 	 */
-	pub fn check_keys(&self) -> bool {
+	pub fn check_cancel_keys(&self) -> bool {
 		let keys = self.state.get_keys();
 		keys.contains(&Keycode::Escape)
 			|| (keys.contains(&Keycode::LControl) && keys.contains(&Keycode::D))
@@ -59,7 +59,7 @@ mod tests {
 		let input_state = InputState::new();
 		let mut enigo = Enigo::new();
 		enigo.key_down(Key::Escape);
-		assert!(input_state.check_keys());
+		assert!(input_state.check_cancel_keys());
 		enigo.key_up(Key::Escape);
 		enigo.mouse_down(MouseButton::Left);
 		enigo.mouse_down(MouseButton::Right);
