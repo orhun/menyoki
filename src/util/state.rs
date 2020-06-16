@@ -46,25 +46,33 @@ impl InputState {
 	pub fn check_cancel_keys(&self) -> bool {
 		let keys = self.state.get_keys();
 		keys.contains(&Keycode::Escape)
-			|| self.check_key_combination(Some(keys), Keycode::LControl, Keycode::D)
+			|| self.check_key_combination(
+				Some(keys),
+				vec![&Keycode::LControl, &Keycode::D],
+			)
 	}
 
 	/**
-	 * Check if a key combination is pressed.
+	 * Check if the given keys are pressed or not.
 	 *
 	 * @param  keys (Option)
-	 * @param  meta_key
-	 * @param  key
+	 * @param  target_keys
 	 * @return bool
 	 */
 	pub fn check_key_combination(
 		&self,
 		keys: Option<Vec<Keycode>>,
-		meta_key: Keycode,
-		key: Keycode,
+		target_keys: Vec<&Keycode>,
 	) -> bool {
 		let keys = keys.unwrap_or(self.state.get_keys());
-		keys.contains(&meta_key) && keys.contains(&key)
+		let mut pressed = keys.len() == target_keys.len();
+		for key in target_keys {
+			if !keys.contains(key) {
+				pressed = false;
+				break;
+			}
+		}
+		pressed
 	}
 }
 
