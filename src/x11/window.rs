@@ -203,6 +203,27 @@ impl Window {
 			);
 		}
 	}
+
+	/**
+	 * Grab a key in the window.
+	 *
+	 * @param key
+	 */
+	pub fn grab_key(&self, key: u32) {
+		unsafe {
+			xlib::XGrabKey(
+				self.display,
+				xlib::XKeysymToKeycode(self.display, key.into())
+					.try_into()
+					.expect("Failed to get the keycode"),
+				xlib::AnyModifier,
+				self.xid,
+				xlib::False,
+				xlib::GrabModeAsync,
+				xlib::GrabModeAsync,
+			);
+		}
+	}
 }
 
 /* Record implementation for X11 Window */
