@@ -143,6 +143,8 @@ impl RecordSettings {
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
+				let padding =
+					Padding::parse(matches.value_of("padding").unwrap_or_default());
 				Self::new(
 					match parser.parse("fps", Self::default().fps) {
 						fps if fps > 0 => fps,
@@ -155,13 +157,15 @@ impl RecordSettings {
 					.unwrap_or(Self::default().color),
 					if matches.is_present("no-border") {
 						None
+					} else if !padding.is_zero() {
+						Some(1)
 					} else {
 						Some(parser.parse(
 							"border",
 							Self::default().border.unwrap_or_default(),
 						))
 					},
-					Padding::parse(matches.value_of("padding").unwrap_or_default()),
+					padding,
 					RecordTime::from_args(parser),
 					RecordWindow::from_args(matches),
 				)
