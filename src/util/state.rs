@@ -64,7 +64,7 @@ impl InputState {
 		keys: Option<Vec<Keycode>>,
 		target_keys: Vec<&Keycode>,
 	) -> bool {
-		let keys = keys.unwrap_or(self.state.get_keys());
+		let keys = keys.unwrap_or_else(|| self.state.get_keys());
 		let mut pressed = keys.len() == target_keys.len();
 		for key in target_keys {
 			if !keys.contains(key) {
