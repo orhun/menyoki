@@ -151,7 +151,7 @@ where
 					.short("p")
 					.long("padding")
 					.value_name("PADDING")
-					.default_value("\"0:0:0:0\"")
+					.default_value("0:0:0:0")
 					.help(match base_command {
 						BaseCommand::Record => "Sets the record area padding value",
 						BaseCommand::Capture => {
