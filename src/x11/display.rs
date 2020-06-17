@@ -1,12 +1,15 @@
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
+use crate::util::modifier::ValueModifier;
 use crate::util::state::InputState;
 use crate::x11::window::Window;
+use device_query::Keycode;
+use std::convert::TryFrom;
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::thread;
 use std::time::{Duration, Instant};
-use x11::xlib;
+use x11::{keysym, xlib};
 
 /* X11 display */
 pub struct Display {
@@ -105,17 +108,21 @@ impl Display {
 	 * @param  input_state
 	 * @return Window (Option)
 	 */
-	pub fn select_window(&self, input_state: &InputState) -> Option<Window> {
+	pub fn select_window(&mut self, input_state: &InputState) -> Option<Window> {
 		let mut focused_window = self
 			.get_focused_window()
 			.expect("Failed to get the focused window");
 		let mut xid = None;
 		let now = Instant::now();
+		let window_padding = self.settings.padding;
+		let padding_change =
+			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
 		while !input_state.check_mouse() {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
 			focused_window.draw_borders();
+			self.update_padding(focused_window, input_state, padding_change);
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				xid = None;
@@ -127,6 +134,10 @@ impl Display {
 			} else if xid != Some(focused_window.xid) {
 				debug!("Window ID: {:?}", focused_window.xid);
 				info!("{}", focused_window);
+				self.ungrab_keys(xid);
+				self.settings.padding = window_padding;
+				focused_window.clear_area();
+				focused_window.grab_key(keysym::XK_Alt_L);
 				xid = Some(focused_window.xid);
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
@@ -139,6 +150,56 @@ impl Display {
 			Some(focused_window)
 		} else {
 			None
+		}
+	}
+
+	/**
+	 * Update the window padding with checking the pressed keys.
+	 *
+	 * @param window
+	 * @param input_state
+	 * @param change
+	 */
+	fn update_padding(
+		&mut self,
+		window: Window,
+		input_state: &InputState,
+		change: u32,
+	) {
+		for modifier in ValueModifier::from_padding(&mut self.settings.padding) {
+			if input_state.check_key_combination(
+				None,
+				vec![&Keycode::LAlt, &modifier.increase],
+			) {
+				*modifier.value =
+					modifier.value.checked_add(change).unwrap_or_default();
+				window.clear_area();
+			} else if input_state.check_key_combination(
+				None,
+				vec![&Keycode::LAlt, &Keycode::X, &modifier.decrease],
+			) {
+				*modifier.value =
+					modifier.value.checked_sub(change).unwrap_or_default();
+				window.clear_area();
+			}
+		}
+	}
+
+	/**
+	 * Ungrab the keys in the given window.
+	 *
+	 * @param xid (Option)
+	 */
+	fn ungrab_keys(&self, xid: Option<u64>) {
+		if let Some(window) = xid {
+			unsafe {
+				xlib::XUngrabKey(
+					self.display,
+					xlib::AnyKey,
+					xlib::AnyModifier,
+					window,
+				);
+			}
 		}
 	}
 }

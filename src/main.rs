@@ -26,7 +26,7 @@ fn main() -> Result<(), Error> {
 	println!("thank god it's friday");
 
 	let settings = AppSettings::new(&args);
-	let window_system =
+	let mut window_system =
 		WindowSystem::init(&settings).expect("Failed to access the window system");
 	App::new(
 		&settings,
