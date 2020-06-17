@@ -39,6 +39,16 @@ impl InputState {
 	}
 
 	/**
+	 * Check if the save key is pressed.
+	 *
+	 * @return bool
+	 */
+	pub fn check_save_key(&self) -> bool {
+		let keys = self.state.get_keys();
+		self.check_key_combination(Some(keys), vec![&Keycode::LAlt, &Keycode::S])
+	}
+
+	/**
 	 * Check if the cancel keys are pressed.
 	 *
 	 * @return bool
