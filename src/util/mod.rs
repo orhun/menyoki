@@ -1,4 +1,5 @@
 pub mod cmd;
+pub mod modifier;
 pub mod settings;
 pub mod state;
 use chrono::Local;
