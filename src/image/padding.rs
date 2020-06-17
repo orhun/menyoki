@@ -53,4 +53,13 @@ impl Padding {
 			.map(|p| p.parse::<u32>().unwrap_or_default())
 			.collect()
 	}
+
+	/**
+	 * Check if the padding values are zero.
+	 *
+	 * @return bool
+	 */
+	pub fn is_zero(&self) -> bool {
+		self.top == 0 && self.right == 0 && self.bottom == 0 && self.left == 0
+	}
 }
