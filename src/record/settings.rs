@@ -96,7 +96,7 @@ impl Default for RecordSettings {
 		Self {
 			fps: 10,
 			color: 0x00ff_00ff,
-			border: Some(5),
+			border: Some(1),
 			padding: Padding::default(),
 			time: RecordTime::default(),
 			window: RecordWindow::Select,

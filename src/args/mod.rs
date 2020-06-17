@@ -141,7 +141,7 @@ where
 					.short("b")
 					.long("border")
 					.value_name("BORDER")
-					.default_value("5")
+					.default_value("1")
 					.help("Sets the border padding value")
 					.takes_value(true)
 					.display_order(2),
