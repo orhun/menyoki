@@ -106,7 +106,7 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		self.window.show_countdown();
-		while recording.load(Ordering::SeqCst) {
+		while recording.load(Ordering::SeqCst) && !input_state.check_save_key() {
 			if input_state.check_cancel_keys() {
 				frames.clear();
 				warn!("User interrupt detected.");
