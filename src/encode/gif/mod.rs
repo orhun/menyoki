@@ -107,6 +107,7 @@ impl<W: Write> Gif<W> {
 mod tests {
 	use super::*;
 	use crate::util::cmd::Command;
+	use std::fs::File;
 	#[test]
 	fn test_gif_mod() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2, None);
