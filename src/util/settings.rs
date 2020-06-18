@@ -90,10 +90,15 @@ impl SaveSettings {
 	 * @return String
 	 */
 	fn get_default_file<'a>(args: &'a ArgMatches<'a>) -> String {
-		if args.is_present("capture") {
-			String::from("t.png")
-		} else {
-			String::from("t.gif")
+		match args.subcommand_matches("capture") {
+			Some(matches) => {
+				if matches.is_present("jpg") {
+					String::from("t.jpg")
+				} else {
+					String::from("t.png")
+				}
+			}
+			None => String::from("t.gif"),
 		}
 	}
 
