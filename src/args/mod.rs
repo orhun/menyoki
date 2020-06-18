@@ -43,6 +43,7 @@ pub struct Args<'a, 'b> {
 	capture: App<'a, 'b>,
 	gif: App<'a, 'b>,
 	png: App<'a, 'b>,
+	jpg: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -60,6 +61,7 @@ where
 			capture: Self::get_capture_args(),
 			gif: Self::get_gif_args(),
 			png: Self::get_png_args(),
+			jpg: Self::get_jpg_args(),
 		}
 	}
 
@@ -85,7 +87,8 @@ where
 			)
 			.subcommand(
 				args.capture
-					.subcommand(args.png.subcommand(Self::get_save_args("t.png"))),
+					.subcommand(args.png.subcommand(Self::get_save_args("t.png")))
+					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg"))),
 			)
 			.get_matches()
 	}
@@ -287,6 +290,26 @@ where
 					.help("Sets the filter algorithm that processes the image data")
 					.takes_value(true)
 					.display_order(2),
+			)
+	}
+
+	/**
+	 * Get jpg subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_jpg_args() -> App<'a, 'b> {
+		SubCommand::with_name("jpg")
+			.about("Changes the JPG encoder settings")
+			.arg(
+				Arg::with_name("quality")
+					.short("q")
+					.long("quality")
+					.value_name("QUALITY")
+					.default_value("90")
+					.help("Sets the JPG quality (1-100)")
+					.takes_value(true)
+					.display_order(1),
 			)
 	}
 
