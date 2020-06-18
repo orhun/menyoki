@@ -1,6 +1,6 @@
-use crate::gif::{Frame, Gif};
-use crate::jpg::Jpg;
-use crate::png::Png;
+use crate::encode::gif::{Frame, Gif};
+use crate::encode::jpg::Jpg;
+use crate::encode::png::Png;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use std::fs::File;

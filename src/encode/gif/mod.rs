@@ -1,5 +1,5 @@
 pub mod settings;
-use crate::gif::settings::GifSettings;
+use crate::encode::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;

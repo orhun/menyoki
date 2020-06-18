@@ -1,7 +1,7 @@
 pub mod settings;
 
+use crate::encode::jpg::settings::JpgSettings;
 use crate::image::Image;
-use crate::jpg::settings::JpgSettings;
 use image::error::ImageError;
 use image::jpeg::JPEGEncoder;
 use image::ColorType;
