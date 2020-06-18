@@ -56,17 +56,17 @@ impl<W: Write> Gif<W> {
 	 * Create a new Gif object.
 	 *
 	 * @param  geometry
-	 * @param  writer
+	 * @param  output
 	 * @param  settings
 	 * @return Result (Gif)
 	 */
 	pub fn new(
 		geometry: Geometry,
-		writer: W,
+		output: W,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
 		let mut encoder = Encoder::new(
-			writer,
+			output,
 			geometry.width.try_into().unwrap_or_default(),
 			geometry.height.try_into().unwrap_or_default(),
 			&[],

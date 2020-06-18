@@ -18,15 +18,15 @@ impl<W: Write> Png<W> {
 	 * Create a new Png object.
 	 *
 	 * @param  image
-	 * @param  file
+	 * @param  output
 	 * @param  settings
 	 * @return Png
 	 */
-	pub fn new(image: Image, file: W, settings: PngSettings) -> Self {
+	pub fn new(image: Image, output: W, settings: PngSettings) -> Self {
 		Self {
 			image,
 			encoder: PNGEncoder::new_with_quality(
-				file,
+				output,
 				settings.compression,
 				settings.filter,
 			),
