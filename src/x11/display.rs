@@ -228,7 +228,7 @@ mod tests {
 			RecordTime::new(0, 0, 10),
 			RecordWindow::Select,
 		);
-		let display = Display::open(Some(settings)).unwrap();
+		let mut display = Display::open(Some(settings)).unwrap();
 		display
 			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);
 		assert_eq!(
