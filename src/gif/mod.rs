@@ -5,8 +5,8 @@ use crate::image::Image;
 use crate::util::state::InputState;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
 use std::convert::TryInto;
-use std::fs::File;
 use std::io::Error;
+use std::io::Write;
 
 /* Frame image and delay (in units of 10 ms) */
 #[derive(Clone, Debug)]
@@ -46,27 +46,27 @@ impl Frame {
 }
 
 /* GIF encoder and settings */
-pub struct Gif {
-	encoder: Encoder<File>,
+pub struct Gif<W: Write> {
+	encoder: Encoder<W>,
 	settings: GifSettings,
 }
 
-impl Gif {
+impl<W: Write> Gif<W> {
 	/**
 	 * Create a new Gif object.
 	 *
 	 * @param  geometry
-	 * @param  file
+	 * @param  writer
 	 * @param  settings
 	 * @return Result (Gif)
 	 */
 	pub fn new(
 		geometry: Geometry,
-		file: File,
+		writer: W,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
 		let mut encoder = Encoder::new(
-			file,
+			writer,
 			geometry.width.try_into().unwrap_or_default(),
 			geometry.height.try_into().unwrap_or_default(),
 			&[],
