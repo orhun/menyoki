@@ -60,7 +60,7 @@ impl PngSettings {
 					_ => FilterType::Sub,
 				},
 			),
-			None => PngSettings::default(),
+			None => Self::default(),
 		}
 	}
 }
