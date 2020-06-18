@@ -1,4 +1,5 @@
 use crate::gif::{Frame, Gif};
+use crate::jpg::Jpg;
 use crate::png::Png;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
@@ -46,14 +47,32 @@ where
 	/* Capture the image of window and save it to a file. */
 	fn capture(self) {
 		self.window.show_countdown();
-		Png::new(
-			self.window
-				.get_image()
-				.expect("Failed to get the window image"),
-			File::create(&self.settings.save.file).expect("Failed to create file"),
-			self.settings.png,
-		)
-		.encode()
+		match self.settings.args.subcommand_matches("capture") {
+			Some(matches) => {
+				if matches.is_present("jpg") {
+					Jpg::new(
+						self.window
+							.get_image()
+							.expect("Failed to get the window image"),
+						&mut File::create(&self.settings.save.file)
+							.expect("Failed to create file"),
+						self.settings.jpg,
+					)
+					.encode()
+				} else {
+					Png::new(
+						self.window
+							.get_image()
+							.expect("Failed to get the window image"),
+						File::create(&self.settings.save.file)
+							.expect("Failed to create file"),
+						self.settings.png,
+					)
+					.encode()
+				}
+			}
+			_ => panic!("Failed to parse the capture arguments"),
+		}
 		.expect("Failed to encode the image");
 	}
 
