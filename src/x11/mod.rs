@@ -91,7 +91,7 @@ mod tests {
 	fn test_x11_mod() {
 		let args = Args::parse();
 		let settings = AppSettings::new(&args);
-		let window_system = WindowSystem::init(&settings).unwrap();
+		let mut window_system = WindowSystem::init(&settings).unwrap();
 		window_system.display.set_focused_window(
 			window_system.display.get_root_window().xid,
 			xlib::RevertToParent,
