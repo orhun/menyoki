@@ -41,7 +41,7 @@ impl GifSettings {
 				parser.parse("repeat", Self::default().repeat) - 1,
 				parser.parse("speed", Self::default().speed),
 			),
-			None => GifSettings::default(),
+			None => Self::default(),
 		}
 	}
 }
