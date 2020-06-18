@@ -7,6 +7,7 @@ mod app;
 mod args;
 mod gif;
 mod image;
+mod jpg;
 mod png;
 mod record;
 mod settings;
