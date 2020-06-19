@@ -1,4 +1,5 @@
 pub mod cmd;
+pub mod file;
 pub mod modifier;
 pub mod settings;
 pub mod state;
