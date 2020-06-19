@@ -25,6 +25,25 @@ impl FileInfo {
 			None
 		}
 	}
+
+	/**
+	 * Append the file information to the file name.
+	 *
+	 * @param  file_name
+	 */
+	pub fn append(&self, file_name: &mut String) {
+		*file_name = file_name
+			.split('.')
+			.enumerate()
+			.map(|(i, s)| {
+				if i == 0 {
+					format!("{}_{}", s, self)
+				} else {
+					format!(".{}", s)
+				}
+			})
+			.collect::<String>();
+	}
 }
 
 /* Display implementation for user-facing output */

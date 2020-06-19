@@ -37,7 +37,7 @@ impl SaveSettings {
 					file_name = Self::read_input().unwrap_or(file_name);
 				}
 				if let Some(info) = &file_info {
-					file_name = Self::add_file_info(&file_name, *info);
+					info.append(&mut file_name);
 				}
 				Self::new(File::new(file_name, file_format, file_info))
 			}
@@ -55,26 +55,5 @@ impl SaveSettings {
 			Ok(v) if !v.is_empty() => Some(v),
 			_ => None,
 		}
-	}
-
-	/**
-	 * Append the given information to the file name.
-	 *
-	 * @param  file_name
-	 * @param  info
-	 * @return String
-	 */
-	fn add_file_info(file_name: &str, info: FileInfo) -> String {
-		file_name
-			.split('.')
-			.enumerate()
-			.map(|(i, s)| {
-				if i == 0 {
-					format!("{}_{}", s, info)
-				} else {
-					format!(".{}", s)
-				}
-			})
-			.collect::<String>()
 	}
 }
