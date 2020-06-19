@@ -42,8 +42,8 @@ impl<'a> AppSettings<'a> {
 			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
 			jpg: JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg")),
 			save: SaveSettings::from_args(
-				ArgParser::from_subcommand(args, "save"),
 				args,
+				ArgParser::from_subcommand(args, "save"),
 			),
 			input_state: InputState::new(),
 		}

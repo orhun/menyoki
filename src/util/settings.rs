@@ -22,11 +22,11 @@ impl SaveSettings {
 	/**
 	 * Create a SaveSettings object from parsed arguments.
 	 *
-	 * @param  parser
 	 * @param  args
+	 * @param  parser
 	 * @return SaveSettings
 	 */
-	pub fn from_args<'a>(parser: ArgParser<'_>, args: &'a ArgMatches<'a>) -> Self {
+	pub fn from_args<'a>(args: &'a ArgMatches<'a>, parser: ArgParser<'_>) -> Self {
 		let file_format = FileFormat::from_args(args);
 		match parser.args {
 			Some(matches) => {
