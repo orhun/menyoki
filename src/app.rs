@@ -54,7 +54,7 @@ where
 						self.window
 							.get_image()
 							.expect("Failed to get the window image"),
-						&mut File::create(&self.settings.save.file)
+						&mut File::create(&self.settings.save.file.name)
 							.expect("Failed to create file"),
 						self.settings.jpg,
 					)
@@ -64,7 +64,7 @@ where
 						self.window
 							.get_image()
 							.expect("Failed to get the window image"),
-						File::create(&self.settings.save.file)
+						File::create(&self.settings.save.file.name)
 							.expect("Failed to create file"),
 						self.settings.png,
 					)
@@ -111,7 +111,8 @@ where
 				.expect("No frames found to save")
 				.image
 				.geometry,
-			File::create(&self.settings.save.file).expect("Failed to create file"),
+			File::create(&self.settings.save.file.name)
+				.expect("Failed to create file"),
 			self.settings.gif,
 		)?;
 		gif.save(frames, &self.settings.input_state)?;

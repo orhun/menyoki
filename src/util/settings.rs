@@ -1,51 +1,11 @@
 use crate::args::parser::ArgParser;
-use chrono::Local;
+use crate::util::file::{File, FileFormat, FileInfo};
 use clap::ArgMatches;
-use std::fmt;
-
-/* Information to include in file name */
-#[derive(Debug)]
-enum FileInfo {
-	Date,
-	Timestamp,
-}
-
-impl FileInfo {
-	/**
-	 * Create a FileInfo enum from parsed arguments.
-	 *
-	 * @param  args
-	 * @return FileInfo (Option)
-	 */
-	fn from_args(args: &ArgMatches<'_>) -> Option<Self> {
-		if args.is_present("date") {
-			Some(Self::Date)
-		} else if args.is_present("timestamp") {
-			Some(Self::Timestamp)
-		} else {
-			None
-		}
-	}
-}
-
-/* Display implementation for user-facing output */
-impl fmt::Display for FileInfo {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(
-			f,
-			"{}",
-			match self {
-				FileInfo::Date => Local::now().format("%Y%m%dT%H%M%S").to_string(),
-				FileInfo::Timestamp => Local::now().timestamp().to_string(),
-			}
-		)
-	}
-}
 
 /* Output file settings */
 #[derive(Debug)]
 pub struct SaveSettings {
-	pub file: String,
+	pub file: File,
 }
 
 impl SaveSettings {
@@ -55,7 +15,7 @@ impl SaveSettings {
 	 * @param  file
 	 * @return SaveSettings
 	 */
-	pub fn new(file: String) -> Self {
+	pub fn new(file: File) -> Self {
 		Self { file }
 	}
 
@@ -67,38 +27,21 @@ impl SaveSettings {
 	 * @return SaveSettings
 	 */
 	pub fn from_args<'a>(parser: ArgParser<'_>, args: &'a ArgMatches<'a>) -> Self {
+		let file_format = FileFormat::from_args(args);
 		match parser.args {
 			Some(matches) => {
 				let mut file_name =
 					String::from(matches.value_of("output").unwrap_or_default());
+				let file_info = FileInfo::from_args(&matches);
 				if matches.is_present("prompt") {
 					file_name = Self::read_input().unwrap_or(file_name);
 				}
-				if let Some(info) = FileInfo::from_args(&matches) {
-					file_name = Self::add_file_info(&file_name, info);
+				if let Some(info) = &file_info {
+					file_name = Self::add_file_info(&file_name, *info);
 				}
-				Self::new(file_name)
+				Self::new(File::new(file_name, file_format, file_info))
 			}
-			None => Self::new(Self::get_default_file(args)),
-		}
-	}
-
-	/**
-	 * Get the default file name from arguments.
-	 *
-	 * @param  args
-	 * @return String
-	 */
-	fn get_default_file<'a>(args: &'a ArgMatches<'a>) -> String {
-		match args.subcommand_matches("capture") {
-			Some(matches) => {
-				if matches.is_present("jpg") {
-					String::from("t.jpg")
-				} else {
-					String::from("t.png")
-				}
-			}
-			None => String::from("t.gif"),
+			None => Self::new(File::from_format(file_format)),
 		}
 	}
 
