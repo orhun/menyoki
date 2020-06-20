@@ -132,16 +132,17 @@ mod tests {
 	use crate::image::Image;
 	use crate::test::TestWindow;
 	use crate::util::cmd::Command;
+	use std::fs::File;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let args = Args::parse();
 		let settings = AppSettings::new(&args);
+		let output = File::create(&settings.save.file.name).unwrap();
 		let window = TestWindow::default();
 		let app = App::new(&settings, window);
 		let mut frames = app.record();
 		frames.push(Frame::new(Image::new(vec![0, 0, 0], window.geometry), 0));
-		app.save_gif(frames)?;
-		app.capture();
+		app.save_gif(frames, output)?;
 		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
 	}
