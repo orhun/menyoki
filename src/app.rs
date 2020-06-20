@@ -6,8 +6,7 @@ use image::jpeg::JPEGEncoder;
 use image::png::PNGEncoder;
 use image::ColorType;
 use image::ImageEncoder;
-use std::fs::File;
-use std::io::Error;
+use std::io::{Error, Write};
 
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
@@ -34,23 +33,22 @@ where
 	/**
 	 * Start the application.
 	 *
+	 * @param  output
 	 * @return Result
 	 */
-	pub fn start(&self) -> Result<(), Error> {
+	pub fn start<Output: Write>(&self, mut output: Output) -> Result<(), Error> {
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				let frames = self.record();
 				info!("frames: {}", frames.len());
-				self.save_gif(frames)?;
+				self.save_gif(frames, output)?;
 			}
 			FileFormat::Jpg => self.capture(JPEGEncoder::new_with_quality(
-				&mut File::create(&self.settings.save.file.name)
-					.expect("Failed to create file"),
+				&mut output,
 				self.settings.jpg.quality,
 			)),
 			FileFormat::Png => self.capture(PNGEncoder::new_with_quality(
-				File::create(&self.settings.save.file.name)
-					.expect("Failed to create file"),
+				output,
 				self.settings.png.compression,
 				self.settings.png.filter,
 			)),
@@ -105,17 +103,21 @@ where
 	 * Save frames to a GIF file.
 	 *
 	 * @param  frames
+	 * @param  output
 	 * @return Result
 	 */
-	fn save_gif(self, frames: Vec<Frame>) -> Result<(), Error> {
+	fn save_gif<Output: Write>(
+		self,
+		frames: Vec<Frame>,
+		output: Output,
+	) -> Result<(), Error> {
 		let mut gif = Gif::new(
 			frames
 				.first()
 				.expect("No frames found to save")
 				.image
 				.geometry,
-			File::create(&self.settings.save.file.name)
-				.expect("Failed to create file"),
+			output,
 			self.settings.gif,
 		)?;
 		gif.save(frames, &self.settings.input_state)?;

@@ -16,6 +16,7 @@ use self::app::App;
 use self::args::Args;
 use self::settings::AppSettings;
 use self::x11::WindowSystem;
+use std::fs::File;
 use std::io::Error;
 
 fn main() -> Result<(), Error> {
@@ -33,5 +34,7 @@ fn main() -> Result<(), Error> {
 			.get_window()
 			.expect("Failed to get the window"),
 	)
-	.start()
+	.start(
+		File::create(&settings.save.file.name).expect("Failed to create the file"),
+	)
 }
