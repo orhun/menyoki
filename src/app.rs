@@ -2,6 +2,7 @@ use crate::gif::{Frame, Gif};
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use crate::util::file::FileFormat;
+use image::bmp::BMPEncoder;
 use image::jpeg::JPEGEncoder;
 use image::png::PNGEncoder;
 use image::ColorType;
@@ -43,15 +44,16 @@ where
 				info!("frames: {}", frames.len());
 				self.save_gif(frames, output)?;
 			}
-			FileFormat::Jpg => self.capture(JPEGEncoder::new_with_quality(
-				&mut output,
-				self.settings.jpg.quality,
-			)),
 			FileFormat::Png => self.capture(PNGEncoder::new_with_quality(
 				output,
 				self.settings.png.compression,
 				self.settings.png.filter,
 			)),
+			FileFormat::Jpg => self.capture(JPEGEncoder::new_with_quality(
+				&mut output,
+				self.settings.jpg.quality,
+			)),
+			FileFormat::Bmp => self.capture(BMPEncoder::new(&mut output)),
 		}
 		Ok(())
 	}

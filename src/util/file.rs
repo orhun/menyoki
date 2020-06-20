@@ -66,6 +66,7 @@ pub enum FileFormat {
 	Gif,
 	Png,
 	Jpg,
+	Bmp,
 }
 
 /* Display implementation for user-facing output */
@@ -85,7 +86,9 @@ impl FileFormat {
 	pub fn from_args<'a>(args: &'a ArgMatches<'a>) -> Self {
 		match args.subcommand_matches("capture") {
 			Some(matches) => {
-				if matches.is_present("jpg") {
+				if matches.is_present("bmp") {
+					Self::Bmp
+				} else if matches.is_present("jpg") {
 					Self::Jpg
 				} else {
 					Self::Png
