@@ -1,6 +1,7 @@
 pub mod bgr;
 pub mod geometry;
 pub mod padding;
+pub mod settings;
 
 use crate::image::geometry::Geometry;
 

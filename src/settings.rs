@@ -1,7 +1,6 @@
 use crate::args::parser::ArgParser;
 use crate::encode::gif::settings::GifSettings;
-use crate::encode::jpg::settings::JpgSettings;
-use crate::encode::png::settings::PngSettings;
+use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
 use crate::util::settings::SaveSettings;
