@@ -44,6 +44,7 @@ pub struct Args<'a, 'b> {
 	gif: App<'a, 'b>,
 	png: App<'a, 'b>,
 	jpg: App<'a, 'b>,
+	bmp: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -62,6 +63,7 @@ where
 			gif: Self::get_gif_args(),
 			png: Self::get_png_args(),
 			jpg: Self::get_jpg_args(),
+			bmp: Self::get_bmp_args(),
 		}
 	}
 
@@ -88,7 +90,8 @@ where
 			.subcommand(
 				args.capture
 					.subcommand(args.png.subcommand(Self::get_save_args("t.png")))
-					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg"))),
+					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg")))
+					.subcommand(args.bmp.subcommand(Self::get_save_args("t.bmp"))),
 			)
 			.get_matches()
 	}
@@ -269,6 +272,7 @@ where
 	fn get_png_args() -> App<'a, 'b> {
 		SubCommand::with_name("png")
 			.about("Changes the PNG encoder settings")
+			.display_order(1)
 			.arg(
 				Arg::with_name("compression")
 					.short("c")
@@ -301,6 +305,7 @@ where
 	fn get_jpg_args() -> App<'a, 'b> {
 		SubCommand::with_name("jpg")
 			.about("Changes the JPG encoder settings")
+			.display_order(2)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -311,6 +316,15 @@ where
 					.takes_value(true)
 					.display_order(1),
 			)
+	}
+
+	/**
+	 * Get bmp subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_bmp_args() -> App<'a, 'b> {
+		SubCommand::with_name("bmp").about("Changes the BMP encoder settings").display_order(3)
 	}
 
 	/**
