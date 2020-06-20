@@ -1,9 +1,11 @@
 use crate::encode::gif::{Frame, Gif};
-use crate::encode::jpg::Jpg;
-use crate::encode::png::Png;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use crate::util::file::FileFormat;
+use image::jpeg::JPEGEncoder;
+use image::png::PNGEncoder;
+use image::ColorType;
+use image::ImageEncoder;
 use std::fs::File;
 use std::io::Error;
 
@@ -35,41 +37,46 @@ where
 	 * @return Result
 	 */
 	pub fn start(&self) -> Result<(), Error> {
-		if self.settings.args.is_present("capture") {
-			self.capture();
-		} else {
-			let frames = self.record();
-			info!("frames: {}", frames.len());
-			self.save_gif(frames)?;
+		match self.settings.save.file.format {
+			FileFormat::Gif => {
+				let frames = self.record();
+				info!("frames: {}", frames.len());
+				self.save_gif(frames)?;
+			}
+			FileFormat::Jpg => self.capture(JPEGEncoder::new_with_quality(
+				&mut File::create(&self.settings.save.file.name)
+					.expect("Failed to create file"),
+				self.settings.jpg.quality,
+			)),
+			FileFormat::Png => self.capture(PNGEncoder::new_with_quality(
+				File::create(&self.settings.save.file.name)
+					.expect("Failed to create file"),
+				self.settings.png.compression,
+				self.settings.png.filter,
+			)),
 		}
 		Ok(())
 	}
 
-	/* Capture the image of window and save it to a file. */
-	fn capture(self) {
+	/**
+	 * Capture the image of window and save it to a file.
+	 *
+	 * @param encoder
+	 */
+	fn capture<Encoder: ImageEncoder>(self, encoder: Encoder) {
 		self.window.show_countdown();
-		match self.settings.save.file.format {
-			FileFormat::Jpg => Jpg::new(
-				self.window
-					.get_image()
-					.expect("Failed to get the window image"),
-				&mut File::create(&self.settings.save.file.name)
-					.expect("Failed to create file"),
-				self.settings.jpg,
+		let image = self
+			.window
+			.get_image()
+			.expect("Failed to get the window image");
+		encoder
+			.write_image(
+				&image.data,
+				image.geometry.width,
+				image.geometry.height,
+				ColorType::Rgb8,
 			)
-			.encode(),
-			FileFormat::Png => Png::new(
-				self.window
-					.get_image()
-					.expect("Failed to get the window image"),
-				File::create(&self.settings.save.file.name)
-					.expect("Failed to create file"),
-				self.settings.png,
-			)
-			.encode(),
-			_ => panic!("Failed to parse the capture arguments"),
-		}
-		.expect("Failed to encode the image");
+			.expect("Failed to encode the image");
 	}
 
 	/**
