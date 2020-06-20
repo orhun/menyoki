@@ -324,7 +324,9 @@ where
 	 * @return App
 	 */
 	fn get_bmp_args() -> App<'a, 'b> {
-		SubCommand::with_name("bmp").about("Changes the BMP encoder settings").display_order(3)
+		SubCommand::with_name("bmp")
+			.about("Changes the BMP encoder settings")
+			.display_order(3)
 	}
 
 	/**
