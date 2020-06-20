@@ -5,7 +5,7 @@
 extern crate log;
 mod app;
 mod args;
-mod encode;
+mod gif;
 mod image;
 mod record;
 mod settings;

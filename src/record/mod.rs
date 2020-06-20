@@ -1,7 +1,7 @@
 pub mod fps;
 pub mod settings;
 
-use crate::encode::gif::Frame;
+use crate::gif::Frame;
 use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
 use crate::record::settings::RecordSettings;

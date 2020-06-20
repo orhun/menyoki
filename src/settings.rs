@@ -1,5 +1,5 @@
 use crate::args::parser::ArgParser;
-use crate::encode::gif::settings::GifSettings;
+use crate::gif::settings::GifSettings;
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
