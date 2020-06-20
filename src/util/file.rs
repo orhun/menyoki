@@ -31,7 +31,7 @@ impl FileInfo {
 	 *
 	 * @param  file_name
 	 */
-	pub fn append(&self, file_name: &mut String) {
+	pub fn append(self, file_name: &mut String) {
 		*file_name = file_name
 			.split('.')
 			.enumerate()
