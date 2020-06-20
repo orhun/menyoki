@@ -47,12 +47,12 @@ impl Frame {
 }
 
 /* GIF encoder and settings */
-pub struct Gif<W: Write> {
-	encoder: Encoder<W>,
+pub struct Gif<Output: Write> {
+	encoder: Encoder<Output>,
 	settings: GifSettings,
 }
 
-impl<W: Write> Gif<W> {
+impl<Output: Write> Gif<Output> {
 	/**
 	 * Create a new Gif object.
 	 *
@@ -63,7 +63,7 @@ impl<W: Write> Gif<W> {
 	 */
 	pub fn new(
 		geometry: Geometry,
-		output: W,
+		output: Output,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
 		let mut encoder = Encoder::new(
