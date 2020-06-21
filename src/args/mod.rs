@@ -234,11 +234,25 @@ where
 					.display_order(2),
 			)
 			.arg(
+				Arg::with_name("with-alpha")
+					.short("a")
+					.long("with-alpha")
+					.help(match base_command {
+						BaseCommand::Record => {
+							"Records with the alpha channel for transparency"
+						}
+						BaseCommand::Capture => {
+							"Captures with the alpha channel for transparency"
+						}
+					})
+					.display_order(3),
+			)
+			.arg(
 				Arg::with_name("no-border")
 					.short("n")
 					.long("no-border")
 					.help("Shows no border for window selection")
-					.display_order(3),
+					.display_order(4),
 			)
 	}
 
