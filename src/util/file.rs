@@ -67,7 +67,7 @@ pub enum FileFormat {
 	Png,
 	Jpg,
 	Bmp,
-	Farbfeld,
+	Ff,
 }
 
 /* Display implementation for user-facing output */
@@ -87,12 +87,12 @@ impl FileFormat {
 	pub fn from_args<'a>(args: &'a ArgMatches<'a>) -> Self {
 		match args.subcommand_matches("capture") {
 			Some(matches) => {
-				if matches.is_present("bmp") {
+				if matches.is_present("ff") {
+					Self::Ff
+				} else if matches.is_present("bmp") {
 					Self::Bmp
 				} else if matches.is_present("jpg") {
 					Self::Jpg
-				} else if matches.is_present("ff") {
-					Self::Farbfeld
 				} else {
 					Self::Png
 				}
