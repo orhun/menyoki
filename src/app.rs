@@ -3,6 +3,7 @@ use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use crate::util::file::FileFormat;
 use image::bmp::BMPEncoder;
+use image::farbfeld::FarbfeldEncoder;
 use image::jpeg::JPEGEncoder;
 use image::png::PNGEncoder;
 use image::ColorType;
@@ -54,6 +55,7 @@ where
 				self.settings.jpg.quality,
 			)),
 			FileFormat::Bmp => self.capture(BMPEncoder::new(&mut output)),
+			FileFormat::Ff => self.capture(FarbfeldEncoder::new(output)),
 		}
 		Ok(())
 	}
