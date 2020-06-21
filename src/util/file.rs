@@ -67,6 +67,7 @@ pub enum FileFormat {
 	Png,
 	Jpg,
 	Bmp,
+	Farbfeld,
 }
 
 /* Display implementation for user-facing output */
@@ -90,6 +91,8 @@ impl FileFormat {
 					Self::Bmp
 				} else if matches.is_present("jpg") {
 					Self::Jpg
+				} else if matches.is_present("ff") {
+					Self::Farbfeld
 				} else {
 					Self::Png
 				}
