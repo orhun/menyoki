@@ -45,6 +45,7 @@ pub struct Args<'a, 'b> {
 	png: App<'a, 'b>,
 	jpg: App<'a, 'b>,
 	bmp: App<'a, 'b>,
+	farbfeld: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -64,6 +65,7 @@ where
 			png: Self::get_png_args(),
 			jpg: Self::get_jpg_args(),
 			bmp: Self::get_bmp_args(),
+			farbfeld: Self::get_farbfeld_args(),
 		}
 	}
 
@@ -91,7 +93,10 @@ where
 				args.capture
 					.subcommand(args.png.subcommand(Self::get_save_args("t.png")))
 					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg")))
-					.subcommand(args.bmp.subcommand(Self::get_save_args("t.bmp"))),
+					.subcommand(args.bmp.subcommand(Self::get_save_args("t.bmp")))
+					.subcommand(
+						args.farbfeld.subcommand(Self::get_save_args("t.ff")),
+					),
 			)
 			.get_matches()
 	}
@@ -327,6 +332,17 @@ where
 		SubCommand::with_name("bmp")
 			.about("Changes the BMP encoder settings")
 			.display_order(3)
+	}
+
+	/**
+	 * Get farbfeld subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_farbfeld_args() -> App<'a, 'b> {
+		SubCommand::with_name("ff")
+			.about("Changes the farbfeld encoder settings")
+			.display_order(4)
 	}
 
 	/**
