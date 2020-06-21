@@ -1,4 +1,4 @@
-use crate::image::bgr::Bgr;
+use crate::image::bgra::Bgra;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::record::fps::FpsClock;
@@ -247,8 +247,8 @@ impl Record for Window {
 			);
 			if !window_image.is_null() {
 				let image = &mut *window_image;
-				let data = Bgr::get_rgb_pixels(slice::from_raw_parts::<Bgr>(
-					image.data as *const Bgr,
+				let data = Bgra::get_rgb_pixels(slice::from_raw_parts::<Bgra>(
+					image.data as *const Bgra,
 					image.width as usize * image.height as usize,
 				));
 				xlib::XDestroyImage(window_image);
