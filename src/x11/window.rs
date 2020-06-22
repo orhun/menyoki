@@ -247,10 +247,13 @@ impl Record for Window {
 			);
 			if !window_image.is_null() {
 				let image = &mut *window_image;
-				let data = Bgra::get_rgb_pixels(slice::from_raw_parts::<Bgra>(
-					image.data as *const Bgra,
-					image.width as usize * image.height as usize,
-				));
+				let data = Bgra::get_rgba_pixels(
+					slice::from_raw_parts::<Bgra>(
+						image.data as *const Bgra,
+						image.width as usize * image.height as usize,
+					),
+					self.settings.alpha,
+				);
 				xlib::XDestroyImage(window_image);
 				Some(Image::new(data, self.geometry))
 			} else {
