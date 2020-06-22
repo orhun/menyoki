@@ -34,11 +34,11 @@ impl Frame {
 	 * @param  speed
 	 * @return GifFrame
 	 */
-	pub fn get(&self, speed: i32) -> GifFrame<'_> {
-		let mut frame = GifFrame::from_rgb_speed(
+	pub fn get(&mut self, speed: i32) -> GifFrame<'_> {
+		let mut frame = GifFrame::from_rgba_speed(
 			self.image.geometry.width.try_into().unwrap_or_default(),
 			self.image.geometry.height.try_into().unwrap_or_default(),
-			&self.image.data,
+			&mut self.image.data,
 			speed,
 		);
 		frame.delay = self.delay;
@@ -91,7 +91,7 @@ impl<Output: Write> Gif<Output> {
 		frames: Vec<Frame>,
 		input_state: &InputState,
 	) -> Result<(), Error> {
-		for frame in frames {
+		for mut frame in frames {
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				break;
