@@ -76,7 +76,7 @@ where
 				&image.data,
 				image.geometry.width,
 				image.geometry.height,
-				ColorType::Rgb8,
+				ColorType::Rgba8,
 			)
 			.expect("Failed to encode the image");
 	}
