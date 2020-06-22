@@ -85,6 +85,7 @@ pub struct RecordSettings {
 	pub fps: u32,
 	pub color: u64,
 	pub border: Option<u32>,
+	pub alpha: bool,
 	pub padding: Padding,
 	pub time: RecordTime,
 	pub window: RecordWindow,
@@ -97,6 +98,7 @@ impl Default for RecordSettings {
 			fps: 10,
 			color: 0x00ff_00ff,
 			border: Some(1),
+			alpha: false,
 			padding: Padding::default(),
 			time: RecordTime::default(),
 			window: RecordWindow::Select,
@@ -111,6 +113,7 @@ impl RecordSettings {
 	 * @param  fps
 	 * @param  color
 	 * @param  border (Option)
+	 * @param  alpha
 	 * @param  padding
 	 * @param  time
 	 * @param  window
@@ -120,6 +123,7 @@ impl RecordSettings {
 		fps: u32,
 		color: u64,
 		border: Option<u32>,
+		alpha: bool,
 		padding: Padding,
 		time: RecordTime,
 		window: RecordWindow,
@@ -128,6 +132,7 @@ impl RecordSettings {
 			fps,
 			color,
 			border,
+			alpha,
 			padding,
 			time,
 			window,
@@ -165,6 +170,7 @@ impl RecordSettings {
 							Self::default().border.unwrap_or_default(),
 						))
 					},
+					matches.is_present("with-alpha"),
 					padding,
 					RecordTime::from_args(parser),
 					RecordWindow::from_args(matches),
