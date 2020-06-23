@@ -1,9 +1,9 @@
-use crate::image::bgra::Bgra;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::record::Record;
+use image::Bgra;
 use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
 use std::fmt;
@@ -247,15 +247,16 @@ impl Record for Window {
 			);
 			if !window_image.is_null() {
 				let image = &mut *window_image;
-				let data = Bgra::get_rgba_pixels(
-					slice::from_raw_parts::<Bgra>(
-						image.data as *const Bgra,
-						image.width as usize * image.height as usize,
-					),
-					self.settings.alpha,
+				let data = slice::from_raw_parts::<Bgra<u8>>(
+					image.data as *const Bgra<u8>,
+					image.width as usize * image.height as usize,
 				);
 				xlib::XDestroyImage(window_image);
-				Some(Image::new(data, self.geometry))
+				Some(Image::new(
+					data.to_vec(),
+					self.settings.alpha,
+					self.geometry,
+				))
 			} else {
 				None
 			}
