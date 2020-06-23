@@ -45,17 +45,27 @@ where
 				info!("frames: {}", frames.len());
 				self.save_gif(frames, output)?;
 			}
-			FileFormat::Png => self.capture(PNGEncoder::new_with_quality(
-				output,
-				self.settings.png.compression,
-				self.settings.png.filter,
-			)),
-			FileFormat::Jpg => self.capture(JPEGEncoder::new_with_quality(
-				&mut output,
-				self.settings.jpg.quality,
-			)),
-			FileFormat::Bmp => self.capture(BMPEncoder::new(&mut output)),
-			FileFormat::Ff => self.capture(FarbfeldEncoder::new(output)),
+			FileFormat::Png => self.capture(
+				PNGEncoder::new_with_quality(
+					output,
+					self.settings.png.compression,
+					self.settings.png.filter,
+				),
+				ColorType::Rgba8,
+			),
+			FileFormat::Jpg => self.capture(
+				JPEGEncoder::new_with_quality(
+					&mut output,
+					self.settings.jpg.quality,
+				),
+				ColorType::Rgb8,
+			),
+			FileFormat::Bmp => {
+				self.capture(BMPEncoder::new(&mut output), ColorType::Rgba8)
+			}
+			FileFormat::Ff => {
+				self.capture(FarbfeldEncoder::new(output), ColorType::Rgba16)
+			}
 		}
 		Ok(())
 	}
@@ -64,8 +74,13 @@ where
 	 * Capture the image of window and save it to a file.
 	 *
 	 * @param encoder
+	 * @param color_type
 	 */
-	fn capture<Encoder: ImageEncoder>(self, encoder: Encoder) {
+	fn capture<Encoder: ImageEncoder>(
+		self,
+		encoder: Encoder,
+		color_type: ColorType,
+	) {
 		self.window.show_countdown();
 		let image = self
 			.window
@@ -73,10 +88,10 @@ where
 			.expect("Failed to get the window image");
 		encoder
 			.write_image(
-				&image.data,
+				&image.get_data(color_type),
 				image.geometry.width,
 				image.geometry.height,
-				ColorType::Rgba8,
+				color_type,
 			)
 			.expect("Failed to encode the image");
 	}

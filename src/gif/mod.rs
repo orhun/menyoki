@@ -5,6 +5,7 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
 use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
+use image::ColorType;
 use std::convert::TryInto;
 use std::io::Error;
 use std::io::Write;
@@ -38,7 +39,7 @@ impl Frame {
 		let mut frame = GifFrame::from_rgba_speed(
 			self.image.geometry.width.try_into().unwrap_or_default(),
 			self.image.geometry.height.try_into().unwrap_or_default(),
-			&mut self.image.data,
+			&mut self.image.get_data(ColorType::Rgba8),
 			speed,
 		);
 		frame.delay = self.delay;
