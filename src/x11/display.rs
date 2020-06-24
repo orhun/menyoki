@@ -224,6 +224,7 @@ mod tests {
 			10,
 			0x00ff_00ff,
 			Some(0),
+			false,
 			Padding::default(),
 			RecordTime::new(0, 0, 10),
 			RecordWindow::Select,

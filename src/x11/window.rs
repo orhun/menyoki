@@ -289,12 +289,14 @@ mod tests {
 	use crate::image::padding::Padding;
 	use crate::record::settings::{RecordTime, RecordWindow};
 	use crate::x11::display::Display;
+	use image::ColorType;
 	#[test]
 	fn test_window_mod() {
 		let settings = RecordSettings::new(
 			10,
 			0x00ff_00ff,
 			Some(0),
+			false,
 			Padding::default(),
 			RecordTime::new(0, 0, 10),
 			RecordWindow::Select,
@@ -314,6 +316,9 @@ mod tests {
 		assert_eq!("1366x768  (root-window)", format!("{}", window));
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
 		assert_eq!("root-window", window.get_name().unwrap());
-		assert_eq!(1366 * 768 * 3, window.get_image().unwrap().data.len());
+		assert_eq!(
+			1366 * 768 * 3,
+			window.get_image().unwrap().get_data(ColorType::Rgb8).len()
+		);
 	}
 }

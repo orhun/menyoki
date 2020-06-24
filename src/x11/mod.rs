@@ -87,6 +87,7 @@ mod tests {
 	use super::*;
 	use crate::args::Args;
 	use crate::record::Record;
+	use image::ColorType;
 	#[test]
 	fn test_x11_mod() {
 		let args = Args::parse();
@@ -103,7 +104,7 @@ mod tests {
 				.unwrap()
 				.get_image()
 				.unwrap()
-				.data
+				.get_data(ColorType::Rgb8)
 				.len()
 		);
 	}
