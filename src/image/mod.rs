@@ -59,13 +59,17 @@ impl Image {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::bgr::Bgr;
 	#[test]
 	fn test_image_mod() {
 		let geometry = Geometry::new(0, 0, 200, 200, None);
-		let bgr_data: [Bgr; 2] = [Bgr::new(128, 128, 128), Bgr::new(255, 255, 255)];
-		let data = Bgr::get_rgb_pixels(&bgr_data);
-		let image = Image::new(data, geometry);
-		assert!(image.data[0] == 128 && image.data[5] == 255)
+		let data: [Bgra<u8>; 2] = [
+			Bgra::from([128, 128, 128, 0]),
+			Bgra::from([255, 255, 255, 0]),
+		];
+		let image = Image::new(data.to_vec(), false, geometry);
+		assert!(
+			image.get_data(ColorType::Rgba8)[0] == 128
+				&& image.get_data(ColorType::Rgba8)[5] == 255
+		)
 	}
 }
