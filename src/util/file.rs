@@ -67,6 +67,7 @@ pub enum FileFormat {
 	Png,
 	Jpg,
 	Bmp,
+	Tiff,
 	Ff,
 }
 
@@ -89,6 +90,8 @@ impl FileFormat {
 			Some(matches) => {
 				if matches.is_present("ff") {
 					Self::Ff
+				} else if matches.is_present("tiff") {
+					Self::Tiff
 				} else if matches.is_present("bmp") {
 					Self::Bmp
 				} else if matches.is_present("jpg") {
