@@ -265,12 +265,12 @@ where
 		SubCommand::with_name("gif")
 			.about("Changes the GIF encoder settings")
 			.arg(
-				Arg::with_name("speed")
-					.short("s")
-					.long("speed")
-					.value_name("SPEED")
-					.default_value("10")
-					.help("Sets the frame encoding speed (1-30)")
+				Arg::with_name("quality")
+					.short("q")
+					.long("quality")
+					.value_name("QUALITY")
+					.default_value("21")
+					.help("Sets the frame quality (1-30)")
 					.takes_value(true),
 			)
 			.arg(

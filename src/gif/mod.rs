@@ -98,7 +98,9 @@ impl<Output: Write> Gif<Output> {
 				break;
 			}
 			self.encoder.write_frame(
-				&frame.get(self.settings.speed.try_into().unwrap_or_default()),
+				&frame.get(
+					(31 - self.settings.quality).try_into().unwrap_or_default(),
+				),
 			)?;
 		}
 		Ok(())
