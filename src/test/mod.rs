@@ -1,6 +1,7 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::record::Record;
+use image::Bgra;
 
 #[derive(Clone, Copy, Debug)]
 pub struct TestWindow {
@@ -34,7 +35,11 @@ impl Record for TestWindow {
 	 * @return Image (Option)
 	 */
 	fn get_image(&self) -> Option<Image> {
-		Some(Image::new(vec![255, 255, 255], self.geometry))
+		Some(Image::new(
+			vec![Bgra::from([255, 255, 255, 0])],
+			false,
+			self.geometry,
+		))
 	}
 
 	/* Do not show countdown for testing window. */
