@@ -151,6 +151,7 @@ mod tests {
 	use crate::image::Image;
 	use crate::test::TestWindow;
 	use crate::util::cmd::Command;
+	use image::Bgra;
 	use std::fs::File;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
@@ -160,7 +161,10 @@ mod tests {
 		let window = TestWindow::default();
 		let app = App::new(&settings, window);
 		let mut frames = app.record();
-		frames.push(Frame::new(Image::new(vec![0, 0, 0], window.geometry), 0));
+		frames.push(Frame::new(
+			Image::new(vec![Bgra::from([0, 0, 0, 0])], false, window.geometry),
+			0,
+		));
 		app.save_gif(frames, output)?;
 		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
 		Ok(())
