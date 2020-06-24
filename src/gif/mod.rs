@@ -109,14 +109,19 @@ impl<Output: Write> Gif<Output> {
 mod tests {
 	use super::*;
 	use crate::util::cmd::Command;
+	use image::Bgra;
 	use std::fs::File;
 	#[test]
 	fn test_gif_mod() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2, None);
 		let settings = GifSettings::new(-1, 10);
+		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
 		let frames = vec![
-			Frame::new(Image::new(vec![0, 0, 0, 255, 255, 255], geometry), 10),
-			Frame::new(Image::new(vec![255, 255, 255, 0, 0, 0], geometry), 10),
+			Frame::new(Image::new(data.clone(), false, geometry), 10),
+			Frame::new(
+				Image::new(data.into_iter().rev().collect(), false, geometry),
+				10,
+			),
 		];
 		let mut gif = Gif::new(geometry, File::create("test.gif")?, settings)?;
 		gif.save(frames, &InputState::new())?;
