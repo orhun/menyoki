@@ -45,6 +45,7 @@ pub struct Args<'a, 'b> {
 	png: App<'a, 'b>,
 	jpg: App<'a, 'b>,
 	bmp: App<'a, 'b>,
+	tiff: App<'a, 'b>,
 	farbfeld: App<'a, 'b>,
 }
 
@@ -65,6 +66,7 @@ where
 			png: Self::get_png_args(),
 			jpg: Self::get_jpg_args(),
 			bmp: Self::get_bmp_args(),
+			tiff: Self::get_tiff_args(),
 			farbfeld: Self::get_farbfeld_args(),
 		}
 	}
@@ -94,6 +96,7 @@ where
 					.subcommand(args.png.subcommand(Self::get_save_args("t.png")))
 					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg")))
 					.subcommand(args.bmp.subcommand(Self::get_save_args("t.bmp")))
+					.subcommand(args.tiff.subcommand(Self::get_save_args("t.tiff")))
 					.subcommand(
 						args.farbfeld.subcommand(Self::get_save_args("t.ff")),
 					),
@@ -349,6 +352,17 @@ where
 	}
 
 	/**
+	 * Get tiff subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_tiff_args() -> App<'a, 'b> {
+		SubCommand::with_name("tiff")
+			.about("Changes the TIFF encoder settings")
+			.display_order(4)
+	}
+
+	/**
 	 * Get farbfeld subcommand arguments.
 	 *
 	 * @return App
@@ -356,7 +370,7 @@ where
 	fn get_farbfeld_args() -> App<'a, 'b> {
 		SubCommand::with_name("ff")
 			.about("Changes the farbfeld encoder settings")
-			.display_order(4)
+			.display_order(5)
 	}
 
 	/**
