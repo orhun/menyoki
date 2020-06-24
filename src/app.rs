@@ -6,9 +6,10 @@ use image::bmp::BMPEncoder;
 use image::farbfeld::FarbfeldEncoder;
 use image::jpeg::JPEGEncoder;
 use image::png::PNGEncoder;
+use image::tiff::TiffEncoder;
 use image::ColorType;
 use image::ImageEncoder;
-use std::io::{Error, Write};
+use std::io::{Error, Seek, Write};
 
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
@@ -38,7 +39,10 @@ where
 	 * @param  output
 	 * @return Result
 	 */
-	pub fn start<Output: Write>(&self, mut output: Output) -> Result<(), Error> {
+	pub fn start<Output: Write + Seek>(
+		&self,
+		mut output: Output,
+	) -> Result<(), Error> {
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				let frames = self.record();
@@ -62,6 +66,9 @@ where
 			),
 			FileFormat::Bmp => {
 				self.capture(BMPEncoder::new(&mut output), ColorType::Rgba8)
+			}
+			FileFormat::Tiff => {
+				self.capture(TiffEncoder::new(output), ColorType::Rgba8)
 			}
 			FileFormat::Ff => {
 				self.capture(FarbfeldEncoder::new(output), ColorType::Rgba16)
