@@ -250,13 +250,10 @@ impl Record for Window {
 				let data = slice::from_raw_parts::<Bgra<u8>>(
 					image.data as *const Bgra<u8>,
 					image.width as usize * image.height as usize,
-				);
+				)
+				.to_vec();
 				xlib::XDestroyImage(window_image);
-				Some(Image::new(
-					data.to_vec(),
-					self.settings.alpha,
-					self.geometry,
-				))
+				Some(Image::new(data, self.settings.alpha, self.geometry))
 			} else {
 				None
 			}
