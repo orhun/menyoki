@@ -155,9 +155,11 @@ mod tests {
 		thread::sleep(Duration::from_millis(200));
 		assert!(record.get().unwrap().unwrap().len() > 0);
 		let mut recorder = Recorder::new(RecordSettings::default(), window);
-		let mut enigo = Enigo::new();
-		enigo.key_down(Key::Escape);
+		thread::spawn(|| {
+			thread::sleep(Duration::from_millis(200));
+			Enigo::new().key_down(Key::Escape);
+		});
 		assert_eq!(0, recorder.record_sync(&InputState::new()).len());
-		enigo.key_up(Key::Escape);
+		Enigo::new().key_up(Key::Escape);
 	}
 }
