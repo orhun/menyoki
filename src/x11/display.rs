@@ -13,7 +13,7 @@ use x11::{keysym, xlib};
 
 /* X11 display */
 pub struct Display {
-	display: *mut xlib::Display,
+	pub display: *mut xlib::Display,
 	settings: RecordSettings,
 }
 

@@ -107,5 +107,19 @@ mod tests {
 				.get_data(ColorType::Rgb8)
 				.len()
 		);
+		unsafe {
+			x11_error_handler(
+				window_system.display.display,
+				&mut xlib::XErrorEvent {
+					type_: 0,
+					display: window_system.display.display,
+					resourceid: 0,
+					serial: 0,
+					error_code: 0,
+					request_code: 0,
+					minor_code: 0,
+				},
+			);
+		}
 	}
 }
