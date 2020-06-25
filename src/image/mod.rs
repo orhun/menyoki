@@ -67,9 +67,11 @@ mod tests {
 			Bgra::from([255, 255, 255, 0]),
 		];
 		let image = Image::new(data.to_vec(), false, geometry);
-		assert!(
-			image.get_data(ColorType::Rgba8)[0] == 128
-				&& image.get_data(ColorType::Rgba8)[5] == 255
-		)
+		assert_eq!(6, image.get_data(ColorType::Rgb8).len());
+		assert_eq!(8, image.get_data(ColorType::Rgba8).len());
+		assert_eq!(16, image.get_data(ColorType::Rgba16).len());
+		assert_eq!(255, image.get_data(ColorType::Rgb8)[4]);
+		assert_eq!(255, image.get_data(ColorType::Rgba8)[5]);
+		assert_eq!(128, image.get_data(ColorType::Rgba16)[5]);
 	}
 }
