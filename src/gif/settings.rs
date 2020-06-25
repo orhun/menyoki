@@ -59,7 +59,8 @@ mod tests {
 		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
-		assert_eq!(-1, GifSettings::from_args(ArgParser::new(None)).repeat);
-		assert_eq!(21, GifSettings::from_args(ArgParser::new(None)).quality);
+		let gif_settings = GifSettings::from_args(ArgParser::new(None));
+		assert_eq!(-1, gif_settings.repeat);
+		assert_eq!(21, gif_settings.quality);
 	}
 }
