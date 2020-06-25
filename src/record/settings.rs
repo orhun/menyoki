@@ -3,7 +3,7 @@ use crate::image::padding::Padding;
 use clap::ArgMatches;
 
 /* Window to record */
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum RecordWindow {
 	Focus,
 	Root,
@@ -178,5 +178,63 @@ impl RecordSettings {
 			}
 			None => RecordSettings::default(),
 		}
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use clap::{App, Arg};
+	#[test]
+	fn test_record_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("fps").long("fps").takes_value(true))
+			.arg(Arg::with_name("color").long("color").takes_value(true))
+			.arg(Arg::with_name("border").long("border").takes_value(true))
+			.arg(Arg::with_name("padding").long("padding").takes_value(true))
+			.arg(
+				Arg::with_name("countdown")
+					.long("countdown")
+					.takes_value(true),
+			)
+			.arg(Arg::with_name("timeout").long("timeout").takes_value(true))
+			.arg(
+				Arg::with_name("interval")
+					.long("interval")
+					.takes_value(true),
+			)
+			.arg(Arg::with_name("root").long("root"))
+			.arg(Arg::with_name("focus").long("focus"))
+			.arg(Arg::with_name("with-alpha").long("with-alpha"))
+			.arg(Arg::with_name("no-border").long("no-border"))
+			.get_matches_from(vec![
+				"test",
+				"--fps",
+				"15",
+				"--color",
+				"000000",
+				"--border",
+				"10",
+				"--padding",
+				"0:0:0:0",
+				"--countdown",
+				"2",
+				"--timeout",
+				"60",
+				"--interval",
+				"12",
+				"--root",
+				"--with-alpha",
+			]);
+		let record_settings = RecordSettings::from_args(ArgParser::new(Some(&args)));
+		assert_eq!(15, record_settings.fps);
+		assert_eq!(0x0000_0000, record_settings.color);
+		assert_eq!(10, record_settings.border.unwrap());
+		assert!(record_settings.padding.is_zero());
+		assert_eq!(2, record_settings.time.countdown);
+		assert_eq!(60, record_settings.time.timeout);
+		assert_eq!(12, record_settings.time.interval);
+		assert_eq!(RecordWindow::Root, record_settings.window);
+		assert!(record_settings.alpha);
 	}
 }
