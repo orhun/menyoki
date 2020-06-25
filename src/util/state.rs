@@ -101,7 +101,7 @@ mod tests {
 		enigo.mouse_down(MouseButton::Right);
 		assert!(input_state.check_mouse());
 		enigo.mouse_up(MouseButton::Left);
-		enigo.mouse_down(MouseButton::Right);
+		enigo.mouse_up(MouseButton::Right);
 		enigo.mouse_move_to(0, 0);
 		assert_eq!(
 			format!("{:?}", input_state),
