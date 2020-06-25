@@ -63,3 +63,17 @@ impl Padding {
 		self.top == 0 && self.right == 0 && self.bottom == 0 && self.left == 0
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_padding() {
+		let padding = Padding::parse("10:30:20:40");
+		assert!(!padding.is_zero());
+		assert_eq!(10, padding.top);
+		assert_eq!(30, padding.right);
+		assert_eq!(20, padding.bottom);
+		assert_eq!(40, padding.left);
+	}
+}
