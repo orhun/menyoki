@@ -35,13 +35,3 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 		.apply()?;
 	Ok(())
 }
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-	#[test]
-	fn test_init_logger() -> Result<(), SetLoggerError> {
-		init_logger()?;
-		Ok(())
-	}
-}
