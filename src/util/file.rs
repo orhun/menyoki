@@ -3,7 +3,7 @@ use clap::ArgMatches;
 use std::fmt;
 
 /* Information to include in file name */
-#[derive(Clone, Copy, Debug)]
+#[derive(PartialEq, Clone, Copy, Debug)]
 pub enum FileInfo {
 	Date,
 	Timestamp,
@@ -144,7 +144,7 @@ impl File {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use clap::{App, SubCommand};
+	use clap::{App, Arg, SubCommand};
 	#[test]
 	fn test_file() {
 		for format in vec!["png", "jpg", "bmp", "tiff", "ff"] {
@@ -164,5 +164,30 @@ mod tests {
 			FileFormat::from_args(&App::new("test").get_matches_from(vec!["test"]))
 				.to_string()
 		);
+		for info in vec!["", "date", "timestamp"] {
+			let args = App::new("test")
+				.arg(Arg::with_name(info).long(&format!("--{}", info)))
+				.get_matches_from(vec!["test", &format!("--{}", info)]);
+			assert_eq!(
+				match info {
+					"date" => {
+						let file_info = FileInfo::Date;
+						let mut file_name = String::from("x.y");
+						file_info.append(&mut file_name);
+						assert!(file_name.len() > 3);
+						Some(file_info)
+					}
+					"timestamp" => {
+						let file_info = FileInfo::Timestamp;
+						let mut file_name = String::from("x.y.z");
+						file_info.append(&mut file_name);
+						assert!(file_name.len() > 5);
+						Some(file_info)
+					}
+					_ => None,
+				},
+				FileInfo::from_args(&args)
+			);
+		}
 	}
 }
