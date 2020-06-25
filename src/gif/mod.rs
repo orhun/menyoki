@@ -110,9 +110,7 @@ impl<Output: Write> Gif<Output> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::util::cmd::Command;
 	use image::Bgra;
-	use std::fs::File;
 	#[test]
 	fn test_gif_mod() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2, None);
@@ -125,10 +123,8 @@ mod tests {
 				10,
 			),
 		];
-		let mut gif = Gif::new(geometry, File::create("test.gif")?, settings)?;
+		let mut gif = Gif::new(geometry, Vec::new(), settings)?;
 		gif.save(frames, &InputState::new())?;
-		Command::new(String::from("rm"), vec![String::from("test.gif")])
-			.execute()?;
 		Ok(())
 	}
 }
