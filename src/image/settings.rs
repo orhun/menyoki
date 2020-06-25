@@ -102,3 +102,60 @@ impl JpgSettings {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use clap::{App, Arg};
+	#[test]
+	fn test_png_settings() {
+		for value in vec![
+			("default", "none"),
+			("best", "up"),
+			("huffman", "avg"),
+			("rle", "paeth"),
+			("", ""),
+		] {
+			let args = App::new("test")
+				.arg(
+					Arg::with_name("compression")
+						.long("compression")
+						.takes_value(true),
+				)
+				.arg(Arg::with_name("filter").long("filter").takes_value(true))
+				.get_matches_from(vec![
+					"test",
+					"--compression",
+					value.0,
+					"--filter",
+					value.1,
+				]);
+			let parser = ArgParser::new(Some(&args));
+			let png_settings = PngSettings::from_args(parser);
+			if value.0.is_empty() && value.1.is_empty() {
+				assert_eq!(
+					PngSettings::default().compression,
+					png_settings.compression
+				);
+				assert_eq!(PngSettings::default().filter, png_settings.filter);
+			} else {
+				assert_ne!(
+					PngSettings::default().compression,
+					png_settings.compression
+				);
+				assert_ne!(PngSettings::default().filter, png_settings.filter);
+			}
+		}
+	}
+	#[test]
+	fn test_jpg_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("quality").long("quality").takes_value(true))
+			.get_matches_from(vec!["test", "--quality", "50"]);
+		assert_eq!(
+			50,
+			JpgSettings::from_args(ArgParser::new(Some(&args))).quality
+		);
+		assert_eq!(90, JpgSettings::from_args(ArgParser::new(None)).quality);
+	}
+}
