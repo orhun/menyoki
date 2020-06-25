@@ -3,7 +3,7 @@ use clap::ArgMatches;
 use std::fmt;
 
 /* Information to include in file name */
-#[derive(PartialEq, Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum FileInfo {
 	Date,
 	Timestamp,
@@ -61,7 +61,7 @@ impl fmt::Display for FileInfo {
 }
 
 /* Format of the output file */
-#[derive(Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum FileFormat {
 	Gif,
 	Png,

@@ -57,3 +57,37 @@ impl SaveSettings {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::util::file::{FileFormat, FileInfo};
+	use clap::{App, Arg, SubCommand};
+	#[test]
+	fn test_save_settings() {
+		let args = App::new("test")
+			.subcommand(
+				SubCommand::with_name("capture").subcommand(
+					SubCommand::with_name("jpg").subcommand(
+						SubCommand::with_name("save")
+							.arg(
+								Arg::with_name("output")
+									.long("output")
+									.takes_value(true),
+							)
+							.arg(Arg::with_name("date").long("date")),
+					),
+				),
+			)
+			.get_matches_from(vec![
+				"test", "capture", "jpg", "save", "--output", "test.jpg", "--date",
+			]);
+		let save_settings = SaveSettings::from_args(
+			&args,
+			ArgParser::from_subcommand(&args, "save"),
+		);
+		assert!(save_settings.file.name.contains("test_"));
+		assert_eq!(FileFormat::Jpg, save_settings.file.format);
+		assert_eq!(FileInfo::Date, save_settings.file.info.unwrap());
+	}
+}
