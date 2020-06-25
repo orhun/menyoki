@@ -41,3 +41,19 @@ impl<'a> ValueModifier<'a, u32> {
 		]
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_modifier() {
+		let values = vec![10, 30, 20, 40];
+		let mut padding = Padding::parse(
+			&values.iter().map(|v| format!("{}:", v)).collect::<String>(),
+		);
+		let modifiers = ValueModifier::from_padding(&mut padding);
+		for i in 0..modifiers.len() {
+			assert_eq!(values[i], *modifiers[i].value);
+		}
+	}
+}
