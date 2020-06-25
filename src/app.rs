@@ -157,23 +157,37 @@ mod tests {
 	use crate::args::Args;
 	use crate::image::Image;
 	use crate::test::TestWindow;
-	use crate::util::cmd::Command;
+	use crate::util::file::FileFormat;
 	use image::Bgra;
-	use std::fs::File;
+	use std::io::Cursor;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let args = Args::parse();
-		let settings = AppSettings::new(&args);
-		let output = File::create(&settings.save.file.name).unwrap();
+		let mut settings = AppSettings::new(&args);
 		let window = TestWindow::default();
+		for format in vec![
+			FileFormat::Png,
+			FileFormat::Jpg,
+			FileFormat::Bmp,
+			FileFormat::Tiff,
+			FileFormat::Ff,
+		] {
+			settings.save.file.format = format;
+			let app = App::new(&settings, window);
+			let mut output = Vec::new();
+			app.start(Cursor::new(&mut output))?;
+			assert!(output.len() > 0);
+		}
+		settings.save.file.format = FileFormat::Gif;
 		let app = App::new(&settings, window);
 		let mut frames = app.record();
 		frames.push(Frame::new(
 			Image::new(vec![Bgra::from([0, 0, 0, 0])], false, window.geometry),
 			0,
 		));
-		app.save_gif(frames, output)?;
-		Command::new(String::from("rm"), vec![String::from("t.gif")]).execute()?;
+		let mut output = Vec::new();
+		app.save_gif(frames, &mut output)?;
+		assert!(output.len() > 0);
 		Ok(())
 	}
 }
