@@ -45,3 +45,21 @@ impl GifSettings {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use clap::{App, Arg};
+	#[test]
+	fn test_gif_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("repeat").long("repeat").takes_value(true))
+			.arg(Arg::with_name("quality").long("quality").takes_value(true))
+			.get_matches_from(vec!["test", "--repeat", "5", "--quality", "10"]);
+		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
+		assert_eq!(4, gif_settings.repeat);
+		assert_eq!(10, gif_settings.quality);
+		assert_eq!(-1, GifSettings::from_args(ArgParser::new(None)).repeat);
+		assert_eq!(21, GifSettings::from_args(ArgParser::new(None)).quality);
+	}
+}
