@@ -57,7 +57,7 @@ mod tests {
 	use super::*;
 	use crate::args::Args;
 	#[test]
-	fn test_parser_mod() {
+	fn test_parser() {
 		let args = Args::parse();
 		let parser = ArgParser::new(Some(&args));
 		assert_eq!(1, parser.parse("test", 1));
