@@ -295,7 +295,7 @@ mod tests {
 			Some(0),
 			false,
 			Padding::default(),
-			RecordTime::new(0, 0, 10),
+			RecordTime::new(1, 0, 10),
 			RecordWindow::Select,
 		);
 		let display = Display::open(Some(settings)).unwrap();
