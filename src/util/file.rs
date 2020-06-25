@@ -140,3 +140,29 @@ impl File {
 		)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use clap::{App, SubCommand};
+	#[test]
+	fn test_file() {
+		for format in vec!["png", "jpg", "bmp", "tiff", "ff"] {
+			let args = App::new("test")
+				.subcommand(
+					SubCommand::with_name("capture")
+						.subcommand(SubCommand::with_name(format)),
+				)
+				.get_matches_from(vec!["test", "capture", format]);
+			assert_eq!(
+				format!("t.{}", format),
+				File::from_format(FileFormat::from_args(&args)).name
+			);
+		}
+		assert_eq!(
+			"Gif",
+			FileFormat::from_args(&App::new("test").get_matches_from(vec!["test"]))
+				.to_string()
+		);
+	}
+}
