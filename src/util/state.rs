@@ -106,7 +106,7 @@ mod tests {
 		assert_eq!(
 			format!("{:?}", input_state),
 			"InputState { mouse: MouseState { coords: (0, 0), \
-			button_pressed: [false, false, false, true, false, false] }, keys: [] }"
+			button_pressed: [false, false, false, false, false, false] }, keys: [] }"
 		);
 	}
 }
