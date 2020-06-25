@@ -38,3 +38,13 @@ fn main() -> Result<(), Error> {
 		File::create(&settings.save.file.name).expect("Failed to create the file"),
 	)
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	#[should_panic(expected = "No frames found to save")]
+	fn test_main() {
+		main().unwrap();
+	}
+}
