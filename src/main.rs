@@ -43,7 +43,7 @@ fn main() -> Result<(), Error> {
 mod tests {
 	use super::*;
 	#[test]
-	#[should_panic(expected = "No frames found to save")]
+	#[should_panic]
 	fn test_main() {
 		main().unwrap();
 	}
