@@ -51,3 +51,16 @@ impl<'a> ArgParser<'a> {
 			.unwrap_or(default_value)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::args::Args;
+	#[test]
+	fn test_parser_mod() {
+		let args = Args::parse();
+		let parser = ArgParser::new(Some(&args));
+		assert_eq!(1, parser.parse("test", 1));
+		assert!(ArgParser::from_subcommand(&args, "test").args.is_none())
+	}
+}
