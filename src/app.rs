@@ -88,11 +88,23 @@ where
 		encoder: Encoder,
 		color_type: ColorType,
 	) {
-		self.window.show_countdown();
-		let image = self
-			.window
-			.get_image()
-			.expect("Failed to get the window image");
+		let image = if self.settings.args.is_present("command") {
+			let window = self.window;
+			let image_thread = std::thread::spawn(move || {
+				window.show_countdown();
+				window.get_image()
+			});
+			self.settings
+				.get_command()
+				.execute()
+				.expect("Failed to run the command");
+			image_thread
+				.join()
+				.expect("Failed to join the image thread")
+		} else {
+			self.window.get_image()
+		}
+		.expect("Failed to get the window image");
 		encoder
 			.write_image(
 				&image.get_data(color_type),
