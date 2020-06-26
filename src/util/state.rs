@@ -39,13 +39,18 @@ impl InputState {
 	}
 
 	/**
-	 * Check if the save key is pressed.
+	 * Check if the action keys are pressed.
 	 *
 	 * @return bool
 	 */
-	pub fn check_save_key(&self) -> bool {
-		let keys = self.state.get_keys();
-		self.check_key_combination(Some(keys), vec![&Keycode::LAlt, &Keycode::S])
+	pub fn check_action_keys(&self) -> bool {
+		self.check_key_combination(
+			Some(self.state.get_keys()),
+			vec![&Keycode::LAlt, &Keycode::S],
+		) || self.check_key_combination(
+			Some(self.state.get_keys()),
+			vec![&Keycode::LAlt, &Keycode::Enter],
+		)
 	}
 
 	/**
