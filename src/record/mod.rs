@@ -7,8 +7,7 @@ use crate::record::fps::{FpsClock, TimeUnit};
 use crate::record::settings::RecordSettings;
 use crate::util::state::InputState;
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::mpsc;
-use std::sync::Arc;
+use std::sync::{mpsc, Arc};
 use std::thread;
 
 /* Required window methods for recording */
