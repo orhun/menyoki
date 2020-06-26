@@ -117,7 +117,7 @@ impl Display {
 		let window_padding = self.settings.padding;
 		let padding_change =
 			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
-		while !input_state.check_mouse() {
+		while !input_state.check_mouse() && !input_state.check_action_keys() {
 			focused_window = self
 				.get_focused_window()
 				.expect("Failed to get the focused window");
