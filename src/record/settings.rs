@@ -1,6 +1,7 @@
 use crate::args::parser::ArgParser;
 use crate::image::padding::Padding;
 use clap::ArgMatches;
+use std::f64;
 
 /* Window to record */
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -31,7 +32,7 @@ impl RecordWindow {
 /* Time related recording settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordTime {
-	pub duration: Option<u64>,
+	pub duration: f64,
 	pub countdown: u64,
 	pub timeout: u64,
 	pub interval: u64,
@@ -41,7 +42,7 @@ pub struct RecordTime {
 impl Default for RecordTime {
 	fn default() -> Self {
 		Self {
-			duration: None,
+			duration: f64::MAX,
 			countdown: 3,
 			timeout: 30,
 			interval: 10,
@@ -53,18 +54,13 @@ impl RecordTime {
 	/**
 	 * Create a new RecordTime object.
 	 *
-	 * @param  duration (Option)
+	 * @param  duration
 	 * @param  countdown
 	 * @param  timeout
 	 * @param  interval
 	 * @return RecordTime
 	 */
-	pub fn new(
-		duration: Option<u64>,
-		countdown: u64,
-		timeout: u64,
-		interval: u64,
-	) -> Self {
+	pub fn new(duration: f64, countdown: u64, timeout: u64, interval: u64) -> Self {
 		Self {
 			duration,
 			countdown,
@@ -81,14 +77,7 @@ impl RecordTime {
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		RecordTime::new(
-			{
-				let duration = parser.parse("duration", 0);
-				if duration != 0 {
-					Some(duration)
-				} else {
-					Self::default().duration
-				}
-			},
+			parser.parse("duration", Self::default().duration),
 			parser.parse("countdown", Self::default().countdown),
 			parser.parse("timeout", Self::default().timeout),
 			parser.parse("interval", Self::default().interval),
