@@ -111,7 +111,7 @@ where
 		let start_time = Instant::now();
 		while recording.load(Ordering::SeqCst)
 			&& !input_state.check_action_keys()
-			&& (start_time.elapsed().as_millis() as f64 / 1000.)
+			&& (start_time.elapsed().as_nanos() as f64 / 1e9)
 				< self.settings.time.duration
 		{
 			if input_state.check_cancel_keys() {
