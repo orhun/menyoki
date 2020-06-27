@@ -110,16 +110,26 @@ where
 	 * @return App
 	 */
 	fn get_record_args() -> App<'a, 'b> {
-		Self::get_base_args(BaseCommand::Record).arg(
-			Arg::with_name("fps")
-				.short("f")
-				.long("fps")
-				.value_name("FPS")
-				.default_value("10")
-				.help("Sets the FPS (frames per second) value")
-				.takes_value(true)
-				.display_order(0),
-		)
+		Self::get_base_args(BaseCommand::Record)
+			.arg(
+				Arg::with_name("fps")
+					.short("f")
+					.long("fps")
+					.value_name("FPS")
+					.default_value("10")
+					.help("Sets the FPS (frames per second) value")
+					.takes_value(true)
+					.display_order(0),
+			)
+			.arg(
+				Arg::with_name("duration")
+					.short("d")
+					.long("duration")
+					.value_name("S")
+					.help("Sets the recording duration [default: \u{221E}]")
+					.takes_value(true)
+					.display_order(4),
+			)
 	}
 
 	/**
@@ -193,7 +203,7 @@ where
 						}
 					})
 					.takes_value(true)
-					.display_order(4),
+					.display_order(5),
 			)
 			.arg(
 				Arg::with_name("timeout")
@@ -203,7 +213,7 @@ where
 					.default_value("30")
 					.help("Sets the timeout for window selection")
 					.takes_value(true)
-					.display_order(5),
+					.display_order(6),
 			)
 			.arg(
 				Arg::with_name("interval")
@@ -213,7 +223,7 @@ where
 					.default_value("10")
 					.help("Sets the interval time for window selection")
 					.takes_value(true)
-					.display_order(6),
+					.display_order(7),
 			)
 			.arg(
 				Arg::with_name("root")
