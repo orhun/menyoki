@@ -37,8 +37,8 @@ impl FpsClock {
 	 */
 	pub fn get_fps(&self, unit: TimeUnit) -> f32 {
 		match unit {
-			TimeUnit::Nanosecond => (1. / self.fps as f32) * 1_000_000_000.,
-			TimeUnit::Millisecond => (1. / self.fps as f32) * 1_000.,
+			TimeUnit::Nanosecond => (1. / self.fps as f32) * 1e9,
+			TimeUnit::Millisecond => (1. / self.fps as f32) * 1e3,
 		}
 	}
 
@@ -49,7 +49,7 @@ impl FpsClock {
 	 */
 	pub fn tick(&mut self) -> f32 {
 		let t = self.last_tick_time.elapsed();
-		let total_nanos = t.as_secs() * 1_000_000_000 + t.subsec_nanos() as u64;
+		let total_nanos = t.as_secs() * 1e9 as u64 + t.subsec_nanos() as u64;
 		let diff = self.get_fps(TimeUnit::Nanosecond) - (total_nanos as f32);
 		if diff > 0. {
 			thread::sleep(Duration::new(0, diff as u32))
@@ -67,7 +67,7 @@ mod tests {
 	fn test_fps_mod() {
 		let mut fps_clock = FpsClock::new(100);
 		assert_eq!(10., fps_clock.get_fps(TimeUnit::Millisecond));
-		assert_eq!(10_000_000., fps_clock.get_fps(TimeUnit::Nanosecond));
+		assert_eq!(1e7, fps_clock.get_fps(TimeUnit::Nanosecond));
 		for i in 0..2 {
 			thread::sleep(Duration::from_nanos(i));
 			assert!(fps_clock.get_fps(TimeUnit::Nanosecond) > fps_clock.tick());
