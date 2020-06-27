@@ -113,7 +113,7 @@ impl Display {
 			.get_focused_window()
 			.expect("Failed to get the focused window");
 		let mut xid = None;
-		let now = Instant::now();
+		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
 		let padding_change =
 			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
@@ -127,7 +127,7 @@ impl Display {
 				warn!("User interrupt detected.");
 				xid = None;
 				break;
-			} else if now.elapsed().as_secs() > self.settings.time.timeout {
+			} else if start_time.elapsed().as_secs() > self.settings.time.timeout {
 				warn!("The operation timed out.");
 				xid = None;
 				break;
