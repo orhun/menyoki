@@ -77,7 +77,10 @@ impl RecordTime {
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		RecordTime::new(
-			parser.parse("duration", Self::default().duration),
+			match parser.parse("duration", Self::default().duration) {
+				duration if duration > 0.0 => duration,
+				_ => Self::default().duration,
+			},
 			parser.parse("countdown", Self::default().countdown),
 			parser.parse("timeout", Self::default().timeout),
 			parser.parse("interval", Self::default().interval),
