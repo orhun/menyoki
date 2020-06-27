@@ -9,6 +9,7 @@ use crate::util::state::InputState;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc};
 use std::thread;
+use std::time::Instant;
 
 /* Required window methods for recording */
 pub trait Record {
@@ -54,6 +55,7 @@ pub struct Recorder<Window> {
 	window: Window,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
+	settings: RecordSettings,
 }
 
 impl<Window> Recorder<Window>
@@ -72,6 +74,7 @@ where
 			window,
 			clock: FpsClock::new(settings.fps),
 			channel: mpsc::channel(),
+			settings,
 		}
 	}
 
@@ -105,7 +108,12 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		self.window.show_countdown();
-		while recording.load(Ordering::SeqCst) && !input_state.check_action_keys() {
+		let now = Instant::now();
+		while recording.load(Ordering::SeqCst)
+			&& !input_state.check_action_keys()
+			&& (now.elapsed().as_millis() as f64 / 1000.)
+				< self.settings.time.duration
+		{
 			if input_state.check_cancel_keys() {
 				frames.clear();
 				warn!("User interrupt detected.");
