@@ -31,6 +31,7 @@ impl RecordWindow {
 /* Time related recording settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordTime {
+	pub duration: Option<u64>,
 	pub countdown: u64,
 	pub timeout: u64,
 	pub interval: u64,
@@ -40,6 +41,7 @@ pub struct RecordTime {
 impl Default for RecordTime {
 	fn default() -> Self {
 		Self {
+			duration: None,
 			countdown: 3,
 			timeout: 30,
 			interval: 10,
@@ -51,13 +53,20 @@ impl RecordTime {
 	/**
 	 * Create a new RecordTime object.
 	 *
+	 * @param  duration (Option)
 	 * @param  countdown
 	 * @param  timeout
 	 * @param  interval
 	 * @return RecordTime
 	 */
-	pub fn new(countdown: u64, timeout: u64, interval: u64) -> Self {
+	pub fn new(
+		duration: Option<u64>,
+		countdown: u64,
+		timeout: u64,
+		interval: u64,
+	) -> Self {
 		Self {
+			duration,
 			countdown,
 			timeout,
 			interval,
@@ -72,6 +81,14 @@ impl RecordTime {
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		RecordTime::new(
+			{
+				let duration = parser.parse("duration", 0);
+				if duration != 0 {
+					Some(duration)
+				} else {
+					Self::default().duration
+				}
+			},
 			parser.parse("countdown", Self::default().countdown),
 			parser.parse("timeout", Self::default().timeout),
 			parser.parse("interval", Self::default().interval),
