@@ -10,24 +10,6 @@ use std::convert::TryInto;
 use std::io::Error;
 use std::io::Write;
 
-/* Frame image and delay (in units of 10 ms) */
-#[derive(Clone, Debug)]
-pub struct Frame {
-	pub image: Image,
-}
-
-impl Frame {
-	/**
-	 * Create a new Frame object.
-	 *
-	 * @param  image
-	 * @return Frame
-	 */
-	pub fn new(image: Image) -> Self {
-		Self { image }
-	}
-}
-
 /* GIF encoder and settings */
 pub struct Gif<Output: Write> {
 	fps: u32,
@@ -77,7 +59,7 @@ impl<Output: Write> Gif<Output> {
 	 */
 	pub fn save(
 		mut self,
-		frames: Vec<Frame>,
+		frames: Vec<Image>,
 		input_state: &InputState,
 	) -> Result<(), Error> {
 		for frame in frames {
@@ -86,9 +68,9 @@ impl<Output: Write> Gif<Output> {
 				break;
 			}
 			let mut frame = GifFrame::from_rgba_speed(
-				frame.image.geometry.width.try_into().unwrap_or_default(),
-				frame.image.geometry.height.try_into().unwrap_or_default(),
-				&mut frame.image.get_data(ColorType::Rgba8),
+				frame.geometry.width.try_into().unwrap_or_default(),
+				frame.geometry.height.try_into().unwrap_or_default(),
+				&mut frame.get_data(ColorType::Rgba8),
 				(31 - self.settings.quality).try_into().unwrap_or_default(),
 			);
 			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;
