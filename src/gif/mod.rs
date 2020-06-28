@@ -5,7 +5,7 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util;
 use crate::util::state::InputState;
-use gif::{Encoder, Frame, Repeat, SetParameter};
+use gif::{Encoder as GifEncoder, Frame, Repeat, SetParameter};
 use image::ColorType;
 use std::convert::TryInto;
 use std::io::Error;
@@ -14,7 +14,7 @@ use std::io::Write;
 /* GIF encoder and settings */
 pub struct Gif<Output: Write> {
 	fps: u32,
-	encoder: Encoder<Output>,
+	encoder: GifEncoder<Output>,
 	settings: GifSettings,
 }
 
@@ -34,7 +34,7 @@ impl<Output: Write> Gif<Output> {
 		fps: u32,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
-		let mut encoder = Encoder::new(
+		let mut encoder = GifEncoder::new(
 			output,
 			geometry.width.try_into().unwrap_or_default(),
 			geometry.height.try_into().unwrap_or_default(),
