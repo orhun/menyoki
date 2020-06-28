@@ -1,4 +1,5 @@
-use crate::gif::{Frame, Gif};
+use crate::gif::Gif;
+use crate::image::Image;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use crate::util::file::FileFormat;
@@ -14,8 +15,8 @@ use std::io::{Error, Seek, Write};
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
 pub struct App<'a, Window> {
-	settings: &'a AppSettings<'a>,
 	window: Window,
+	settings: &'a AppSettings<'a>,
 }
 
 impl<'a, Window> App<'a, Window>
@@ -25,12 +26,12 @@ where
 	/**
 	 * Create a new App object.
 	 *
-	 * @param  settings
 	 * @param  window
+	 * @param  settings
 	 * @return App
 	 */
-	pub fn new(settings: &'a AppSettings<'a>, window: Window) -> Self {
-		Self { settings, window }
+	pub fn new(window: Window, settings: &'a AppSettings<'a>) -> Self {
+		Self { window, settings }
 	}
 
 	/**
@@ -118,10 +119,10 @@ where
 	/**
 	 * Start recording the frames.
 	 *
-	 * @return Vector of Frame
+	 * @return Vector of Image
 	 */
-	fn record(self) -> Vec<Frame> {
-		let mut recorder = Recorder::new(self.settings.record, self.window);
+	fn record(self) -> Vec<Image> {
+		let mut recorder = Recorder::new(self.window, self.settings.record);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
@@ -146,16 +147,13 @@ where
 	 */
 	fn save_gif<Output: Write>(
 		self,
-		frames: Vec<Frame>,
+		frames: Vec<Image>,
 		output: Output,
 	) -> Result<(), Error> {
 		let mut gif = Gif::new(
-			frames
-				.first()
-				.expect("No frames found to save")
-				.image
-				.geometry,
+			frames.first().expect("No frames found to save").geometry,
 			output,
+			self.settings.record.fps,
 			self.settings.gif,
 		)?;
 		gif.save(frames, &self.settings.input_state)?;
