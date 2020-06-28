@@ -4,7 +4,7 @@ use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
-use gif::{Encoder, Frame as GifFrame, Repeat, SetParameter};
+use gif::{Encoder, Frame, Repeat, SetParameter};
 use image::ColorType;
 use std::convert::TryInto;
 use std::io::Error;
@@ -51,26 +51,26 @@ impl<Output: Write> Gif<Output> {
 	}
 
 	/**
-	 * Write frames to the GIF file.
+	 * Encode images as frame and write to the GIF file.
 	 *
-	 * @param  frames
+	 * @param  images
 	 * @param  input_state
 	 * @return Result
 	 */
 	pub fn save(
 		mut self,
-		frames: Vec<Image>,
+		images: Vec<Image>,
 		input_state: &InputState,
 	) -> Result<(), Error> {
-		for frame in frames {
+		for image in images {
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				break;
 			}
-			let mut frame = GifFrame::from_rgba_speed(
-				frame.geometry.width.try_into().unwrap_or_default(),
-				frame.geometry.height.try_into().unwrap_or_default(),
-				&mut frame.get_data(ColorType::Rgba8),
+			let mut frame = Frame::from_rgba_speed(
+				image.geometry.width.try_into().unwrap_or_default(),
+				image.geometry.height.try_into().unwrap_or_default(),
+				&mut image.get_data(ColorType::Rgba8),
 				(31 - self.settings.quality).try_into().unwrap_or_default(),
 			);
 			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;
