@@ -4,7 +4,7 @@ use crate::args::parser::ArgParser;
 #[derive(Clone, Copy, Debug)]
 pub struct GifSettings {
 	pub repeat: i32,
-	pub quality: u32,
+	pub quality: u8,
 }
 
 /* Default initialization values for GifSettings */
@@ -25,7 +25,7 @@ impl GifSettings {
 	 * @param  quality
 	 * @return GifSettings
 	 */
-	pub fn new(repeat: i32, quality: u32) -> Self {
+	pub fn new(repeat: i32, quality: u8) -> Self {
 		Self { repeat, quality }
 	}
 
