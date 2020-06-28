@@ -29,10 +29,10 @@ fn main() -> Result<(), Error> {
 	let mut window_system =
 		WindowSystem::init(&settings).expect("Failed to access the window system");
 	App::new(
-		&settings,
 		window_system
 			.get_window()
 			.expect("Failed to get the window"),
+		&settings,
 	)
 	.start(
 		File::create(&settings.save.file.name).expect("Failed to create the file"),
