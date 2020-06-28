@@ -26,24 +26,6 @@ impl Frame {
 	pub fn new(image: Image) -> Self {
 		Self { image }
 	}
-
-	/**
-	 * Get a GIF frame from the Frame object.
-	 *
-	 * @param  speed
-	 * @param  delay
-	 * @return GifFrame
-	 */
-	pub fn get(&mut self, speed: i32, delay: u16) -> GifFrame<'_> {
-		let mut frame = GifFrame::from_rgba_speed(
-			self.image.geometry.width.try_into().unwrap_or_default(),
-			self.image.geometry.height.try_into().unwrap_or_default(),
-			&mut self.image.get_data(ColorType::Rgba8),
-			speed,
-		);
-		frame.delay = delay;
-		frame
-	}
 }
 
 /* GIF encoder and settings */
@@ -94,19 +76,23 @@ impl<Output: Write> Gif<Output> {
 	 * @return Result
 	 */
 	pub fn save(
-		&mut self,
+		mut self,
 		frames: Vec<Frame>,
 		input_state: &InputState,
 	) -> Result<(), Error> {
-		for mut frame in frames {
+		for frame in frames {
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				break;
 			}
-			self.encoder.write_frame(&frame.get(
+			let mut frame = GifFrame::from_rgba_speed(
+				frame.image.geometry.width.try_into().unwrap_or_default(),
+				frame.image.geometry.height.try_into().unwrap_or_default(),
+				&mut frame.image.get_data(ColorType::Rgba8),
 				(31 - self.settings.quality).try_into().unwrap_or_default(),
-				((1. / self.fps as f32) * 1e2) as u16,
-			))?;
+			);
+			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;
+			self.encoder.write_frame(&frame)?;
 		}
 		Ok(())
 	}
