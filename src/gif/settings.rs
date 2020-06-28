@@ -12,7 +12,7 @@ impl Default for GifSettings {
 	fn default() -> Self {
 		Self {
 			repeat: -1,
-			quality: 21,
+			quality: 75,
 		}
 	}
 }
