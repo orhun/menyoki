@@ -2,7 +2,7 @@ pub mod fps;
 pub mod settings;
 
 use crate::image::Image;
-use crate::record::fps::{FpsClock, TimeUnit};
+use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::util::state::InputState;
 use std::sync::atomic::{AtomicBool, Ordering};
