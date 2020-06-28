@@ -1,7 +1,6 @@
 pub mod fps;
 pub mod settings;
 
-use crate::gif::Frame;
 use crate::image::Image;
 use crate::record::fps::{FpsClock, TimeUnit};
 use crate::record::settings::RecordSettings;
@@ -79,24 +78,12 @@ where
 	}
 
 	/**
-	 * Get a frame from calling the image function.
-	 *
-	 * @return Frame
-	 */
-	fn get_frame(&mut self) -> Frame {
-		match self.window.get_image() {
-			Some(image) => Frame::new(image),
-			None => panic!("Failed to get the image"),
-		}
-	}
-
-	/**
 	 * Record frames synchronously with blocking the current thread.
 	 *
 	 * @param  input_state
-	 * @return Vector of Frame
+	 * @return Vector of Image
 	 */
-	pub fn record_sync(&mut self, input_state: &InputState) -> Vec<Frame> {
+	pub fn record_sync(&mut self, input_state: &InputState) -> Vec<Image> {
 		let mut frames = Vec::new();
 		let recording = Arc::new(AtomicBool::new(true));
 		let rec_state = recording.clone();
@@ -117,7 +104,7 @@ where
 				break;
 			}
 			self.clock.tick();
-			frames.push(self.get_frame());
+			frames.push(self.window.get_image().expect("Failed to get the image"));
 		}
 		frames
 	}
@@ -127,7 +114,7 @@ where
 	 *
 	 * @return RecordResult
 	 */
-	pub fn record_async(mut self) -> RecordResult<Vec<Frame>> {
+	pub fn record_async(mut self) -> RecordResult<Vec<Image>> {
 		let mut frames = Vec::new();
 		RecordResult::new(
 			self.channel.0.clone(),
@@ -135,7 +122,9 @@ where
 				self.window.show_countdown();
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
-					frames.push(self.get_frame())
+					frames.push(
+						self.window.get_image().expect("Failed to get the image"),
+					)
 				}
 				frames
 			}),
