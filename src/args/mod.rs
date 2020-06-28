@@ -282,8 +282,8 @@ where
 					.short("q")
 					.long("quality")
 					.value_name("QUALITY")
-					.default_value("21")
-					.help("Sets the frame quality (1-30)")
+					.default_value("75")
+					.help("Sets the frame quality (1-100)")
 					.takes_value(true),
 			)
 			.arg(
