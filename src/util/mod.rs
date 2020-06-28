@@ -35,3 +35,17 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 		.apply()?;
 	Ok(())
 }
+
+/**
+ * Map the given number from a range to another range.
+ *
+ * @param  value
+ * @param  from_range
+ * @param  to_range
+ * @return f64
+ */
+pub fn map_range(value: f64, from_range: (f64, f64), to_range: (f64, f64)) -> f64 {
+	to_range.0
+		+ (value - from_range.0) * (to_range.1 - to_range.0)
+			/ (from_range.1 - from_range.0)
+}
