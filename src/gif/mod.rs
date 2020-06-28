@@ -14,7 +14,6 @@ use std::io::Write;
 #[derive(Clone, Debug)]
 pub struct Frame {
 	pub image: Image,
-	delay: u16,
 }
 
 impl Frame {
@@ -22,33 +21,34 @@ impl Frame {
 	 * Create a new Frame object.
 	 *
 	 * @param  image
-	 * @param  delay
 	 * @return Frame
 	 */
-	pub fn new(image: Image, delay: u16) -> Self {
-		Self { image, delay }
+	pub fn new(image: Image) -> Self {
+		Self { image }
 	}
 
 	/**
 	 * Get a GIF frame from the Frame object.
 	 *
 	 * @param  speed
+	 * @param  delay
 	 * @return GifFrame
 	 */
-	pub fn get(&mut self, speed: i32) -> GifFrame<'_> {
+	pub fn get(&mut self, speed: i32, delay: u16) -> GifFrame<'_> {
 		let mut frame = GifFrame::from_rgba_speed(
 			self.image.geometry.width.try_into().unwrap_or_default(),
 			self.image.geometry.height.try_into().unwrap_or_default(),
 			&mut self.image.get_data(ColorType::Rgba8),
 			speed,
 		);
-		frame.delay = self.delay;
+		frame.delay = delay;
 		frame
 	}
 }
 
 /* GIF encoder and settings */
 pub struct Gif<Output: Write> {
+	fps: u32,
 	encoder: Encoder<Output>,
 	settings: GifSettings,
 }
@@ -59,12 +59,14 @@ impl<Output: Write> Gif<Output> {
 	 *
 	 * @param  geometry
 	 * @param  output
+	 * @param  fps
 	 * @param  settings
 	 * @return Result (Gif)
 	 */
 	pub fn new(
 		geometry: Geometry,
 		output: Output,
+		fps: u32,
 		settings: GifSettings,
 	) -> Result<Self, Error> {
 		let mut encoder = Encoder::new(
@@ -77,7 +79,11 @@ impl<Output: Write> Gif<Output> {
 			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
 			_ => Repeat::Infinite,
 		})?;
-		Ok(Self { encoder, settings })
+		Ok(Self {
+			fps,
+			encoder,
+			settings,
+		})
 	}
 
 	/**
@@ -97,11 +103,10 @@ impl<Output: Write> Gif<Output> {
 				warn!("User interrupt detected.");
 				break;
 			}
-			self.encoder.write_frame(
-				&frame.get(
-					(31 - self.settings.quality).try_into().unwrap_or_default(),
-				),
-			)?;
+			self.encoder.write_frame(&frame.get(
+				(31 - self.settings.quality).try_into().unwrap_or_default(),
+				((1. / self.fps as f32) * 1e2) as u16,
+			))?;
 		}
 		Ok(())
 	}
