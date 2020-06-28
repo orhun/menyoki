@@ -3,6 +3,7 @@ pub mod settings;
 use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
+use crate::util;
 use crate::util::state::InputState;
 use gif::{Encoder, Frame, Repeat, SetParameter};
 use image::ColorType;
@@ -71,7 +72,11 @@ impl<Output: Write> Gif<Output> {
 				image.geometry.width.try_into().unwrap_or_default(),
 				image.geometry.height.try_into().unwrap_or_default(),
 				&mut image.get_data(ColorType::Rgba8),
-				(31 - self.settings.quality).try_into().unwrap_or_default(),
+				30 - util::map_range(
+					self.settings.quality.into(),
+					(1., 100.),
+					(0., 29.),
+				) as i32,
 			);
 			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;
 			self.encoder.write_frame(&frame)?;
