@@ -65,11 +65,11 @@ where
 	/**
 	 * Create a new Recorder object.
 	 *
-	 * @param  settings
 	 * @param  window
+	 * @param  settings
 	 * @return Recorder
 	 */
-	pub fn new(settings: RecordSettings, window: Window) -> Self {
+	pub fn new(window: Window, settings: RecordSettings) -> Self {
 		Self {
 			window,
 			clock: FpsClock::new(settings.fps),
@@ -85,10 +85,7 @@ where
 	 */
 	fn get_frame(&mut self) -> Frame {
 		match self.window.get_image() {
-			Some(image) => Frame::new(
-				image,
-				(self.clock.get_fps(TimeUnit::Millisecond) / 10.) as u16,
-			),
+			Some(image) => Frame::new(image),
 			None => panic!("Failed to get the image"),
 		}
 	}
