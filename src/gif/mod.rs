@@ -1,5 +1,7 @@
 pub mod encoder;
 pub mod settings;
+#[cfg(feature = "ski")]
+pub mod ski;
 
 use crate::gif::encoder::Encoder;
 use crate::gif::settings::GifSettings;
