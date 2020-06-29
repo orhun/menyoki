@@ -1,13 +1,6 @@
 use std::thread;
 use std::time::{Duration, Instant};
 
-/* Unit of time */
-#[derive(Debug)]
-pub enum TimeUnit {
-	Nanosecond,
-	Millisecond,
-}
-
 /* FPS controller */
 #[derive(Clone, Copy, Debug)]
 pub struct FpsClock {
@@ -30,19 +23,6 @@ impl FpsClock {
 	}
 
 	/**
-	 * Get the FPS value in the given time unit.
-	 *
-	 * @param  unit
-	 * @return f32
-	 */
-	pub fn get_fps(&self, unit: TimeUnit) -> f32 {
-		match unit {
-			TimeUnit::Nanosecond => (1. / self.fps as f32) * 1e9,
-			TimeUnit::Millisecond => (1. / self.fps as f32) * 1e3,
-		}
-	}
-
-	/**
 	 * Sleep the thread to run at the correct FPS.
 	 *
 	 * @return f32
@@ -50,10 +30,10 @@ impl FpsClock {
 	pub fn tick(&mut self) -> f32 {
 		let t = self.last_tick_time.elapsed();
 		let total_nanos = t.as_secs() * 1e9 as u64 + t.subsec_nanos() as u64;
-		let diff = self.get_fps(TimeUnit::Nanosecond) - (total_nanos as f32);
+		let diff = ((1. / self.fps as f32) * 1e9) - (total_nanos as f32);
 		if diff > 0. {
 			thread::sleep(Duration::new(0, diff as u32))
-		};
+		}
 		self.last_tick_time = Instant::now();
 		diff
 	}
