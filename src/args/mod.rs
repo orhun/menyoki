@@ -275,7 +275,7 @@ where
 	 * @return App
 	 */
 	fn get_gif_args() -> App<'a, 'b> {
-		SubCommand::with_name("gif")
+		let args = SubCommand::with_name("gif")
 			.about("Changes the GIF encoder settings")
 			.arg(
 				Arg::with_name("quality")
@@ -293,7 +293,16 @@ where
 					.value_name("REPEAT")
 					.help("Sets the number of repetitions [default: \u{221E}]")
 					.takes_value(true),
+			);
+		if cfg!(feature = "ski") {
+			args.arg(
+				Arg::with_name("fast").short("f").long("fast").help(
+					"Encodes 3 times faster (10% lower quality and bigger file)",
+				),
 			)
+		} else {
+			args
+		}
 	}
 
 	/**
