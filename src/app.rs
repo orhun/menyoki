@@ -186,20 +186,21 @@ mod tests {
 			FileFormat::Ff,
 		] {
 			settings.save.file.format = format;
-			let app = App::new(&settings, window);
+			let app = App::new(window, &settings);
 			let mut output = Vec::new();
 			app.start(Cursor::new(&mut output))?;
 			assert!(output.len() > 0);
 		}
 		settings.save.file.format = FileFormat::Gif;
-		let app = App::new(&settings, window);
-		let mut frames = app.record();
-		frames.push(Frame::new(
-			Image::new(vec![Bgra::from([0, 0, 0, 0])], false, window.geometry),
-			0,
+		let app = App::new(window, &settings);
+		let mut images = app.record();
+		images.push(Image::new(
+			vec![Bgra::from([0, 0, 0, 0])],
+			false,
+			window.geometry,
 		));
 		let mut output = Vec::new();
-		app.save_gif(frames, &mut output)?;
+		app.save_gif(images, &mut output)?;
 		assert!(output.len() > 0);
 		Ok(())
 	}
