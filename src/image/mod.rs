@@ -4,6 +4,12 @@ pub mod settings;
 
 use crate::image::geometry::Geometry;
 use image::{Bgra, ColorType};
+#[cfg(feature = "ski")]
+use {
+	imgref::{Img, ImgVec},
+	rgb::RGBA8,
+	std::convert::TryInto,
+};
 
 /* Image data and geometric properties */
 #[derive(Clone, Debug)]
@@ -53,6 +59,31 @@ impl Image {
 			});
 			rgba8
 		})
+	}
+
+	/**
+	 * Get an Img Vector from the image data.
+	 *
+	 * @return ImgVec
+	 */
+	#[cfg(feature = "ski")]
+	pub fn get_img_vec(&self) -> ImgVec<RGBA8> {
+		Img::new(
+			self.data
+				.iter()
+				.fold(Vec::<RGBA8>::new(), |mut rgba8, bgra| {
+					let alpha = if self.alpha_channel { bgra[3] } else { 255 };
+					rgba8.extend(vec![RGBA8 {
+						r: bgra[2],
+						g: bgra[1],
+						b: bgra[0],
+						a: alpha,
+					}]);
+					rgba8
+				}),
+			self.geometry.width.try_into().unwrap_or_default(),
+			self.geometry.height.try_into().unwrap_or_default(),
+		)
 	}
 }
 
