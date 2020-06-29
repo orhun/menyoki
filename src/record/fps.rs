@@ -46,11 +46,11 @@ mod tests {
 	#[test]
 	fn test_fps_mod() {
 		let mut fps_clock = FpsClock::new(100);
-		assert_eq!(10., fps_clock.get_fps(TimeUnit::Millisecond));
-		assert_eq!(1e7, fps_clock.get_fps(TimeUnit::Nanosecond));
+		let fps = (1. / fps_clock.fps as f32) * 1e9;
+		assert_eq!(1e7, fps);
 		for i in 0..2 {
 			thread::sleep(Duration::from_nanos(i));
-			assert!(fps_clock.get_fps(TimeUnit::Nanosecond) > fps_clock.tick());
+			assert!(fps > fps_clock.tick());
 		}
 	}
 }
