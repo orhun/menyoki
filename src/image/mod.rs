@@ -47,9 +47,9 @@ impl Image {
 	 * @return Vector of u8
 	 */
 	pub fn get_data(&self, color_type: ColorType) -> Vec<u8> {
-		self.data.iter().fold(Vec::<u8>::new(), |mut rgba8, bgra| {
+		self.data.iter().fold(Vec::<u8>::new(), |mut data, bgra| {
 			let alpha = if self.alpha_channel { bgra[3] } else { 255 };
-			rgba8.extend(&match color_type {
+			data.extend(&match color_type {
 				ColorType::Rgb8 => vec![bgra[2], bgra[1], bgra[0]],
 				ColorType::Rgba16 => vec![
 					bgra[2], bgra[2], bgra[1], bgra[1], bgra[0], bgra[0], alpha,
@@ -57,7 +57,7 @@ impl Image {
 				],
 				_ => vec![bgra[2], bgra[1], bgra[0], alpha],
 			});
-			rgba8
+			data
 		})
 	}
 
