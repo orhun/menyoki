@@ -8,8 +8,24 @@ use crate::util::state::InputState;
 use gif::{Encoder as GifEncoder, Frame, Repeat, SetParameter};
 use image::ColorType;
 use std::convert::TryInto;
-use std::io::Error;
-use std::io::Write;
+use std::io::{Error, Write};
+
+/* Required encoding methods */
+pub trait Encoder<Output: Write> {
+	fn new(
+		geometry: Geometry,
+		output: Output,
+		fps: u32,
+		settings: GifSettings,
+	) -> Result<Self, Error>
+	where
+		Self: Sized;
+	fn save(
+		self,
+		images: Vec<Image>,
+		input_state: &'static InputState,
+	) -> Result<(), Error>;
+}
 
 /* GIF encoder and settings */
 pub struct Gif<Output: Write> {
@@ -18,7 +34,7 @@ pub struct Gif<Output: Write> {
 	settings: GifSettings,
 }
 
-impl<Output: Write> Gif<Output> {
+impl<Output: Write> Encoder<Output> for Gif<Output> {
 	/**
 	 * Create a new Gif object.
 	 *
@@ -28,7 +44,7 @@ impl<Output: Write> Gif<Output> {
 	 * @param  settings
 	 * @return Result (Gif)
 	 */
-	pub fn new(
+	fn new(
 		geometry: Geometry,
 		output: Output,
 		fps: u32,
@@ -58,10 +74,10 @@ impl<Output: Write> Gif<Output> {
 	 * @param  input_state
 	 * @return Result
 	 */
-	pub fn save(
+	fn save(
 		mut self,
 		images: Vec<Image>,
-		input_state: &InputState,
+		input_state: &'static InputState,
 	) -> Result<(), Error> {
 		for image in images {
 			if input_state.check_cancel_keys() {
