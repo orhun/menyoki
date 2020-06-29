@@ -1,5 +1,7 @@
+pub mod encoder;
 pub mod settings;
 
+use crate::gif::encoder::Encoder;
 use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
@@ -9,23 +11,6 @@ use gif::{Encoder as GifEncoder, Frame, Repeat, SetParameter};
 use image::ColorType;
 use std::convert::TryInto;
 use std::io::{Error, Write};
-
-/* Required encoding methods */
-pub trait Encoder<Output: Write> {
-	fn new(
-		geometry: Geometry,
-		output: Output,
-		fps: u32,
-		settings: GifSettings,
-	) -> Result<Self, Error>
-	where
-		Self: Sized;
-	fn save(
-		self,
-		images: Vec<Image>,
-		input_state: &'static InputState,
-	) -> Result<(), Error>;
-}
 
 /* GIF encoder and settings */
 pub struct Gif<Output: Write> {
