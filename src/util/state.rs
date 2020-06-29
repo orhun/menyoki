@@ -16,6 +16,9 @@ impl fmt::Debug for InputState {
 	}
 }
 
+/* Implementation for thread-safe usage */
+unsafe impl Sync for InputState {}
+
 impl InputState {
 	/**
 	 * Create a new InputState object.
