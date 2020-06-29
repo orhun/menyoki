@@ -1,4 +1,7 @@
 use crate::gif::encoder::Encoder;
+#[cfg(feature = "ski")]
+use crate::gif::ski::Gif;
+#[cfg(not(feature = "ski"))]
 use crate::gif::Gif;
 use crate::image::Image;
 use crate::record::{Record, Recorder};
