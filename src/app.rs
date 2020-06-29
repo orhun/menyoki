@@ -1,3 +1,4 @@
+use crate::gif::encoder::Encoder;
 use crate::gif::Gif;
 use crate::image::Image;
 use crate::record::{Record, Recorder};
@@ -46,9 +47,7 @@ where
 	) -> Result<(), Error> {
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
-				let frames = self.record();
-				info!("frames: {}", frames.len());
-				self.save_gif(frames, output)?;
+				self.save_gif(self.record(), output)?;
 			}
 			FileFormat::Png => self.capture(
 				PNGEncoder::new_with_quality(
@@ -150,13 +149,14 @@ where
 		frames: Vec<Image>,
 		output: Output,
 	) -> Result<(), Error> {
-		let mut gif = Gif::new(
+		info!("frames: {}", frames.len());
+		Gif::new(
 			frames.first().expect("No frames found to save").geometry,
 			output,
 			self.settings.record.fps,
 			self.settings.gif,
-		)?;
-		gif.save(frames, &self.settings.input_state)?;
+		)?
+		.save(frames, &self.settings.input_state)?;
 		Ok(())
 	}
 }
