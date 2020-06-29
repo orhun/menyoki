@@ -16,7 +16,7 @@ pub struct AppSettings<'a> {
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
 	pub save: SaveSettings,
-	pub input_state: InputState,
+	pub input_state: &'static InputState,
 }
 
 impl<'a> AppSettings<'a> {
@@ -44,7 +44,7 @@ impl<'a> AppSettings<'a> {
 				args,
 				ArgParser::from_subcommand(args, "save"),
 			),
-			input_state: InputState::new(),
+			input_state: Box::leak(Box::new(InputState::new())),
 		}
 	}
 
