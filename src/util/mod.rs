@@ -5,7 +5,7 @@ pub mod settings;
 pub mod state;
 use chrono::Local;
 use fern::colors::{Color, ColoredLevelConfig};
-use fern::Dispatch;
+use fern::{Dispatch, Output};
 use log::{LevelFilter, SetLoggerError};
 
 /**
@@ -22,16 +22,35 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 		.trace(Color::BrightBlack);
 	Dispatch::new()
 		.format(move |out, message, record| {
-			out.finish(format_args!(
-				"[{} {} {}] {}",
-				Local::now().format("%Y-%m-%dT%H:%M:%S"),
-				colors.color(record.level()),
-				record.target(),
-				message
-			))
+			let time = Local::now().format("%Y-%m-%dT%H:%M:%S");
+			let color = colors.color(record.level());
+			let target = record.target();
+			let message = message.to_string();
+			if message.ends_with('\r') {
+				out.finish(format_args!(
+					"\r[{} {} {}] {}",
+					time,
+					color,
+					target,
+					&message[..message.len() - 1]
+				))
+			} else if message.starts_with('\n') {
+				out.finish(format_args!(
+					"\n[{} {} {}] {}\n",
+					time,
+					color,
+					target,
+					&message[1..]
+				))
+			} else {
+				out.finish(format_args!(
+					"[{} {} {}] {}\n",
+					time, color, target, message
+				))
+			}
 		})
 		.level(LevelFilter::Debug)
-		.chain(std::io::stdout())
+		.chain(Output::stdout(""))
 		.apply()?;
 	Ok(())
 }
