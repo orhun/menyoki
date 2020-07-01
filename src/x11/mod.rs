@@ -24,10 +24,12 @@ impl<'a> WindowSystem<'a> {
 	 * @return WindowSystem (Option)
 	 */
 	pub fn init(settings: &'a AppSettings<'a>) -> Option<Self> {
+		trace!("{:?}", settings);
 		if let Some(display) = Display::open(Some(settings.record)) {
 			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
 			Some(Self { display, settings })
 		} else {
+			error!("Cannot open display.");
 			None
 		}
 	}
@@ -38,6 +40,7 @@ impl<'a> WindowSystem<'a> {
 	 * @return Window (Option)
 	 */
 	pub fn get_window(&mut self) -> Option<Window> {
+		debug!("RecordWindow: {:?}", self.settings.record.window);
 		match self.settings.record.window {
 			RecordWindow::Focus => self.display.get_focused_window(),
 			RecordWindow::Root => Some(self.display.get_root_window()),
@@ -57,25 +60,25 @@ unsafe extern "C" fn x11_error_handler(
 	display: *mut xlib::Display,
 	error: *mut xlib::XErrorEvent,
 ) -> i32 {
-	let mut error_msg = String::from("X Error");
-	let mut error_text: Vec<u8> = Vec::with_capacity(1024);
-	if xlib::XGetErrorText(
-		display,
-		(*error).error_code.try_into().unwrap_or_default(),
-		error_text.as_mut_ptr() as *mut c_char,
-		error_text.capacity().try_into().unwrap_or_default(),
-	) == 0
-	{
-		error_msg += &format!(
-			": {}",
-			CStr::from_ptr(error_text.as_mut_ptr() as *mut c_char)
-				.to_string_lossy()
-				.into_owned()
-		);
-	}
+	let mut error_text = Vec::with_capacity(1024);
 	error!(
-		"{} Opcode: {}, Serial: {}",
-		error_msg,
+		"{}[Opcode: {}, Serial: {}]",
+		if xlib::XGetErrorText(
+			display,
+			(*error).error_code.try_into().unwrap_or_default(),
+			error_text.as_mut_ptr() as *mut c_char,
+			error_text.capacity().try_into().unwrap_or_default(),
+		) == 0
+		{
+			format!(
+				"{} ",
+				CStr::from_ptr(error_text.as_mut_ptr() as *mut c_char)
+					.to_string_lossy()
+					.into_owned()
+			)
+		} else {
+			String::from("Unknown X Error")
+		},
 		(*error).request_code,
 		(*error).serial
 	);
