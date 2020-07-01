@@ -5,6 +5,7 @@ use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::Keycode;
 use std::convert::TryFrom;
+use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::thread;
@@ -132,7 +133,7 @@ impl Display {
 				xid = None;
 				break;
 			} else if xid != Some(focused_window.xid) {
-				debug!("Window ID: {:?}", focused_window.xid);
+				debug!("Window ID: {}", focused_window.xid);
 				info!("{}", focused_window);
 				self.ungrab_keys(xid);
 				self.settings.padding = window_padding;
@@ -183,6 +184,18 @@ impl Display {
 				window.clear_area();
 			}
 		}
+		info!(
+			" Selected area -> [{}x{}] b:[{}] {}\r#",
+			window.geometry.width - (self.settings.border.unwrap_or_default() * 2),
+			window.geometry.height - (self.settings.border.unwrap_or_default() * 2),
+			window.settings.border.unwrap_or(0),
+			if window.settings.padding.is_zero() {
+				String::new()
+			} else {
+				format!("p:[{}]    ", window.settings.padding)
+			},
+		);
+		io::stdout().flush().unwrap();
 	}
 
 	/**
