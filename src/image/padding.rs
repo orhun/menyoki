@@ -1,3 +1,4 @@
+use std::fmt;
 use std::iter::FromIterator;
 
 /* Padding properties */
@@ -18,6 +19,17 @@ impl FromIterator<u32> for Padding {
 			iter.next().unwrap_or_default(),
 			iter.next().unwrap_or_default(),
 			iter.next().unwrap_or_default(),
+		)
+	}
+}
+
+/* Display implementation for user-facing output */
+impl fmt::Display for Padding {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		write!(
+			f,
+			"{}:{}:{}:{}",
+			self.top, self.right, self.bottom, self.left
 		)
 	}
 }
