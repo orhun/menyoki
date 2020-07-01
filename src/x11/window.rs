@@ -30,10 +30,10 @@ impl fmt::Display for Window {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		write!(
 			f,
-			"{:>4}x{:<4} ({})",
+			"\nWindow title    -> \"{}\"\nWindow size     -> [{}x{}]",
+			self.get_name().unwrap_or_else(|| String::from("(?)")),
 			self.geometry.width,
 			self.geometry.height,
-			self.get_name().unwrap_or_default()
 		)
 	}
 }
