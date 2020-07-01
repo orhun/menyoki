@@ -51,23 +51,30 @@ where
 	) -> Result<(), Error> {
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
+				debug!("{:?}", self.settings.gif);
 				self.save_gif(self.record(), output)?;
 			}
-			FileFormat::Png => self.capture(
-				PNGEncoder::new_with_quality(
-					output,
-					self.settings.png.compression,
-					self.settings.png.filter,
-				),
-				ColorType::Rgba8,
-			),
-			FileFormat::Jpg => self.capture(
-				JPEGEncoder::new_with_quality(
-					&mut output,
-					self.settings.jpg.quality,
-				),
-				ColorType::Rgb8,
-			),
+			FileFormat::Png => {
+				debug!("{:?}", self.settings.png);
+				self.capture(
+					PNGEncoder::new_with_quality(
+						output,
+						self.settings.png.compression,
+						self.settings.png.filter,
+					),
+					ColorType::Rgba8,
+				)
+			}
+			FileFormat::Jpg => {
+				debug!("{:?}", self.settings.jpg);
+				self.capture(
+					JPEGEncoder::new_with_quality(
+						&mut output,
+						self.settings.jpg.quality,
+					),
+					ColorType::Rgb8,
+				)
+			}
 			FileFormat::Bmp => {
 				self.capture(BMPEncoder::new(&mut output), ColorType::Rgba8)
 			}
