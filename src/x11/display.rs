@@ -141,8 +141,10 @@ impl Display {
 				focused_window.grab_key(keysym::XK_Alt_L);
 				xid = Some(focused_window.xid);
 			}
+			trace!("{:?}", input_state);
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
+		trace!("{:?}", input_state);
 		if self.settings.border.is_some() {
 			focused_window.clear_area();
 			focused_window.show_text(Some(String::from(" ")), FpsClock::new(500));
@@ -213,6 +215,7 @@ impl Display {
 					window,
 				);
 			}
+			debug!("Ungrabbed the keys of {:?}", xid);
 		}
 	}
 }

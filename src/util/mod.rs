@@ -26,7 +26,9 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 			let color = colors.color(record.level());
 			let target = record.target();
 			let message = message.to_string();
-			if message.ends_with('\r') {
+			if message.ends_with('#') {
+				out.finish(format_args!("{}", &message[..message.len() - 1]))
+			} else if message.ends_with('\r') {
 				out.finish(format_args!(
 					"\r[{} {} {}] {}",
 					time,
@@ -34,14 +36,14 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 					target,
 					&message[..message.len() - 1]
 				))
-			} else if message.starts_with('\n') {
-				out.finish(format_args!(
-					"\n[{} {} {}] {}\n",
-					time,
-					color,
-					target,
-					&message[1..]
-				))
+			/*} else if message.starts_with('\n') {
+			out.finish(format_args!(
+				"\n[{} {} {}] {}\n",
+				time,
+				color,
+				target,
+				&message[1..]
+			))*/
 			} else {
 				out.finish(format_args!(
 					"[{} {} {}] {}\n",
@@ -49,7 +51,7 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 				))
 			}
 		})
-		.level(LevelFilter::Debug)
+		.level(LevelFilter::Trace)
 		.chain(Output::stdout(""))
 		.apply()?;
 	Ok(())
