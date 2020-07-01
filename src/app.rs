@@ -15,6 +15,7 @@ use image::tiff::TiffEncoder;
 use image::ColorType;
 use image::ImageEncoder;
 use std::io::{Error, Seek, Write};
+use std::thread;
 
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
@@ -93,7 +94,7 @@ where
 	) {
 		let image = if self.settings.args.is_present("command") {
 			let window = self.window;
-			let image_thread = std::thread::spawn(move || {
+			let image_thread = thread::spawn(move || {
 				window.show_countdown();
 				info!("Capturing an image...");
 				window.get_image()
