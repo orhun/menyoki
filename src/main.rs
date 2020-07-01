@@ -21,7 +21,8 @@ use std::io::Error;
 
 fn main() -> Result<(), Error> {
 	let args = Args::parse();
-	util::init_logger().expect("Failed to initialize the logger");
+	util::init_logger(args.occurrences_of("verbose"))
+		.expect("Failed to initialize the logger");
 
 	println!("thank god it's friday");
 
