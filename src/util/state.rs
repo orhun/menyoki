@@ -37,8 +37,8 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_mouse(&self) -> bool {
-		let mouse = self.state.get_mouse().button_pressed;
-		mouse[1] || mouse[3]
+		let buttons = self.state.get_mouse().button_pressed;
+		buttons[1] || buttons[3]
 	}
 
 	/**
