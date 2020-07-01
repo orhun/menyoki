@@ -140,10 +140,22 @@ impl Window {
 					self.display,
 					self.xid,
 					self.get_gc(self.settings.color),
-					self.geometry.x + i32::try_from(border).unwrap_or_default(),
-					self.geometry.y + i32::try_from(border).unwrap_or_default(),
-					self.geometry.width - (border * 2),
-					self.geometry.height - (border * 2),
+					self.geometry
+						.x
+						.checked_add(i32::try_from(border).unwrap_or_default())
+						.unwrap_or(self.geometry.x),
+					self.geometry
+						.y
+						.checked_add(i32::try_from(border).unwrap_or_default())
+						.unwrap_or(self.geometry.y),
+					self.geometry
+						.width
+						.checked_sub(border * 2)
+						.unwrap_or(self.geometry.width),
+					self.geometry
+						.height
+						.checked_sub(border * 2)
+						.unwrap_or(self.geometry.height),
 				);
 			}
 		}
