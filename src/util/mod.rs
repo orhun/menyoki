@@ -11,9 +11,10 @@ use log::{LevelFilter, SetLoggerError};
 /**
  * Initialize the logger library.
  *
+ * @param  verbosity
  * @return Result
  */
-pub fn init_logger() -> Result<(), SetLoggerError> {
+pub fn init_logger(verbosity: u64) -> Result<(), SetLoggerError> {
 	let colors = ColoredLevelConfig::new()
 		.info(Color::Magenta)
 		.error(Color::Red)
@@ -26,7 +27,9 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 			let color = colors.color(record.level());
 			let target = record.target();
 			let message = message.to_string();
-			if message.ends_with('#') {
+			if message == "\n" {
+				out.finish(format_args!("\n"))
+			} else if message.ends_with('#') {
 				out.finish(format_args!("{}", &message[..message.len() - 1]))
 			} else if message.ends_with('\r') {
 				out.finish(format_args!(
@@ -36,14 +39,6 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 					target,
 					&message[..message.len() - 1]
 				))
-			/*} else if message.starts_with('\n') {
-			out.finish(format_args!(
-				"\n[{} {} {}] {}\n",
-				time,
-				color,
-				target,
-				&message[1..]
-			))*/
 			} else {
 				out.finish(format_args!(
 					"[{} {} {}] {}\n",
@@ -51,7 +46,11 @@ pub fn init_logger() -> Result<(), SetLoggerError> {
 				))
 			}
 		})
-		.level(LevelFilter::Trace)
+		.level(match verbosity {
+			0 => LevelFilter::Info,
+			1 => LevelFilter::Debug,
+			_ => LevelFilter::Trace,
+		})
 		.chain(Output::stdout(""))
 		.apply()?;
 	Ok(())
