@@ -93,6 +93,7 @@ where
 		color_type: ColorType,
 	) {
 		let image = if self.settings.args.is_present("command") {
+			debug!("{:?}", self.settings.get_command());
 			let window = self.window;
 			let image_thread = thread::spawn(move || {
 				window.show_countdown();
@@ -116,6 +117,8 @@ where
 			"Encoding the image as {}...",
 			self.settings.save.file.format.to_string().to_uppercase()
 		);
+		debug!("{:?}", image);
+		debug!("Color type: {:?}", color_type);
 		encoder
 			.write_image(
 				&image.get_data(color_type),
