@@ -31,15 +31,15 @@ impl Geometry {
 		let padding = padding.unwrap_or_default();
 		Self {
 			x: x.checked_add(i32::try_from(padding.right).unwrap_or_default())
-				.unwrap_or_default(),
+				.unwrap_or(x),
 			y: y.checked_add(i32::try_from(padding.top).unwrap_or_default())
-				.unwrap_or_default(),
+				.unwrap_or(y),
 			width: width
 				.checked_sub(padding.right + padding.left)
-				.unwrap_or_default(),
+				.unwrap_or(width),
 			height: height
 				.checked_sub(padding.top + padding.bottom)
-				.unwrap_or_default(),
+				.unwrap_or(height),
 		}
 	}
 }
