@@ -7,6 +7,7 @@ use image::Bgra;
 use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
 use std::fmt;
+use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
@@ -281,6 +282,12 @@ impl Record for Window {
 				self.clear_area();
 				self.show_text(
 					if i != self.settings.time.countdown {
+						info!(
+							"Starting in {:.<1$}\r",
+							self.settings.time.countdown - i,
+							(i + 2) as usize
+						);
+						io::stdout().flush().expect("Failed to flush stdout");
 						Some(format!("[{}]", self.settings.time.countdown - i))
 					} else {
 						None
@@ -288,6 +295,7 @@ impl Record for Window {
 					clock,
 				);
 			}
+			info!("\n");
 		}
 		self.clear_area();
 	}
