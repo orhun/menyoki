@@ -26,7 +26,7 @@ impl<'a> WindowSystem<'a> {
 	pub fn init(settings: &'a AppSettings<'a>) -> Option<Self> {
 		trace!("{:?}", settings);
 		if let Some(display) = Display::open(Some(settings.record)) {
-			unsafe { xlib::XSetErrorHandler(Some(x11_error_handler)) };
+			unsafe { xlib::XSetErrorHandler(Some(handle_x11_errors)) };
 			Some(Self { display, settings })
 		} else {
 			error!("Cannot open display.");
@@ -56,7 +56,7 @@ impl<'a> WindowSystem<'a> {
 }
 
 /* Error handler implemention for X11 */
-unsafe extern "C" fn x11_error_handler(
+unsafe extern "C" fn handle_x11_errors(
 	display: *mut xlib::Display,
 	error: *mut xlib::XErrorEvent,
 ) -> i32 {
@@ -111,7 +111,7 @@ mod tests {
 				.len()
 		);
 		unsafe {
-			x11_error_handler(
+			handle_x11_errors(
 				window_system.display.display,
 				&mut xlib::XErrorEvent {
 					type_: 0,
