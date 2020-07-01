@@ -235,7 +235,7 @@ impl Window {
 				xlib::GrabModeAsync,
 			);
 		}
-		debug!("Grabbed the key {} of {:?}", key, self);
+		debug!("Grabbed the key {} of {:?}", key, self.xid);
 	}
 }
 

@@ -141,7 +141,6 @@ impl Display {
 				focused_window.grab_key(keysym::XK_Alt_L);
 				xid = Some(focused_window.xid);
 			}
-			trace!("{:?}", input_state);
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
 		trace!("{:?}", input_state);
