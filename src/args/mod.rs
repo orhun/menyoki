@@ -87,6 +87,13 @@ where
 					.value_name("COMMAND")
 					.help("Sets the command to run"),
 			)
+			.arg(
+				Arg::with_name("verbose")
+					.short("v")
+					.long("verbose")
+					.help("Increases the logging verbosity")
+					.multiple(true),
+			)
 			.subcommand(
 				args.record
 					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif"))),
