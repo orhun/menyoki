@@ -93,10 +93,10 @@ where
 		.expect("Failed to set the signal handler");
 		self.window.show_countdown();
 		let start_time = Instant::now();
+		let duration = self.settings.time.duration.unwrap_or(f64::MAX);
 		while recording.load(Ordering::SeqCst)
 			&& !input_state.check_action_keys()
-			&& (start_time.elapsed().as_nanos() as f64 / 1e9)
-				< self.settings.time.duration
+			&& (start_time.elapsed().as_nanos() as f64 / 1e9) < duration
 		{
 			if input_state.check_cancel_keys() {
 				frames.clear();
