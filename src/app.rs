@@ -116,6 +116,7 @@ where
 				.join()
 				.expect("Failed to join the image thread")
 		} else {
+			self.window.show_countdown();
 			info!("Capturing an image...");
 			self.window.get_image()
 		}
