@@ -95,8 +95,10 @@ where
 			let window = self.window;
 			let image_thread = std::thread::spawn(move || {
 				window.show_countdown();
+				info!("Capturing an image...");
 				window.get_image()
 			});
+			info!("Running the command...");
 			self.settings
 				.get_command()
 				.execute()
@@ -105,9 +107,14 @@ where
 				.join()
 				.expect("Failed to join the image thread")
 		} else {
+			info!("Capturing an image...");
 			self.window.get_image()
 		}
 		.expect("Failed to get the window image");
+		info!(
+			"Encoding the image as {}...",
+			self.settings.save.file.format.to_string().to_uppercase()
+		);
 		encoder
 			.write_image(
 				&image.get_data(color_type),
@@ -116,6 +123,7 @@ where
 				color_type,
 			)
 			.expect("Failed to encode the image");
+		info!("Image saved to: {}", self.settings.save.file.name);
 	}
 
 	/**
