@@ -195,7 +195,7 @@ impl Display {
 				format!("p:[{}]    ", window.settings.padding)
 			},
 		);
-		io::stdout().flush().unwrap();
+		io::stdout().flush().expect("Failed to flush stdout");
 	}
 
 	/**
