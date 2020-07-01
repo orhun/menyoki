@@ -1,7 +1,6 @@
 use crate::args::parser::ArgParser;
 use crate::image::padding::Padding;
 use clap::ArgMatches;
-use std::f64;
 
 /* Window to record */
 #[derive(Clone, Copy, Debug, PartialEq)]
