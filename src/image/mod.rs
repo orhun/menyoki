@@ -1,6 +1,7 @@
 pub mod geometry;
 pub mod padding;
 pub mod settings;
+use std::fmt;
 
 use crate::image::geometry::Geometry;
 use image::{Bgra, ColorType};
@@ -12,11 +13,21 @@ use {
 };
 
 /* Image data and geometric properties */
-#[derive(Clone, Debug)]
 pub struct Image {
 	data: Vec<Bgra<u8>>,
 	alpha_channel: bool,
 	pub geometry: Geometry,
+}
+
+/* Debug implementation for programmer-facing output */
+impl fmt::Debug for Image {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		f.debug_struct("Image")
+			.field("data_len", &self.data.len())
+			.field("alpha_channel", &self.alpha_channel)
+			.field("geometry", &self.geometry)
+			.finish()
+	}
 }
 
 impl Image {
