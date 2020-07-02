@@ -32,16 +32,6 @@ impl InputState {
 	}
 
 	/**
-	 * Check if the mouse left/right buttons are clicked.
-	 *
-	 * @return bool
-	 */
-	pub fn check_mouse(&self) -> bool {
-		let buttons = self.state.get_mouse().button_pressed;
-		buttons[1] || buttons[3]
-	}
-
-	/**
 	 * Check if the action keys are pressed.
 	 *
 	 * @return bool
