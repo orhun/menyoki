@@ -12,7 +12,7 @@ use crate::util::state::InputState;
 use gif::{Encoder as GifEncoder, Frame, Repeat, SetParameter};
 use image::ColorType;
 use std::convert::TryInto;
-use std::io::{Error, Write};
+use std::io::{self, Error, Write};
 
 /* GIF encoder and settings */
 pub struct Gif<Output: Write> {
@@ -63,27 +63,37 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 	 */
 	fn save(
 		mut self,
-		images: Vec<Image>,
+		mut images: Vec<Image>,
 		input_state: &'static InputState,
 	) -> Result<(), Error> {
-		for image in images {
+		let speed = 30
+			- util::map_range(self.settings.quality.into(), (1., 100.), (0., 29.))
+				as i32;
+		for i in 0..images.len() {
+			let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
+			info!("Encoding... ({:.1}%)\r", percentage);
+			debug!(
+				"Encoding... ({:.1}%) [{}/{}]\r",
+				percentage,
+				i + 1,
+				images.len()
+			);
+			io::stdout().flush().expect("Failed to flush stdout");
 			if input_state.check_cancel_keys() {
+				info!("\n");
 				warn!("User interrupt detected.");
-				break;
+				panic!("Failed to write the frames")
 			}
 			let mut frame = Frame::from_rgba_speed(
-				image.geometry.width.try_into().unwrap_or_default(),
-				image.geometry.height.try_into().unwrap_or_default(),
-				&mut image.get_data(ColorType::Rgba8),
-				30 - util::map_range(
-					self.settings.quality.into(),
-					(1., 100.),
-					(0., 29.),
-				) as i32,
+				images[i].geometry.width.try_into().unwrap_or_default(),
+				images[i].geometry.height.try_into().unwrap_or_default(),
+				&mut images[i].get_data(ColorType::Rgba8),
+				speed,
 			);
 			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;
 			self.encoder.write_frame(&frame)?;
 		}
+		info!("\n");
 		Ok(())
 	}
 }

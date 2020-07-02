@@ -4,7 +4,7 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
 use gifski::{Collector, Writer};
-use std::io::{Error, Write};
+use std::io::{self, Error, Write};
 use std::thread;
 
 /* GIF encoder and settings */
@@ -63,9 +63,19 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 		let mut collector = self.collector;
 		let collector_thread = thread::spawn(move || {
 			for i in 0..images.len() {
+				let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
+				info!("Encoding... ({:.1}%)\r", percentage);
+				debug!(
+					"Encoding... ({:.1}%) [{}/{}]\r",
+					percentage,
+					i + 1,
+					images.len()
+				);
+				io::stdout().flush().expect("Failed to flush stdout");
 				if input_state.check_cancel_keys() {
+					info!("\n");
 					warn!("User interrupt detected.");
-					break;
+					panic!("Failed to write the frames")
 				}
 				collector
 					.add_frame_rgba(
@@ -75,6 +85,7 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 					)
 					.expect("Failed to collect a frame");
 			}
+			info!("\n");
 		});
 		self.writer
 			.write(self.output, &mut gifski::progress::NoProgress {})
