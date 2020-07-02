@@ -5,6 +5,7 @@ use crate::image::Image;
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::util::state::InputState;
+use std::io::{self, Write};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc};
 use std::thread;
@@ -93,19 +94,37 @@ where
 		.expect("Failed to set the signal handler");
 		self.window.show_countdown();
 		let start_time = Instant::now();
-		let duration = self.settings.time.duration.unwrap_or(f64::MAX);
+		let duration = if let Some(duration) = self.settings.time.duration {
+			info!(
+				"Recording {} FPS for {} seconds...",
+				self.settings.fps, duration
+			);
+			duration
+		} else {
+			info!("Recording {} FPS...", self.settings.fps);
+			f64::MAX
+		};
 		while recording.load(Ordering::SeqCst)
 			&& !input_state.check_action_keys()
 			&& (start_time.elapsed().as_nanos() as f64 / 1e9) < duration
 		{
 			if input_state.check_cancel_keys() {
 				frames.clear();
+				debug!("\n");
 				warn!("User interrupt detected.");
 				break;
 			}
 			self.clock.tick();
 			frames.push(self.window.get_image().expect("Failed to get the image"));
+			debug!("Frames: {}\r", frames.len());
+			io::stdout().flush().expect("Failed to flush stdout");
 		}
+		debug!("\n");
+		trace!(
+			"{:.3} < {:?}",
+			start_time.elapsed().as_nanos() as f64 / 1e9,
+			self.settings.time.duration
+		);
 		frames
 	}
 
@@ -120,12 +139,16 @@ where
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				self.window.show_countdown();
+				info!("Recording {} FPS...", self.settings.fps);
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
 					frames.push(
 						self.window.get_image().expect("Failed to get the image"),
-					)
+					);
+					debug!("Frames: {}\r", frames.len());
+					io::stdout().flush().expect("Failed to flush stdout");
 				}
+				debug!("\n");
 				frames
 			}),
 		)
