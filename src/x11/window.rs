@@ -282,11 +282,7 @@ impl Record for Window {
 				self.clear_area();
 				self.show_text(
 					if i != self.settings.time.countdown {
-						info!(
-							"Starting in {:.<1$}\r",
-							self.settings.time.countdown - i,
-							(i + 2) as usize
-						);
+						info!("Starting in {}\r", self.settings.time.countdown - i);
 						io::stdout().flush().expect("Failed to flush stdout");
 						Some(format!("[{}]", self.settings.time.countdown - i))
 					} else {
@@ -295,7 +291,7 @@ impl Record for Window {
 					clock,
 				);
 			}
-			info!("\n");
+			info!("\r");
 		}
 		self.clear_area();
 	}
