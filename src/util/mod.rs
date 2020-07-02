@@ -29,6 +29,8 @@ pub fn init_logger(verbosity: u64) -> Result<(), SetLoggerError> {
 			let message = message.to_string();
 			if message == "\n" {
 				out.finish(format_args!("\n"))
+			} else if message == "\r" {
+				out.finish(format_args!("\r"))
 			} else if message.ends_with('#') {
 				out.finish(format_args!("{}", &message[..message.len() - 1]))
 			} else if message.ends_with('\r') {
