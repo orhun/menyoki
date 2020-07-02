@@ -3,7 +3,7 @@ pub mod file;
 pub mod modifier;
 pub mod settings;
 pub mod state;
-use chrono::Local;
+use chrono::{Datelike, Local, Utc, Weekday};
 use fern::colors::{Color, ColoredLevelConfig};
 use fern::{Dispatch, Output};
 use log::{LevelFilter, SetLoggerError};
@@ -68,4 +68,11 @@ pub fn map_range(value: f64, from_range: (f64, f64), to_range: (f64, f64)) -> f6
 	to_range.0
 		+ (value - from_range.0) * (to_range.1 - to_range.0)
 			/ (from_range.1 - from_range.0)
+}
+
+/* Check if today is friday. */
+pub fn check_friday() {
+	if Utc::now().weekday() == Weekday::Fri {
+		info!("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Thank God It's Friday! ┬──┬ ノ( ゜-゜ノ)");
+	}
 }
