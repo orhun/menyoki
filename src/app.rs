@@ -14,6 +14,7 @@ use image::png::PNGEncoder;
 use image::tiff::TiffEncoder;
 use image::ColorType;
 use image::ImageEncoder;
+use std::fmt::Debug;
 use std::io::{Error, Seek, Write};
 use std::thread;
 
@@ -26,7 +27,7 @@ pub struct App<'a, Window> {
 
 impl<'a, Window> App<'a, Window>
 where
-	Window: Record + Send + Sync + Copy + 'static,
+	Window: Record + Send + Sync + Copy + Debug + 'static,
 {
 	/**
 	 * Create a new App object.
@@ -49,6 +50,7 @@ where
 		&self,
 		mut output: Output,
 	) -> Result<(), Error> {
+		trace!("{:?}", self.window);
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
@@ -107,7 +109,6 @@ where
 				info!("Capturing an image...");
 				window.get_image()
 			});
-			info!("Running the command...");
 			self.settings
 				.get_command()
 				.execute()
@@ -146,6 +147,7 @@ where
 	fn record(self) -> Vec<Image> {
 		let mut recorder = Recorder::new(self.window, self.settings.record);
 		if self.settings.args.is_present("command") {
+			debug!("{:?}", self.settings.get_command());
 			let record = recorder.record_async();
 			self.settings
 				.get_command()
@@ -172,7 +174,6 @@ where
 		frames: Vec<Image>,
 		output: Output,
 	) -> Result<(), Error> {
-		info!("frames: {}", frames.len());
 		Gif::new(
 			frames.first().expect("No frames found to save").geometry,
 			output,
@@ -180,6 +181,7 @@ where
 			self.settings.gif,
 		)?
 		.save(frames, &self.settings.input_state)?;
+		info!("GIF saved to: {}", self.settings.save.file.name);
 		Ok(())
 	}
 }
