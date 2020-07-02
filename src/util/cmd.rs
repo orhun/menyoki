@@ -26,6 +26,7 @@ impl Command {
 	 * @return Result
 	 */
 	pub fn execute(&self) -> Result<(), Error> {
+		info!("Running the command...");
 		match OsCommand::new(&self.cmd)
 			.args(self.args.iter().map(AsRef::as_ref).collect::<Vec<&str>>())
 			.spawn()
