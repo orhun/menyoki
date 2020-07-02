@@ -144,6 +144,8 @@ impl Display {
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
 		trace!("{:?}", input_state);
+		debug!("Selected window: {:?}", xid);
+		self.ungrab_keys(xid);
 		if self.settings.border.is_some() {
 			focused_window.clear_area();
 			focused_window.show_text(Some(String::from(" ")), FpsClock::new(500));
