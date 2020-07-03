@@ -104,6 +104,25 @@ impl Display {
 	}
 
 	/**
+	 * Ungrab the keys in the given window.
+	 *
+	 * @param xid (Option)
+	 */
+	fn ungrab_keys(&self, xid: Option<u64>) {
+		if let Some(window) = xid {
+			unsafe {
+				xlib::XUngrabKey(
+					self.display,
+					xlib::AnyKey,
+					xlib::AnyModifier,
+					window,
+				);
+			}
+			debug!("Ungrabbed the keys of {:?}", xid);
+		}
+	}
+
+	/**
 	 * Select a Window from display with user interaction.
 	 *
 	 * @param  input_state
@@ -199,25 +218,6 @@ impl Display {
 			},
 		);
 		io::stdout().flush().expect("Failed to flush stdout");
-	}
-
-	/**
-	 * Ungrab the keys in the given window.
-	 *
-	 * @param xid (Option)
-	 */
-	fn ungrab_keys(&self, xid: Option<u64>) {
-		if let Some(window) = xid {
-			unsafe {
-				xlib::XUngrabKey(
-					self.display,
-					xlib::AnyKey,
-					xlib::AnyModifier,
-					window,
-				);
-			}
-			debug!("Ungrabbed the keys of {:?}", xid);
-		}
 	}
 }
 
