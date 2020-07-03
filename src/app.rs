@@ -7,6 +7,7 @@ use crate::image::Image;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use crate::util::file::FileFormat;
+use bytesize::ByteSize;
 use image::bmp::BMPEncoder;
 use image::farbfeld::FarbfeldEncoder;
 use image::jpeg::JPEGEncoder;
@@ -15,6 +16,7 @@ use image::tiff::TiffEncoder;
 use image::ColorType;
 use image::ImageEncoder;
 use std::fmt::Debug;
+use std::fs;
 use std::io::{Error, Seek, Write};
 use std::thread;
 
@@ -89,8 +91,10 @@ where
 			}
 		}
 		info!(
-			"{} saved to: {}",
-			self.settings.save.file.format, self.settings.save.file.name
+			"{} saved to: {} ({})",
+			self.settings.save.file.format,
+			self.settings.save.file.name,
+			ByteSize(fs::metadata(&self.settings.save.file.name)?.len())
 		);
 		Ok(())
 	}
