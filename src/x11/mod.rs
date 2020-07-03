@@ -40,7 +40,7 @@ impl<'a> WindowSystem<'a> {
 	 * @return Window (Option)
 	 */
 	pub fn get_window(&mut self) -> Option<Window> {
-		debug!("RecordWindow: {:?}", self.settings.record.window);
+		debug!("Record window: {:?}", self.settings.record.window);
 		match self.settings.record.window {
 			RecordWindow::Focus => self.display.get_focused_window(),
 			RecordWindow::Root => Some(self.display.get_root_window()),
