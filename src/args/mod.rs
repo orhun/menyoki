@@ -100,6 +100,13 @@ where
 					.help("Increases the logging verbosity")
 					.multiple(true),
 			)
+			.arg(
+				Arg::with_name("quiet")
+					.short("q")
+					.long("quiet")
+					.help("Shows no output")
+					.display_order(1000),
+			)
 			.subcommand(
 				args.record
 					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif"))),
