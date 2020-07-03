@@ -12,7 +12,7 @@ pub struct GifSettings {
 impl Default for GifSettings {
 	fn default() -> Self {
 		Self {
-			repeat: 0,
+			repeat: -1,
 			quality: 75,
 			fast: false,
 		}
