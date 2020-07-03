@@ -118,7 +118,7 @@ impl Display {
 					window,
 				);
 			}
-			debug!("Ungrabbed the keys of {:?}", xid);
+			trace!("Ungrabbed the keys of {:?}", xid);
 		}
 	}
 
