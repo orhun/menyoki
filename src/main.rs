@@ -22,8 +22,10 @@ use std::io::Error;
 fn main() -> Result<(), Error> {
 	let args = Args::parse();
 	util::check_friday();
-	util::init_logger(args.occurrences_of("verbose"))
-		.expect("Failed to initialize the logger");
+	if !args.is_present("quiet") {
+		util::init_logger(args.occurrences_of("verbose"))
+			.expect("Failed to initialize the logger");
+	}
 	let settings = AppSettings::new(&args);
 	let mut window_system =
 		WindowSystem::init(&settings).expect("Failed to access the window system");
