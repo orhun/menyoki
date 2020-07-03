@@ -87,6 +87,10 @@ where
 				self.capture(FarbfeldEncoder::new(output), ColorType::Rgba16)
 			}
 		}
+		info!(
+			"{} saved to: {}",
+			self.settings.save.file.format, self.settings.save.file.name
+		);
 		Ok(())
 	}
 
@@ -136,7 +140,6 @@ where
 				color_type,
 			)
 			.expect("Failed to encode the image");
-		info!("Image saved to: {}", self.settings.save.file.name);
 	}
 
 	/**
@@ -181,7 +184,6 @@ where
 			self.settings.gif,
 		)?
 		.save(frames, &self.settings.input_state)?;
-		info!("GIF saved to: {}", self.settings.save.file.name);
 		Ok(())
 	}
 }
