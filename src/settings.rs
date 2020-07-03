@@ -51,19 +51,22 @@ impl<'a> AppSettings<'a> {
 	/**
 	 * Get a Command object from parsed arguments.
 	 *
-	 * @return Command
+	 * @return Command (Option)
 	 */
-	pub fn get_command(&self) -> Command {
+	pub fn get_command(&self) -> Option<Command> {
 		match self.args.value_of("command") {
 			Some(cmd) => {
 				let cmd = String::from(cmd);
 				if !cmd.contains(' ') {
-					Command::new(cmd, Vec::new())
+					Some(Command::new(cmd, Vec::new()))
 				} else {
-					Command::new(String::from("sh"), vec![String::from("-c"), cmd])
+					Some(Command::new(
+						String::from("sh"),
+						vec![String::from("-c"), cmd],
+					))
 				}
 			}
-			None => panic!("No command specified to run"),
+			None => None,
 		}
 	}
 }
