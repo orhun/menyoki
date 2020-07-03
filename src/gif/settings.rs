@@ -29,7 +29,7 @@ impl GifSettings {
 	 * @return GifSettings
 	 */
 	pub fn new(repeat: i32, quality: u8, fast: bool) -> Self {
-		if quality <= 25 {
+		if quality <= 20 {
 			warn!("GIF will be encoded in low quality.");
 		}
 		Self {
