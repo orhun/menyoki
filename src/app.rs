@@ -51,6 +51,7 @@ where
 		mut output: Output,
 	) -> Result<(), Error> {
 		trace!("{:?}", self.window);
+		debug!("Command: {:?}", self.settings.get_command());
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
@@ -106,7 +107,6 @@ where
 		color_type: ColorType,
 	) {
 		let image = if self.settings.args.is_present("command") {
-			debug!("{:?}", self.settings.get_command());
 			let window = self.window;
 			let image_thread = thread::spawn(move || {
 				window.show_countdown();
@@ -115,6 +115,7 @@ where
 			});
 			self.settings
 				.get_command()
+				.expect("No command specified to run")
 				.execute()
 				.expect("Failed to run the command");
 			image_thread
@@ -150,10 +151,10 @@ where
 	fn record(self) -> Vec<Image> {
 		let mut recorder = Recorder::new(self.window, self.settings.record);
 		if self.settings.args.is_present("command") {
-			debug!("{:?}", self.settings.get_command());
 			let record = recorder.record_async();
 			self.settings
 				.get_command()
+				.expect("No command specified to run")
 				.execute()
 				.expect("Failed to run the command");
 			match record.get() {
