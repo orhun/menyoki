@@ -36,7 +36,7 @@ fn main() -> Result<(), Error> {
 		&settings,
 	)
 	.start(
-		File::create(&settings.save.file.name).expect("Failed to create the file"),
+		File::create(&settings.save.file.path).expect("Failed to create the file"),
 	)
 }
 

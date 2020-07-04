@@ -108,7 +108,7 @@ impl FileFormat {
 /* Representation of the output file */
 #[derive(Debug)]
 pub struct File {
-	pub name: String,
+	pub path: String,
 	pub format: FileFormat,
 	pub info: Option<FileInfo>,
 }
@@ -117,13 +117,13 @@ impl File {
 	/**
 	 * Create a new File object.
 	 *
-	 * @param  name
+	 * @param  path
 	 * @param  format
 	 * @param  info
 	 * @return File
 	 */
-	pub fn new(name: String, format: FileFormat, info: Option<FileInfo>) -> Self {
-		Self { name, format, info }
+	pub fn new(path: String, format: FileFormat, info: Option<FileInfo>) -> Self {
+		Self { path, format, info }
 	}
 
 	/**

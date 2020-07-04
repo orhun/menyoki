@@ -93,8 +93,8 @@ where
 		info!(
 			"{} saved to: {} ({})",
 			self.settings.save.file.format,
-			self.settings.save.file.name,
-			ByteSize(fs::metadata(&self.settings.save.file.name)?.len())
+			self.settings.save.file.path,
+			ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 		);
 		Ok(())
 	}
