@@ -424,7 +424,7 @@ where
 			.arg(
 				Arg::with_name("output")
 					.value_name("FILE")
-					.default_value(default_file)
+					.default_value(default_path)
 					.help("Sets the output file path"),
 			)
 			.arg(
