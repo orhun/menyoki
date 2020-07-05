@@ -1,6 +1,8 @@
 use chrono::Local;
 use clap::ArgMatches;
 use std::fmt;
+use std::fs;
+use std::path::{Path, PathBuf};
 
 /* Information to include in file name */
 #[derive(Clone, Copy, Debug, PartialEq)]
@@ -108,9 +110,8 @@ impl FileFormat {
 /* Representation of the output file */
 #[derive(Debug)]
 pub struct File {
-	pub path: String,
+	pub path: PathBuf,
 	pub format: FileFormat,
-	pub info: Option<FileInfo>,
 }
 
 impl File {
@@ -119,25 +120,70 @@ impl File {
 	 *
 	 * @param  path
 	 * @param  format
-	 * @param  info
 	 * @return File
 	 */
-	pub fn new(path: String, format: FileFormat, info: Option<FileInfo>) -> Self {
-		Self { path, format, info }
+	pub fn new(path: PathBuf, format: FileFormat) -> Self {
+		Self::create_path(&path);
+		Self {
+			path: Self::get_path_with_extension(path, format),
+			format,
+		}
 	}
 
 	/**
 	 * Create a new File object from file format.
 	 *
-	 * @param  file_format
+	 * @param  format
 	 * @return File
 	 */
-	pub fn from_format(file_format: FileFormat) -> Self {
+	pub fn from_format(format: FileFormat) -> Self {
 		Self::new(
-			format!("t.{}", file_format.to_string().to_lowercase()),
-			file_format,
-			None,
+			Self::get_default_path(&format!(
+				"t.{}",
+				format.to_string().to_lowercase()
+			)),
+			format,
 		)
+	}
+
+	/**
+	 * Get the default path for a file.
+	 *
+	 * @param  file_name
+	 * @param  PathBuf
+	 */
+	pub fn get_default_path(file_name: &str) -> PathBuf {
+		dirs::home_dir()
+			.expect("Failed to access the home directory")
+			.as_path()
+			.join("tgif")
+			.join(file_name)
+	}
+
+	/**
+	 * Get the path with extension using the given file format.
+	 *
+	 * @param  path
+	 * @param  format
+	 * @return PathBuf
+	 */
+	fn get_path_with_extension(path: PathBuf, format: FileFormat) -> PathBuf {
+		match path.extension() {
+			Some(_) => path,
+			None => path.with_extension(format.to_string().to_lowercase()),
+		}
+	}
+
+	/**
+	 * Create the path if it does not exist.
+	 *
+	 * @param path
+	 */
+	fn create_path(path: &Path) {
+		if !path.exists() {
+			fs::create_dir_all(&path.parent().expect("Failed to get the directory"))
+				.expect("Failed to create directory");
+		}
 	}
 }
 
