@@ -1,4 +1,5 @@
 use crate::args::parser::ArgParser;
+use crate::util;
 use crate::util::file::{File, FileFormat, FileInfo};
 use std::path::PathBuf;
 
@@ -37,7 +38,8 @@ impl SaveSettings {
 					.to_string_lossy()
 					.into_owned();
 				if matches.is_present("prompt") {
-					file_name = Self::read_input().unwrap_or(file_name);
+					file_name =
+						util::read_input("Enter file name: ").unwrap_or(file_name);
 				}
 				if let Some(info) = FileInfo::from_args(&matches) {
 					info.append(&mut file_name);
@@ -46,18 +48,6 @@ impl SaveSettings {
 				Self::new(File::new(file_path, file_format))
 			}
 			None => Self::new(File::from_format(file_format)),
-		}
-	}
-
-	/**
-	 * Read input from stdin with prompt.
-	 *
-	 * @return String (Option)
-	 */
-	fn read_input() -> Option<String> {
-		match rprompt::prompt_reply_stdout("Enter file name: ") {
-			Ok(v) if !v.is_empty() => Some(v),
-			_ => None,
 		}
 	}
 }
