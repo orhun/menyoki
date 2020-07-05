@@ -3,6 +3,7 @@ use crate::gif::settings::GifSettings;
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
+use crate::util::file::FileFormat;
 use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
 use clap::ArgMatches;
@@ -41,8 +42,8 @@ impl<'a> AppSettings<'a> {
 			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
 			jpg: JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg")),
 			save: SaveSettings::from_args(
-				args,
 				ArgParser::from_subcommand(args, "save"),
+				FileFormat::from_args(args),
 			),
 			input_state: Box::leak(Box::new(InputState::new())),
 		}
