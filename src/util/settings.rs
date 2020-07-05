@@ -1,6 +1,6 @@
 use crate::args::parser::ArgParser;
 use crate::util::file::{File, FileFormat, FileInfo};
-use clap::ArgMatches;
+use std::path::PathBuf;
 
 /* Output file settings */
 #[derive(Debug)]
@@ -22,24 +22,28 @@ impl SaveSettings {
 	/**
 	 * Create a SaveSettings object from parsed arguments.
 	 *
-	 * @param  args
 	 * @param  parser
+	 * @param  file_format
 	 * @return SaveSettings
 	 */
-	pub fn from_args<'a>(args: &'a ArgMatches<'a>, parser: ArgParser<'_>) -> Self {
-		let file_format = FileFormat::from_args(args);
+	pub fn from_args(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
 		match parser.args {
 			Some(matches) => {
-				let mut file_name =
-					String::from(matches.value_of("output").unwrap_or_default());
-				let file_info = FileInfo::from_args(&matches);
+				let mut file_path =
+					PathBuf::from(matches.value_of("output").unwrap_or_default());
+				let mut file_name = file_path
+					.file_name()
+					.expect("Invalid file name")
+					.to_string_lossy()
+					.into_owned();
 				if matches.is_present("prompt") {
 					file_name = Self::read_input().unwrap_or(file_name);
 				}
-				if let Some(info) = &file_info {
+				if let Some(info) = FileInfo::from_args(&matches) {
 					info.append(&mut file_name);
 				}
-				Self::new(File::new(file_name, file_format, file_info))
+				file_path.set_file_name(file_name);
+				Self::new(File::new(file_path, file_format))
 			}
 			None => Self::new(File::from_format(file_format)),
 		}
