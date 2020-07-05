@@ -53,6 +53,7 @@ where
 		mut output: Output,
 	) -> Result<(), Error> {
 		trace!("{:?}", self.window);
+		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
@@ -91,7 +92,7 @@ where
 			}
 		}
 		info!(
-			"{} saved to: {} ({})",
+			"{} saved to: {:?} ({})",
 			self.settings.save.file.format,
 			self.settings.save.file.path,
 			ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
