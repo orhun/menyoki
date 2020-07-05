@@ -1,4 +1,5 @@
 pub mod parser;
+use crate::util::file::File;
 use clap::{App, Arg, ArgMatches, SubCommand};
 use std::fmt;
 
@@ -415,10 +416,13 @@ where
 	/**
 	 * Get save subcommand arguments.
 	 *
-	 * @param  default_path
+	 * @param  default_file
 	 * @return App
 	 */
-	fn get_save_args(default_path: &'a str) -> App<'a, 'b> {
+	fn get_save_args(default_file: &'a str) -> App<'a, 'b> {
+		let default_path = Box::leak(Box::new(File::get_default_path(default_file)))
+			.to_str()
+			.unwrap_or_default();
 		SubCommand::with_name("save")
 			.about("Changes the output file settings")
 			.arg(
