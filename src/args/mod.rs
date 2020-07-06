@@ -282,11 +282,25 @@ where
 					.display_order(3),
 			)
 			.arg(
+				Arg::with_name("select")
+					.short("s")
+					.long("select")
+					.help(match base_command {
+						BaseCommand::Record => {
+							"Selects the window and allows resizing the record area"
+						}
+						BaseCommand::Capture => {
+							"Selects the window and allows resizing the capture area"
+						}
+					})
+					.display_order(4),
+			)
+			.arg(
 				Arg::with_name("no-border")
 					.short("n")
 					.long("no-border")
 					.help("Shows no border for window selection")
-					.display_order(4),
+					.display_order(5),
 			)
 	}
 
