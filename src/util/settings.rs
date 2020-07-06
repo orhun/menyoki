@@ -55,7 +55,7 @@ impl SaveSettings {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::util::file::{FileFormat, FileInfo};
+	use crate::util::file::FileFormat;
 	use clap::{App, Arg, SubCommand};
 	#[test]
 	fn test_save_settings() {
@@ -77,11 +77,10 @@ mod tests {
 				"test", "capture", "jpg", "save", "--output", "test.jpg", "--date",
 			]);
 		let save_settings = SaveSettings::from_args(
-			&args,
 			ArgParser::from_subcommand(&args, "save"),
+			FileFormat::from_args(&args),
 		);
-		assert!(save_settings.file.name.contains("test_"));
+		assert!(save_settings.file.path.to_str().unwrap().contains("test_"));
 		assert_eq!(FileFormat::Jpg, save_settings.file.format);
-		assert_eq!(FileInfo::Date, save_settings.file.info.unwrap());
 	}
 }
