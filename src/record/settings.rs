@@ -2,12 +2,11 @@ use crate::args::parser::ArgParser;
 use crate::image::padding::Padding;
 use clap::ArgMatches;
 
-/* Window to record */
+/* Window to record, with selection flag  */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum RecordWindow {
-	Focus,
-	Root,
-	Select,
+	Focus(bool),
+	Root(bool),
 }
 
 impl RecordWindow {
@@ -18,12 +17,13 @@ impl RecordWindow {
 	 * @return RecordWindow
 	 */
 	fn from_args(args: &ArgMatches<'_>) -> Self {
+		let select = args.is_present("select");
 		if args.is_present("focus") {
-			Self::Focus
+			Self::Focus(select)
 		} else if args.is_present("root") {
-			Self::Root
+			Self::Root(select)
 		} else {
-			Self::Select
+			Self::Focus(true)
 		}
 	}
 }
@@ -114,7 +114,7 @@ impl Default for RecordSettings {
 			alpha: false,
 			padding: Padding::default(),
 			time: RecordTime::default(),
-			window: RecordWindow::Select,
+			window: RecordWindow::Focus(true),
 		}
 	}
 }
