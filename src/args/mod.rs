@@ -435,7 +435,10 @@ where
 				Arg::with_name("date")
 					.short("d")
 					.long("date")
+					.value_name("FORMAT")
+					.default_value("%Y%m%dT%H%M%S")
 					.help("Adds date and time to the file name")
+					.takes_value(true)
 					.display_order(1),
 			)
 			.arg(
