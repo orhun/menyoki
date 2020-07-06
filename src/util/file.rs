@@ -5,24 +5,24 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 /* Information to include in file name */
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum FileInfo {
-	Date,
+#[derive(Debug, PartialEq)]
+pub enum FileInfo<'a> {
+	Date(&'a str),
 	Timestamp,
 }
 
-impl FileInfo {
+impl<'a> FileInfo<'a> {
 	/**
 	 * Create a FileInfo enum from parsed arguments.
 	 *
 	 * @param  args
 	 * @return FileInfo (Option)
 	 */
-	pub fn from_args(args: &ArgMatches<'_>) -> Option<Self> {
-		if args.is_present("date") {
-			Some(Self::Date)
-		} else if args.is_present("timestamp") {
+	pub fn from_args(args: &'a ArgMatches<'a>) -> Option<Self> {
+		if args.is_present("timestamp") {
 			Some(Self::Timestamp)
+		} else if args.is_present("date") {
+			Some(Self::Date(args.value_of("date").unwrap_or_default()))
 		} else {
 			None
 		}
@@ -49,13 +49,13 @@ impl FileInfo {
 }
 
 /* Display implementation for user-facing output */
-impl fmt::Display for FileInfo {
+impl fmt::Display for FileInfo<'_> {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		write!(
 			f,
 			"{}",
 			match self {
-				FileInfo::Date => Local::now().format("%Y%m%dT%H%M%S").to_string(),
+				FileInfo::Date(format) => Local::now().format(format).to_string(),
 				FileInfo::Timestamp => Local::now().timestamp().to_string(),
 			}
 		)
