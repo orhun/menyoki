@@ -21,7 +21,7 @@ impl<'a> FileInfo<'a> {
 	pub fn from_args(args: &'a ArgMatches<'a>) -> Option<Self> {
 		if args.is_present("timestamp") {
 			Some(Self::Timestamp)
-		} else if args.is_present("date") {
+		} else if args.is_present("date") && args.occurrences_of("date") != 0 {
 			Some(Self::Date(args.value_of("date").unwrap_or_default()))
 		} else {
 			None
