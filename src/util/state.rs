@@ -95,11 +95,6 @@ mod tests {
 		enigo.key_down(Key::Escape);
 		assert!(input_state.check_cancel_keys());
 		enigo.key_up(Key::Escape);
-		enigo.mouse_down(MouseButton::Left);
-		enigo.mouse_down(MouseButton::Right);
-		assert!(input_state.check_mouse());
-		enigo.mouse_up(MouseButton::Left);
-		enigo.mouse_up(MouseButton::Right);
 		enigo.mouse_move_to(0, 0);
 		assert_eq!(
 			format!("{:?}", input_state),
