@@ -42,9 +42,9 @@ impl<'a> WindowSystem<'a> {
 	pub fn get_window(&mut self) -> Option<Window> {
 		debug!("Record window: {:?}", self.settings.record.window);
 		match self.settings.record.window {
-			RecordWindow::Focus => self.display.get_focused_window(),
-			RecordWindow::Root => Some(self.display.get_root_window()),
-			RecordWindow::Select => {
+			RecordWindow::Focus(false) => self.display.get_focused_window(),
+			RecordWindow::Root(false) => Some(self.display.get_root_window()),
+			_ => {
 				if self.settings.args.is_present("command") {
 					self.display.get_focused_window()
 				} else {
