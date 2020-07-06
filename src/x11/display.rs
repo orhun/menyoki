@@ -1,5 +1,5 @@
 use crate::record::fps::FpsClock;
-use crate::record::settings::RecordSettings;
+use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::modifier::ValueModifier;
 use crate::util::state::InputState;
 use crate::x11::window::Window;
@@ -104,6 +104,18 @@ impl Display {
 	}
 
 	/**
+	 * Get the type of Window given with RecordWindow enum.
+	 *
+	 * @return Window (Option)
+	 */
+	fn get_window(&self) -> Option<Window> {
+		match self.settings.window {
+			RecordWindow::Focus(_) => self.get_focused_window(),
+			RecordWindow::Root(_) => Some(self.get_root_window()),
+		}
+	}
+
+	/**
 	 * Ungrab the keys in the given window.
 	 *
 	 * @param xid (Option)
@@ -129,20 +141,16 @@ impl Display {
 	 * @return Window (Option)
 	 */
 	pub fn select_window(&mut self, input_state: &InputState) -> Option<Window> {
-		let mut focused_window = self
-			.get_focused_window()
-			.expect("Failed to get the focused window");
+		let mut window = self.get_window().expect("Failed to get the window");
 		let mut xid = None;
 		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
 		let padding_change =
 			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
 		while !input_state.check_action_keys() {
-			focused_window = self
-				.get_focused_window()
-				.expect("Failed to get the focused window");
-			focused_window.draw_borders();
-			self.update_padding(focused_window, input_state, padding_change);
+			window = self.get_window().expect("Failed to get the window");
+			window.draw_borders();
+			self.update_padding(window, input_state, padding_change);
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				xid = None;
@@ -151,14 +159,14 @@ impl Display {
 				warn!("The operation timed out.");
 				xid = None;
 				break;
-			} else if xid != Some(focused_window.xid) {
-				debug!("Window ID: {}", focused_window.xid);
-				info!("{}", focused_window);
+			} else if xid != Some(window.xid) {
+				debug!("Window ID: {}", window.xid);
+				info!("{}", window);
 				self.ungrab_keys(xid);
 				self.settings.padding = window_padding;
-				focused_window.clear_area();
-				focused_window.grab_key(keysym::XK_Alt_L);
-				xid = Some(focused_window.xid);
+				window.clear_area();
+				window.grab_key(keysym::XK_Alt_L);
+				xid = Some(window.xid);
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
@@ -166,11 +174,11 @@ impl Display {
 		debug!("Selected window: {:?}", xid);
 		self.ungrab_keys(xid);
 		if self.settings.border.is_some() {
-			focused_window.clear_area();
-			focused_window.show_text(Some(String::from(" ")), FpsClock::new(500));
+			window.clear_area();
+			window.show_text(Some(String::from(" ")), FpsClock::new(500));
 		}
 		if xid.is_some() {
-			Some(focused_window)
+			Some(window)
 		} else {
 			None
 		}
@@ -234,7 +242,7 @@ impl Drop for Display {
 mod tests {
 	use super::*;
 	use crate::image::padding::Padding;
-	use crate::record::settings::{RecordTime, RecordWindow};
+	use crate::record::settings::RecordTime;
 	#[test]
 	fn test_display_mod() {
 		let settings = RecordSettings::new(
