@@ -312,8 +312,8 @@ mod tests {
 			Some(0),
 			false,
 			Padding::default(),
-			RecordTime::new(0.0, 1, 0, 10),
-			RecordWindow::Select,
+			RecordTime::new(Some(0.0), 1, 0, 10),
+			RecordWindow::Focus(true),
 		);
 		let display = Display::open(Some(settings)).unwrap();
 		let window = display.get_root_window();
@@ -327,7 +327,10 @@ mod tests {
 		window.draw_borders();
 		window.show_countdown();
 		window.clear_area();
-		assert_eq!("1366x768  (root-window)", format!("{}", window));
+		assert_eq!(
+			"\n Window title  -> \"root-window\"\n Window size   -> [1366x768]",
+			format!("{}", window)
+		);
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
 		assert_eq!("root-window", window.get_name().unwrap());
 		assert_eq!(
