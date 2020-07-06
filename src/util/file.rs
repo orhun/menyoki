@@ -5,7 +5,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 /* Information to include in file name */
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FileInfo<'a> {
 	Date(&'a str),
 	Timestamp,
@@ -201,8 +201,13 @@ mod tests {
 				)
 				.get_matches_from(vec!["test", "capture", format]);
 			assert_eq!(
-				format!("t.{}", format),
-				File::from_format(FileFormat::from_args(&args)).name
+				File::get_default_path(&format!("t.{}", format))
+					.to_str()
+					.unwrap(),
+				File::from_format(FileFormat::from_args(&args))
+					.path
+					.to_str()
+					.unwrap()
 			);
 		}
 		assert_eq!(
@@ -217,7 +222,7 @@ mod tests {
 			assert_eq!(
 				match info {
 					"date" => {
-						let file_info = FileInfo::Date;
+						let file_info = FileInfo::Date("");
 						let mut file_name = String::from("x.y");
 						file_info.append(&mut file_name);
 						assert!(file_name.len() > 3);
