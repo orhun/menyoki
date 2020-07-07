@@ -81,7 +81,9 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_padding() {
-		let padding = Padding::parse("10:30:20:40");
+		let values = "10:30:20:40";
+		let padding = Padding::parse(values);
+		assert_eq!(format!("{}", padding), values);
 		assert!(!padding.is_zero());
 		assert_eq!(10, padding.top);
 		assert_eq!(30, padding.right);
