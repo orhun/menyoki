@@ -93,7 +93,7 @@ where
 		}
 		info!(
 			"{} saved to: {:?} ({})",
-			self.settings.save.file.format,
+			self.settings.save.file.format.to_string().to_uppercase(),
 			self.settings.save.file.path,
 			ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 		);
