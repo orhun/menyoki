@@ -97,22 +97,3 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 		Ok(())
 	}
 }
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-	use image::Bgra;
-	#[test]
-	fn test_gif_mod() -> Result<(), Error> {
-		let geometry = Geometry::new(0, 0, 1, 2, None);
-		let settings = GifSettings::new(-1, 10, false);
-		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
-		let images = vec![
-			Image::new(data.clone(), false, geometry),
-			Image::new(data.into_iter().rev().collect(), false, geometry),
-		];
-		let gif = Gif::new(geometry, Vec::new(), 10, settings)?;
-		gif.save(images, Box::leak(Box::new(InputState::new())))?;
-		Ok(())
-	}
-}
