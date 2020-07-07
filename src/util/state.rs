@@ -3,7 +3,7 @@ use std::fmt;
 
 /* State of the mouse and keyboard inputs */
 pub struct InputState {
-	state: DeviceState,
+	pub state: DeviceState,
 }
 
 /* Debug implementation for programmer-facing output */
@@ -37,13 +37,10 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_action_keys(&self) -> bool {
-		self.check_key_combination(
-			Some(self.state.get_keys()),
-			vec![&Keycode::LAlt, &Keycode::S],
-		) || self.check_key_combination(
-			Some(self.state.get_keys()),
-			vec![&Keycode::LAlt, &Keycode::Enter],
-		)
+		let keys = self.state.get_keys();
+		self.check_key_combination(&keys, vec![&Keycode::LAlt, &Keycode::S])
+			|| self
+				.check_key_combination(&keys, vec![&Keycode::LAlt, &Keycode::Enter])
 	}
 
 	/**
@@ -54,25 +51,22 @@ impl InputState {
 	pub fn check_cancel_keys(&self) -> bool {
 		let keys = self.state.get_keys();
 		keys.contains(&Keycode::Escape)
-			|| self.check_key_combination(
-				Some(keys),
-				vec![&Keycode::LControl, &Keycode::D],
-			)
+			|| self
+				.check_key_combination(&keys, vec![&Keycode::LControl, &Keycode::D])
 	}
 
 	/**
 	 * Check if the given keys are pressed or not.
 	 *
-	 * @param  keys (Option)
+	 * @param  keys
 	 * @param  target_keys
 	 * @return bool
 	 */
 	pub fn check_key_combination(
 		&self,
-		keys: Option<Vec<Keycode>>,
+		keys: &Vec<Keycode>,
 		target_keys: Vec<&Keycode>,
 	) -> bool {
-		let keys = keys.unwrap_or_else(|| self.state.get_keys());
 		let mut pressed = keys.len() == target_keys.len();
 		for key in target_keys {
 			if !keys.contains(key) {
