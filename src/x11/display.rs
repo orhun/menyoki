@@ -3,7 +3,7 @@ use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::modifier::ValueModifier;
 use crate::util::state::InputState;
 use crate::x11::window::Window;
-use device_query::Keycode;
+use device_query::{DeviceQuery, Keycode};
 use std::convert::TryFrom;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
@@ -198,16 +198,23 @@ impl Display {
 		change: u32,
 	) {
 		for modifier in ValueModifier::from_padding(&mut self.settings.padding) {
+			let keys = input_state.state.get_keys();
 			if input_state.check_key_combination(
-				None,
+				&keys,
 				vec![&Keycode::LAlt, &modifier.increase],
+			) || input_state.check_key_combination(
+				&keys,
+				vec![&Keycode::LAlt, &Keycode::LShift, &modifier.increase],
 			) {
 				*modifier.value =
 					modifier.value.checked_add(change).unwrap_or_default();
 				window.clear_area();
 			} else if input_state.check_key_combination(
-				None,
-				vec![&Keycode::LAlt, &Keycode::X, &modifier.decrease],
+				&keys,
+				vec![&Keycode::LAlt, &Keycode::LControl, &modifier.decrease],
+			) || input_state.check_key_combination(
+				&keys,
+				vec![&Keycode::LAlt, &Keycode::LShift, &modifier.decrease],
 			) {
 				*modifier.value =
 					modifier.value.checked_sub(change).unwrap_or_default();
