@@ -37,10 +37,11 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_action_keys(&self) -> bool {
-		let keys = self.state.get_keys();
-		self.check_key_combination(&keys, vec![&Keycode::LAlt, &Keycode::S])
-			|| self
-				.check_key_combination(&keys, vec![&Keycode::LAlt, &Keycode::Enter])
+		match self.state.get_keys().as_slice() {
+			[Keycode::S, Keycode::LAlt] => true,
+			[Keycode::Enter, Keycode::LAlt] => true,
+			_ => false,
+		}
 	}
 
 	/**
@@ -49,32 +50,11 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_cancel_keys(&self) -> bool {
-		let keys = self.state.get_keys();
-		keys.contains(&Keycode::Escape)
-			|| self
-				.check_key_combination(&keys, vec![&Keycode::LControl, &Keycode::D])
-	}
-
-	/**
-	 * Check if the given keys are pressed or not.
-	 *
-	 * @param  keys
-	 * @param  target_keys
-	 * @return bool
-	 */
-	pub fn check_key_combination(
-		&self,
-		keys: &Vec<Keycode>,
-		target_keys: Vec<&Keycode>,
-	) -> bool {
-		let mut pressed = keys.len() == target_keys.len();
-		for key in target_keys {
-			if !keys.contains(key) {
-				pressed = false;
-				break;
-			}
+		match self.state.get_keys().as_slice() {
+			[Keycode::Escape] => true,
+			[Keycode::LControl, Keycode::D] => true,
+			_ => false,
 		}
-		pressed
 	}
 }
 
