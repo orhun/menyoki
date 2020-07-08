@@ -147,10 +147,16 @@ impl Display {
 		let window_padding = self.settings.padding;
 		let padding_change =
 			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
+		let mut change_factor = 1;
 		while !input_state.check_action_keys() {
 			window = self.get_window().expect("Failed to get the window");
 			window.draw_borders();
-			self.update_padding(window, input_state, padding_change);
+			self.update_padding(
+				window,
+				input_state,
+				padding_change,
+				&mut change_factor,
+			);
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				xid = None;
@@ -190,35 +196,57 @@ impl Display {
 	 * @param window
 	 * @param input_state
 	 * @param change
+	 * @param factor
 	 */
 	fn update_padding(
 		&mut self,
 		window: Window,
 		input_state: &InputState,
 		change: u32,
+		factor: &mut u32,
 	) {
 		for modifier in ValueModifier::from_padding(&mut self.settings.padding) {
-			let keys = input_state.state.get_keys();
-			if input_state.check_key_combination(
-				&keys,
-				vec![&Keycode::LAlt, &modifier.increase],
-			) || input_state.check_key_combination(
-				&keys,
-				vec![&Keycode::LAlt, &Keycode::LShift, &modifier.increase],
-			) {
-				*modifier.value =
-					modifier.value.checked_add(change).unwrap_or_default();
-				window.clear_area();
-			} else if input_state.check_key_combination(
-				&keys,
-				vec![&Keycode::LAlt, &Keycode::LControl, &modifier.decrease],
-			) || input_state.check_key_combination(
-				&keys,
-				vec![&Keycode::LAlt, &Keycode::LShift, &modifier.decrease],
-			) {
-				*modifier.value =
-					modifier.value.checked_sub(change).unwrap_or_default();
-				window.clear_area();
+			match input_state.state.get_keys().as_slice() {
+				&[Keycode::Key1, Keycode::LAlt] => *factor = 1,
+				&[Keycode::Key2, Keycode::LAlt] => *factor = 2,
+				&[Keycode::Key3, Keycode::LAlt] => *factor = 3,
+				&[Keycode::Key4, Keycode::LAlt] => *factor = 4,
+				&[Keycode::Key5, Keycode::LAlt] => *factor = 5,
+				[Keycode::LAlt, increase] => {
+					if increase == &modifier.increase {
+						*modifier.value = modifier
+							.value
+							.checked_add(change * (*factor))
+							.unwrap_or(*modifier.value);
+						window.clear_area();
+					}
+				}
+				[Keycode::LControl, Keycode::LAlt, decrease] => {
+					if decrease == &modifier.decrease {
+						*modifier.value = modifier
+							.value
+							.checked_sub(change * (*factor))
+							.unwrap_or(*modifier.value);
+						window.clear_area();
+					}
+				}
+				[Keycode::LShift, Keycode::LAlt, key] => {
+					if key == &modifier.increase {
+						*modifier.value = modifier
+							.value
+							.checked_add(change * (*factor))
+							.unwrap_or(*modifier.value);
+						window.clear_area();
+					}
+					if key == &modifier.decrease {
+						*modifier.value = modifier
+							.value
+							.checked_sub(change * (*factor))
+							.unwrap_or(*modifier.value);
+						window.clear_area();
+					}
+				}
+				_ => {}
 			}
 		}
 		info!(
