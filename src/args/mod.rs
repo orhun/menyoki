@@ -149,7 +149,7 @@ where
 					.value_name("S")
 					.help("Sets the recording duration [default: \u{221E}]")
 					.takes_value(true)
-					.display_order(4),
+					.display_order(5),
 			)
 	}
 
@@ -207,6 +207,23 @@ where
 					.display_order(3),
 			)
 			.arg(
+				Arg::with_name("select")
+					.short("s")
+					.long("select")
+					.value_name("SIZE")
+					.default_value("W:H")
+					.help(match base_command {
+						BaseCommand::Record => {
+							"Sets the record area size and enables selection"
+						}
+						BaseCommand::Capture => {
+							"Sets the capture area size and enables selection"
+						}
+					})
+					.takes_value(true)
+					.display_order(4),
+			)
+			.arg(
 				Arg::with_name("countdown")
 					.short("c")
 					.long("countdown")
@@ -224,7 +241,7 @@ where
 						}
 					})
 					.takes_value(true)
-					.display_order(5),
+					.display_order(6),
 			)
 			.arg(
 				Arg::with_name("timeout")
@@ -234,7 +251,7 @@ where
 					.default_value("30")
 					.help("Sets the timeout for window selection")
 					.takes_value(true)
-					.display_order(6),
+					.display_order(7),
 			)
 			.arg(
 				Arg::with_name("interval")
@@ -244,7 +261,7 @@ where
 					.default_value("10")
 					.help("Sets the interval time for window selection")
 					.takes_value(true)
-					.display_order(7),
+					.display_order(8),
 			)
 			.arg(
 				Arg::with_name("root")
@@ -282,25 +299,11 @@ where
 					.display_order(3),
 			)
 			.arg(
-				Arg::with_name("select")
-					.short("s")
-					.long("select")
-					.help(match base_command {
-						BaseCommand::Record => {
-							"Selects the window and allows resizing the record area"
-						}
-						BaseCommand::Capture => {
-							"Selects the window and allows resizing the capture area"
-						}
-					})
-					.display_order(4),
-			)
-			.arg(
 				Arg::with_name("no-border")
 					.short("n")
 					.long("no-border")
 					.help("Shows no border for window selection")
-					.display_order(5),
+					.display_order(4),
 			)
 	}
 
