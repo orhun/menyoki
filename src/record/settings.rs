@@ -17,7 +17,7 @@ impl RecordWindow {
 	 * @return RecordWindow
 	 */
 	fn from_args(args: &ArgMatches<'_>) -> Self {
-		let select = args.is_present("select");
+		let select = args.occurrences_of("select") != 0;
 		if args.is_present("focus") {
 			Self::Focus(select)
 		} else if args.is_present("root") {
