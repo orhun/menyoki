@@ -106,13 +106,17 @@ impl Display {
 	/**
 	 * Get the type of Window given with RecordWindow enum.
 	 *
-	 * @return Window (Option)
+	 * @return Window, width and height
 	 */
-	fn get_window(&self) -> Option<Window> {
-		match self.settings.window {
-			RecordWindow::Focus(_) => self.get_focused_window(),
-			RecordWindow::Root(_) => Some(self.get_root_window()),
-		}
+	fn get_window(&self) -> (Window, (u32, u32)) {
+		let (window, values) = match self.settings.window {
+			RecordWindow::Focus(values) => (self.get_focused_window(), values),
+			RecordWindow::Root(values) => (Some(self.get_root_window()), values),
+		};
+		(
+			window.expect("Failed to get the window"),
+			values.unwrap_or((0, 0)),
+		)
 	}
 
 	/**
@@ -141,7 +145,7 @@ impl Display {
 	 * @return Window (Option)
 	 */
 	pub fn select_window(&mut self, input_state: &InputState) -> Option<Window> {
-		let mut window = self.get_window().expect("Failed to get the window");
+		let (mut window, (width, height)) = self.get_window();
 		let mut xid = None;
 		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
@@ -149,7 +153,7 @@ impl Display {
 			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
 		let mut change_factor = 1;
 		while !input_state.check_action_keys() {
-			window = self.get_window().expect("Failed to get the window");
+			window = self.get_window().0;
 			window.draw_borders();
 			self.update_padding(
 				window,
@@ -173,6 +177,17 @@ impl Display {
 				window.clear_area();
 				window.grab_key(keysym::XK_Alt_L);
 				xid = Some(window.xid);
+				if width != 0 && height != 0 {
+					self.settings.padding.top = 0;
+					self.settings.padding.right = 0;
+					self.settings.padding.bottom = window
+						.geometry
+						.height
+						.checked_sub(height)
+						.unwrap_or_default();
+					self.settings.padding.left =
+						window.geometry.width.checked_sub(width).unwrap_or_default();
+				}
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
@@ -250,10 +265,9 @@ impl Display {
 			}
 		}
 		info!(
-			" Selected area -> [{}x{}] b:[{}] {}\r#",
-			window.geometry.width - (self.settings.border.unwrap_or_default() * 2),
-			window.geometry.height - (self.settings.border.unwrap_or_default() * 2),
-			window.settings.border.unwrap_or(0),
+			" Selected area -> [{}x{}] {}\r#",
+			window.area.width,
+			window.area.height,
 			if window.settings.padding.is_zero() {
 				String::new()
 			} else {
