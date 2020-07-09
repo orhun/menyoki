@@ -11,7 +11,7 @@ pub struct TestWindow {
 /* Default initialization values for TestWindow */
 impl Default for TestWindow {
 	fn default() -> Self {
-		Self::new(Geometry::new(0, 0, 1, 1, None))
+		Self::new(Geometry::new(0, 0, 1, 1))
 	}
 }
 
