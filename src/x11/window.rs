@@ -19,6 +19,7 @@ pub struct Window {
 	pub xid: u64,
 	pub display: *mut xlib::Display,
 	pub geometry: Geometry,
+	pub area: Geometry,
 	pub settings: RecordSettings,
 }
 
@@ -58,6 +59,7 @@ impl Window {
 				xid,
 				display,
 				geometry: Geometry::default(),
+				area: Geometry::default(),
 				settings,
 			}
 			.set_geometry()
@@ -84,7 +86,7 @@ impl Window {
 			&mut border_width,
 			&mut depth,
 		);
-		Geometry::new(0, 0, width, height, Some(self.settings.padding))
+		Geometry::new(0, 0, width, height)
 	}
 
 	/**
@@ -93,7 +95,9 @@ impl Window {
 	 * @return Window
 	 */
 	unsafe fn set_geometry(&mut self) -> Self {
-		self.geometry = self.get_geometry();
+		let mut geometry = self.get_geometry();
+		self.geometry = geometry;
+		self.area = geometry.with_padding(self.settings.padding);
 		*self
 	}
 
@@ -141,22 +145,22 @@ impl Window {
 					self.display,
 					self.xid,
 					self.get_gc(self.settings.color),
-					self.geometry
+					self.area
 						.x
 						.checked_add(i32::try_from(border).unwrap_or_default())
-						.unwrap_or(self.geometry.x),
-					self.geometry
+						.unwrap_or(self.area.x),
+					self.area
 						.y
 						.checked_add(i32::try_from(border).unwrap_or_default())
-						.unwrap_or(self.geometry.y),
-					self.geometry
+						.unwrap_or(self.area.y),
+					self.area
 						.width
 						.checked_sub(border * 2)
-						.unwrap_or(self.geometry.width),
-					self.geometry
+						.unwrap_or(self.area.width),
+					self.area
 						.height
 						.checked_sub(border * 2)
-						.unwrap_or(self.geometry.height),
+						.unwrap_or(self.area.height),
 				);
 			}
 		}
@@ -194,9 +198,8 @@ impl Window {
 		for _ in 0..clock.fps {
 			self.draw_text(
 				text.as_str(),
-				self.geometry.x
-					+ (self.geometry.width - 25).try_into().unwrap_or(20),
-				self.geometry.y + 20,
+				self.area.x + (self.area.width - 25).try_into().unwrap_or(20),
+				self.area.y + 20,
 			);
 			clock.tick();
 		}
@@ -208,10 +211,10 @@ impl Window {
 			xlib::XClearArea(
 				self.display,
 				self.xid,
-				self.geometry.x,
-				self.geometry.y,
-				self.geometry.width,
-				self.geometry.height,
+				self.area.x,
+				self.area.y,
+				self.area.width,
+				self.area.height,
 				xlib::True,
 			);
 		}
@@ -252,10 +255,10 @@ impl Record for Window {
 			let window_image = xlib::XGetImage(
 				self.display,
 				self.xid,
-				self.geometry.x,
-				self.geometry.y,
-				self.geometry.width,
-				self.geometry.height,
+				self.area.x,
+				self.area.y,
+				self.area.width,
+				self.area.height,
 				xlib::XAllPlanes(),
 				xlib::ZPixmap,
 			);
@@ -267,7 +270,7 @@ impl Record for Window {
 				)
 				.to_vec();
 				xlib::XDestroyImage(window_image);
-				Some(Image::new(data, self.settings.alpha, self.geometry))
+				Some(Image::new(data, self.settings.alpha, self.area))
 			} else {
 				None
 			}
