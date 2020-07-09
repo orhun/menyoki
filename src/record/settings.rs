@@ -2,11 +2,11 @@ use crate::args::parser::ArgParser;
 use crate::image::padding::Padding;
 use clap::ArgMatches;
 
-/* Window to record, with selection flag  */
+/* Window to record, with area width and height  */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum RecordWindow {
-	Focus(bool),
-	Root(bool),
+	Focus(Option<(u32, u32)>),
+	Root(Option<(u32, u32)>),
 }
 
 impl RecordWindow {
@@ -17,13 +17,25 @@ impl RecordWindow {
 	 * @return RecordWindow
 	 */
 	fn from_args(args: &ArgMatches<'_>) -> Self {
-		let select = args.occurrences_of("select") != 0;
+		let select = if args.occurrences_of("select") != 0 {
+			let mut values = args
+				.value_of("select")
+				.unwrap_or_default()
+				.split(':')
+				.map(|v| v.parse::<u32>().unwrap_or_default());
+			Some((
+				values.next().unwrap_or_default(),
+				values.next().unwrap_or_default(),
+			))
+		} else {
+			None
+		};
 		if args.is_present("focus") {
 			Self::Focus(select)
 		} else if args.is_present("root") {
 			Self::Root(select)
 		} else {
-			Self::Focus(true)
+			Self::Focus(Some(select.unwrap_or((0, 0))))
 		}
 	}
 }
@@ -114,7 +126,7 @@ impl Default for RecordSettings {
 			alpha: false,
 			padding: Padding::default(),
 			time: RecordTime::default(),
-			window: RecordWindow::Focus(true),
+			window: RecordWindow::Focus(Some((0, 0))),
 		}
 	}
 }
