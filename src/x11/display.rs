@@ -225,8 +225,6 @@ impl Display {
 				&[Keycode::Key1, Keycode::LAlt] => *factor = 1,
 				&[Keycode::Key2, Keycode::LAlt] => *factor = 2,
 				&[Keycode::Key3, Keycode::LAlt] => *factor = 3,
-				&[Keycode::Key4, Keycode::LAlt] => *factor = 4,
-				&[Keycode::Key5, Keycode::LAlt] => *factor = 5,
 				[Keycode::LAlt, increase] => {
 					if increase == &modifier.increase {
 						*modifier.value = modifier
