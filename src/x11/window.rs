@@ -316,7 +316,7 @@ mod tests {
 			false,
 			Padding::default(),
 			RecordTime::new(Some(0.0), 1, 0, 10),
-			RecordWindow::Focus(true),
+			RecordWindow::Focus(Some((0, 0))),
 		);
 		let display = Display::open(Some(settings)).unwrap();
 		let window = display.get_root_window();

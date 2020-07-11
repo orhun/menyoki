@@ -300,7 +300,7 @@ mod tests {
 			false,
 			Padding::default(),
 			RecordTime::new(Some(0.0), 0, 0, 10),
-			RecordWindow::Focus(true),
+			RecordWindow::Focus(Some((0, 0))),
 		);
 		let mut display = Display::open(Some(settings)).unwrap();
 		display
