@@ -223,6 +223,8 @@ impl Display {
 				&[Keycode::Key1, Keycode::LAlt] => *change = 1,
 				&[Keycode::Key2, Keycode::LAlt] => *change = 2,
 				&[Keycode::Key3, Keycode::LAlt] => *change = 3,
+				&[Keycode::Key4, Keycode::LAlt] => *change = 4,
+				&[Keycode::Key5, Keycode::LAlt] => *change = 5,
 				[Keycode::LAlt, key] => {
 					if key == &increase {
 						*value = value.checked_add(*change).unwrap_or(*value);
