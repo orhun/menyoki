@@ -55,7 +55,7 @@ impl Default for RecordTime {
 		Self {
 			duration: None,
 			countdown: 3,
-			timeout: 30,
+			timeout: 60,
 			interval: 10,
 		}
 	}
