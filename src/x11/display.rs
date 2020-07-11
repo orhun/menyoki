@@ -3,7 +3,6 @@ use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::{DeviceQuery, Keycode};
-use std::convert::TryFrom;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
