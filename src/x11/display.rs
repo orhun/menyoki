@@ -1,3 +1,4 @@
+use crate::image::geometry::Geometry;
 use crate::record::fps::FpsClock;
 use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::state::InputState;
@@ -168,17 +169,7 @@ impl Display {
 				window.clear_area();
 				window.grab_key(keysym::XK_Alt_L);
 				xid = Some(window.xid);
-				if width != 0 && height != 0 {
-					self.settings.padding.top = 0;
-					self.settings.padding.right = 0;
-					self.settings.padding.bottom = window
-						.geometry
-						.height
-						.checked_sub(height)
-						.unwrap_or_default();
-					self.settings.padding.left =
-						window.geometry.width.checked_sub(width).unwrap_or_default();
-				}
+				self.update_padding(width, height, window.geometry);
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
@@ -193,6 +184,24 @@ impl Display {
 			Some(window)
 		} else {
 			None
+		}
+	}
+
+	/**
+	 * Update padding to set the given width and height.
+	 *
+	 * @param width
+	 * @param height
+	 * @param geometry
+	 */
+	fn update_padding(&mut self, width: u32, height: u32, geometry: Geometry) {
+		if width != 0 && height != 0 {
+			self.settings.padding.top = 0;
+			self.settings.padding.right = 0;
+			self.settings.padding.bottom =
+				geometry.height.checked_sub(height).unwrap_or_default();
+			self.settings.padding.left =
+				geometry.width.checked_sub(width).unwrap_or_default();
 		}
 	}
 
