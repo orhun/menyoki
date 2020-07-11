@@ -220,42 +220,34 @@ impl Display {
 		change: u32,
 		factor: &mut u32,
 	) {
-		for modifier in ValueModifier::from_padding(&mut self.settings.padding) {
+		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
 			match input_state.state.get_keys().as_slice() {
 				&[Keycode::Key1, Keycode::LAlt] => *factor = 1,
 				&[Keycode::Key2, Keycode::LAlt] => *factor = 2,
 				&[Keycode::Key3, Keycode::LAlt] => *factor = 3,
-				[Keycode::LAlt, increase] => {
-					if increase == &modifier.increase {
-						*modifier.value = modifier
-							.value
-							.checked_add(change * (*factor))
-							.unwrap_or(*modifier.value);
+				[Keycode::LAlt, key] => {
+					if key == &increase {
+						*value =
+							value.checked_add(change * (*factor)).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
-				[Keycode::LControl, Keycode::LAlt, decrease] => {
-					if decrease == &modifier.decrease {
-						*modifier.value = modifier
-							.value
-							.checked_sub(change * (*factor))
-							.unwrap_or(*modifier.value);
+				[Keycode::LControl, Keycode::LAlt, key] => {
+					if key == &decrease {
+						*value =
+							value.checked_sub(change * (*factor)).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
 				[Keycode::LShift, Keycode::LAlt, key] => {
-					if key == &modifier.increase {
-						*modifier.value = modifier
-							.value
-							.checked_add(change * (*factor))
-							.unwrap_or(*modifier.value);
+					if key == &increase {
+						*value =
+							value.checked_add(change * (*factor)).unwrap_or(*value);
 						window.clear_area();
 					}
-					if key == &modifier.decrease {
-						*modifier.value = modifier
-							.value
-							.checked_sub(change * (*factor))
-							.unwrap_or(*modifier.value);
+					if key == &decrease {
+						*value =
+							value.checked_sub(change * (*factor)).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
