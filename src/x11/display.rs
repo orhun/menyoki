@@ -148,18 +148,11 @@ impl Display {
 		let mut xid = None;
 		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
-		let padding_change =
-			u32::try_from(self.settings.time.interval).unwrap_or_default() / 5;
 		let mut change_factor = 1;
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
 			window.draw_borders();
-			self.update_area(
-				window,
-				input_state,
-				padding_change,
-				&mut change_factor,
-			);
+			self.update_area(window, input_state, &mut change_factor);
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				xid = None;
@@ -216,7 +209,6 @@ impl Display {
 		&mut self,
 		window: Window,
 		input_state: &InputState,
-		change: u32,
 		factor: &mut u32,
 	) {
 		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
@@ -226,27 +218,23 @@ impl Display {
 				&[Keycode::Key3, Keycode::LAlt] => *factor = 3,
 				[Keycode::LAlt, key] => {
 					if key == &increase {
-						*value =
-							value.checked_add(change * (*factor)).unwrap_or(*value);
+						*value = value.checked_add(*factor).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
 				[Keycode::LControl, Keycode::LAlt, key] => {
 					if key == &decrease {
-						*value =
-							value.checked_sub(change * (*factor)).unwrap_or(*value);
+						*value = value.checked_sub(*factor).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
 				[Keycode::LShift, Keycode::LAlt, key] => {
 					if key == &increase {
-						*value =
-							value.checked_add(change * (*factor)).unwrap_or(*value);
+						*value = value.checked_add(*factor).unwrap_or(*value);
 						window.clear_area();
 					}
 					if key == &decrease {
-						*value =
-							value.checked_sub(change * (*factor)).unwrap_or(*value);
+						*value = value.checked_sub(*factor).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
