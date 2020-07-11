@@ -269,7 +269,7 @@ impl Display {
 			if window.settings.padding.is_zero() {
 				String::new()
 			} else {
-				format!("p:[{}]    ", window.settings.padding)
+				format!("p:[{}]{:<10}", window.settings.padding, " ")
 			},
 		);
 		io::stdout().flush().expect("Failed to flush stdout");
