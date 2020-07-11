@@ -31,7 +31,7 @@ mod tests {
 	use image::Bgra;
 	#[test]
 	fn test_gif_encoder() -> Result<(), Error> {
-		let geometry = Geometry::new(0, 0, 1, 2, None);
+		let geometry = Geometry::new(0, 0, 1, 2);
 		let settings = GifSettings::new(-1, 10, false);
 		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
 		let images = vec![
