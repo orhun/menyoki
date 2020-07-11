@@ -155,7 +155,7 @@ impl Display {
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
 			window.draw_borders();
-			self.update_padding(
+			self.update_area(
 				window,
 				input_state,
 				padding_change,
@@ -206,14 +206,14 @@ impl Display {
 	}
 
 	/**
-	 * Update the window padding with checking the pressed keys.
+	 * Update the recording area on associated key presses.
 	 *
 	 * @param window
 	 * @param input_state
 	 * @param change
 	 * @param factor
 	 */
-	fn update_padding(
+	fn update_area(
 		&mut self,
 		window: Window,
 		input_state: &InputState,
