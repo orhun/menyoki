@@ -61,7 +61,7 @@ mod tests {
 	#[test]
 	fn test_geometry() {
 		let padding = Padding::new(10, 20, 30, 40);
-		let geometry = Geometry::new(0, 0, 200, 200, Some(padding));
+		let geometry = Geometry::new(0, 0, 200, 200).with_padding(padding);
 		assert_eq!(20, geometry.x);
 		assert_eq!(10, geometry.y);
 		assert_eq!(140, geometry.width);

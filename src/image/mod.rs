@@ -103,7 +103,7 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_image_mod() {
-		let geometry = Geometry::new(0, 0, 200, 200, None);
+		let geometry = Geometry::new(0, 0, 200, 200);
 		let data: [Bgra<u8>; 2] = [
 			Bgra::from([128, 128, 128, 0]),
 			Bgra::from([255, 255, 255, 0]),
