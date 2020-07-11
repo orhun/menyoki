@@ -220,11 +220,6 @@ impl Display {
 	) {
 		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
 			match input_state.state.get_keys().as_slice() {
-				&[Keycode::Key1, Keycode::LAlt] => *change = 1,
-				&[Keycode::Key2, Keycode::LAlt] => *change = 2,
-				&[Keycode::Key3, Keycode::LAlt] => *change = 3,
-				&[Keycode::Key4, Keycode::LAlt] => *change = 4,
-				&[Keycode::Key5, Keycode::LAlt] => *change = 5,
 				[Keycode::LAlt, key] => {
 					if key == &increase {
 						*value = value.checked_add(*change).unwrap_or(*value);
@@ -245,6 +240,15 @@ impl Display {
 					if key == &decrease {
 						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
+					}
+				}
+				[key, Keycode::LAlt] => {
+					let key = format!("{:?}", key);
+					if key.contains("Key") {
+						*change = key
+							.trim_start_matches("Key")
+							.parse::<u32>()
+							.unwrap_or(*change);
 					}
 				}
 				_ => {}
