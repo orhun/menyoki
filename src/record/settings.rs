@@ -259,7 +259,7 @@ mod tests {
 		assert_eq!(2, record_settings.time.countdown);
 		assert_eq!(60, record_settings.time.timeout);
 		assert_eq!(12, record_settings.time.interval);
-		assert_eq!(RecordWindow::Root(false), record_settings.window);
+		assert_eq!(RecordWindow::Root(None), record_settings.window);
 		assert!(record_settings.alpha);
 	}
 }
