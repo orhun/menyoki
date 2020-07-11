@@ -1,6 +1,5 @@
 use crate::record::fps::FpsClock;
 use crate::record::settings::{RecordSettings, RecordWindow};
-use crate::util::modifier::ValueModifier;
 use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::{DeviceQuery, Keycode};
