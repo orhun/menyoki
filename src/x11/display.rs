@@ -152,7 +152,8 @@ impl Display {
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
 			window.draw_borders();
-			self.update_area(window, input_state, &mut change_factor);
+			let reset_area =
+				self.update_area(window, input_state, &mut change_factor);
 			if input_state.check_cancel_keys() {
 				warn!("User interrupt detected.");
 				xid = None;
@@ -161,9 +162,11 @@ impl Display {
 				warn!("The operation timed out.");
 				xid = None;
 				break;
-			} else if xid != Some(window.xid) {
-				debug!("Window ID: {}", window.xid);
-				info!("{}", window);
+			} else if xid != Some(window.xid) || reset_area {
+				if !reset_area {
+					debug!("Window ID: {}", window.xid);
+					info!("{}", window);
+				}
 				self.ungrab_keys(xid);
 				self.settings.padding = window_padding;
 				self.update_padding(width, height, window.geometry);
@@ -208,16 +211,18 @@ impl Display {
 	/**
 	 * Update the recording area on associated key presses.
 	 *
-	 * @param window
-	 * @param input_state
-	 * @param change
+	 * @param  window
+	 * @param  input_state
+	 * @param  change
+	 * @return bool
 	 */
 	fn update_area(
 		&mut self,
 		window: Window,
 		input_state: &InputState,
 		change: &mut u32,
-	) {
+	) -> bool {
+		let mut reset_area = false;
 		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
 			match input_state.state.get_keys().as_slice() {
 				[Keycode::LAlt, key] => {
@@ -242,6 +247,9 @@ impl Display {
 						window.clear_area();
 					}
 				}
+				[Keycode::R, Keycode::LAlt] => {
+					reset_area = true;
+				}
 				[key, Keycode::LAlt] => {
 					let key = format!("{:?}", key);
 					if key.contains("Key") {
@@ -265,6 +273,7 @@ impl Display {
 			},
 		);
 		io::stdout().flush().expect("Failed to flush stdout");
+		reset_area
 	}
 }
 
