@@ -166,10 +166,10 @@ impl Display {
 				info!("{}", window);
 				self.ungrab_keys(xid);
 				self.settings.padding = window_padding;
+				self.update_padding(width, height, window.geometry);
 				window.clear_area();
 				window.grab_key(keysym::XK_Alt_L);
 				xid = Some(window.xid);
-				self.update_padding(width, height, window.geometry);
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
