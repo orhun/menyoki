@@ -203,38 +203,37 @@ impl Display {
 	 * @param window
 	 * @param input_state
 	 * @param change
-	 * @param factor
 	 */
 	fn update_area(
 		&mut self,
 		window: Window,
 		input_state: &InputState,
-		factor: &mut u32,
+		change: &mut u32,
 	) {
 		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
 			match input_state.state.get_keys().as_slice() {
-				&[Keycode::Key1, Keycode::LAlt] => *factor = 1,
-				&[Keycode::Key2, Keycode::LAlt] => *factor = 2,
-				&[Keycode::Key3, Keycode::LAlt] => *factor = 3,
+				&[Keycode::Key1, Keycode::LAlt] => *change = 1,
+				&[Keycode::Key2, Keycode::LAlt] => *change = 2,
+				&[Keycode::Key3, Keycode::LAlt] => *change = 3,
 				[Keycode::LAlt, key] => {
 					if key == &increase {
-						*value = value.checked_add(*factor).unwrap_or(*value);
+						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
 				[Keycode::LControl, Keycode::LAlt, key] => {
 					if key == &decrease {
-						*value = value.checked_sub(*factor).unwrap_or(*value);
+						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
 				[Keycode::LShift, Keycode::LAlt, key] => {
 					if key == &increase {
-						*value = value.checked_add(*factor).unwrap_or(*value);
+						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					}
 					if key == &decrease {
-						*value = value.checked_sub(*factor).unwrap_or(*value);
+						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
