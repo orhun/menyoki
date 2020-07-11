@@ -1,3 +1,4 @@
+use device_query::Keycode;
 use std::fmt;
 use std::iter::FromIterator;
 
@@ -73,6 +74,20 @@ impl Padding {
 	 */
 	pub fn is_zero(&self) -> bool {
 		self.top == 0 && self.right == 0 && self.bottom == 0 && self.left == 0
+	}
+
+	/**
+	 * Get Padding struct fields and their modifier key pairs.
+	 *
+	 * @return Vector of Tuple
+	 */
+	pub fn get_modifiers(&mut self) -> Vec<(&mut u32, Keycode, Keycode)> {
+		vec![
+			(&mut self.top, Keycode::Down, Keycode::Up),
+			(&mut self.right, Keycode::Right, Keycode::Left),
+			(&mut self.bottom, Keycode::Up, Keycode::Down),
+			(&mut self.left, Keycode::Left, Keycode::Right),
+		]
 	}
 }
 
