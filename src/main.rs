@@ -12,7 +12,7 @@ mod settings;
 mod test;
 mod util;
 mod x11;
-use self::app::App;
+use self::app::{App, WindowAccess};
 use self::args::Args;
 use self::settings::AppSettings;
 use self::x11::WindowSystem;

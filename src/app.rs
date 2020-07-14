@@ -21,6 +21,14 @@ use std::fs::{self, File};
 use std::io::{Error, Read, Seek, Write};
 use std::thread;
 
+/* Window system functions */
+pub trait WindowAccess<'a, Window: Record + Send + Sync + Copy + Debug + 'static> {
+	fn init(settings: &'a AppSettings<'a>) -> Option<Self>
+	where
+		Self: Sized;
+	fn get_window(&mut self) -> Option<Window>;
+}
+
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
 pub struct App<'a, Window> {
