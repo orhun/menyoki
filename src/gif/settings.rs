@@ -57,6 +57,52 @@ impl GifSettings {
 	}
 }
 
+/* GIF decoder settings */
+#[derive(Clone, Copy, Debug)]
+pub struct EditSettings<'a> {
+	pub file: &'a str,
+	pub repeat: i32,
+}
+
+/* Default initialization values for EditSettings */
+impl Default for EditSettings<'_> {
+	fn default() -> Self {
+		Self {
+			file: "",
+			repeat: -1,
+		}
+	}
+}
+
+impl<'a> EditSettings<'a> {
+	/**
+	 * Create a new EditSettings object.
+	 *
+	 * @param  file
+	 * @param  repeat
+	 * @return EditSettings
+	 */
+	pub fn new(file: &'a str, repeat: i32) -> Self {
+		Self { file, repeat }
+	}
+
+	/**
+	 * Create a EditSettings object from parsed arguments.
+	 *
+	 * @param  parser
+	 * @return EditSettings
+	 */
+	pub fn from_args(parser: ArgParser<'a>) -> Self {
+		match parser.args {
+			Some(matches) => Self::new(
+				matches.value_of("input").unwrap_or_default(),
+				parser.parse("repeat", Self::default().repeat) - 1,
+			),
+			None => Self::default(),
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;

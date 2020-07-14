@@ -1,5 +1,5 @@
 use crate::args::parser::ArgParser;
-use crate::gif::settings::GifSettings;
+use crate::gif::settings::{EditSettings, GifSettings};
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
@@ -16,6 +16,7 @@ pub struct AppSettings<'a> {
 	pub gif: GifSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
+	pub edit: EditSettings<'a>,
 	pub save: SaveSettings,
 	pub input_state: &'static InputState,
 }
@@ -41,6 +42,7 @@ impl<'a> AppSettings<'a> {
 			gif: GifSettings::from_args(ArgParser::from_subcommand(args, "gif")),
 			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
 			jpg: JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg")),
+			edit: EditSettings::from_args(ArgParser::from_subcommand(args, "edit")),
 			save: SaveSettings::from_args(
 				ArgParser::from_subcommand(args, "save"),
 				FileFormat::from_args(args),
