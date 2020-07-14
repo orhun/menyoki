@@ -124,7 +124,7 @@ where
 						args.farbfeld.subcommand(Self::get_save_args("t.ff")),
 					),
 			)
-			.subcommand(args.edit.subcommand(Self::get_save_args("t~.gif")))
+			.subcommand(args.edit.subcommand(Self::get_save_args("t.gif")))
 			.get_matches()
 	}
 
