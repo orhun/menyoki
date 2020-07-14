@@ -43,7 +43,7 @@ impl GifSettings {
 	 * Create a GifSettings object from parsed arguments.
 	 *
 	 * @param  parser
-	 * @return RecordSettings
+	 * @return GifSettings
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
