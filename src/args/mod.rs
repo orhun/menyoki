@@ -48,6 +48,7 @@ pub struct Args<'a, 'b> {
 	bmp: App<'a, 'b>,
 	tiff: App<'a, 'b>,
 	farbfeld: App<'a, 'b>,
+	edit: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -69,6 +70,7 @@ where
 			bmp: Self::get_bmp_args(),
 			tiff: Self::get_tiff_args(),
 			farbfeld: Self::get_farbfeld_args(),
+			edit: Self::get_edit_args(),
 		}
 	}
 
@@ -122,6 +124,7 @@ where
 						args.farbfeld.subcommand(Self::get_save_args("t.ff")),
 					),
 			)
+			.subcommand(args.edit.subcommand(Self::get_save_args("t~.gif")))
 			.get_matches()
 	}
 
@@ -428,6 +431,30 @@ where
 		SubCommand::with_name("ff")
 			.about("Changes the farbfeld encoder settings")
 			.display_order(5)
+	}
+
+	/**
+	 * Get GIF editing settings.
+	 *
+	 * @return App
+	 */
+	fn get_edit_args() -> App<'a, 'b> {
+		SubCommand::with_name("edit")
+			.about("Changes the GIF editing settings")
+			.arg(
+				Arg::with_name("input")
+					.value_name("FILE")
+					.help("Sets the input file path")
+					.required(true),
+			)
+			.arg(
+				Arg::with_name("repeat")
+					.short("r")
+					.long("repeat")
+					.value_name("REPEAT")
+					.help("Sets the number of repetitions [default: \u{221E}]")
+					.takes_value(true),
+			)
 	}
 
 	/**
