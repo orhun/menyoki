@@ -1,6 +1,7 @@
 use crate::gif::settings::EditSettings;
 use gif::{
-	Decoder as GifDecoder, DecodingError, Encoder, Reader, Repeat, SetParameter,
+	Decoder as GifDecoder, DecodingError, Encoder, Frame, Reader, Repeat,
+	SetParameter,
 };
 use std::convert::TryInto;
 use std::io::{Read, Write};
@@ -34,6 +35,25 @@ impl<'a, Input: Read, Output: Write> Decoder<'a, Input, Output> {
 	}
 
 	/**
+	 * Get a GIF encoder from a sample frame.
+	 *
+	 * @param  sample_frame
+	 * @return Result
+	 */
+	fn get_encoder(
+		self,
+		sample_frame: &Frame<'_>,
+	) -> Result<Encoder<Output>, DecodingError> {
+		let mut encoder =
+			Encoder::new(self.output, sample_frame.width, sample_frame.height, &[])?;
+		encoder.set(match self.settings.repeat {
+			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
+			_ => Repeat::Infinite,
+		})?;
+		Ok(encoder)
+	}
+
+	/**
 	 * Update the frames and save the file.
 	 *
 	 * @return Result
@@ -48,13 +68,8 @@ impl<'a, Input: Read, Output: Write> Decoder<'a, Input, Output> {
 			);
 			frames.push(frame);
 		}
-		let first_frame = frames.first().expect("No frames found to edit");
 		let mut encoder =
-			Encoder::new(self.output, first_frame.width, first_frame.height, &[])?;
-		encoder.set(match self.settings.repeat {
-			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
-			_ => Repeat::Infinite,
-		})?;
+			self.get_encoder(frames.first().expect("No frames found to edit"))?;
 		for frame in frames {
 			encoder.write_frame(&frame)?;
 		}
