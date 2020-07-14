@@ -32,7 +32,7 @@ pub trait WindowAccess<'a, Window: Record + Send + Sync + Copy + Debug + 'static
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
 pub struct App<'a, Window> {
-	window: Window,
+	window: Option<Window>,
 	settings: &'a AppSettings<'a>,
 }
 
@@ -43,11 +43,11 @@ where
 	/**
 	 * Create a new App object.
 	 *
-	 * @param  window
+	 * @param  window (Option)
 	 * @param  settings
 	 * @return App
 	 */
-	pub fn new(window: Window, settings: &'a AppSettings<'a>) -> Self {
+	pub fn new(window: Option<Window>, settings: &'a AppSettings<'a>) -> Self {
 		Self { window, settings }
 	}
 
@@ -125,8 +125,8 @@ where
 		encoder: Encoder,
 		color_type: ColorType,
 	) {
+		let window = self.window.expect("Failed to get the window");
 		let image = if self.settings.args.is_present("command") {
-			let window = self.window;
 			let image_thread = thread::spawn(move || {
 				window.show_countdown();
 				info!("Capturing an image...");
@@ -141,9 +141,9 @@ where
 				.join()
 				.expect("Failed to join the image thread")
 		} else {
-			self.window.show_countdown();
+			window.show_countdown();
 			info!("Capturing an image...");
-			self.window.get_image()
+			window.get_image()
 		}
 		.expect("Failed to get the window image");
 		info!(
@@ -168,7 +168,10 @@ where
 	 * @return Vector of Image
 	 */
 	fn record(self) -> Vec<Image> {
-		let mut recorder = Recorder::new(self.window, self.settings.record);
+		let mut recorder = Recorder::new(
+			self.window.expect("Failed to get the window"),
+			self.settings.record,
+		);
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
