@@ -48,8 +48,9 @@ impl<'a, Input: Read, Output: Write> Decoder<'a, Input, Output> {
 			);
 			frames.push(frame);
 		}
+		let first_frame = frames.first().expect("No frames found to edit");
 		let mut encoder =
-			Encoder::new(self.output, frames[0].width, frames[0].height, &[])?;
+			Encoder::new(self.output, first_frame.width, first_frame.height, &[])?;
 		encoder.set(match self.settings.repeat {
 			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
 			_ => Repeat::Infinite,
