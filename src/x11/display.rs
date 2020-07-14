@@ -277,15 +277,6 @@ impl Display {
 	}
 }
 
-/* Close the display when Display object goes out of scope */
-impl Drop for Display {
-	fn drop(&mut self) {
-		unsafe {
-			xlib::XCloseDisplay(self.display);
-		}
-	}
-}
-
 #[cfg(test)]
 mod tests {
 	use super::*;
