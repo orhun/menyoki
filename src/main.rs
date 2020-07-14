@@ -3,6 +3,7 @@
 
 #[macro_use]
 extern crate log;
+
 mod app;
 mod args;
 mod gif;
@@ -27,12 +28,14 @@ fn main() -> Result<(), Error> {
 			.expect("Failed to initialize the logger");
 	}
 	let settings = AppSettings::new(&args);
-	let mut window_system =
-		WindowSystem::init(&settings).expect("Failed to access the window system");
 	App::new(
-		window_system
-			.get_window()
-			.expect("Failed to get the window"),
+		if !args.is_present("edit") {
+			WindowSystem::init(&settings)
+				.expect("Failed to access the window system")
+				.get_window()
+		} else {
+			None
+		},
 		&settings,
 	)
 	.start(
