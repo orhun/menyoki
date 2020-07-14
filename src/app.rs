@@ -1,3 +1,4 @@
+use crate::gif::decoder::Decoder;
 use crate::gif::encoder::Encoder;
 #[cfg(feature = "ski")]
 use crate::gif::ski::Gif;
@@ -16,8 +17,8 @@ use image::tiff::TiffEncoder;
 use image::ColorType;
 use image::ImageEncoder;
 use std::fmt::Debug;
-use std::fs;
-use std::io::{Error, Seek, Write};
+use std::fs::{self, File};
+use std::io::{Error, Read, Seek, Write};
 use std::thread;
 
 /* Application and main functionalities */
@@ -57,8 +58,13 @@ where
 		debug!("Command: {:?}", self.settings.get_command());
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
-				debug!("{:?}", self.settings.gif);
-				self.save_gif(self.record(), output)?;
+				if self.settings.args.is_present("edit") {
+					debug!("{:?}", self.settings.edit);
+					self.edit_gif(File::open(self.settings.edit.file)?, output);
+				} else {
+					debug!("{:?}", self.settings.gif);
+					self.save_gif(self.record(), output)?;
+				}
 			}
 			FileFormat::Png => {
 				debug!("{:?}", self.settings.png);
@@ -191,6 +197,20 @@ where
 		)?
 		.save(frames, &self.settings.input_state)?;
 		Ok(())
+	}
+
+	/**
+	 * Edit the GIF and save.
+	 *
+	 * @param  input
+	 * @param  output
+	 * @return Result
+	 */
+	fn edit_gif<Input: Read, Output: Write>(self, input: Input, output: Output) {
+		Decoder::new(input, output, self.settings.edit)
+			.expect("Failed to decode the GIF")
+			.edit()
+			.expect("Failed to edit the GIF");
 	}
 }
 
