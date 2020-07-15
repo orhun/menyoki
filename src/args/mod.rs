@@ -456,6 +456,15 @@ where
 					.help("Sets the number of repetitions [default: \u{221E}]")
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("speed")
+					.short("s")
+					.long("speed")
+					.value_name("SPEED")
+					.default_value("100")
+					.help("Sets the GIF speed (%)")
+					.takes_value(true),
+			)
 	}
 
 	/**
