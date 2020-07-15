@@ -15,6 +15,7 @@ use std::time::Instant;
 pub trait Record {
 	fn get_image(&self) -> Option<Image>;
 	fn show_countdown(&self);
+	fn release(&self);
 }
 
 /* Asynchronous recording result */
