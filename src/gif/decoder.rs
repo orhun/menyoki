@@ -62,6 +62,7 @@ impl<'a, Input: Read, Output: Write> Decoder<'a, Input, Output> {
 		let mut frames = Vec::new();
 		while let Some(frame) = self.reader.read_next_frame()? {
 			let mut frame = frame.clone();
+			frame.delay = (frame.delay as f32 * (100. / self.settings.speed)) as u16;
 			info!(
 				"{:?} {} {} {} {}",
 				frame.delay, frame.top, frame.left, frame.width, frame.height,
