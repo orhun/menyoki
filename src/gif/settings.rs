@@ -62,6 +62,7 @@ impl GifSettings {
 pub struct EditSettings<'a> {
 	pub file: &'a str,
 	pub repeat: i32,
+	pub speed: f32,
 }
 
 /* Default initialization values for EditSettings */
@@ -70,6 +71,7 @@ impl Default for EditSettings<'_> {
 		Self {
 			file: "",
 			repeat: -1,
+			speed: 100.,
 		}
 	}
 }
@@ -80,10 +82,15 @@ impl<'a> EditSettings<'a> {
 	 *
 	 * @param  file
 	 * @param  repeat
+	 * @param  speed
 	 * @return EditSettings
 	 */
-	pub fn new(file: &'a str, repeat: i32) -> Self {
-		Self { file, repeat }
+	pub fn new(file: &'a str, repeat: i32, speed: f32) -> Self {
+		Self {
+			file,
+			repeat,
+			speed,
+		}
 	}
 
 	/**
@@ -97,6 +104,7 @@ impl<'a> EditSettings<'a> {
 			Some(matches) => Self::new(
 				matches.value_of("input").unwrap_or_default(),
 				parser.parse("repeat", Self::default().repeat) - 1,
+				parser.parse("speed", Self::default().speed),
 			),
 			None => Self::default(),
 		}
