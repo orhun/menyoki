@@ -115,9 +115,8 @@ where
 			self.settings.save.file.path,
 			ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 		);
-		match self.window {
-			Some(window) => window.release(),
-			_ => {}
+		if let Some(window) = self.window {
+			window.release();
 		}
 		Ok(())
 	}
