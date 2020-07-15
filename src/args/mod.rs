@@ -135,6 +135,7 @@ where
 	 */
 	fn get_record_args() -> App<'a, 'b> {
 		Self::get_base_args(BaseCommand::Record)
+			.display_order(0)
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
