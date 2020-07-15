@@ -298,6 +298,14 @@ impl Record for Window {
 		}
 		self.clear_area();
 	}
+
+	/* Close the display */
+	fn release(&self) {
+		trace!("Display closed.");
+		unsafe {
+			xlib::XCloseDisplay(self.display);
+		}
+	}
 }
 
 #[cfg(test)]

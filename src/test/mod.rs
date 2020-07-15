@@ -44,4 +44,7 @@ impl Record for TestWindow {
 
 	/* Do not show countdown for testing window. */
 	fn show_countdown(&self) {}
+
+	/* Do not do anything for the release operation */
+	fn release(&self) {}
 }
