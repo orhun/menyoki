@@ -68,10 +68,7 @@ where
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
 				if self.settings.args.is_present("edit") {
-					info!(
-						"Reading the frames from {:?}...",
-						self.settings.gif.file
-					);
+					info!("Reading the frames from {:?}...", self.settings.gif.file);
 					self.edit_gif(File::open(self.settings.gif.file)?, output);
 				} else {
 					self.save_gif(self.record(), output)?;
