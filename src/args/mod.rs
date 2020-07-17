@@ -135,7 +135,6 @@ where
 	 */
 	fn get_record_args() -> App<'a, 'b> {
 		Self::get_base_args(BaseCommand::Record)
-			.display_order(0)
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
@@ -166,6 +165,10 @@ where
 	fn get_base_args(base_command: BaseCommand) -> App<'a, 'b> {
 		SubCommand::with_name(&base_command.to_string())
 			.about(base_command.get_description())
+			.display_order(match base_command {
+				BaseCommand::Record => 0,
+				BaseCommand::Capture => 1,
+			})
 			.arg(
 				Arg::with_name("color")
 					.short("x")
