@@ -3,7 +3,7 @@ use crate::util::file::File;
 use clap::{App, Arg, ArgMatches, SubCommand};
 use std::fmt;
 
-/* Main SubCommand for the app */
+/* Main commands of the app */
 #[derive(Debug, PartialEq)]
 enum BaseCommand {
 	Record,
