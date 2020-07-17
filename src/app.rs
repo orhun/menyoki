@@ -66,15 +66,14 @@ where
 		debug!("Command: {:?}", self.settings.get_command());
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
+				debug!("{:?}", self.settings.gif);
 				if self.settings.args.is_present("edit") {
-					debug!("{:?}", self.settings.edit);
 					info!(
 						"Reading the frames from {:?}...",
-						self.settings.edit.file
+						self.settings.gif.file
 					);
-					self.edit_gif(File::open(self.settings.edit.file)?, output);
+					self.edit_gif(File::open(self.settings.gif.file)?, output);
 				} else {
-					debug!("{:?}", self.settings.gif);
 					self.save_gif(self.record(), output)?;
 				}
 			}
@@ -225,7 +224,7 @@ where
 	 * @return Result
 	 */
 	fn edit_gif<Input: Read, Output: Write>(self, input: Input, output: Output) {
-		Decoder::new(input, output, self.settings.edit)
+		Decoder::new(input, output, self.settings.gif)
 			.expect("Failed to decode the GIF")
 			.edit()
 			.expect("Failed to edit the GIF");
