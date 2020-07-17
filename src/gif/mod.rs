@@ -16,13 +16,13 @@ use std::convert::TryInto;
 use std::io::{self, Error, Write};
 
 /* GIF encoder and settings */
-pub struct Gif<Output: Write> {
+pub struct Gif<'a, Output: Write> {
 	fps: u32,
 	encoder: GifEncoder<Output>,
-	settings: GifSettings,
+	settings: GifSettings<'a>,
 }
 
-impl<Output: Write> Encoder<Output> for Gif<Output> {
+impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 	/**
 	 * Create a new Gif object.
 	 *
@@ -36,7 +36,7 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 		geometry: Geometry,
 		output: Output,
 		fps: u32,
-		settings: GifSettings,
+		settings: GifSettings<'a>,
 	) -> Result<Self, Error> {
 		let mut encoder = GifEncoder::new(
 			output,

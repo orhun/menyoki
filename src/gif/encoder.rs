@@ -5,12 +5,12 @@ use crate::util::state::InputState;
 use std::io::{Error, Write};
 
 /* Required encoding methods for Gif */
-pub trait Encoder<Output: Write> {
+pub trait Encoder<'a, Output: Write> {
 	fn new(
 		geometry: Geometry,
 		output: Output,
 		fps: u32,
-		settings: GifSettings,
+		settings: GifSettings<'a>,
 	) -> Result<Self, Error>
 	where
 		Self: Sized;
