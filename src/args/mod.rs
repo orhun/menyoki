@@ -4,7 +4,7 @@ use clap::{App, Arg, ArgMatches, SubCommand};
 use std::fmt;
 
 /* Main SubCommand for the app */
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 enum BaseCommand {
 	Record,
 	Capture,
@@ -62,7 +62,7 @@ where
 	 */
 	fn init() -> Self {
 		Self {
-			record: Self::get_record_args(),
+			record: Self::get_base_args(BaseCommand::Record),
 			capture: Self::get_base_args(BaseCommand::Capture),
 			gif: Self::get_gif_args(),
 			png: Self::get_png_args(),
@@ -135,25 +135,6 @@ where
 	 */
 	fn get_record_args() -> App<'a, 'b> {
 		Self::get_base_args(BaseCommand::Record)
-			.arg(
-				Arg::with_name("fps")
-					.short("f")
-					.long("fps")
-					.value_name("FPS")
-					.default_value("10")
-					.help("Sets the FPS (frames per second) value")
-					.takes_value(true)
-					.display_order(0),
-			)
-			.arg(
-				Arg::with_name("duration")
-					.short("d")
-					.long("duration")
-					.value_name("S")
-					.help("Sets the recording duration [default: \u{221E}]")
-					.takes_value(true)
-					.display_order(5),
-			)
 	}
 
 	/**
@@ -169,6 +150,17 @@ where
 				BaseCommand::Record => 0,
 				BaseCommand::Capture => 1,
 			})
+			.arg(
+				Arg::with_name("fps")
+					.short("f")
+					.long("fps")
+					.value_name("FPS")
+					.default_value("10")
+					.help("Sets the FPS (frames per second) value")
+					.takes_value(true)
+					.hidden(base_command == BaseCommand::Capture)
+					.display_order(0),
+			)
 			.arg(
 				Arg::with_name("color")
 					.short("x")
@@ -220,6 +212,16 @@ where
 					})
 					.takes_value(true)
 					.display_order(4),
+			)
+			.arg(
+				Arg::with_name("duration")
+					.short("d")
+					.long("duration")
+					.value_name("S")
+					.help("Sets the recording duration [default: \u{221E}]")
+					.takes_value(true)
+					.hidden(base_command == BaseCommand::Capture)
+					.display_order(5),
 			)
 			.arg(
 				Arg::with_name("countdown")
