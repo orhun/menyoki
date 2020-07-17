@@ -10,20 +10,6 @@ enum BaseCommand {
 	Capture,
 }
 
-/* Display implementation for user-facing output */
-impl fmt::Display for BaseCommand {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(
-			f,
-			"{}",
-			match self {
-				Self::Record => "record",
-				Self::Capture => "capture",
-			}
-		)
-	}
-}
-
 /* Command-line arguments */
 pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
@@ -121,7 +107,7 @@ where
 	 * @return App
 	 */
 	fn get_base_args(base_command: BaseCommand) -> App<'a, 'b> {
-		SubCommand::with_name(&base_command.to_string())
+		SubCommand::with_name(&format!("{:?}", base_command).to_lowercase())
 			.about(match base_command {
 				BaseCommand::Record => "Records a window",
 				BaseCommand::Capture => "Takes a screenshot of a window",
