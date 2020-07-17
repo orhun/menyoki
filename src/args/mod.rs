@@ -10,20 +10,6 @@ enum BaseCommand {
 	Capture,
 }
 
-impl<'a> BaseCommand {
-	/**
-	 * Get the description of a BaseCommand.
-	 *
-	 * @return str
-	 */
-	fn get_description(&self) -> &'a str {
-		match self {
-			Self::Record => "Records a window",
-			Self::Capture => "Takes a screenshot of a window",
-		}
-	}
-}
-
 /* Display implementation for user-facing output */
 impl fmt::Display for BaseCommand {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -136,7 +122,10 @@ where
 	 */
 	fn get_base_args(base_command: BaseCommand) -> App<'a, 'b> {
 		SubCommand::with_name(&base_command.to_string())
-			.about(base_command.get_description())
+			.about(match base_command {
+				BaseCommand::Record => "Records a window",
+				BaseCommand::Capture => "Takes a screenshot of a window",
+			})
 			.display_order(match base_command {
 				BaseCommand::Record => 0,
 				BaseCommand::Capture => 1,
