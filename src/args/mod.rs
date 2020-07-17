@@ -129,15 +129,6 @@ where
 	}
 
 	/**
-	 * Get record subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_record_args() -> App<'a, 'b> {
-		Self::get_base_args(BaseCommand::Record)
-	}
-
-	/**
 	 * Get the main subcommand arguments from BaseCommand.
 	 *
 	 * @param  base_command
