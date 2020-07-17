@@ -63,7 +63,7 @@ where
 	fn init() -> Self {
 		Self {
 			record: Self::get_record_args(),
-			capture: Self::get_capture_args(),
+			capture: Self::get_base_args(BaseCommand::Capture),
 			gif: Self::get_gif_args(),
 			png: Self::get_png_args(),
 			jpg: Self::get_jpg_args(),
@@ -155,15 +155,6 @@ where
 					.takes_value(true)
 					.display_order(5),
 			)
-	}
-
-	/**
-	 * Get capture subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_capture_args() -> App<'a, 'b> {
-		Self::get_base_args(BaseCommand::Capture)
 	}
 
 	/**
