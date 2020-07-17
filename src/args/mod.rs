@@ -36,13 +36,13 @@ where
 		Self {
 			record: Self::get_base_args(BaseCommand::Record),
 			capture: Self::get_base_args(BaseCommand::Capture),
-			gif: Self::get_gif_args(),
+			gif: Self::get_gif_args(false),
 			png: Self::get_png_args(),
 			jpg: Self::get_jpg_args(),
 			bmp: Self::get_bmp_args(),
 			tiff: Self::get_tiff_args(),
 			farbfeld: Self::get_farbfeld_args(),
-			edit: Self::get_edit_args(),
+			edit: Self::get_gif_args(true),
 		}
 	}
 
@@ -276,11 +276,23 @@ where
 	/**
 	 * Get gif subcommand arguments.
 	 *
+	 * @param  edit_mode
 	 * @return App
 	 */
-	fn get_gif_args() -> App<'a, 'b> {
-		SubCommand::with_name("gif")
-			.about("Changes the GIF encoder settings")
+	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
+		SubCommand::with_name(if edit_mode { "edit" } else { "gif" })
+			.about(if edit_mode {
+				"Changes the GIF encoder settings"
+			} else {
+				"Changes the GIF editing settings"
+			})
+			.arg(
+				Arg::with_name("input")
+					.value_name("FILE")
+					.help("Sets the input file path")
+					.hidden(!edit_mode)
+					.required(edit_mode),
+			)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -305,7 +317,17 @@ where
 					.help(
 						"Encodes 3 times faster (10% lower quality and bigger file)",
 					)
-					.hidden(!cfg!(feature = "ski")),
+					.hidden(!cfg!(feature = "ski") || !edit_mode),
+			)
+			.arg(
+				Arg::with_name("speed")
+					.short("s")
+					.long("speed")
+					.value_name("SPEED")
+					.default_value("100")
+					.help("Sets the GIF speed (%)")
+					.hidden(!edit_mode)
+					.takes_value(true),
 			)
 	}
 
@@ -394,39 +416,6 @@ where
 		SubCommand::with_name("ff")
 			.about("Changes the farbfeld encoder settings")
 			.display_order(5)
-	}
-
-	/**
-	 * Get GIF editing settings.
-	 *
-	 * @return App
-	 */
-	fn get_edit_args() -> App<'a, 'b> {
-		SubCommand::with_name("edit")
-			.about("Changes the GIF editing settings")
-			.arg(
-				Arg::with_name("input")
-					.value_name("FILE")
-					.help("Sets the input file path")
-					.required(true),
-			)
-			.arg(
-				Arg::with_name("repeat")
-					.short("r")
-					.long("repeat")
-					.value_name("REPEAT")
-					.help("Sets the number of repetitions [default: \u{221E}]")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("speed")
-					.short("s")
-					.long("speed")
-					.value_name("SPEED")
-					.default_value("100")
-					.help("Sets the GIF speed (%)")
-					.takes_value(true),
-			)
 	}
 
 	/**
