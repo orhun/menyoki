@@ -1,7 +1,6 @@
 pub mod parser;
 use crate::util::file::File;
 use clap::{App, Arg, ArgMatches, SubCommand};
-use std::fmt;
 
 /* Main commands of the app */
 #[derive(Debug, PartialEq)]
