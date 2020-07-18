@@ -3,9 +3,7 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use image::error::ImageError;
 use image::gif::GifDecoder;
-use image::imageops;
-use image::AnimationDecoder;
-use image::Bgra;
+use image::{imageops, AnimationDecoder, Bgra};
 use std::convert::TryInto;
 use std::io::Read;
 
