@@ -328,6 +328,16 @@ where
 					)
 					.hidden(!cfg!(feature = "ski") || !edit_mode),
 			)
+			.arg(
+				Arg::with_name("crop")
+					.short("c")
+					.long("crop")
+					.value_name("PADDING")
+					.default_value("0:0:0:0")
+					.help("Applies the given padding to crop the GIF")
+					.hidden(!edit_mode)
+					.takes_value(true),
+			)
 	}
 
 	/**
