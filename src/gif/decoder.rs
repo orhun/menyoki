@@ -3,8 +3,10 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use image::error::ImageError;
 use image::gif::GifDecoder;
+use image::imageops;
 use image::AnimationDecoder;
 use image::Bgra;
+use std::convert::TryInto;
 use std::io::Read;
 
 /* GIF decoder and settings */
@@ -39,12 +41,25 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
 			* (self.settings.speed / 1e2)) as u32;
 		let (width, height) = first_frame.clone().into_buffer().dimensions();
-		let geometry = Geometry::new(0, 0, width, height);
+		let geometry =
+			Geometry::new(0, 0, width, height).with_padding(self.settings.padding);
 		let mut images = Vec::new();
 		for frame in frames {
+			let mut image = frame.into_buffer();
+			let sub_image = if !self.settings.padding.is_zero() {
+				imageops::crop(
+					&mut image,
+					geometry.x.try_into().unwrap_or_default(),
+					geometry.y.try_into().unwrap_or_default(),
+					geometry.width,
+					geometry.height,
+				)
+				.to_image()
+			} else {
+				image
+			};
 			images.push(Image::new(
-				frame
-					.into_buffer()
+				sub_image
 					.into_vec()
 					.chunks(4)
 					.map(|rgba| Bgra::from([rgba[2], rgba[1], rgba[0], rgba[3]]))
