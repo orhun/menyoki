@@ -84,9 +84,9 @@ impl Padding {
 	pub fn get_modifiers(&mut self) -> Vec<(&mut u32, Keycode, Keycode)> {
 		vec![
 			(&mut self.top, Keycode::Down, Keycode::Up),
-			(&mut self.right, Keycode::Right, Keycode::Left),
+			(&mut self.right, Keycode::Left, Keycode::Right),
 			(&mut self.bottom, Keycode::Up, Keycode::Down),
-			(&mut self.left, Keycode::Left, Keycode::Right),
+			(&mut self.left, Keycode::Right, Keycode::Left),
 		]
 	}
 }

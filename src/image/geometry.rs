@@ -37,7 +37,7 @@ impl Geometry {
 	pub fn with_padding(&mut self, padding: Padding) -> Self {
 		self.x = self
 			.x
-			.checked_add(i32::try_from(padding.right).unwrap_or_default())
+			.checked_add(i32::try_from(padding.left).unwrap_or_default())
 			.unwrap_or(self.x);
 		self.y = self
 			.y
