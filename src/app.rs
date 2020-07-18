@@ -1,5 +1,5 @@
 use crate::gif::decoder::Decoder;
-use crate::gif::encoder::Encoder;
+use crate::gif::encoder::{Encoder, Frames};
 #[cfg(feature = "ski")]
 use crate::gif::ski::Gif;
 #[cfg(not(feature = "ski"))]
@@ -67,13 +67,13 @@ where
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
-				let (images, fps) = if self.settings.args.is_present("edit") {
+				let frames = if self.settings.args.is_present("edit") {
 					info!("Reading the frames from {:?}...", self.settings.gif.file);
 					self.edit_gif(File::open(self.settings.gif.file)?)
 				} else {
 					(self.record(), self.settings.record.fps)
 				};
-				self.save_gif(fps, images, output)?;
+				self.save_gif(frames, output)?;
 			}
 			FileFormat::Png => {
 				debug!("{:?}", self.settings.png);
@@ -170,9 +170,9 @@ where
 	 * Edit the GIF and save.
 	 *
 	 * @param  input
-	 * @return Vector of Image, delay
+	 * @return Frames
 	 */
-	fn edit_gif<Input: Read>(self, input: Input) -> (Vec<Image>, u32) {
+	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
 		Decoder::new(input, self.settings.gif)
 			.expect("Failed to decode the GIF")
 			.edit()
@@ -208,24 +208,23 @@ where
 	/**
 	 * Save frames to a GIF file.
 	 *
-	 * @param  fps
 	 * @param  frames
 	 * @param  output
 	 * @return Result
 	 */
 	fn save_gif<Output: Write>(
 		self,
-		fps: u32,
-		frames: Vec<Image>,
+		frames: Frames,
 		output: Output,
 	) -> Result<(), Error> {
+		let (images, fps) = frames;
 		Gif::new(
-			frames.first().expect("No frames found to save").geometry,
+			images.first().expect("No frames found to save").geometry,
 			output,
 			fps,
 			self.settings.gif,
 		)?
-		.save(frames, &self.settings.input_state)?;
+		.save(images, &self.settings.input_state)?;
 		Ok(())
 	}
 }
