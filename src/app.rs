@@ -167,7 +167,7 @@ where
 	}
 
 	/**
-	 * Edit the GIF and save.
+	 * Return the updated frames after decoding the GIF.
 	 *
 	 * @param  input
 	 * @return Frames
