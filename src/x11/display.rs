@@ -200,11 +200,11 @@ impl Display {
 	fn update_padding(&mut self, width: u32, height: u32, geometry: Geometry) {
 		if width != 0 && height != 0 {
 			self.settings.padding.top = 0;
-			self.settings.padding.right = 0;
+			self.settings.padding.right =
+				geometry.width.checked_sub(width).unwrap_or_default();
 			self.settings.padding.bottom =
 				geometry.height.checked_sub(height).unwrap_or_default();
-			self.settings.padding.left =
-				geometry.width.checked_sub(width).unwrap_or_default();
+			self.settings.padding.left = 0;
 		}
 	}
 
