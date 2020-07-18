@@ -4,6 +4,9 @@ use crate::image::Image;
 use crate::util::state::InputState;
 use std::io::{Error, Write};
 
+/* Images to encode and FPS value */
+pub type Frames = (Vec<Image>, u32);
+
 /* Required encoding methods for Gif */
 pub trait Encoder<'a, Output: Write> {
 	fn new(
