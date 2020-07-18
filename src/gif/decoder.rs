@@ -1,79 +1,58 @@
-use crate::gif::settings::EditSettings;
-use gif::{
-	Decoder as GifDecoder, DecodingError, Encoder, Frame, Reader, Repeat,
-	SetParameter,
-};
-use std::convert::TryInto;
-use std::io::{Read, Write};
+use crate::gif::settings::GifSettings;
+use crate::image::geometry::Geometry;
+use crate::image::Image;
+use image::error::ImageError;
+use image::gif::GifDecoder;
+use image::AnimationDecoder;
+use image::Bgra;
+use std::io::Read;
 
 /* GIF decoder and settings */
-pub struct Decoder<'a, Input: Read, Output: Write> {
-	reader: Reader<Input>,
-	output: Output,
-	settings: EditSettings<'a>,
+pub struct Decoder<'a, Input: Read> {
+	decoder: GifDecoder<Input>,
+	settings: GifSettings<'a>,
 }
 
-impl<'a, Input: Read, Output: Write> Decoder<'a, Input, Output> {
+impl<'a, Input: Read> Decoder<'a, Input> {
 	/**
 	 * Create a new Decoder object.
 	 *
 	 * @param  input
-	 * @param  output
 	 * @param  settings
 	 * @return Result
 	 */
-	pub fn new(
-		input: Input,
-		output: Output,
-		settings: EditSettings<'a>,
-	) -> Result<Self, DecodingError> {
+	pub fn new(input: Input, settings: GifSettings<'a>) -> Result<Self, ImageError> {
 		Ok(Self {
-			reader: GifDecoder::new(input).read_info()?,
-			output,
+			decoder: GifDecoder::new(input)?,
 			settings,
 		})
 	}
 
 	/**
-	 * Get a GIF encoder from a sample frame.
-	 *
-	 * @param  sample_frame
-	 * @return Result
-	 */
-	fn get_encoder(
-		self,
-		sample_frame: &Frame<'_>,
-	) -> Result<Encoder<Output>, DecodingError> {
-		let mut encoder =
-			Encoder::new(self.output, sample_frame.width, sample_frame.height, &[])?;
-		encoder.set(match self.settings.repeat {
-			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
-			_ => Repeat::Infinite,
-		})?;
-		Ok(encoder)
-	}
-
-	/**
-	 * Update the frames and save the file.
+	 * Update and return the frames.
 	 *
 	 * @return Result
 	 */
-	pub fn edit(mut self) -> Result<(), DecodingError> {
-		let mut frames = Vec::new();
-		while let Some(frame) = self.reader.read_next_frame()? {
-			let mut frame = frame.clone();
-			frame.delay = (frame.delay as f32 * (100. / self.settings.speed)) as u16;
-			info!(
-				"{:?} {} {} {} {}",
-				frame.delay, frame.top, frame.left, frame.width, frame.height,
-			);
-			frames.push(frame);
-		}
-		let mut encoder =
-			self.get_encoder(frames.first().expect("No frames found to edit"))?;
+	pub fn edit(self) -> Result<(Vec<Image>, u32), ImageError> {
+		let frames = self.decoder.into_frames().collect_frames()?;
+		let first_frame = frames.first().expect("No frames found to edit");
+		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
+			* (self.settings.speed / 1e2)) as u32;
+		let (width, height) = first_frame.clone().into_buffer().dimensions();
+		let geometry = Geometry::new(0, 0, width, height);
+		let mut images = Vec::new();
 		for frame in frames {
-			encoder.write_frame(&frame)?;
+			images.push(Image::new(
+				frame
+					.into_buffer()
+					.into_vec()
+					.chunks(4)
+					.map(|rgba| Bgra::from([rgba[2], rgba[1], rgba[0], rgba[3]]))
+					.collect(),
+				true,
+				geometry,
+			));
 		}
-		Ok(())
+		Ok((images, fps))
 	}
 }
