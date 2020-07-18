@@ -26,16 +26,16 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 	/**
 	 * Create a new Gif object.
 	 *
+	 * @param  fps
 	 * @param  geometry
 	 * @param  output
-	 * @param  fps
 	 * @param  settings
 	 * @return Result (Gif)
 	 */
 	fn new(
+		fps: u32,
 		geometry: Geometry,
 		output: Output,
-		fps: u32,
 		settings: GifSettings<'a>,
 	) -> Result<Self, Error> {
 		let mut encoder = GifEncoder::new(

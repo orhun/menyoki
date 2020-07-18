@@ -10,9 +10,9 @@ pub type Frames = (Vec<Image>, u32);
 /* Required encoding methods for Gif */
 pub trait Encoder<'a, Output: Write> {
 	fn new(
+		fps: u32,
 		geometry: Geometry,
 		output: Output,
-		fps: u32,
 		settings: GifSettings<'a>,
 	) -> Result<Self, Error>
 	where

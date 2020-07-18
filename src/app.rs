@@ -219,9 +219,9 @@ where
 	) -> Result<(), Error> {
 		let (images, fps) = frames;
 		Gif::new(
+			fps,
 			images.first().expect("No frames found to save").geometry,
 			output,
-			fps,
 			self.settings.gif,
 		)?
 		.save(images, &self.settings.input_state)
