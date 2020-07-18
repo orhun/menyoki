@@ -224,8 +224,7 @@ where
 			fps,
 			self.settings.gif,
 		)?
-		.save(images, &self.settings.input_state)?;
-		Ok(())
+		.save(images, &self.settings.input_state)
 	}
 }
 
