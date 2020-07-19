@@ -330,7 +330,6 @@ where
 			)
 			.arg(
 				Arg::with_name("crop")
-					.short("c")
 					.long("crop")
 					.value_name("PADDING")
 					.default_value("0:0:0:0")
