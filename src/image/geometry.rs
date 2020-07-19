@@ -3,7 +3,7 @@ use std::convert::TryFrom;
 use std::iter::FromIterator;
 
 /* Position and size in 2D */
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Geometry {
 	pub x: i32,
 	pub y: i32,
