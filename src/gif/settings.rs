@@ -12,6 +12,7 @@ pub struct GifSettings<'a> {
 	pub fast: bool,
 	pub padding: Padding,
 	pub resize: Geometry,
+	pub ratio: f32,
 }
 
 /* Default initialization values for GifSettings */
@@ -25,6 +26,7 @@ impl Default for GifSettings<'_> {
 			fast: false,
 			padding: Padding::default(),
 			resize: Geometry::default(),
+			ratio: 1.,
 		}
 	}
 }
@@ -40,6 +42,7 @@ impl<'a> GifSettings<'a> {
 	 * @param  fast
 	 * @param  padding
 	 * @param  resize
+	 * @param  ratio
 	 * @return GifSettings
 	 */
 	pub fn new(
@@ -50,6 +53,7 @@ impl<'a> GifSettings<'a> {
 		fast: bool,
 		padding: Padding,
 		resize: Geometry,
+		ratio: f32,
 	) -> Self {
 		if quality <= 20 {
 			warn!("GIF will be encoded in low quality.");
@@ -62,6 +66,7 @@ impl<'a> GifSettings<'a> {
 			fast,
 			padding,
 			resize,
+			ratio,
 		}
 	}
 
@@ -81,6 +86,7 @@ impl<'a> GifSettings<'a> {
 				matches.is_present("fast"),
 				Padding::parse(matches.value_of("crop").unwrap_or_default()),
 				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
+				parser.parse("ratio", Self::default().ratio),
 			),
 			None => Self::default(),
 		}
