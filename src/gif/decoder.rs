@@ -3,7 +3,8 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use image::error::ImageError;
 use image::gif::GifDecoder;
-use image::{imageops, AnimationDecoder, Bgra};
+use image::imageops::{self, FilterType};
+use image::{AnimationDecoder, Bgra};
 use std::convert::TryInto;
 use std::io::Read;
 
@@ -38,12 +39,24 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		let first_frame = frames.first().expect("No frames found to edit");
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
 			* (self.settings.speed / 1e2)) as u32;
-		let (width, height) = first_frame.clone().into_buffer().dimensions();
+		let (width, height) = if !self.settings.resize.is_zero() {
+			(self.settings.resize.width, self.settings.resize.height)
+		} else {
+			first_frame.clone().into_buffer().dimensions()
+		};
 		let geometry =
 			Geometry::new(0, 0, width, height).with_padding(self.settings.padding);
 		let mut images = Vec::new();
 		for frame in frames {
 			let mut image = frame.into_buffer();
+			if !self.settings.resize.is_zero() {
+				image = imageops::resize(
+					&image,
+					geometry.width,
+					geometry.height,
+					FilterType::Lanczos3,
+				);
+			}
 			let sub_image = if !self.settings.padding.is_zero() {
 				imageops::crop(
 					&mut image,
