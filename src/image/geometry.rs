@@ -1,5 +1,6 @@
 use crate::image::padding::Padding;
 use std::convert::TryFrom;
+use std::iter::FromIterator;
 
 /* Position and size in 2D */
 #[derive(Clone, Copy, Debug, Default)]
@@ -8,6 +9,19 @@ pub struct Geometry {
 	pub y: i32,
 	pub width: u32,
 	pub height: u32,
+}
+
+/* Implementation for building Geometry from an iterator */
+impl FromIterator<u32> for Geometry {
+	fn from_iter<I: IntoIterator<Item = u32>>(iter: I) -> Self {
+		let mut iter = iter.into_iter();
+		Self::new(
+			0,
+			0,
+			iter.next().unwrap_or_default(),
+			iter.next().unwrap_or_default(),
+		)
+	}
 }
 
 impl Geometry {
@@ -27,6 +41,28 @@ impl Geometry {
 			width,
 			height,
 		}
+	}
+
+	/**
+	 * Parse Geometry from a string.
+	 *
+	 * @param  geometry
+	 * @return Geometry
+	 */
+	pub fn parse(geometry: &str) -> Self {
+		geometry
+			.split(':')
+			.map(|v| v.parse::<u32>().unwrap_or_default())
+			.collect()
+	}
+
+	/**
+	 * Check if width and height values are zero.
+	 *
+	 * @return bool
+	 */
+	pub fn is_zero(&self) -> bool {
+		self.width == 0 && self.height == 0
 	}
 
 	/**
