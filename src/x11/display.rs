@@ -105,16 +105,16 @@ impl Display {
 	/**
 	 * Get the type of Window given with RecordWindow enum.
 	 *
-	 * @return Window, width and height
+	 * @return Window, Geometry
 	 */
-	fn get_window(&self) -> (Window, (u32, u32)) {
+	fn get_window(&self) -> (Window, Geometry) {
 		let (window, values) = match self.settings.window {
-			RecordWindow::Focus(values) => (self.get_focused_window(), values),
-			RecordWindow::Root(values) => (Some(self.get_root_window()), values),
+			RecordWindow::Focus(geometry) => (self.get_focused_window(), geometry),
+			RecordWindow::Root(geometry) => (Some(self.get_root_window()), geometry),
 		};
 		(
 			window.expect("Failed to get the window"),
-			values.unwrap_or((0, 0)),
+			values.unwrap_or_default(),
 		)
 	}
 
@@ -144,7 +144,7 @@ impl Display {
 	 * @return Window (Option)
 	 */
 	pub fn select_window(&mut self, input_state: &InputState) -> Option<Window> {
-		let (mut window, (width, height)) = self.get_window();
+		let (mut window, size) = self.get_window();
 		let mut xid = None;
 		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
@@ -169,7 +169,7 @@ impl Display {
 				}
 				self.ungrab_keys(xid);
 				self.settings.padding = window_padding;
-				self.update_padding(width, height, window.geometry);
+				self.update_padding(size, window.geometry);
 				window.clear_area();
 				window.grab_key(keysym::XK_Alt_L);
 				xid = Some(window.xid);
@@ -193,17 +193,20 @@ impl Display {
 	/**
 	 * Update padding to set the given width and height.
 	 *
-	 * @param width
-	 * @param height
-	 * @param geometry
+	 * @param size
+	 * @param window_geometry
 	 */
-	fn update_padding(&mut self, width: u32, height: u32, geometry: Geometry) {
-		if width != 0 && height != 0 {
+	fn update_padding(&mut self, size: Geometry, window_geometry: Geometry) {
+		if !size.is_zero() {
 			self.settings.padding.top = 0;
-			self.settings.padding.right =
-				geometry.width.checked_sub(width).unwrap_or_default();
-			self.settings.padding.bottom =
-				geometry.height.checked_sub(height).unwrap_or_default();
+			self.settings.padding.right = window_geometry
+				.width
+				.checked_sub(size.width)
+				.unwrap_or_default();
+			self.settings.padding.bottom = window_geometry
+				.height
+				.checked_sub(size.height)
+				.unwrap_or_default();
 			self.settings.padding.left = 0;
 		}
 	}
