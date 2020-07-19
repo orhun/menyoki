@@ -1,4 +1,5 @@
 use crate::args::parser::ArgParser;
+use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
 /* GIF and frame settings */
@@ -10,6 +11,7 @@ pub struct GifSettings<'a> {
 	pub speed: f32,
 	pub fast: bool,
 	pub padding: Padding,
+	pub resize: Geometry,
 }
 
 /* Default initialization values for GifSettings */
@@ -22,6 +24,7 @@ impl Default for GifSettings<'_> {
 			speed: 100.,
 			fast: false,
 			padding: Padding::default(),
+			resize: Geometry::default(),
 		}
 	}
 }
@@ -36,6 +39,7 @@ impl<'a> GifSettings<'a> {
 	 * @param  speed
 	 * @param  fast
 	 * @param  padding
+	 * @param  resize
 	 * @return GifSettings
 	 */
 	pub fn new(
@@ -45,6 +49,7 @@ impl<'a> GifSettings<'a> {
 		speed: f32,
 		fast: bool,
 		padding: Padding,
+		resize: Geometry,
 	) -> Self {
 		if quality <= 20 {
 			warn!("GIF will be encoded in low quality.");
@@ -56,6 +61,7 @@ impl<'a> GifSettings<'a> {
 			speed,
 			fast,
 			padding,
+			resize,
 		}
 	}
 
@@ -74,6 +80,7 @@ impl<'a> GifSettings<'a> {
 				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
 				Padding::parse(matches.value_of("crop").unwrap_or_default()),
+				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
 			),
 			None => Self::default(),
 		}
