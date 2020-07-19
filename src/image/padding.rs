@@ -55,7 +55,7 @@ impl Padding {
 	}
 
 	/**
-	 * Parse padding from a string.
+	 * Parse Padding from a string.
 	 *
 	 * @param  padding
 	 * @return Padding
