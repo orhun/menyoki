@@ -1,12 +1,13 @@
 use crate::args::parser::ArgParser;
+use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 use clap::ArgMatches;
 
-/* Window to record, with area width and height  */
+/* Window to record, with geometric properties  */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum RecordWindow {
-	Focus(Option<(u32, u32)>),
-	Root(Option<(u32, u32)>),
+	Focus(Option<Geometry>),
+	Root(Option<Geometry>),
 }
 
 impl RecordWindow {
@@ -18,15 +19,7 @@ impl RecordWindow {
 	 */
 	fn from_args(args: &ArgMatches<'_>) -> Self {
 		let select = if args.occurrences_of("select") != 0 {
-			let mut values = args
-				.value_of("select")
-				.unwrap_or_default()
-				.split(':')
-				.map(|v| v.parse::<u32>().unwrap_or_default());
-			Some((
-				values.next().unwrap_or_default(),
-				values.next().unwrap_or_default(),
-			))
+			Some(Geometry::parse(args.value_of("select").unwrap_or_default()))
 		} else {
 			None
 		};
@@ -35,7 +28,7 @@ impl RecordWindow {
 		} else if args.is_present("root") {
 			Self::Root(select)
 		} else {
-			Self::Focus(Some(select.unwrap_or((0, 0))))
+			Self::Focus(Some(select.unwrap_or_default()))
 		}
 	}
 }
@@ -126,7 +119,7 @@ impl Default for RecordSettings {
 			alpha: false,
 			padding: Padding::default(),
 			time: RecordTime::default(),
-			window: RecordWindow::Focus(Some((0, 0))),
+			window: RecordWindow::Focus(Some(Geometry::default())),
 		}
 	}
 }
