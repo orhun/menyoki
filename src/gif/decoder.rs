@@ -39,17 +39,24 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		let first_frame = frames.first().expect("No frames found to edit");
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
 			* (self.settings.speed / 1e2)) as u32;
-		let (width, height) = if !self.settings.resize.is_zero() {
+		let (mut width, mut height) = if !self.settings.resize.is_zero() {
 			(self.settings.resize.width, self.settings.resize.height)
 		} else {
 			first_frame.clone().into_buffer().dimensions()
 		};
+		if self.settings.ratio > 0. && self.settings.ratio != 1. {
+			let (w, h) = (width, height);
+			width = (w as f32 * self.settings.ratio) as u32;
+			height = (h as f32 * self.settings.ratio) as u32;
+		}
 		let geometry =
 			Geometry::new(0, 0, width, height).with_padding(self.settings.padding);
 		let mut images = Vec::new();
 		for frame in frames {
 			let mut image = frame.into_buffer();
-			if !self.settings.resize.is_zero() {
+			if !self.settings.resize.is_zero()
+				|| (self.settings.ratio > 0. && self.settings.ratio != 1.)
+			{
 				image = imageops::resize(
 					&image,
 					geometry.width,
