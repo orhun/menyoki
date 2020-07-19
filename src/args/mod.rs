@@ -346,6 +346,16 @@ where
 					.hidden(!edit_mode)
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("ratio")
+					.long("ratio")
+					.value_name("RATIO")
+					.default_value("1.0")
+					.help("Resizes the GIF by changing the aspect ratio")
+					.conflicts_with("resize")
+					.hidden(!edit_mode)
+					.takes_value(true),
+			)
 	}
 
 	/**
