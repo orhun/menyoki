@@ -108,14 +108,15 @@ impl Display {
 	 * @return Window, Geometry
 	 */
 	fn get_window(&self) -> (Window, Geometry) {
-		let (window, values) = match self.settings.window {
-			RecordWindow::Focus(geometry) => (self.get_focused_window(), geometry),
-			RecordWindow::Root(geometry) => (Some(self.get_root_window()), geometry),
-		};
-		(
-			window.expect("Failed to get the window"),
-			values.unwrap_or_default(),
-		)
+		match self.settings.window {
+			RecordWindow::Focus(geometry) => (
+				self.get_focused_window().expect("Failed to get the window"),
+				geometry.unwrap_or_default(),
+			),
+			RecordWindow::Root(geometry) => {
+				(self.get_root_window(), geometry.unwrap_or_default())
+			}
+		}
 	}
 
 	/**
