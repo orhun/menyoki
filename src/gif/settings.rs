@@ -1,5 +1,4 @@
 use crate::args::parser::ArgParser;
-use crate::image::edit::EditSettings;
 
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]
@@ -9,7 +8,6 @@ pub struct GifSettings<'a> {
 	pub quality: u8,
 	pub speed: f32,
 	pub fast: bool,
-	pub edit: EditSettings,
 }
 
 /* Default initialization values for GifSettings */
@@ -21,7 +19,6 @@ impl Default for GifSettings<'_> {
 			quality: 75,
 			speed: 1.,
 			fast: false,
-			edit: EditSettings::default(),
 		}
 	}
 }
@@ -35,7 +32,6 @@ impl<'a> GifSettings<'a> {
 	 * @param  quality
 	 * @param  speed
 	 * @param  fast
-	 * @param  edit
 	 * @return GifSettings
 	 */
 	pub fn new(
@@ -44,7 +40,6 @@ impl<'a> GifSettings<'a> {
 		quality: u8,
 		speed: f32,
 		fast: bool,
-		edit: EditSettings,
 	) -> Self {
 		if quality <= 20 {
 			warn!("GIF will be encoded in low quality.");
@@ -55,7 +50,6 @@ impl<'a> GifSettings<'a> {
 			quality,
 			speed,
 			fast,
-			edit,
 		}
 	}
 
@@ -73,7 +67,6 @@ impl<'a> GifSettings<'a> {
 				parser.parse("quality", Self::default().quality),
 				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
-				EditSettings::from_args(parser),
 			),
 			None => Self::default(),
 		}
