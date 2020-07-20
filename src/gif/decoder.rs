@@ -39,7 +39,7 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 	 *
 	 * @return Result
 	 */
-	pub fn edit(mut self) -> Result<(Vec<Image>, u32), ImageError> {
+	pub fn update_frames(mut self) -> Result<(Vec<Image>, u32), ImageError> {
 		let frames = self.decoder.into_frames().collect_frames()?;
 		let first_frame = frames.first().expect("No frames found to edit");
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
