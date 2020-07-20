@@ -173,7 +173,7 @@ where
 	 * @return Frames
 	 */
 	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
-		Decoder::new(input, self.settings.gif)
+		Decoder::new(input, self.settings.edit.get_editor(), self.settings.gif)
 			.expect("Failed to decode the GIF")
 			.edit()
 			.expect("Failed to edit the GIF")
