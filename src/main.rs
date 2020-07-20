@@ -6,6 +6,7 @@ extern crate log;
 
 mod app;
 mod args;
+mod edit;
 mod gif;
 mod image;
 mod record;

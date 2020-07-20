@@ -1,6 +1,6 @@
 use crate::args::parser::ArgParser;
+use crate::edit::settings::EditSettings;
 use crate::gif::settings::GifSettings;
-use crate::image::edit::EditSettings;
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;

@@ -1,4 +1,3 @@
-pub mod edit;
 pub mod geometry;
 pub mod padding;
 pub mod settings;

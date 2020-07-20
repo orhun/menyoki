@@ -1,5 +1,5 @@
+use crate::edit::Editor as GifEditor;
 use crate::gif::settings::GifSettings;
-use crate::image::edit::Editor as GifEditor;
 use crate::image::Image;
 use image::error::ImageError;
 use image::gif::GifDecoder;

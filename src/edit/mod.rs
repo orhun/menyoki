@@ -1,71 +1,10 @@
-use crate::args::parser::ArgParser;
+pub mod settings;
+
+use crate::edit::settings::EditSettings;
 use crate::image::geometry::Geometry;
-use crate::image::padding::Padding;
 use image::imageops::{self, FilterType};
 use image::{ImageBuffer, RgbaImage};
 use std::convert::TryInto;
-
-#[derive(Clone, Copy, Debug)]
-pub struct EditSettings {
-	pub crop: Padding,
-	pub resize: Geometry,
-	pub ratio: f32,
-}
-
-/* Default initialization values for GifSettings */
-impl Default for EditSettings {
-	fn default() -> Self {
-		Self {
-			crop: Padding::default(),
-			resize: Geometry::default(),
-			ratio: 1.,
-		}
-	}
-}
-
-impl EditSettings {
-	/**
-	 * Create a new EditSettings object.
-	 *
-	 * @param  crop
-	 * @param  resize
-	 * @param  ratio
-	 * @return EditSettings
-	 */
-	pub fn new(crop: Padding, resize: Geometry, ratio: f32) -> Self {
-		Self {
-			crop,
-			resize,
-			ratio,
-		}
-	}
-
-	/**
-	 * Create a EditSettings object from parsed arguments.
-	 *
-	 * @param  parser
-	 * @return EditSettings
-	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
-		match parser.args {
-			Some(matches) => Self::new(
-				Padding::parse(matches.value_of("crop").unwrap_or_default()),
-				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
-				parser.parse("ratio", Self::default().ratio),
-			),
-			None => Self::default(),
-		}
-	}
-
-	/**
-	 * Get Editor object from EditSettings.
-	 *
-	 * @return Editor
-	 */
-	pub fn get_editor(self) -> Editor {
-		Editor::new(self)
-	}
-}
 
 /* Image editor */
 #[derive(Clone, Debug)]
