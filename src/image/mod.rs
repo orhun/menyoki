@@ -1,7 +1,7 @@
+pub mod edit;
 pub mod geometry;
 pub mod padding;
 pub mod settings;
-pub mod edit;
 use std::fmt;
 
 use crate::image::geometry::Geometry;

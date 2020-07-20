@@ -4,7 +4,7 @@ use crate::image::padding::Padding;
 
 #[derive(Clone, Copy, Debug)]
 pub struct EditSettings {
-	pub padding: Padding,
+	pub crop: Padding,
 	pub resize: Geometry,
 	pub ratio: f32,
 }
@@ -13,7 +13,7 @@ pub struct EditSettings {
 impl Default for EditSettings {
 	fn default() -> Self {
 		Self {
-			padding: Padding::default(),
+			crop: Padding::default(),
 			resize: Geometry::default(),
 			ratio: 1.,
 		}
@@ -24,14 +24,14 @@ impl EditSettings {
 	/**
 	 * Create a new EditSettings object.
 	 *
-	 * @param  padding
+	 * @param  crop
 	 * @param  resize
 	 * @param  ratio
 	 * @return EditSettings
 	 */
-	pub fn new(padding: Padding, resize: Geometry, ratio: f32) -> Self {
+	pub fn new(crop: Padding, resize: Geometry, ratio: f32) -> Self {
 		Self {
-			padding,
+			crop,
 			resize,
 			ratio,
 		}
