@@ -2,6 +2,59 @@ use crate::args::parser::ArgParser;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
+#[derive(Clone, Copy, Debug)]
+pub struct EditSettings {
+	pub padding: Padding,
+	pub resize: Geometry,
+	pub ratio: f32,
+}
+
+/* Default initialization values for GifSettings */
+impl Default for EditSettings {
+	fn default() -> Self {
+		Self {
+			padding: Padding::default(),
+			resize: Geometry::default(),
+			ratio: 1.,
+		}
+	}
+}
+
+impl EditSettings {
+	/**
+	 * Create a new EditSettings object.
+	 *
+	 * @param  padding
+	 * @param  resize
+	 * @param  ratio
+	 * @return EditSettings
+	 */
+	pub fn new(padding: Padding, resize: Geometry, ratio: f32) -> Self {
+		Self {
+			padding,
+			resize,
+			ratio,
+		}
+	}
+
+	/**
+	 * Create a EditSettings object from parsed arguments.
+	 *
+	 * @param  parser
+	 * @return EditSettings
+	 */
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
+		match parser.args {
+			Some(matches) => Self::new(
+				Padding::parse(matches.value_of("crop").unwrap_or_default()),
+				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
+				parser.parse("ratio", Self::default().ratio),
+			),
+			None => Self::default(),
+		}
+	}
+}
+
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]
 pub struct GifSettings<'a> {
@@ -10,9 +63,7 @@ pub struct GifSettings<'a> {
 	pub quality: u8,
 	pub speed: f32,
 	pub fast: bool,
-	pub padding: Padding,
-	pub resize: Geometry,
-	pub ratio: f32,
+	pub edit: EditSettings,
 }
 
 /* Default initialization values for GifSettings */
@@ -24,9 +75,7 @@ impl Default for GifSettings<'_> {
 			quality: 75,
 			speed: 1.,
 			fast: false,
-			padding: Padding::default(),
-			resize: Geometry::default(),
-			ratio: 1.,
+			edit: EditSettings::default(),
 		}
 	}
 }
@@ -40,9 +89,7 @@ impl<'a> GifSettings<'a> {
 	 * @param  quality
 	 * @param  speed
 	 * @param  fast
-	 * @param  padding
-	 * @param  resize
-	 * @param  ratio
+	 * @param  edit
 	 * @return GifSettings
 	 */
 	pub fn new(
@@ -51,9 +98,7 @@ impl<'a> GifSettings<'a> {
 		quality: u8,
 		speed: f32,
 		fast: bool,
-		padding: Padding,
-		resize: Geometry,
-		ratio: f32,
+		edit: EditSettings,
 	) -> Self {
 		if quality <= 20 {
 			warn!("GIF will be encoded in low quality.");
@@ -64,9 +109,7 @@ impl<'a> GifSettings<'a> {
 			quality,
 			speed,
 			fast,
-			padding,
-			resize,
-			ratio,
+			edit,
 		}
 	}
 
@@ -84,9 +127,7 @@ impl<'a> GifSettings<'a> {
 				parser.parse("quality", Self::default().quality),
 				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
-				Padding::parse(matches.value_of("crop").unwrap_or_default()),
-				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
-				parser.parse("ratio", Self::default().ratio),
+				EditSettings::from_args(parser),
 			),
 			None => Self::default(),
 		}
