@@ -314,8 +314,8 @@ where
 					.short("s")
 					.long("speed")
 					.value_name("SPEED")
-					.default_value("100")
-					.help("Sets the GIF speed (%)")
+					.default_value("1.0")
+					.help("Sets the GIF speed")
 					.hidden(!edit_mode)
 					.takes_value(true),
 			)

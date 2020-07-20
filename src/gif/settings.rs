@@ -22,7 +22,7 @@ impl Default for GifSettings<'_> {
 			file: "",
 			repeat: -1,
 			quality: 75,
-			speed: 100.,
+			speed: 1.,
 			fast: false,
 			padding: Padding::default(),
 			resize: Geometry::default(),

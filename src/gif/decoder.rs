@@ -38,7 +38,7 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		let frames = self.decoder.into_frames().collect_frames()?;
 		let first_frame = frames.first().expect("No frames found to edit");
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
-			* (self.settings.speed / 1e2)) as u32;
+			* self.settings.speed) as u32;
 		let (mut width, mut height) = if !self.settings.resize.is_zero() {
 			(self.settings.resize.width, self.settings.resize.height)
 		} else {
