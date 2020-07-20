@@ -279,7 +279,7 @@ where
 	 * @return App
 	 */
 	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
-		SubCommand::with_name(if edit_mode { "edit" } else { "gif" })
+		let args = SubCommand::with_name(if edit_mode { "edit" } else { "gif" })
 			.about(if edit_mode {
 				"Changes the GIF encoder settings"
 			} else {
@@ -327,35 +327,40 @@ where
 						"Encodes 3 times faster (10% lower quality and bigger file)",
 					)
 					.hidden(!cfg!(feature = "ski") || !edit_mode),
-			)
-			.arg(
-				Arg::with_name("crop")
-					.long("crop")
-					.value_name("PADDING")
-					.default_value("0:0:0:0")
-					.help("Applies the given padding to crop the GIF")
-					.hidden(!edit_mode)
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("resize")
-					.long("resize")
-					.value_name("SIZE")
-					.default_value("W:H")
-					.help("Changes the GIF size and aspect ratio")
-					.hidden(!edit_mode)
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("ratio")
-					.long("ratio")
-					.value_name("RATIO")
-					.default_value("1.0")
-					.help("Resizes the GIF by changing the aspect ratio")
-					.conflicts_with("resize")
-					.hidden(!edit_mode)
-					.takes_value(true),
-			)
+			);
+		if edit_mode {
+			Self::get_edit_args(args)
+		} else {
+			args
+		}
+	}
+
+	fn get_edit_args(args: App<'a, 'b>) -> App<'a, 'b> {
+		args.arg(
+			Arg::with_name("crop")
+				.long("crop")
+				.value_name("PADDING")
+				.default_value("0:0:0:0")
+				.help("Applies the given padding to crop the GIF")
+				.takes_value(true),
+		)
+		.arg(
+			Arg::with_name("resize")
+				.long("resize")
+				.value_name("SIZE")
+				.default_value("W:H")
+				.help("Changes the GIF size and aspect ratio")
+				.takes_value(true),
+		)
+		.arg(
+			Arg::with_name("ratio")
+				.long("ratio")
+				.value_name("RATIO")
+				.default_value("1.0")
+				.help("Resizes the GIF by changing the aspect ratio")
+				.conflicts_with("resize")
+				.takes_value(true),
+		)
 	}
 
 	/**
