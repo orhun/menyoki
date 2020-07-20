@@ -358,7 +358,6 @@ where
 				.value_name("RATIO")
 				.default_value("1.0")
 				.help("Resizes the GIF by changing the aspect ratio")
-				.conflicts_with("resize")
 				.takes_value(true),
 		)
 	}
