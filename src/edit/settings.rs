@@ -3,6 +3,7 @@ use crate::edit::Editor;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
+/* Image editing settings */
 #[derive(Clone, Copy, Debug)]
 pub struct EditSettings {
 	pub crop: Padding,
