@@ -323,9 +323,7 @@ where
 				Arg::with_name("fast")
 					.short("f")
 					.long("fast")
-					.help(
-						"Encodes 3 times faster (lower quality and bigger file)",
-					)
+					.help("Encodes 3 times faster (lower quality and bigger file)")
 					.hidden(!cfg!(feature = "ski") || !edit_mode),
 			);
 		if edit_mode {
