@@ -1,6 +1,6 @@
 pub mod settings;
 
-use crate::edit::settings::EditSettings;
+use crate::edit::settings::{EditSettings, Flip};
 use crate::image::geometry::Geometry;
 use image::imageops::{self, FilterType};
 use image::{ImageBuffer, RgbaImage};
@@ -57,7 +57,7 @@ impl Editor {
 	 */
 	pub fn edit(&mut self, image: RgbaImage) -> RgbaImage {
 		self.image = image;
-		self.resize().crop().image.clone()
+		self.resize().crop().flip().image.clone()
 	}
 
 	/* Resize the image */
@@ -86,6 +86,20 @@ impl Editor {
 				self.geometry.height,
 			)
 			.to_image();
+		}
+		self
+	}
+
+	/* Flip the image*/
+	fn flip(&mut self) -> &mut Self {
+		match self.settings.flip {
+			Some(Flip::Horizontal) => {
+				imageops::flip_horizontal_in_place(&mut self.image)
+			}
+			Some(Flip::Vertical) => {
+				imageops::flip_vertical_in_place(&mut self.image)
+			}
+			_ => {}
 		}
 		self
 	}

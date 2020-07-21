@@ -3,12 +3,20 @@ use crate::edit::Editor;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
+/* Flip direction */
+#[derive(Clone, Copy, Debug)]
+pub enum Flip {
+	Horizontal,
+	Vertical,
+}
+
 /* Image editing settings */
 #[derive(Clone, Copy, Debug)]
 pub struct EditSettings {
 	pub crop: Padding,
 	pub resize: Geometry,
 	pub ratio: f32,
+	pub flip: Option<Flip>,
 }
 
 /* Default initialization values for GifSettings */
@@ -18,6 +26,7 @@ impl Default for EditSettings {
 			crop: Padding::default(),
 			resize: Geometry::default(),
 			ratio: 1.,
+			flip: None,
 		}
 	}
 }
@@ -29,13 +38,20 @@ impl EditSettings {
 	 * @param  crop
 	 * @param  resize
 	 * @param  ratio
+	 * @param  flip (Option)
 	 * @return EditSettings
 	 */
-	pub fn new(crop: Padding, resize: Geometry, ratio: f32) -> Self {
+	pub fn new(
+		crop: Padding,
+		resize: Geometry,
+		ratio: f32,
+		flip: Option<Flip>,
+	) -> Self {
 		Self {
 			crop,
 			resize,
 			ratio,
+			flip,
 		}
 	}
 
@@ -51,6 +67,11 @@ impl EditSettings {
 				Padding::parse(matches.value_of("crop").unwrap_or_default()),
 				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
 				parser.parse("ratio", Self::default().ratio),
+				match matches.value_of("flip") {
+					Some("horizontal") => Some(Flip::Horizontal),
+					Some("vertical") => Some(Flip::Vertical),
+					_ => None,
+				},
 			),
 			None => Self::default(),
 		}

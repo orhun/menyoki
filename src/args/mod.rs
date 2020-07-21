@@ -358,6 +358,14 @@ where
 				.help("Resizes the GIF by changing the aspect ratio")
 				.takes_value(true),
 		)
+		.arg(
+			Arg::with_name("flip")
+				.long("flip")
+				.value_name("FLIP")
+				.help("Flips the GIF")
+				.possible_values(&["horizontal", "vertical"])
+				.takes_value(true),
+		)
 	}
 
 	/**
