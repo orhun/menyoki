@@ -90,7 +90,7 @@ impl Editor {
 		self
 	}
 
-	/* Flip the image*/
+	/* Flip the image */
 	fn flip(&mut self) -> &mut Self {
 		match self.settings.flip {
 			Some(Flip::Horizontal) => {
