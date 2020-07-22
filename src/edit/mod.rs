@@ -151,6 +151,9 @@ impl Editor {
 		if self.settings.brightness != 0 {
 			self.image = colorops::brighten(&self.image, self.settings.brightness);
 		}
+		if self.settings.hue != 0 {
+			self.image = colorops::huerotate(&self.image, self.settings.hue);
+		}
 		if self.settings.contrast != 0. {
 			self.image = colorops::contrast(&self.image, self.settings.contrast);
 		}

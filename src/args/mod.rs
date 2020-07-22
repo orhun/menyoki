@@ -402,6 +402,15 @@ where
 				.takes_value(true),
 		)
 		.arg(
+			Arg::with_name("hue-rotate")
+				.long("hue-rotate")
+				.value_name("HUE")
+				.default_value("0")
+				.help("Hue rotates the GIF")
+				.allow_hyphen_values(true)
+				.takes_value(true),
+		)
+		.arg(
 			Arg::with_name("contrast")
 				.long("contrast")
 				.value_name("CONTRAST")

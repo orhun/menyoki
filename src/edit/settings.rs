@@ -22,6 +22,7 @@ pub struct EditSettings {
 	pub grayscale: bool,
 	pub invert: bool,
 	pub brightness: i32,
+	pub hue: i32,
 	pub contrast: f32,
 }
 
@@ -38,6 +39,7 @@ impl Default for EditSettings {
 			grayscale: false,
 			invert: false,
 			brightness: 0,
+			hue: 0,
 			contrast: 0.,
 		}
 	}
@@ -56,6 +58,7 @@ impl EditSettings {
 	 * @param  grayscale
 	 * @param  invert
 	 * @param  brightness
+	 * @param  hue
 	 * @param  contrast
 	 * @return EditSettings
 	 */
@@ -69,6 +72,7 @@ impl EditSettings {
 		grayscale: bool,
 		invert: bool,
 		brightness: i32,
+		hue: i32,
 		contrast: f32,
 	) -> Self {
 		Self {
@@ -81,6 +85,7 @@ impl EditSettings {
 			grayscale,
 			invert,
 			brightness,
+			hue,
 			contrast,
 		}
 	}
@@ -107,6 +112,7 @@ impl EditSettings {
 				matches.is_present("grayscale"),
 				matches.is_present("invert"),
 				parser.parse("brighten", Self::default().brightness),
+				parser.parse("hue-rotate", Self::default().hue),
 				parser.parse("contrast", Self::default().contrast),
 			),
 			None => Self::default(),
