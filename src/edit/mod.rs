@@ -40,7 +40,9 @@ impl Editor {
 		} else {
 			size
 		};
-		if self.settings.ratio > 0. && self.settings.ratio != 1. {
+		if self.settings.ratio > 0.
+			&& (self.settings.ratio - 1.).abs() > f32::EPSILON
+		{
 			let (w, h) = (width, height);
 			width = (w as f32 * self.settings.ratio) as u32;
 			height = (h as f32 * self.settings.ratio) as u32;
@@ -68,7 +70,8 @@ impl Editor {
 	/* Resize the image */
 	fn resize(&mut self) -> &mut Self {
 		if !self.settings.resize.is_zero()
-			|| (self.settings.ratio > 0. && self.settings.ratio != 1.)
+			|| (self.settings.ratio > 0.
+				&& (self.settings.ratio - 1.).abs() > f32::EPSILON)
 		{
 			self.image = imageops::resize(
 				&self.image,
