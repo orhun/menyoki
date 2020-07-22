@@ -73,7 +73,7 @@ pub struct EditSettings {
 	pub color: ColorSettings,
 }
 
-/* Default initialization values for GifSettings */
+/* Default initialization values for EditSettings */
 impl Default for EditSettings {
 	fn default() -> Self {
 		Self {
