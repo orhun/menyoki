@@ -366,6 +366,14 @@ where
 				.possible_values(&["horizontal", "vertical"])
 				.takes_value(true),
 		)
+		.arg(
+			Arg::with_name("rotate")
+				.long("rotate")
+				.value_name("ROTATE")
+				.help("Rotates the GIF clockwise")
+				.possible_values(&["90", "180", "270"])
+				.takes_value(true),
+		)
 	}
 
 	/**

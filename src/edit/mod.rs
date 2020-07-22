@@ -45,6 +45,11 @@ impl Editor {
 			width = (w as f32 * self.settings.ratio) as u32;
 			height = (h as f32 * self.settings.ratio) as u32;
 		}
+		if self.settings.rotate == 90 || self.settings.rotate == 270 {
+			let (w, h) = (width, height);
+			width = h;
+			height = w;
+		}
 		self.geometry =
 			Geometry::new(0, 0, width, height).with_padding(self.settings.crop);
 	}
@@ -57,7 +62,7 @@ impl Editor {
 	 */
 	pub fn edit(&mut self, image: RgbaImage) -> RgbaImage {
 		self.image = image;
-		self.resize().crop().flip().image.clone()
+		self.resize().crop().flip().rotate().image.clone()
 	}
 
 	/* Resize the image */
@@ -100,6 +105,18 @@ impl Editor {
 				imageops::flip_vertical_in_place(&mut self.image)
 			}
 			_ => {}
+		}
+		self
+	}
+
+	/* Rotate the image */
+	fn rotate(&mut self) -> &mut Self {
+		if self.settings.rotate == 90 {
+			self.image = imageops::rotate90(&self.image);
+		} else if self.settings.rotate == 180 {
+			self.image = imageops::rotate180(&self.image);
+		} else if self.settings.rotate == 270 {
+			self.image = imageops::rotate270(&self.image);
 		}
 		self
 	}

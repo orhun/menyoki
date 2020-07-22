@@ -17,6 +17,7 @@ pub struct EditSettings {
 	pub resize: Geometry,
 	pub ratio: f32,
 	pub flip: Option<Flip>,
+	pub rotate: u32,
 }
 
 /* Default initialization values for GifSettings */
@@ -27,6 +28,7 @@ impl Default for EditSettings {
 			resize: Geometry::default(),
 			ratio: 1.,
 			flip: None,
+			rotate: 0,
 		}
 	}
 }
@@ -39,6 +41,7 @@ impl EditSettings {
 	 * @param  resize
 	 * @param  ratio
 	 * @param  flip (Option)
+	 * @param  rotate
 	 * @return EditSettings
 	 */
 	pub fn new(
@@ -46,12 +49,14 @@ impl EditSettings {
 		resize: Geometry,
 		ratio: f32,
 		flip: Option<Flip>,
+		rotate: u32,
 	) -> Self {
 		Self {
 			crop,
 			resize,
 			ratio,
 			flip,
+			rotate,
 		}
 	}
 
@@ -72,6 +77,7 @@ impl EditSettings {
 					Some("vertical") => Some(Flip::Vertical),
 					_ => None,
 				},
+				parser.parse("rotate", Self::default().rotate),
 			),
 			None => Self::default(),
 		}
