@@ -2,8 +2,8 @@ pub mod settings;
 
 use crate::edit::settings::{EditSettings, Flip};
 use crate::image::geometry::Geometry;
-use image::imageops::{self, FilterType};
-use image::{ImageBuffer, RgbaImage};
+use image::imageops::{self, colorops, FilterType};
+use image::{DynamicImage, ImageBuffer, RgbaImage};
 use std::convert::TryInto;
 
 /* Image editor */
@@ -64,7 +64,14 @@ impl Editor {
 	 */
 	pub fn edit(&mut self, image: RgbaImage) -> RgbaImage {
 		self.image = image;
-		self.resize().crop().flip().rotate().blur().image.clone()
+		self.resize()
+			.crop()
+			.flip()
+			.rotate()
+			.blur()
+			.update_colors()
+			.image
+			.clone()
 	}
 
 	/* Resize the image */
@@ -128,6 +135,15 @@ impl Editor {
 	fn blur(&mut self) -> &mut Self {
 		if self.settings.blur > 0. {
 			self.image = imageops::blur(&self.image, self.settings.blur);
+		}
+		self
+	}
+
+	/* Update the colors of the image */
+	fn update_colors(&mut self) -> &mut Self {
+		if self.settings.grayscale {
+			self.image =
+				DynamicImage::ImageLuma8(colorops::grayscale(&self.image)).to_rgba();
 		}
 		self
 	}

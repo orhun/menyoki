@@ -382,6 +382,11 @@ where
 				.help("Blurs the GIF")
 				.takes_value(true),
 		)
+		.arg(
+			Arg::with_name("grayscale")
+				.long("grayscale")
+				.help("Converts GIF to grayscale"),
+		)
 	}
 
 	/**
