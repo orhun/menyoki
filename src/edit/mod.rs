@@ -148,6 +148,9 @@ impl Editor {
 		if self.settings.brightness != 0 {
 			self.image = colorops::brighten(&self.image, self.settings.brightness);
 		}
+		if self.settings.contrast != 0. {
+			self.image = colorops::contrast(&self.image, self.settings.contrast);
+		}
 		self
 	}
 }

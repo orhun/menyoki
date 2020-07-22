@@ -396,6 +396,15 @@ where
 				.allow_hyphen_values(true)
 				.takes_value(true),
 		)
+		.arg(
+			Arg::with_name("contrast")
+				.long("contrast")
+				.value_name("CONTRAST")
+				.default_value("0.0")
+				.help("Adjusts the contrast of the GIF")
+				.allow_hyphen_values(true)
+				.takes_value(true),
+		)
 	}
 
 	/**
