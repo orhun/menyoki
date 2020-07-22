@@ -64,10 +64,10 @@ impl Editor {
 	 */
 	pub fn edit(&mut self, image: RgbaImage) -> RgbaImage {
 		self.image = image;
-		self.resize()
-			.crop()
+		self.crop()
 			.flip()
 			.rotate()
+			.resize()
 			.blur()
 			.update_colors()
 			.image
