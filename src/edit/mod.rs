@@ -64,7 +64,7 @@ impl Editor {
 	 */
 	pub fn edit(&mut self, image: RgbaImage) -> RgbaImage {
 		self.image = image;
-		self.resize().crop().flip().rotate().image.clone()
+		self.resize().crop().flip().rotate().blur().image.clone()
 	}
 
 	/* Resize the image */
@@ -120,6 +120,14 @@ impl Editor {
 			self.image = imageops::rotate180(&self.image);
 		} else if self.settings.rotate == 270 {
 			self.image = imageops::rotate270(&self.image);
+		}
+		self
+	}
+
+	/* Blur the image */
+	fn blur(&mut self) -> &mut Self {
+		if self.settings.blur > 0. {
+			self.image = imageops::blur(&self.image, self.settings.blur);
 		}
 		self
 	}

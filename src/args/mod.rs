@@ -374,6 +374,14 @@ where
 				.possible_values(&["90", "180", "270"])
 				.takes_value(true),
 		)
+		.arg(
+			Arg::with_name("blur")
+				.long("blur")
+				.value_name("SIGMA")
+				.default_value("0.0")
+				.help("Blurs the GIF")
+				.takes_value(true),
+		)
 	}
 
 	/**

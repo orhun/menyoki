@@ -18,6 +18,7 @@ pub struct EditSettings {
 	pub ratio: f32,
 	pub flip: Option<Flip>,
 	pub rotate: u32,
+	pub blur: f32,
 }
 
 /* Default initialization values for GifSettings */
@@ -29,6 +30,7 @@ impl Default for EditSettings {
 			ratio: 1.,
 			flip: None,
 			rotate: 0,
+			blur: 0.,
 		}
 	}
 }
@@ -42,6 +44,7 @@ impl EditSettings {
 	 * @param  ratio
 	 * @param  flip (Option)
 	 * @param  rotate
+	 * @param  blur
 	 * @return EditSettings
 	 */
 	pub fn new(
@@ -50,6 +53,7 @@ impl EditSettings {
 		ratio: f32,
 		flip: Option<Flip>,
 		rotate: u32,
+		blur: f32,
 	) -> Self {
 		Self {
 			crop,
@@ -57,6 +61,7 @@ impl EditSettings {
 			ratio,
 			flip,
 			rotate,
+			blur,
 		}
 	}
 
@@ -78,6 +83,7 @@ impl EditSettings {
 					_ => None,
 				},
 				parser.parse("rotate", Self::default().rotate),
+				parser.parse("blur", Self::default().blur),
 			),
 			None => Self::default(),
 		}
