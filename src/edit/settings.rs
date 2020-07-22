@@ -20,6 +20,7 @@ pub struct EditSettings {
 	pub rotate: u32,
 	pub blur: f32,
 	pub grayscale: bool,
+	pub brightness: i32,
 }
 
 /* Default initialization values for GifSettings */
@@ -33,6 +34,7 @@ impl Default for EditSettings {
 			rotate: 0,
 			blur: 0.,
 			grayscale: false,
+			brightness: 0,
 		}
 	}
 }
@@ -48,6 +50,7 @@ impl EditSettings {
 	 * @param  rotate
 	 * @param  blur
 	 * @param  grayscale
+	 * @param  brightness
 	 * @return EditSettings
 	 */
 	pub fn new(
@@ -58,6 +61,7 @@ impl EditSettings {
 		rotate: u32,
 		blur: f32,
 		grayscale: bool,
+		brightness: i32,
 	) -> Self {
 		Self {
 			crop,
@@ -67,6 +71,7 @@ impl EditSettings {
 			rotate,
 			blur,
 			grayscale,
+			brightness,
 		}
 	}
 
@@ -90,6 +95,7 @@ impl EditSettings {
 				parser.parse("rotate", Self::default().rotate),
 				parser.parse("blur", Self::default().blur),
 				matches.is_present("grayscale"),
+				parser.parse("brighten", Self::default().brightness),
 			),
 			None => Self::default(),
 		}

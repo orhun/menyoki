@@ -387,6 +387,15 @@ where
 				.long("grayscale")
 				.help("Converts GIF to grayscale"),
 		)
+		.arg(
+			Arg::with_name("brighten")
+				.long("brighten")
+				.value_name("BRIGHTNESS")
+				.default_value("0")
+				.help("Brightens the GIF")
+				.allow_hyphen_values(true)
+				.takes_value(true),
+		)
 	}
 
 	/**

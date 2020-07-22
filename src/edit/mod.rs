@@ -145,6 +145,9 @@ impl Editor {
 			self.image =
 				DynamicImage::ImageLuma8(colorops::grayscale(&self.image)).to_rgba();
 		}
+		if self.settings.brightness != 0 {
+			self.image = colorops::brighten(&self.image, self.settings.brightness);
+		}
 		self
 	}
 }
