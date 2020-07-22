@@ -20,6 +20,7 @@ pub struct EditSettings {
 	pub rotate: u32,
 	pub blur: f32,
 	pub grayscale: bool,
+	pub invert: bool,
 	pub brightness: i32,
 	pub contrast: f32,
 }
@@ -35,6 +36,7 @@ impl Default for EditSettings {
 			rotate: 0,
 			blur: 0.,
 			grayscale: false,
+			invert: false,
 			brightness: 0,
 			contrast: 0.,
 		}
@@ -52,6 +54,7 @@ impl EditSettings {
 	 * @param  rotate
 	 * @param  blur
 	 * @param  grayscale
+	 * @param  invert
 	 * @param  brightness
 	 * @param  contrast
 	 * @return EditSettings
@@ -64,6 +67,7 @@ impl EditSettings {
 		rotate: u32,
 		blur: f32,
 		grayscale: bool,
+		invert: bool,
 		brightness: i32,
 		contrast: f32,
 	) -> Self {
@@ -75,6 +79,7 @@ impl EditSettings {
 			rotate,
 			blur,
 			grayscale,
+			invert,
 			brightness,
 			contrast,
 		}
@@ -100,6 +105,7 @@ impl EditSettings {
 				parser.parse("rotate", Self::default().rotate),
 				parser.parse("blur", Self::default().blur),
 				matches.is_present("grayscale"),
+				matches.is_present("invert"),
 				parser.parse("brighten", Self::default().brightness),
 				parser.parse("contrast", Self::default().contrast),
 			),

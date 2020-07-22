@@ -388,6 +388,11 @@ where
 				.help("Converts GIF to grayscale"),
 		)
 		.arg(
+			Arg::with_name("invert")
+				.long("invert")
+				.help("Inverts the GIF colors"),
+		)
+		.arg(
 			Arg::with_name("brighten")
 				.long("brighten")
 				.value_name("BRIGHTNESS")
