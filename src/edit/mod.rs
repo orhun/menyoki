@@ -141,21 +141,23 @@ impl Editor {
 
 	/* Update the colors of the image */
 	fn update_colors(&mut self) -> &mut Self {
-		if self.settings.grayscale {
+		if self.settings.color.grayscale {
 			self.image =
 				DynamicImage::ImageLuma8(colorops::grayscale(&self.image)).to_rgba();
 		}
-		if self.settings.invert {
+		if self.settings.color.invert {
 			colorops::invert(&mut self.image);
 		}
-		if self.settings.brightness != 0 {
-			self.image = colorops::brighten(&self.image, self.settings.brightness);
+		if self.settings.color.brightness != 0 {
+			self.image =
+				colorops::brighten(&self.image, self.settings.color.brightness);
 		}
-		if self.settings.hue != 0 {
-			self.image = colorops::huerotate(&self.image, self.settings.hue);
+		if self.settings.color.hue != 0 {
+			self.image = colorops::huerotate(&self.image, self.settings.color.hue);
 		}
-		if self.settings.contrast != 0. {
-			self.image = colorops::contrast(&self.image, self.settings.contrast);
+		if self.settings.color.contrast != 0. {
+			self.image =
+				colorops::contrast(&self.image, self.settings.color.contrast);
 		}
 		self
 	}

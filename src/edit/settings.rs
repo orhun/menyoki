@@ -3,6 +3,57 @@ use crate::edit::Editor;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
+/* Image color settings */
+#[derive(Clone, Copy, Debug)]
+pub struct ColorSettings {
+	pub grayscale: bool,
+	pub invert: bool,
+	pub brightness: i32,
+	pub hue: i32,
+	pub contrast: f32,
+}
+
+/* Default initialization values for ColorSettings */
+impl Default for ColorSettings {
+	fn default() -> Self {
+		Self {
+			grayscale: false,
+			invert: false,
+			brightness: 0,
+			hue: 0,
+			contrast: 0.,
+		}
+	}
+}
+
+impl ColorSettings {
+	/**
+	 * Create a new ColorSettings object.
+	 *
+	 * @param  grayscale
+	 * @param  invert
+	 * @param  brightness
+	 * @param  hue
+	 * @param  contrast
+	 * @return ColorSettings
+	 */
+	pub fn new(
+		grayscale: bool,
+		invert: bool,
+		brightness: i32,
+		hue: i32,
+		contrast: f32,
+	) -> Self {
+		Self {
+			grayscale,
+			invert,
+			brightness,
+			hue,
+			contrast,
+		}
+	}
+}
+
 /* Flip direction */
 #[derive(Clone, Copy, Debug)]
 pub enum Flip {
@@ -19,11 +70,7 @@ pub struct EditSettings {
 	pub flip: Option<Flip>,
 	pub rotate: u32,
 	pub blur: f32,
-	pub grayscale: bool,
-	pub invert: bool,
-	pub brightness: i32,
-	pub hue: i32,
-	pub contrast: f32,
+	pub color: ColorSettings,
 }
 
 /* Default initialization values for GifSettings */
@@ -36,11 +83,7 @@ impl Default for EditSettings {
 			flip: None,
 			rotate: 0,
 			blur: 0.,
-			grayscale: false,
-			invert: false,
-			brightness: 0,
-			hue: 0,
-			contrast: 0.,
+			color: ColorSettings::default(),
 		}
 	}
 }
@@ -55,11 +98,7 @@ impl EditSettings {
 	 * @param  flip (Option)
 	 * @param  rotate
 	 * @param  blur
-	 * @param  grayscale
-	 * @param  invert
-	 * @param  brightness
-	 * @param  hue
-	 * @param  contrast
+	 * @param  color
 	 * @return EditSettings
 	 */
 	pub fn new(
@@ -69,11 +108,7 @@ impl EditSettings {
 		flip: Option<Flip>,
 		rotate: u32,
 		blur: f32,
-		grayscale: bool,
-		invert: bool,
-		brightness: i32,
-		hue: i32,
-		contrast: f32,
+		color: ColorSettings,
 	) -> Self {
 		Self {
 			crop,
@@ -82,11 +117,7 @@ impl EditSettings {
 			flip,
 			rotate,
 			blur,
-			grayscale,
-			invert,
-			brightness,
-			hue,
-			contrast,
+			color,
 		}
 	}
 
@@ -109,11 +140,13 @@ impl EditSettings {
 				},
 				parser.parse("rotate", Self::default().rotate),
 				parser.parse("blur", Self::default().blur),
-				matches.is_present("grayscale"),
-				matches.is_present("invert"),
-				parser.parse("brighten", Self::default().brightness),
-				parser.parse("hue-rotate", Self::default().hue),
-				parser.parse("contrast", Self::default().contrast),
+				ColorSettings::new(
+					matches.is_present("grayscale"),
+					matches.is_present("invert"),
+					parser.parse("brighten", ColorSettings::default().brightness),
+					parser.parse("hue-rotate", ColorSettings::default().hue),
+					parser.parse("contrast", ColorSettings::default().contrast),
+				),
 			),
 			None => Self::default(),
 		}
