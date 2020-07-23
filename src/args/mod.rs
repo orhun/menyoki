@@ -286,13 +286,6 @@ where
 				"Changes the GIF encoder settings"
 			})
 			.arg(
-				Arg::with_name("input")
-					.value_name("FILE")
-					.help("Sets the input file path")
-					.hidden(!edit_mode)
-					.required(edit_mode),
-			)
-			.arg(
 				Arg::with_name("quality")
 					.short("q")
 					.long("quality")
@@ -341,6 +334,12 @@ where
 	 */
 	fn get_edit_args(args: App<'a, 'b>) -> App<'a, 'b> {
 		args.arg(
+			Arg::with_name("input")
+				.value_name("FILE")
+				.help("Sets the input file path")
+				.required(true),
+		)
+		.arg(
 			Arg::with_name("crop")
 				.long("crop")
 				.value_name("PADDING")
