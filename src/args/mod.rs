@@ -333,6 +333,12 @@ where
 		}
 	}
 
+	/**
+	 * Get the image editing arguments.
+	 *
+	 * @param  args
+	 * @return App
+	 */
 	fn get_edit_args(args: App<'a, 'b>) -> App<'a, 'b> {
 		args.arg(
 			Arg::with_name("crop")
