@@ -3,6 +3,61 @@ use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
+/* Image settings */
+#[derive(Clone, Copy, Debug)]
+pub struct ImageSettings {
+	pub crop: Padding,
+	pub resize: Geometry,
+	pub ratio: f32,
+	pub flip: Option<Flip>,
+	pub rotate: u32,
+	pub blur: f32,
+}
+
+/* Default initialization values for ImageSettings */
+impl Default for ImageSettings {
+	fn default() -> Self {
+		Self {
+			crop: Padding::default(),
+			resize: Geometry::default(),
+			ratio: 1.,
+			flip: None,
+			rotate: 0,
+			blur: 0.,
+		}
+	}
+}
+
+impl ImageSettings {
+	/**
+	 * Create a new ImageSettings object.
+	 *
+	 * @param  crop
+	 * @param  resize
+	 * @param  ratio
+	 * @param  flip (Option)
+	 * @param  rotate
+	 * @param  blur
+	 */
+	pub fn new(
+		crop: Padding,
+		resize: Geometry,
+		ratio: f32,
+		flip: Option<Flip>,
+		rotate: u32,
+		blur: f32,
+	) -> Self {
+		Self {
+			crop,
+			resize,
+			ratio,
+			flip,
+			rotate,
+			blur,
+		}
+	}
+}
+
 /* Image color settings */
 #[derive(Clone, Copy, Debug)]
 pub struct ColorSettings {
@@ -65,12 +120,7 @@ pub enum Flip {
 #[derive(Clone, Copy, Debug)]
 pub struct EditSettings<'a> {
 	pub file: &'a str,
-	pub crop: Padding,
-	pub resize: Geometry,
-	pub ratio: f32,
-	pub flip: Option<Flip>,
-	pub rotate: u32,
-	pub blur: f32,
+	pub image: ImageSettings,
 	pub color: ColorSettings,
 }
 
@@ -79,12 +129,7 @@ impl Default for EditSettings<'_> {
 	fn default() -> Self {
 		Self {
 			file: "",
-			crop: Padding::default(),
-			resize: Geometry::default(),
-			ratio: 1.,
-			flip: None,
-			rotate: 0,
-			blur: 0.,
+			image: ImageSettings::default(),
 			color: ColorSettings::default(),
 		}
 	}
@@ -95,35 +140,12 @@ impl<'a> EditSettings<'a> {
 	 * Create a new EditSettings object.
 	 *
 	 * @param  file
-	 * @param  crop
-	 * @param  resize
-	 * @param  ratio
-	 * @param  flip (Option)
-	 * @param  rotate
-	 * @param  blur
+	 * @param  image
 	 * @param  color
 	 * @return EditSettings
 	 */
-	pub fn new(
-		file: &'a str,
-		crop: Padding,
-		resize: Geometry,
-		ratio: f32,
-		flip: Option<Flip>,
-		rotate: u32,
-		blur: f32,
-		color: ColorSettings,
-	) -> Self {
-		Self {
-			file,
-			crop,
-			resize,
-			ratio,
-			flip,
-			rotate,
-			blur,
-			color,
-		}
+	pub fn new(file: &'a str, image: ImageSettings, color: ColorSettings) -> Self {
+		Self { file, image, color }
 	}
 
 	/**
@@ -136,16 +158,18 @@ impl<'a> EditSettings<'a> {
 		match parser.args {
 			Some(matches) => Self::new(
 				matches.value_of("input").unwrap_or_default(),
-				Padding::parse(matches.value_of("crop").unwrap_or_default()),
-				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
-				parser.parse("ratio", Self::default().ratio),
-				match matches.value_of("flip") {
-					Some("horizontal") => Some(Flip::Horizontal),
-					Some("vertical") => Some(Flip::Vertical),
-					_ => None,
-				},
-				parser.parse("rotate", Self::default().rotate),
-				parser.parse("blur", Self::default().blur),
+				ImageSettings::new(
+					Padding::parse(matches.value_of("crop").unwrap_or_default()),
+					Geometry::parse(matches.value_of("resize").unwrap_or_default()),
+					parser.parse("ratio", ImageSettings::default().ratio),
+					match matches.value_of("flip") {
+						Some("horizontal") => Some(Flip::Horizontal),
+						Some("vertical") => Some(Flip::Vertical),
+						_ => None,
+					},
+					parser.parse("rotate", ImageSettings::default().rotate),
+					parser.parse("blur", ImageSettings::default().blur),
+				),
 				ColorSettings::new(
 					matches.is_present("grayscale"),
 					matches.is_present("invert"),

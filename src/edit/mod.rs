@@ -35,25 +35,28 @@ impl<'a> ImageOps<'a> {
 	 * @param size
 	 */
 	pub fn init(&mut self, size: (u32, u32)) {
-		let (mut width, mut height) = if !self.settings.resize.is_zero() {
-			(self.settings.resize.width, self.settings.resize.height)
+		let (mut width, mut height) = if !self.settings.image.resize.is_zero() {
+			(
+				self.settings.image.resize.width,
+				self.settings.image.resize.height,
+			)
 		} else {
 			size
 		};
-		if self.settings.ratio > 0.
-			&& (self.settings.ratio - 1.).abs() > f32::EPSILON
+		if self.settings.image.ratio > 0.
+			&& (self.settings.image.ratio - 1.).abs() > f32::EPSILON
 		{
 			let (w, h) = (width, height);
-			width = (w as f32 * self.settings.ratio) as u32;
-			height = (h as f32 * self.settings.ratio) as u32;
+			width = (w as f32 * self.settings.image.ratio) as u32;
+			height = (h as f32 * self.settings.image.ratio) as u32;
 		}
-		if self.settings.rotate == 90 || self.settings.rotate == 270 {
+		if self.settings.image.rotate == 90 || self.settings.image.rotate == 270 {
 			let (w, h) = (width, height);
 			width = h;
 			height = w;
 		}
-		self.geometry =
-			Geometry::new(0, 0, width, height).with_padding(self.settings.crop);
+		self.geometry = Geometry::new(0, 0, width, height)
+			.with_padding(self.settings.image.crop);
 	}
 
 	/**
@@ -76,9 +79,9 @@ impl<'a> ImageOps<'a> {
 
 	/* Resize the image */
 	fn resize(&mut self) -> &mut Self {
-		if !self.settings.resize.is_zero()
-			|| (self.settings.ratio > 0.
-				&& (self.settings.ratio - 1.).abs() > f32::EPSILON)
+		if !self.settings.image.resize.is_zero()
+			|| (self.settings.image.ratio > 0.
+				&& (self.settings.image.ratio - 1.).abs() > f32::EPSILON)
 		{
 			self.image = imageops::resize(
 				&self.image,
@@ -92,7 +95,7 @@ impl<'a> ImageOps<'a> {
 
 	/* Crop the image */
 	fn crop(&mut self) -> &mut Self {
-		if !self.settings.crop.is_zero() {
+		if !self.settings.image.crop.is_zero() {
 			self.image = imageops::crop(
 				&mut self.image,
 				self.geometry.x.try_into().unwrap_or_default(),
@@ -107,7 +110,7 @@ impl<'a> ImageOps<'a> {
 
 	/* Flip the image */
 	fn flip(&mut self) -> &mut Self {
-		match self.settings.flip {
+		match self.settings.image.flip {
 			Some(Flip::Horizontal) => {
 				imageops::flip_horizontal_in_place(&mut self.image)
 			}
@@ -121,11 +124,11 @@ impl<'a> ImageOps<'a> {
 
 	/* Rotate the image */
 	fn rotate(&mut self) -> &mut Self {
-		if self.settings.rotate == 90 {
+		if self.settings.image.rotate == 90 {
 			self.image = imageops::rotate90(&self.image);
-		} else if self.settings.rotate == 180 {
+		} else if self.settings.image.rotate == 180 {
 			self.image = imageops::rotate180(&self.image);
-		} else if self.settings.rotate == 270 {
+		} else if self.settings.image.rotate == 270 {
 			self.image = imageops::rotate270(&self.image);
 		}
 		self
@@ -133,8 +136,8 @@ impl<'a> ImageOps<'a> {
 
 	/* Blur the image */
 	fn blur(&mut self) -> &mut Self {
-		if self.settings.blur > 0. {
-			self.image = imageops::blur(&self.image, self.settings.blur);
+		if self.settings.image.blur > 0. {
+			self.image = imageops::blur(&self.image, self.settings.image.blur);
 		}
 		self
 	}
