@@ -64,6 +64,13 @@ where
 		trace!("{:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
+		let image = if !self.settings.args.is_present("edit")
+			&& self.settings.save.file.format != FileFormat::Gif
+		{
+			self.capture()
+		} else {
+			None
+		};
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
@@ -80,7 +87,8 @@ where
 			}
 			FileFormat::Png => {
 				debug!("{:?}", self.settings.png);
-				self.capture(
+				self.save_image(
+					image,
 					PNGEncoder::new_with_quality(
 						output,
 						self.settings.png.compression,
@@ -91,7 +99,8 @@ where
 			}
 			FileFormat::Jpg => {
 				debug!("{:?}", self.settings.jpg);
-				self.capture(
+				self.save_image(
+					image,
 					JPEGEncoder::new_with_quality(
 						&mut output,
 						self.settings.jpg.quality,
@@ -99,15 +108,19 @@ where
 					ColorType::Rgb8,
 				)
 			}
-			FileFormat::Bmp => {
-				self.capture(BMPEncoder::new(&mut output), ColorType::Rgba8)
-			}
+			FileFormat::Bmp => self.save_image(
+				image,
+				BMPEncoder::new(&mut output),
+				ColorType::Rgba8,
+			),
 			FileFormat::Tiff => {
-				self.capture(TiffEncoder::new(output), ColorType::Rgba8)
+				self.save_image(image, TiffEncoder::new(output), ColorType::Rgba8)
 			}
-			FileFormat::Ff => {
-				self.capture(FarbfeldEncoder::new(output), ColorType::Rgba16)
-			}
+			FileFormat::Ff => self.save_image(
+				image,
+				FarbfeldEncoder::new(output),
+				ColorType::Rgba16,
+			),
 		}
 		info!(
 			"{} saved to: {:?} ({})",
@@ -124,11 +137,11 @@ where
 	/**
 	 * Capture the image of window.
 	 *
-	 * @return Image
+	 * @return Image (Option)
 	 */
-	fn capture(self) -> Image {
+	fn capture(self) -> Option<Image> {
 		let window = self.window.expect("Failed to get the window");
-		let image = if self.settings.args.is_present("command") {
+		if self.settings.args.is_present("command") {
 			let image_thread = thread::spawn(move || {
 				window.show_countdown();
 				info!("Capturing an image...");
@@ -147,7 +160,6 @@ where
 			info!("Capturing an image...");
 			window.get_image()
 		}
-		.expect("Failed to get the window image")
 	}
 
 	/**
@@ -192,15 +204,17 @@ where
 	/**
 	 * Save the image to a file.
 	 *
+	 * @param image (Option)
 	 * @param encoder
 	 * @param color_type
 	 */
 	fn save_image<Encoder: ImageEncoder>(
 		&self,
-		image: Image,
+		image: Option<Image>,
 		encoder: Encoder,
 		color_type: ColorType,
 	) {
+		let image = image.expect("Failed to get the window image");
 		info!(
 			"Encoding the image as {}...",
 			self.settings.save.file.format.to_string().to_uppercase()
