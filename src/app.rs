@@ -264,7 +264,7 @@ mod tests {
 			window.geometry,
 		));
 		let mut output = Vec::new();
-		app.save_gif(images, &mut output)?;
+		app.save_gif((images, 10), &mut output)?;
 		assert!(output.len() > 0);
 		Ok(())
 	}
