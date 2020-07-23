@@ -122,16 +122,11 @@ where
 	}
 
 	/**
-	 * Capture the image of window and save it to a file.
+	 * Capture the image of window.
 	 *
-	 * @param encoder
-	 * @param color_type
+	 * @return Image
 	 */
-	fn capture<Encoder: ImageEncoder>(
-		self,
-		encoder: Encoder,
-		color_type: ColorType,
-	) {
+	fn capture(self) -> Image {
 		let window = self.window.expect("Failed to get the window");
 		let image = if self.settings.args.is_present("command") {
 			let image_thread = thread::spawn(move || {
@@ -152,21 +147,7 @@ where
 			info!("Capturing an image...");
 			window.get_image()
 		}
-		.expect("Failed to get the window image");
-		info!(
-			"Encoding the image as {}...",
-			self.settings.save.file.format.to_string().to_uppercase()
-		);
-		debug!("{:?}", image);
-		debug!("Color type: {:?}", color_type);
-		encoder
-			.write_image(
-				&image.get_data(color_type),
-				image.geometry.width,
-				image.geometry.height,
-				color_type,
-			)
-			.expect("Failed to encode the image");
+		.expect("Failed to get the window image")
 	}
 
 	/**
@@ -206,6 +187,34 @@ where
 		} else {
 			recorder.record_sync(&self.settings.input_state)
 		}
+	}
+
+	/**
+	 * Save the image to a file.
+	 *
+	 * @param encoder
+	 * @param color_type
+	 */
+	fn save_image<Encoder: ImageEncoder>(
+		&self,
+		image: Image,
+		encoder: Encoder,
+		color_type: ColorType,
+	) {
+		info!(
+			"Encoding the image as {}...",
+			self.settings.save.file.format.to_string().to_uppercase()
+		);
+		debug!("{:?}", image);
+		debug!("Color type: {:?}", color_type);
+		encoder
+			.write_image(
+				&image.get_data(color_type),
+				image.geometry.width,
+				image.geometry.height,
+				color_type,
+			)
+			.expect("Failed to encode the image");
 	}
 
 	/**
