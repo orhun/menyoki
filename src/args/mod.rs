@@ -281,9 +281,9 @@ where
 	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
 		let args = SubCommand::with_name(if edit_mode { "edit" } else { "gif" })
 			.about(if edit_mode {
-				"Changes the GIF encoder settings"
-			} else {
 				"Changes the GIF editing settings"
+			} else {
+				"Changes the GIF encoder settings"
 			})
 			.arg(
 				Arg::with_name("input")
