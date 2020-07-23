@@ -8,20 +8,20 @@ use std::convert::TryInto;
 
 /* Image processor */
 #[derive(Clone, Debug)]
-pub struct ImageOps {
+pub struct ImageOps<'a> {
 	pub image: RgbaImage,
 	pub geometry: Geometry,
-	settings: EditSettings,
+	settings: EditSettings<'a>,
 }
 
-impl ImageOps {
+impl<'a> ImageOps<'a> {
 	/**
 	 * Create a new ImageOps object.
 	 *
 	 * @param  settings
 	 * @return ImageOps
 	 */
-	pub fn new(settings: EditSettings) -> Self {
+	pub fn new(settings: EditSettings<'a>) -> Self {
 		Self {
 			image: ImageBuffer::new(0, 0),
 			geometry: Geometry::default(),

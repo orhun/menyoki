@@ -68,8 +68,11 @@ where
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
 				let frames = if self.settings.args.is_present("edit") {
-					info!("Reading the frames from {:?}...", self.settings.gif.file);
-					self.edit_gif(File::open(self.settings.gif.file)?)
+					info!(
+						"Reading the frames from {:?}...",
+						self.settings.edit.file
+					);
+					self.edit_gif(File::open(self.settings.edit.file)?)
 				} else {
 					(self.record(), self.settings.record.fps)
 				};

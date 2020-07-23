@@ -14,11 +14,11 @@ use clap::ArgMatches;
 pub struct AppSettings<'a> {
 	pub args: &'a ArgMatches<'a>,
 	pub record: RecordSettings,
-	pub gif: GifSettings<'a>,
+	pub gif: GifSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
 	pub save: SaveSettings,
-	pub edit: EditSettings,
+	pub edit: EditSettings<'a>,
 	pub input_state: &'static InputState,
 }
 

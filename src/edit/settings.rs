@@ -63,7 +63,8 @@ pub enum Flip {
 
 /* Image editing settings */
 #[derive(Clone, Copy, Debug)]
-pub struct EditSettings {
+pub struct EditSettings<'a> {
+	pub file: &'a str,
 	pub crop: Padding,
 	pub resize: Geometry,
 	pub ratio: f32,
@@ -74,9 +75,10 @@ pub struct EditSettings {
 }
 
 /* Default initialization values for EditSettings */
-impl Default for EditSettings {
+impl Default for EditSettings<'_> {
 	fn default() -> Self {
 		Self {
+			file: "",
 			crop: Padding::default(),
 			resize: Geometry::default(),
 			ratio: 1.,
@@ -88,10 +90,11 @@ impl Default for EditSettings {
 	}
 }
 
-impl EditSettings {
+impl<'a> EditSettings<'a> {
 	/**
 	 * Create a new EditSettings object.
 	 *
+	 * @param  file
 	 * @param  crop
 	 * @param  resize
 	 * @param  ratio
@@ -102,6 +105,7 @@ impl EditSettings {
 	 * @return EditSettings
 	 */
 	pub fn new(
+		file: &'a str,
 		crop: Padding,
 		resize: Geometry,
 		ratio: f32,
@@ -111,6 +115,7 @@ impl EditSettings {
 		color: ColorSettings,
 	) -> Self {
 		Self {
+			file,
 			crop,
 			resize,
 			ratio,
@@ -127,9 +132,10 @@ impl EditSettings {
 	 * @param  parser
 	 * @return EditSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_args(parser: ArgParser<'a>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
+				matches.value_of("input").unwrap_or_default(),
 				Padding::parse(matches.value_of("crop").unwrap_or_default()),
 				Geometry::parse(matches.value_of("resize").unwrap_or_default()),
 				parser.parse("ratio", Self::default().ratio),
@@ -157,7 +163,7 @@ impl EditSettings {
 	 *
 	 * @return ImageOps
 	 */
-	pub fn get_imageops(self) -> ImageOps {
+	pub fn get_imageops(self) -> ImageOps<'a> {
 		ImageOps::new(self)
 	}
 }
