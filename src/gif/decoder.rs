@@ -1,4 +1,4 @@
-use crate::edit::Editor as GifEditor;
+use crate::edit::ImageOps;
 use crate::gif::settings::GifSettings;
 use crate::image::Image;
 use image::error::ImageError;
@@ -9,7 +9,7 @@ use std::io::Read;
 /* GIF decoder and settings */
 pub struct Decoder<'a, Input: Read> {
 	decoder: GifDecoder<Input>,
-	editor: GifEditor,
+	imageops: ImageOps,
 	settings: GifSettings<'a>,
 }
 
@@ -18,18 +18,18 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 	 * Create a new Decoder object.
 	 *
 	 * @param  input
-	 * @param  editor
+	 * @param  imageops
 	 * @param  settings
 	 * @return Result
 	 */
 	pub fn new(
 		input: Input,
-		editor: GifEditor,
+		imageops: ImageOps,
 		settings: GifSettings<'a>,
 	) -> Result<Self, ImageError> {
 		Ok(Self {
 			decoder: GifDecoder::new(input)?,
-			editor,
+			imageops,
 			settings,
 		})
 	}
@@ -44,19 +44,19 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		let first_frame = frames.first().expect("No frames found to edit");
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
 			* self.settings.speed) as u32;
-		self.editor
+		self.imageops
 			.init(first_frame.clone().into_buffer().dimensions());
 		let mut images = Vec::new();
 		for frame in frames {
 			images.push(Image::new(
-				self.editor
-					.edit(frame.into_buffer())
+				self.imageops
+					.process(frame.into_buffer())
 					.into_vec()
 					.chunks(4)
 					.map(|rgba| Bgra::from([rgba[2], rgba[1], rgba[0], rgba[3]]))
 					.collect(),
 				true,
-				self.editor.geometry,
+				self.imageops.geometry,
 			));
 		}
 		Ok((images, fps))

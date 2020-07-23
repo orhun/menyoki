@@ -6,20 +6,20 @@ use image::imageops::{self, colorops, FilterType};
 use image::{DynamicImage, ImageBuffer, RgbaImage};
 use std::convert::TryInto;
 
-/* Image editor */
+/* Image processor */
 #[derive(Clone, Debug)]
-pub struct Editor {
+pub struct ImageOps {
 	pub image: RgbaImage,
 	pub geometry: Geometry,
 	settings: EditSettings,
 }
 
-impl Editor {
+impl ImageOps {
 	/**
-	 * Create a new Editor object.
+	 * Create a new ImageOps object.
 	 *
 	 * @param  settings
-	 * @return Editor
+	 * @return ImageOps
 	 */
 	pub fn new(settings: EditSettings) -> Self {
 		Self {
@@ -30,7 +30,7 @@ impl Editor {
 	}
 
 	/**
-	 * Set the geometry to use while editing.
+	 * Set the geometry to use while processing.
 	 *
 	 * @param size
 	 */
@@ -57,12 +57,12 @@ impl Editor {
 	}
 
 	/**
-	 * Edit and return the image.
+	 * Process and return the image.
 	 *
 	 * @param  image
 	 * @return RgbaImage
 	 */
-	pub fn edit(&mut self, image: RgbaImage) -> RgbaImage {
+	pub fn process(&mut self, image: RgbaImage) -> RgbaImage {
 		self.image = image;
 		self.crop()
 			.flip()

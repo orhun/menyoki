@@ -1,5 +1,5 @@
 use crate::args::parser::ArgParser;
-use crate::edit::Editor;
+use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 
@@ -153,11 +153,11 @@ impl EditSettings {
 	}
 
 	/**
-	 * Get Editor object from EditSettings.
+	 * Get ImageOps object from EditSettings.
 	 *
-	 * @return Editor
+	 * @return ImageOps
 	 */
-	pub fn get_editor(self) -> Editor {
-		Editor::new(self)
+	pub fn get_imageops(self) -> ImageOps {
+		ImageOps::new(self)
 	}
 }
