@@ -2,8 +2,7 @@ use crate::args::parser::ArgParser;
 
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]
-pub struct GifSettings<'a> {
-	pub file: &'a str,
+pub struct GifSettings {
 	pub repeat: i32,
 	pub quality: u8,
 	pub speed: f32,
@@ -11,10 +10,9 @@ pub struct GifSettings<'a> {
 }
 
 /* Default initialization values for GifSettings */
-impl Default for GifSettings<'_> {
+impl Default for GifSettings {
 	fn default() -> Self {
 		Self {
-			file: "",
 			repeat: -1,
 			quality: 75,
 			speed: 1.,
@@ -23,29 +21,21 @@ impl Default for GifSettings<'_> {
 	}
 }
 
-impl<'a> GifSettings<'a> {
+impl GifSettings {
 	/**
 	 * Create a new GifSettings object.
 	 *
-	 * @param  file
 	 * @param  repeat
 	 * @param  quality
 	 * @param  speed
 	 * @param  fast
 	 * @return GifSettings
 	 */
-	pub fn new(
-		file: &'a str,
-		repeat: i32,
-		quality: u8,
-		speed: f32,
-		fast: bool,
-	) -> Self {
+	pub fn new(repeat: i32, quality: u8, speed: f32, fast: bool) -> Self {
 		if quality <= 20 {
 			warn!("GIF will be encoded in low quality.");
 		}
 		Self {
-			file,
 			repeat,
 			quality,
 			speed,
@@ -59,10 +49,9 @@ impl<'a> GifSettings<'a> {
 	 * @param  parser
 	 * @return GifSettings
 	 */
-	pub fn from_args(parser: ArgParser<'a>) -> Self {
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
-				matches.value_of("input").unwrap_or_default(),
 				parser.parse("repeat", Self::default().repeat) - 1,
 				parser.parse("quality", Self::default().quality),
 				parser.parse("speed", Self::default().speed),

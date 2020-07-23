@@ -8,12 +8,12 @@ use std::io::{Error, Write};
 pub type Frames = (Vec<Image>, u32);
 
 /* Required encoding methods for Gif */
-pub trait Encoder<'a, Output: Write> {
+pub trait Encoder<Output: Write> {
 	fn new(
 		fps: u32,
 		geometry: Geometry,
 		output: Output,
-		settings: GifSettings<'a>,
+		settings: GifSettings,
 	) -> Result<Self, Error>
 	where
 		Self: Sized;
