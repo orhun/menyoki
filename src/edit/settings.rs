@@ -121,6 +121,7 @@ pub enum Flip {
 #[derive(Clone, Copy, Debug)]
 pub struct EditSettings<'a> {
 	pub path: &'a Path,
+	pub convert: bool,
 	pub image: ImageSettings,
 	pub color: ColorSettings,
 }
@@ -130,6 +131,7 @@ impl Default for EditSettings<'_> {
 	fn default() -> Self {
 		Self {
 			path: Path::new(""),
+			convert: false,
 			image: ImageSettings::default(),
 			color: ColorSettings::default(),
 		}
@@ -141,12 +143,23 @@ impl<'a> EditSettings<'a> {
 	 * Create a new EditSettings object.
 	 *
 	 * @param  path
+	 * @param  convert
 	 * @param  image
 	 * @param  color
 	 * @return EditSettings
 	 */
-	pub fn new(path: &'a Path, image: ImageSettings, color: ColorSettings) -> Self {
-		Self { path, image, color }
+	pub fn new(
+		path: &'a Path,
+		convert: bool,
+		image: ImageSettings,
+		color: ColorSettings,
+	) -> Self {
+		Self {
+			path,
+			convert,
+			image,
+			color,
+		}
 	}
 
 	/**
@@ -159,6 +172,7 @@ impl<'a> EditSettings<'a> {
 		match parser.args {
 			Some(matches) => Self::new(
 				Path::new(matches.value_of("input").unwrap_or_default()),
+				matches.is_present("convert"),
 				ImageSettings::new(
 					Padding::parse(matches.value_of("crop").unwrap_or_default()),
 					Geometry::parse(matches.value_of("resize").unwrap_or_default()),
