@@ -40,14 +40,7 @@ impl<'a> AppSettings<'a> {
 					"record"
 				},
 			)),
-			gif: GifSettings::from_args(ArgParser::from_subcommand(
-				args,
-				if args.is_present("edit") {
-					"edit"
-				} else {
-					"gif"
-				},
-			)),
+			gif: GifSettings::from_args(ArgParser::from_subcommand(args, "gif")),
 			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
 			jpg: JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg")),
 			save: SaveSettings::from_args(
