@@ -3,6 +3,7 @@ use clap::ArgMatches;
 use std::fmt;
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::str::FromStr;
 
 /* Information to include in file name */
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -80,6 +81,22 @@ impl fmt::Display for FileFormat {
 	}
 }
 
+/* Implementation for parsing FileFormat from a string */
+impl FromStr for FileFormat {
+	type Err = ();
+	fn from_str(s: &str) -> Result<Self, Self::Err> {
+		match s {
+			"gif" => Ok(Self::Gif),
+			"png" => Ok(Self::Png),
+			"jpg" => Ok(Self::Jpg),
+			"bmp" => Ok(Self::Bmp),
+			"tiff" => Ok(Self::Tiff),
+			"ff" => Ok(Self::Ff),
+			_ => Err(()),
+		}
+	}
+}
+
 impl FileFormat {
 	/**
 	 * Create a FileFormat enum fron parsed arguments.
@@ -88,9 +105,15 @@ impl FileFormat {
 	 * @return FileFormat
 	 */
 	pub fn from_args<'a>(args: &'a ArgMatches<'a>) -> Self {
-		match args.subcommand_matches("capture") {
+		match args.subcommand_matches(if args.is_present("edit") {
+			"edit"
+		} else {
+			"capture"
+		}) {
 			Some(matches) => {
-				if matches.is_present("ff") {
+				if matches.is_present("gif") {
+					Self::Gif
+				} else if matches.is_present("ff") {
 					Self::Ff
 				} else if matches.is_present("tiff") {
 					Self::Tiff
