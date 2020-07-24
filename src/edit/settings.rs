@@ -2,6 +2,7 @@ use crate::args::parser::ArgParser;
 use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
+use std::path::Path;
 
 /* Image settings */
 #[derive(Clone, Copy, Debug)]
@@ -119,7 +120,7 @@ pub enum Flip {
 /* Image editing settings */
 #[derive(Clone, Copy, Debug)]
 pub struct EditSettings<'a> {
-	pub file: &'a str,
+	pub path: &'a Path,
 	pub image: ImageSettings,
 	pub color: ColorSettings,
 }
@@ -128,7 +129,7 @@ pub struct EditSettings<'a> {
 impl Default for EditSettings<'_> {
 	fn default() -> Self {
 		Self {
-			file: "",
+			path: Path::new(""),
 			image: ImageSettings::default(),
 			color: ColorSettings::default(),
 		}
@@ -139,13 +140,13 @@ impl<'a> EditSettings<'a> {
 	/**
 	 * Create a new EditSettings object.
 	 *
-	 * @param  file
+	 * @param  path
 	 * @param  image
 	 * @param  color
 	 * @return EditSettings
 	 */
-	pub fn new(file: &'a str, image: ImageSettings, color: ColorSettings) -> Self {
-		Self { file, image, color }
+	pub fn new(path: &'a Path, image: ImageSettings, color: ColorSettings) -> Self {
+		Self { path, image, color }
 	}
 
 	/**
@@ -157,7 +158,7 @@ impl<'a> EditSettings<'a> {
 	pub fn from_args(parser: ArgParser<'a>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
-				matches.value_of("input").unwrap_or_default(),
+				Path::new(matches.value_of("input").unwrap_or_default()),
 				ImageSettings::new(
 					Padding::parse(matches.value_of("crop").unwrap_or_default()),
 					Geometry::parse(matches.value_of("resize").unwrap_or_default()),
