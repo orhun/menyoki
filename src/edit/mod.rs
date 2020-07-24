@@ -2,8 +2,9 @@ pub mod settings;
 
 use crate::edit::settings::{EditSettings, Flip};
 use crate::image::geometry::Geometry;
+use crate::image::Image;
 use image::imageops::{self, colorops, FilterType};
-use image::{DynamicImage, ImageBuffer, RgbaImage};
+use image::{Bgra, DynamicImage, ImageBuffer, RgbaImage};
 use std::convert::TryInto;
 
 /* Image processor */
@@ -60,21 +61,32 @@ impl<'a> ImageOps<'a> {
 	}
 
 	/**
-	 * Process and return the image.
+	 * Process the image.
 	 *
 	 * @param  image
-	 * @return RgbaImage
 	 */
-	pub fn process(&mut self, image: RgbaImage) -> RgbaImage {
+	pub fn process(&mut self, image: RgbaImage) -> &mut Self {
 		self.image = image;
-		self.crop()
-			.flip()
-			.rotate()
-			.resize()
-			.blur()
-			.update_colors()
-			.image
-			.clone()
+		self.crop().flip().rotate().resize().blur().update_colors();
+		self
+	}
+
+	/**
+	 * Get Image object from the processed buffer.
+	 *
+	 * @return Image
+	 */
+	pub fn get_image(&self) -> Image {
+		Image::new(
+			self.image
+				.clone()
+				.into_vec()
+				.chunks(4)
+				.map(|rgba| Bgra::from([rgba[2], rgba[1], rgba[0], rgba[3]]))
+				.collect(),
+			true,
+			self.geometry,
+		)
 	}
 
 	/* Resize the image */

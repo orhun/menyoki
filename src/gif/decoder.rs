@@ -48,16 +48,7 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 			.init(first_frame.clone().into_buffer().dimensions());
 		let mut images = Vec::new();
 		for frame in frames {
-			images.push(Image::new(
-				self.imageops
-					.process(frame.into_buffer())
-					.into_vec()
-					.chunks(4)
-					.map(|rgba| Bgra::from([rgba[2], rgba[1], rgba[0], rgba[3]]))
-					.collect(),
-				true,
-				self.imageops.geometry,
-			));
+			images.push(self.imageops.process(frame.into_buffer()).get_image());
 		}
 		Ok((images, fps))
 	}
