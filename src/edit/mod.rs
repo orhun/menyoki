@@ -63,7 +63,7 @@ impl<'a> ImageOps<'a> {
 	/**
 	 * Process the image.
 	 *
-	 * @param  image
+	 * @param image
 	 */
 	pub fn process(&mut self, image: RgbaImage) -> &mut Self {
 		self.image = image;
