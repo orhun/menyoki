@@ -3,7 +3,7 @@ use crate::gif::settings::GifSettings;
 use crate::image::Image;
 use image::error::ImageError;
 use image::gif::GifDecoder;
-use image::{AnimationDecoder, Bgra};
+use image::AnimationDecoder;
 use std::io::Read;
 
 /* GIF decoder and settings */
