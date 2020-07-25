@@ -11,6 +11,7 @@ use crate::util::file::FileFormat;
 use bytesize::ByteSize;
 use image::bmp::BMPEncoder;
 use image::farbfeld::FarbfeldEncoder;
+use image::io::Reader;
 use image::jpeg::JPEGEncoder;
 use image::png::PNGEncoder;
 use image::tiff::TiffEncoder;
@@ -64,10 +65,21 @@ where
 		trace!("{:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		let image = if !self.settings.args.is_present("edit")
-			&& self.settings.save.file.format != FileFormat::Gif
-		{
-			self.capture()
+		let image = if self.settings.save.file.format != FileFormat::Gif {
+			if self.settings.args.is_present("edit") {
+				let image = Reader::open(self.settings.edit.path)
+					.expect("File not found")
+					.with_guessed_format()
+					.expect("File format not supported")
+					.decode()
+					.expect("Failed to decode the image")
+					.to_rgba();
+				let mut imageops = self.settings.edit.get_imageops();
+				imageops.init(image.dimensions());
+				Some(imageops.process(image).get_image())
+			} else {
+				self.capture()
+			}
 		} else {
 			None
 		};
@@ -77,9 +89,9 @@ where
 				let frames = if self.settings.args.is_present("edit") {
 					info!(
 						"Reading the frames from {:?}...",
-						self.settings.edit.file
+						self.settings.edit.path
 					);
-					self.edit_gif(File::open(self.settings.edit.file)?)
+					self.edit_gif(File::open(self.settings.edit.path)?)
 				} else {
 					(self.record(), self.settings.record.fps)
 				};
@@ -216,7 +228,7 @@ where
 	) {
 		let image = image.expect("Failed to get the window image");
 		info!(
-			"Encoding the image as {}...",
+			"Saving the image as {}...",
 			self.settings.save.file.format.to_string().to_uppercase()
 		);
 		debug!("{:?}", image);
