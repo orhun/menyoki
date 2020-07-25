@@ -1,6 +1,15 @@
 pub mod parser;
 use crate::util::file::File;
-use clap::{App, Arg, ArgMatches, SubCommand};
+use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
+
+/* Global settings for subcommands */
+const SUBCOMMAND_SETTINGS: [AppSettings; 5] = [
+	AppSettings::ColorAuto,
+	AppSettings::ColoredHelp,
+	AppSettings::InferSubcommands,
+	AppSettings::VersionlessSubcommands,
+	AppSettings::DeriveDisplayOrder,
+];
 
 /* Main commands of the app */
 #[derive(Debug, PartialEq)]
@@ -64,6 +73,8 @@ where
 				Ctrl-D, ESC    Cancel the current operation\n    \
 				Ctrl-C         Exit/stop recording",
 			)
+			.settings(&SUBCOMMAND_SETTINGS)
+			.setting(AppSettings::SubcommandRequired)
 			.arg(
 				Arg::with_name("command")
 					.value_name("COMMAND")
@@ -74,14 +85,15 @@ where
 					.short("v")
 					.long("verbose")
 					.help("Increases the logging verbosity")
-					.multiple(true),
+					.multiple(true)
+					.display_order(1000),
 			)
 			.arg(
 				Arg::with_name("quiet")
 					.short("q")
 					.long("quiet")
 					.help("Shows no output")
-					.display_order(1000),
+					.display_order(1001),
 			)
 			.subcommand(
 				args.record
@@ -138,10 +150,7 @@ where
 				BaseCommand::Record => "Records a window",
 				BaseCommand::Capture => "Takes the screenshot of a window",
 			})
-			.display_order(match base_command {
-				BaseCommand::Record => 0,
-				BaseCommand::Capture => 1,
-			})
+			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
@@ -150,8 +159,7 @@ where
 					.default_value("10")
 					.help("Sets the FPS (frames per second) value")
 					.takes_value(true)
-					.hidden(base_command == BaseCommand::Capture)
-					.display_order(0),
+					.hidden(base_command == BaseCommand::Capture),
 			)
 			.arg(
 				Arg::with_name("color")
@@ -160,8 +168,7 @@ where
 					.value_name("HEX")
 					.default_value("FF00FF")
 					.help("Sets the main color to use")
-					.takes_value(true)
-					.display_order(1),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("border")
@@ -170,8 +177,7 @@ where
 					.value_name("BORDER")
 					.default_value("1")
 					.help("Sets the border padding value")
-					.takes_value(true)
-					.display_order(2),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("padding")
@@ -185,8 +191,7 @@ where
 							"Sets the capture area padding value"
 						}
 					})
-					.takes_value(true)
-					.display_order(3),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("select")
@@ -202,8 +207,7 @@ where
 							"Sets the capture area size and enables selection"
 						}
 					})
-					.takes_value(true)
-					.display_order(4),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("duration")
@@ -212,8 +216,7 @@ where
 					.value_name("S")
 					.help("Sets the recording duration [default: \u{221E}]")
 					.takes_value(true)
-					.hidden(base_command == BaseCommand::Capture)
-					.display_order(5),
+					.hidden(base_command == BaseCommand::Capture),
 			)
 			.arg(
 				Arg::with_name("countdown")
@@ -232,8 +235,7 @@ where
 							"Sets the countdown value for capturing"
 						}
 					})
-					.takes_value(true)
-					.display_order(6),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("timeout")
@@ -242,8 +244,7 @@ where
 					.value_name("S")
 					.default_value("60")
 					.help("Sets the timeout for window selection")
-					.takes_value(true)
-					.display_order(7),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("interval")
@@ -252,19 +253,14 @@ where
 					.value_name("MS")
 					.default_value("10")
 					.help("Sets the interval time for window selection")
-					.takes_value(true)
-					.display_order(8),
+					.takes_value(true),
 			)
-			.arg(
-				Arg::with_name("root")
-					.short("r")
-					.long("root")
-					.help(match base_command {
-						BaseCommand::Record => "Records the root window",
-						BaseCommand::Capture => "Captures the root window",
-					})
-					.display_order(1),
-			)
+			.arg(Arg::with_name("root").short("r").long("root").help(
+				match base_command {
+					BaseCommand::Record => "Records the root window",
+					BaseCommand::Capture => "Captures the root window",
+				},
+			))
 			.arg(
 				Arg::with_name("focus")
 					.short("w")
@@ -273,8 +269,7 @@ where
 					.help(match base_command {
 						BaseCommand::Record => "Records the focus window",
 						BaseCommand::Capture => "Captures the focus window",
-					})
-					.display_order(2),
+					}),
 			)
 			.arg(
 				Arg::with_name("with-alpha")
@@ -287,15 +282,13 @@ where
 						BaseCommand::Capture => {
 							"Captures with the alpha channel for transparency"
 						}
-					})
-					.display_order(3),
+					}),
 			)
 			.arg(
 				Arg::with_name("no-border")
 					.short("n")
 					.long("no-border")
-					.help("Shows no border for window selection")
-					.display_order(4),
+					.help("Shows no border for window selection"),
 			)
 	}
 
@@ -308,6 +301,7 @@ where
 	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
 		SubCommand::with_name("gif")
 			.about("Changes the GIF encoder settings")
+			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -352,6 +346,7 @@ where
 	fn get_edit_args() -> App<'a, 'b> {
 		SubCommand::with_name("edit")
 			.about("Edits an image/GIF")
+			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("input")
 					.value_name("FILE")
@@ -458,7 +453,7 @@ where
 	fn get_png_args() -> App<'a, 'b> {
 		SubCommand::with_name("png")
 			.about("Changes the PNG encoder settings")
-			.display_order(1)
+			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("compression")
 					.short("c")
@@ -467,8 +462,7 @@ where
 					.possible_values(&["default", "fast", "best", "huffman", "rle"])
 					.default_value("fast")
 					.help("Sets the compression level of PNG encoder")
-					.takes_value(true)
-					.display_order(1),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("filter")
@@ -478,8 +472,7 @@ where
 					.possible_values(&["none", "sub", "up", "avg", "paeth"])
 					.default_value("sub")
 					.help("Sets the filter algorithm that processes the image data")
-					.takes_value(true)
-					.display_order(2),
+					.takes_value(true),
 			)
 	}
 
@@ -491,7 +484,7 @@ where
 	fn get_jpg_args() -> App<'a, 'b> {
 		SubCommand::with_name("jpg")
 			.about("Changes the JPG encoder settings")
-			.display_order(2)
+			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -499,8 +492,7 @@ where
 					.value_name("QUALITY")
 					.default_value("90")
 					.help("Sets the JPG quality (1-100)")
-					.takes_value(true)
-					.display_order(1),
+					.takes_value(true),
 			)
 	}
 
@@ -512,7 +504,7 @@ where
 	fn get_bmp_args() -> App<'a, 'b> {
 		SubCommand::with_name("bmp")
 			.about("Changes the BMP encoder settings")
-			.display_order(3)
+			.settings(&SUBCOMMAND_SETTINGS)
 	}
 
 	/**
@@ -523,7 +515,7 @@ where
 	fn get_tiff_args() -> App<'a, 'b> {
 		SubCommand::with_name("tiff")
 			.about("Changes the TIFF encoder settings")
-			.display_order(4)
+			.settings(&SUBCOMMAND_SETTINGS)
 	}
 
 	/**
@@ -534,7 +526,7 @@ where
 	fn get_farbfeld_args() -> App<'a, 'b> {
 		SubCommand::with_name("ff")
 			.about("Changes the farbfeld encoder settings")
-			.display_order(5)
+			.settings(&SUBCOMMAND_SETTINGS)
 	}
 
 	/**
@@ -549,6 +541,7 @@ where
 			.unwrap_or_default();
 		SubCommand::with_name("save")
 			.about("Changes the output file settings")
+			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("output")
 					.value_name("FILE")
@@ -562,22 +555,19 @@ where
 					.value_name("FORMAT")
 					.default_value("%Y%m%dT%H%M%S")
 					.help("Adds date and time to the file name")
-					.takes_value(true)
-					.display_order(1),
+					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("timestamp")
 					.short("t")
 					.long("timestamp")
-					.help("Adds timestamp to the file name")
-					.display_order(2),
+					.help("Adds timestamp to the file name"),
 			)
 			.arg(
 				Arg::with_name("prompt")
 					.short("p")
 					.long("prompt")
-					.help("Shows prompt for the file name input")
-					.display_order(3),
+					.help("Shows prompt for the file name input"),
 			)
 	}
 }
