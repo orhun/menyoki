@@ -167,37 +167,6 @@ where
 	}
 
 	/**
-	 * Return the updated frames after decoding the GIF.
-	 *
-	 * @param  input
-	 * @return Frames
-	 */
-	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
-		Decoder::new(input, self.settings.edit.get_imageops(), self.settings.gif)
-			.expect("Failed to decode the GIF")
-			.update_frames()
-			.expect("Failed to edit the GIF")
-	}
-
-	/**
-	 * Edit and return the image.
-	 *
-	 * @return Image
-	 */
-	fn edit_image(self) -> Image {
-		let image = Reader::open(self.settings.edit.path)
-			.expect("File not found")
-			.with_guessed_format()
-			.expect("File format not supported")
-			.decode()
-			.expect("Failed to decode the image")
-			.to_rgba();
-		let mut imageops = self.settings.edit.get_imageops();
-		imageops.init(image.dimensions());
-		imageops.process(image).get_image()
-	}
-
-	/**
 	 * Start recording the frames.
 	 *
 	 * @return Vector of Image
@@ -221,6 +190,37 @@ where
 		} else {
 			recorder.record_sync(&self.settings.input_state)
 		}
+	}
+
+	/**
+	 * Edit and return the image.
+	 *
+	 * @return Image
+	 */
+	fn edit_image(self) -> Image {
+		let image = Reader::open(self.settings.edit.path)
+			.expect("File not found")
+			.with_guessed_format()
+			.expect("File format not supported")
+			.decode()
+			.expect("Failed to decode the image")
+			.to_rgba();
+		let mut imageops = self.settings.edit.get_imageops();
+		imageops.init(image.dimensions());
+		imageops.process(image).get_image()
+	}
+
+	/**
+	 * Return the updated frames after decoding the GIF.
+	 *
+	 * @param  input
+	 * @return Frames
+	 */
+	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
+		Decoder::new(input, self.settings.edit.get_imageops(), self.settings.gif)
+			.expect("Failed to decode the GIF")
+			.update_frames()
+			.expect("Failed to edit the GIF")
 	}
 
 	/**
