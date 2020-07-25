@@ -8,6 +8,7 @@ use crate::util::file::FileFormat;
 use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
 use clap::ArgMatches;
+use std::str::FromStr;
 
 /* General application settings */
 #[derive(Debug)]
@@ -30,6 +31,7 @@ impl<'a> AppSettings<'a> {
 	 * @return AppSettings
 	 */
 	pub fn new(args: &'a ArgMatches<'a>) -> Self {
+		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
 		Self {
 			args,
 			record: RecordSettings::from_args(ArgParser::from_subcommand(
@@ -45,9 +47,20 @@ impl<'a> AppSettings<'a> {
 			jpg: JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg")),
 			save: SaveSettings::from_args(
 				ArgParser::from_subcommand(args, "save"),
-				FileFormat::from_args(args),
+				if edit.convert {
+					FileFormat::from_args(args)
+				} else {
+					FileFormat::from_str(
+						edit.path
+							.extension()
+							.unwrap_or_default()
+							.to_str()
+							.unwrap_or_default(),
+					)
+					.unwrap_or_else(|_| FileFormat::from_args(args))
+				},
 			),
-			edit: EditSettings::from_args(ArgParser::from_subcommand(args, "edit")),
+			edit,
 			input_state: Box::leak(Box::new(InputState::new())),
 		}
 	}
