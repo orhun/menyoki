@@ -30,6 +30,9 @@ pub trait WindowAccess<'a, Window: Record + Send + Sync + Copy + Debug + 'static
 	fn get_window(&mut self) -> Option<Window>;
 }
 
+/* Application output (Image or Frames) */
+type AppOutput = (Option<Image>, Option<Frames>);
+
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
 pub struct App<'a, Window> {
@@ -65,11 +68,7 @@ where
 		trace!("{:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		let (image, frames) = if self.settings.save.file.format != FileFormat::Gif {
-			(self.get_image(), None)
-		} else {
-			(None, Some(self.get_frames()))
-		};
+		let (image, frames) = self.get_output();
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
@@ -122,6 +121,19 @@ where
 			window.release();
 		}
 		Ok(())
+	}
+
+	/**
+	 * Get the application output.
+	 *
+	 * @return AppOutput
+	 */
+	fn get_output(&self) -> AppOutput {
+		if self.settings.save.file.format == FileFormat::Gif {
+			(None, Some(self.get_frames()))
+		} else {
+			(self.get_image(), None)
+		}
 	}
 
 	/**
