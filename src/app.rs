@@ -67,6 +67,7 @@ where
 		debug!("Command: {:?}", self.settings.get_command());
 		let image = if self.settings.save.file.format != FileFormat::Gif {
 			if self.settings.args.is_present("edit") {
+				info!("Opening {:?}...", self.settings.edit.path);
 				Some(self.edit_image())
 			} else {
 				self.capture()
