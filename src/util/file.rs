@@ -1,5 +1,6 @@
 use chrono::Local;
 use clap::ArgMatches;
+use std::ffi::OsStr;
 use std::fmt;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -191,9 +192,11 @@ impl File {
 	 * @return PathBuf
 	 */
 	fn get_path_with_extension(path: PathBuf, format: FileFormat) -> PathBuf {
-		match path.extension() {
-			Some(_) => path,
-			None => path.with_extension(format.to_string().to_lowercase()),
+		match path.extension().and_then(OsStr::to_str) {
+			Some("*") | None => {
+				path.with_extension(format.to_string().to_lowercase())
+			}
+			_ => path,
 		}
 	}
 
