@@ -65,15 +65,15 @@ where
 		trace!("{:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		let image = if self.settings.save.file.format != FileFormat::Gif {
-			self.get_image()
+		let (image, frames) = if self.settings.save.file.format != FileFormat::Gif {
+			(self.get_image(), None)
 		} else {
-			None
+			(None, Some(self.get_frames()))
 		};
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
-				self.save_gif(self.get_frames(), output)?;
+				self.save_gif(frames, output)?;
 			}
 			FileFormat::Png => {
 				debug!("{:?}", self.settings.png);
@@ -272,16 +272,16 @@ where
 	/**
 	 * Save frames to a GIF file.
 	 *
-	 * @param  frames
+	 * @param  frames (Option)
 	 * @param  output
 	 * @return Result
 	 */
 	fn save_gif<Output: Write>(
 		self,
-		frames: Frames,
+		frames: Option<Frames>,
 		output: Output,
 	) -> Result<(), Error> {
-		let (images, fps) = frames;
+		let (images, fps) = frames.expect("Failed to get the frames");
 		Gif::new(
 			fps,
 			images.first().expect("No frames found to save").geometry,
