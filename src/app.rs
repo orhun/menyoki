@@ -67,16 +67,7 @@ where
 		debug!("Command: {:?}", self.settings.get_command());
 		let image = if self.settings.save.file.format != FileFormat::Gif {
 			if self.settings.args.is_present("edit") {
-				let image = Reader::open(self.settings.edit.path)
-					.expect("File not found")
-					.with_guessed_format()
-					.expect("File format not supported")
-					.decode()
-					.expect("Failed to decode the image")
-					.to_rgba();
-				let mut imageops = self.settings.edit.get_imageops();
-				imageops.init(image.dimensions());
-				Some(imageops.process(image).get_image())
+				Some(self.edit_image())
 			} else {
 				self.capture()
 			}
@@ -185,6 +176,24 @@ where
 			.expect("Failed to decode the GIF")
 			.update_frames()
 			.expect("Failed to edit the GIF")
+	}
+
+	/**
+	 * Edit and return the image.
+	 *
+	 * @return Image
+	 */
+	fn edit_image(self) -> Image {
+		let image = Reader::open(self.settings.edit.path)
+			.expect("File not found")
+			.with_guessed_format()
+			.expect("File format not supported")
+			.decode()
+			.expect("Failed to decode the image")
+			.to_rgba();
+		let mut imageops = self.settings.edit.get_imageops();
+		imageops.init(image.dimensions());
+		imageops.process(image).get_image()
 	}
 
 	/**
