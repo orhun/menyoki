@@ -19,6 +19,7 @@ pub struct Args<'a, 'b> {
 	bmp: App<'a, 'b>,
 	tiff: App<'a, 'b>,
 	farbfeld: App<'a, 'b>,
+	gif_edit: App<'a, 'b>,
 	edit: App<'a, 'b>,
 }
 
@@ -41,7 +42,8 @@ where
 			bmp: Self::get_bmp_args(),
 			tiff: Self::get_tiff_args(),
 			farbfeld: Self::get_farbfeld_args(),
-			edit: Self::get_gif_args(true),
+			edit: Self::get_edit_args(),
+			gif_edit: Self::get_gif_args(true),
 		}
 	}
 
@@ -83,19 +85,44 @@ where
 			)
 			.subcommand(
 				args.record
-					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif"))),
+					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif")))
+					.subcommand(Self::get_save_args("t.*")),
 			)
 			.subcommand(
 				args.capture
+					.subcommand(
+						args.png.clone().subcommand(Self::get_save_args("t.png")),
+					)
+					.subcommand(
+						args.jpg.clone().subcommand(Self::get_save_args("t.jpg")),
+					)
+					.subcommand(
+						args.bmp.clone().subcommand(Self::get_save_args("t.bmp")),
+					)
+					.subcommand(
+						args.tiff.clone().subcommand(Self::get_save_args("t.tiff")),
+					)
+					.subcommand(
+						args.farbfeld
+							.clone()
+							.subcommand(Self::get_save_args("t.ff")),
+					)
+					.subcommand(Self::get_save_args("t.*")),
+			)
+			.subcommand(
+				args.edit
+					.subcommand(
+						args.gif_edit.subcommand(Self::get_save_args("t.gif")),
+					)
 					.subcommand(args.png.subcommand(Self::get_save_args("t.png")))
 					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg")))
 					.subcommand(args.bmp.subcommand(Self::get_save_args("t.bmp")))
 					.subcommand(args.tiff.subcommand(Self::get_save_args("t.tiff")))
 					.subcommand(
 						args.farbfeld.subcommand(Self::get_save_args("t.ff")),
-					),
+					)
+					.subcommand(Self::get_save_args("t.*")),
 			)
-			.subcommand(args.edit.subcommand(Self::get_save_args("t.gif")))
 			.get_matches()
 	}
 
@@ -109,7 +136,7 @@ where
 		SubCommand::with_name(&format!("{:?}", base_command).to_lowercase())
 			.about(match base_command {
 				BaseCommand::Record => "Records a window",
-				BaseCommand::Capture => "Takes a screenshot of a window",
+				BaseCommand::Capture => "Takes the screenshot of a window",
 			})
 			.display_order(match base_command {
 				BaseCommand::Record => 0,
@@ -279,12 +306,8 @@ where
 	 * @return App
 	 */
 	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
-		let args = SubCommand::with_name(if edit_mode { "edit" } else { "gif" })
-			.about(if edit_mode {
-				"Changes the GIF editing settings"
-			} else {
-				"Changes the GIF encoder settings"
-			})
+		SubCommand::with_name("gif")
+			.about("Changes the GIF encoder settings")
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -318,112 +341,113 @@ where
 					.long("fast")
 					.help("Encodes 3 times faster (lower quality and bigger file)")
 					.hidden(!cfg!(feature = "ski") || !edit_mode),
-			);
-		if edit_mode {
-			Self::get_edit_args(args)
-		} else {
-			args
-		}
+			)
 	}
 
 	/**
 	 * Get the image editing arguments.
 	 *
-	 * @param  args
 	 * @return App
 	 */
-	fn get_edit_args(args: App<'a, 'b>) -> App<'a, 'b> {
-		args.arg(
-			Arg::with_name("input")
-				.value_name("FILE")
-				.help("Sets the input file path")
-				.required(true),
-		)
-		.arg(
-			Arg::with_name("crop")
-				.long("crop")
-				.value_name("PADDING")
-				.default_value("0:0:0:0")
-				.help("Applies the given padding to crop the GIF")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("resize")
-				.long("resize")
-				.value_name("SIZE")
-				.default_value("W:H")
-				.help("Changes the GIF size and aspect ratio")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("ratio")
-				.long("ratio")
-				.value_name("RATIO")
-				.default_value("1.0")
-				.help("Resizes the GIF by changing the aspect ratio")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("flip")
-				.long("flip")
-				.value_name("FLIP")
-				.help("Flips the GIF")
-				.possible_values(&["horizontal", "vertical"])
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("rotate")
-				.long("rotate")
-				.value_name("ROTATE")
-				.help("Rotates the GIF clockwise")
-				.possible_values(&["90", "180", "270"])
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("blur")
-				.long("blur")
-				.value_name("SIGMA")
-				.default_value("0.0")
-				.help("Blurs the GIF")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("grayscale")
-				.long("grayscale")
-				.help("Converts GIF to grayscale"),
-		)
-		.arg(
-			Arg::with_name("invert")
-				.long("invert")
-				.help("Inverts the GIF colors"),
-		)
-		.arg(
-			Arg::with_name("brighten")
-				.long("brighten")
-				.value_name("BRIGHTNESS")
-				.default_value("0")
-				.help("Brightens the GIF")
-				.allow_hyphen_values(true)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("hue-rotate")
-				.long("hue-rotate")
-				.value_name("HUE")
-				.default_value("0")
-				.help("Hue rotates the GIF")
-				.allow_hyphen_values(true)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("contrast")
-				.long("contrast")
-				.value_name("CONTRAST")
-				.default_value("0.0")
-				.help("Adjusts the contrast of the GIF")
-				.allow_hyphen_values(true)
-				.takes_value(true),
-		)
+	fn get_edit_args() -> App<'a, 'b> {
+		SubCommand::with_name("edit")
+			.about("Edits an image/GIF")
+			.arg(
+				Arg::with_name("input")
+					.value_name("FILE")
+					.help("Sets the input file path")
+					.required(true),
+			)
+			.arg(
+				Arg::with_name("convert")
+					.long("convert")
+					.help("Converts the image to the given format"),
+			)
+			.arg(
+				Arg::with_name("crop")
+					.long("crop")
+					.value_name("PADDING")
+					.default_value("0:0:0:0")
+					.help("Applies the given padding to crop the GIF")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("resize")
+					.long("resize")
+					.value_name("SIZE")
+					.default_value("W:H")
+					.help("Changes the GIF size and aspect ratio")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("ratio")
+					.long("ratio")
+					.value_name("RATIO")
+					.default_value("1.0")
+					.help("Resizes the GIF by changing the aspect ratio")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("flip")
+					.long("flip")
+					.value_name("FLIP")
+					.help("Flips the GIF")
+					.possible_values(&["horizontal", "vertical"])
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("rotate")
+					.long("rotate")
+					.value_name("ROTATE")
+					.help("Rotates the GIF clockwise")
+					.possible_values(&["90", "180", "270"])
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("blur")
+					.long("blur")
+					.value_name("SIGMA")
+					.default_value("0.0")
+					.help("Blurs the GIF")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("grayscale")
+					.long("grayscale")
+					.help("Converts GIF to grayscale"),
+			)
+			.arg(
+				Arg::with_name("invert")
+					.long("invert")
+					.help("Inverts the GIF colors"),
+			)
+			.arg(
+				Arg::with_name("brighten")
+					.long("brighten")
+					.value_name("BRIGHTNESS")
+					.default_value("0")
+					.help("Brightens the GIF")
+					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("hue-rotate")
+					.long("hue-rotate")
+					.value_name("HUE")
+					.default_value("0")
+					.help("Hue rotates the GIF")
+					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("contrast")
+					.long("contrast")
+					.value_name("CONTRAST")
+					.default_value("0.0")
+					.help("Adjusts the contrast of the GIF")
+					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
 	}
 
 	/**
