@@ -2,15 +2,6 @@ pub mod parser;
 use crate::util::file::File;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
-/* Global settings for subcommands */
-const SUBCOMMAND_SETTINGS: [AppSettings; 5] = [
-	AppSettings::ColorAuto,
-	AppSettings::ColoredHelp,
-	AppSettings::InferSubcommands,
-	AppSettings::VersionlessSubcommands,
-	AppSettings::DeriveDisplayOrder,
-];
-
 /* Main commands of the app */
 #[derive(Debug, PartialEq)]
 enum BaseCommand {
@@ -73,7 +64,13 @@ where
 				Ctrl-D, ESC    Cancel the current operation\n    \
 				Ctrl-C         Exit/stop recording",
 			)
-			.settings(&SUBCOMMAND_SETTINGS)
+			.global_settings(&[
+				AppSettings::ColorAuto,
+				AppSettings::ColoredHelp,
+				AppSettings::InferSubcommands,
+				AppSettings::VersionlessSubcommands,
+				AppSettings::DeriveDisplayOrder,
+			])
 			.setting(AppSettings::SubcommandRequired)
 			.arg(
 				Arg::with_name("command")
@@ -150,7 +147,6 @@ where
 				BaseCommand::Record => "Records a window",
 				BaseCommand::Capture => "Takes the screenshot of a window",
 			})
-			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
@@ -301,7 +297,6 @@ where
 	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
 		SubCommand::with_name("gif")
 			.about("Changes the GIF encoder settings")
-			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -346,7 +341,6 @@ where
 	fn get_edit_args() -> App<'a, 'b> {
 		SubCommand::with_name("edit")
 			.about("Edits an image/GIF")
-			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("input")
 					.value_name("FILE")
@@ -453,7 +447,6 @@ where
 	fn get_png_args() -> App<'a, 'b> {
 		SubCommand::with_name("png")
 			.about("Changes the PNG encoder settings")
-			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("compression")
 					.short("c")
@@ -484,7 +477,6 @@ where
 	fn get_jpg_args() -> App<'a, 'b> {
 		SubCommand::with_name("jpg")
 			.about("Changes the JPG encoder settings")
-			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")
@@ -502,9 +494,7 @@ where
 	 * @return App
 	 */
 	fn get_bmp_args() -> App<'a, 'b> {
-		SubCommand::with_name("bmp")
-			.about("Changes the BMP encoder settings")
-			.settings(&SUBCOMMAND_SETTINGS)
+		SubCommand::with_name("bmp").about("Changes the BMP encoder settings")
 	}
 
 	/**
@@ -513,9 +503,7 @@ where
 	 * @return App
 	 */
 	fn get_tiff_args() -> App<'a, 'b> {
-		SubCommand::with_name("tiff")
-			.about("Changes the TIFF encoder settings")
-			.settings(&SUBCOMMAND_SETTINGS)
+		SubCommand::with_name("tiff").about("Changes the TIFF encoder settings")
 	}
 
 	/**
@@ -524,9 +512,7 @@ where
 	 * @return App
 	 */
 	fn get_farbfeld_args() -> App<'a, 'b> {
-		SubCommand::with_name("ff")
-			.about("Changes the farbfeld encoder settings")
-			.settings(&SUBCOMMAND_SETTINGS)
+		SubCommand::with_name("ff").about("Changes the farbfeld encoder settings")
 	}
 
 	/**
@@ -541,7 +527,6 @@ where
 			.unwrap_or_default();
 		SubCommand::with_name("save")
 			.about("Changes the output file settings")
-			.settings(&SUBCOMMAND_SETTINGS)
 			.arg(
 				Arg::with_name("output")
 					.value_name("FILE")
