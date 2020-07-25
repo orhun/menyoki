@@ -8,7 +8,6 @@ edition = "2018"
 ski = ["gifski", "imgref", "rgb"]
 
 [dependencies]
-clap = "2.33.0"
 x11 = { version = "2.18.2", features = ["xlib"]}
 gif = "0.10.3"
 chrono = "0.4.11"
@@ -24,6 +23,11 @@ gifski = { version = "0.10.4", optional = true }
 imgref = { version = "1.6.1", optional = true }
 rgb = { version = "0.8.18", optional = true }
 dirs = "3.0.0"
+
+[dependencies.clap]
+version = "2.33.0"
+default-features = false
+features = ["suggestions", "color", "wrap_help"]
 
 [profile.dev]
 opt-level = 0
