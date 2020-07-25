@@ -30,22 +30,24 @@ impl SaveSettings {
 	pub fn from_args(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
 		match parser.args {
 			Some(matches) => {
-				let mut file_path =
+				let mut path =
 					PathBuf::from(matches.value_of("output").unwrap_or_default());
-				let mut file_name = file_path
-					.file_name()
-					.expect("Invalid file name")
-					.to_string_lossy()
-					.into_owned();
 				if matches.is_present("prompt") {
-					file_name =
-						util::read_input("Enter file name: ").unwrap_or(file_name);
+					if let Some(file_name) = util::read_input("Enter file name: ") {
+						path.set_file_name(file_name);
+					}
 				}
 				if let Some(info) = FileInfo::from_args(&matches) {
-					info.append(&mut file_name);
+					path.set_file_name(format!(
+						"{}_{}",
+						path.file_stem()
+							.unwrap_or_default()
+							.to_str()
+							.unwrap_or_default(),
+						info
+					));
 				}
-				file_path.set_file_name(file_name);
-				Self::new(File::new(file_path, file_format))
+				Self::new(File::new(path, file_format))
 			}
 			None => Self::new(File::from_format(file_format)),
 		}
