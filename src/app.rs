@@ -66,28 +66,14 @@ where
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
 		let image = if self.settings.save.file.format != FileFormat::Gif {
-			if self.settings.args.is_present("edit") {
-				info!("Opening {:?}...", self.settings.edit.path);
-				Some(self.edit_image())
-			} else {
-				self.capture()
-			}
+			self.get_image()
 		} else {
 			None
 		};
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
-				let frames = if self.settings.args.is_present("edit") {
-					info!(
-						"Reading the frames from {:?}...",
-						self.settings.edit.path
-					);
-					self.edit_gif(File::open(self.settings.edit.path)?)
-				} else {
-					(self.record(), self.settings.record.fps)
-				};
-				self.save_gif(frames, output)?;
+				self.save_gif(self.get_frames(), output)?;
 			}
 			FileFormat::Png => {
 				debug!("{:?}", self.settings.png);
@@ -136,6 +122,36 @@ where
 			window.release();
 		}
 		Ok(())
+	}
+
+	/**
+	 * Get the image to save.
+	 *
+	 * @return Image (Option)
+	 */
+	fn get_image(&self) -> Option<Image> {
+		if self.settings.args.is_present("edit") {
+			info!("Opening {:?}...", self.settings.edit.path);
+			Some(self.edit_image())
+		} else {
+			self.capture()
+		}
+	}
+
+	/**
+	 * Get the frames to save.
+	 *
+	 * @return Frames
+	 */
+	fn get_frames(&self) -> Frames {
+		if self.settings.args.is_present("edit") {
+			info!("Reading the frames from {:?}...", self.settings.edit.path);
+			self.edit_gif(
+				File::open(self.settings.edit.path).expect("File not found"),
+			)
+		} else {
+			(self.record(), self.settings.record.fps)
+		}
 	}
 
 	/**
