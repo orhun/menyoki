@@ -39,9 +39,12 @@ where
 			gif: Self::get_gif_args(false),
 			png: Self::get_png_args(),
 			jpg: Self::get_jpg_args(),
-			bmp: Self::get_bmp_args(),
-			tiff: Self::get_tiff_args(),
-			farbfeld: Self::get_farbfeld_args(),
+			bmp: SubCommand::with_name("bmp")
+				.about("Changes the BMP encoder settings"),
+			tiff: SubCommand::with_name("tiff")
+				.about("Changes the TIFF encoder settings"),
+			farbfeld: SubCommand::with_name("ff")
+				.about("Changes the farbfeld encoder settings"),
 			edit: Self::get_edit_args(),
 			gif_edit: Self::get_gif_args(true),
 		}
@@ -486,33 +489,6 @@ where
 					.help("Sets the JPG quality (1-100)")
 					.takes_value(true),
 			)
-	}
-
-	/**
-	 * Get bmp subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_bmp_args() -> App<'a, 'b> {
-		SubCommand::with_name("bmp").about("Changes the BMP encoder settings")
-	}
-
-	/**
-	 * Get tiff subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_tiff_args() -> App<'a, 'b> {
-		SubCommand::with_name("tiff").about("Changes the TIFF encoder settings")
-	}
-
-	/**
-	 * Get farbfeld subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_farbfeld_args() -> App<'a, 'b> {
-		SubCommand::with_name("ff").about("Changes the farbfeld encoder settings")
 	}
 
 	/**
