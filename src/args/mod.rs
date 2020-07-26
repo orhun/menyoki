@@ -94,42 +94,42 @@ where
 					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif")))
 					.subcommand(Self::get_save_args("t.*")),
 			)
-			.subcommand(
-				args.capture
-					.subcommand(
-						args.png.clone().subcommand(Self::get_save_args("t.png")),
-					)
-					.subcommand(
-						args.jpg.clone().subcommand(Self::get_save_args("t.jpg")),
-					)
-					.subcommand(
-						args.bmp.clone().subcommand(Self::get_save_args("t.bmp")),
-					)
-					.subcommand(
-						args.tiff.clone().subcommand(Self::get_save_args("t.tiff")),
-					)
-					.subcommand(
-						args.farbfeld
-							.clone()
-							.subcommand(Self::get_save_args("t.ff")),
-					)
-					.subcommand(Self::get_save_args("t.*")),
-			)
-			.subcommand(
-				args.edit
-					.subcommand(
-						args.gif_edit.subcommand(Self::get_save_args("t.gif")),
-					)
-					.subcommand(args.png.subcommand(Self::get_save_args("t.png")))
-					.subcommand(args.jpg.subcommand(Self::get_save_args("t.jpg")))
-					.subcommand(args.bmp.subcommand(Self::get_save_args("t.bmp")))
-					.subcommand(args.tiff.subcommand(Self::get_save_args("t.tiff")))
-					.subcommand(
-						args.farbfeld.subcommand(Self::get_save_args("t.ff")),
-					)
-					.subcommand(Self::get_save_args("t.*")),
-			)
+			.subcommand(Self::get_image_args(args.capture))
+			.subcommand(Self::get_image_args(
+				args.edit.subcommand(
+					args.gif_edit.subcommand(Self::get_save_args("t.gif")),
+				),
+			))
 			.get_matches()
+	}
+
+	/**
+	 * Add image related subcommands to the given arguments.
+	 *
+	 * @param  args
+	 * @return App
+	 */
+	fn get_image_args(args: App<'a, 'b>) -> App<'a, 'b> {
+		args.subcommand(
+			Self::get_png_args().subcommand(Self::get_save_args("t.png")),
+		)
+		.subcommand(Self::get_jpg_args().subcommand(Self::get_save_args("t.jpg")))
+		.subcommand(
+			SubCommand::with_name("bmp")
+				.about("Changes the BMP encoder settings")
+				.subcommand(Self::get_save_args("t.bmp")),
+		)
+		.subcommand(
+			SubCommand::with_name("tiff")
+				.about("Changes the TIFF encoder settings")
+				.subcommand(Self::get_save_args("t.tiff")),
+		)
+		.subcommand(
+			SubCommand::with_name("ff")
+				.about("Changes the farbfeld encoder settings")
+				.subcommand(Self::get_save_args("t.ff")),
+		)
+		.subcommand(Self::get_save_args("t.*"))
 	}
 
 	/**
