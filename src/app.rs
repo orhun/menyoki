@@ -158,7 +158,7 @@ where
 	 */
 	fn get_frames(&self) -> Frames {
 		if self.settings.args.is_present("edit") {
-			info!("Reading the frames from {:?}...", self.settings.edit.path);
+			info!("Reading frames from {:?}...", self.settings.edit.path);
 			self.edit_gif(
 				File::open(self.settings.edit.path).expect("File not found"),
 			)
