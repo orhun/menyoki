@@ -309,7 +309,8 @@ where
 					.short("r")
 					.long("repeat")
 					.value_name("REPEAT")
-					.help("Sets the number of repetitions [default: \u{221E}]")
+					.default_value("\u{221E}")
+					.help("Sets the number of repetitions")
 					.takes_value(true),
 			)
 			.arg(
