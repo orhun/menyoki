@@ -207,7 +207,8 @@ where
 					.short("d")
 					.long("duration")
 					.value_name("S")
-					.help("Sets the recording duration [default: \u{221E}]")
+					.default_value("\u{221E}")
+					.help("Sets the recording duration")
 					.takes_value(true)
 					.hidden(base_command == BaseCommand::Capture),
 			)
