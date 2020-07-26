@@ -91,35 +91,6 @@ where
 	}
 
 	/**
-	 * Add image related subcommands to the given arguments.
-	 *
-	 * @param  args
-	 * @return App
-	 */
-	fn get_image_args(args: App<'a, 'b>) -> App<'a, 'b> {
-		args.subcommand(
-			Self::get_png_args().subcommand(Self::get_save_args("t.png")),
-		)
-		.subcommand(Self::get_jpg_args().subcommand(Self::get_save_args("t.jpg")))
-		.subcommand(
-			SubCommand::with_name("bmp")
-				.about("Changes the BMP encoder settings")
-				.subcommand(Self::get_save_args("t.bmp")),
-		)
-		.subcommand(
-			SubCommand::with_name("tiff")
-				.about("Changes the TIFF encoder settings")
-				.subcommand(Self::get_save_args("t.tiff")),
-		)
-		.subcommand(
-			SubCommand::with_name("ff")
-				.about("Changes the farbfeld encoder settings")
-				.subcommand(Self::get_save_args("t.ff")),
-		)
-		.subcommand(Self::get_save_args("t.*"))
-	}
-
-	/**
 	 * Get the main subcommand arguments from BaseCommand.
 	 *
 	 * @param  base_command
@@ -426,12 +397,14 @@ where
 	}
 
 	/**
-	 * Get png subcommand arguments.
+	 * Add image related subcommands to the given arguments.
 	 *
+	 * @param  args
 	 * @return App
 	 */
-	fn get_png_args() -> App<'a, 'b> {
-		SubCommand::with_name("png")
+	fn get_image_args(args: App<'a, 'b>) -> App<'a, 'b> {
+		args.subcommand(
+			SubCommand::with_name("png")
 			.about("Changes the PNG encoder settings")
 			.arg(
 				Arg::with_name("compression")
@@ -452,26 +425,35 @@ where
 					.default_value("sub")
 					.help("Sets the filter algorithm that processes the image data")
 					.takes_value(true),
-			)
-	}
-
-	/**
-	 * Get jpg subcommand arguments.
-	 *
-	 * @return App
-	 */
-	fn get_jpg_args() -> App<'a, 'b> {
-		SubCommand::with_name("jpg")
-			.about("Changes the JPG encoder settings")
-			.arg(
-				Arg::with_name("quality")
-					.short("q")
-					.long("quality")
-					.value_name("QUALITY")
-					.default_value("90")
-					.help("Sets the JPG quality (1-100)")
-					.takes_value(true),
-			)
+			).subcommand(Self::get_save_args("t.png")),
+		)
+		.subcommand(SubCommand::with_name("jpg")
+		.about("Changes the JPG encoder settings")
+		.arg(
+			Arg::with_name("quality")
+				.short("q")
+				.long("quality")
+				.value_name("QUALITY")
+				.default_value("90")
+				.help("Sets the JPG quality (1-100)")
+				.takes_value(true),
+		).subcommand(Self::get_save_args("t.jpg")))
+		.subcommand(
+			SubCommand::with_name("bmp")
+				.about("Changes the BMP encoder settings")
+				.subcommand(Self::get_save_args("t.bmp")),
+		)
+		.subcommand(
+			SubCommand::with_name("tiff")
+				.about("Changes the TIFF encoder settings")
+				.subcommand(Self::get_save_args("t.tiff")),
+		)
+		.subcommand(
+			SubCommand::with_name("ff")
+				.about("Changes the farbfeld encoder settings")
+				.subcommand(Self::get_save_args("t.ff")),
+		)
+		.subcommand(Self::get_save_args("t.*"))
 	}
 
 	/**
