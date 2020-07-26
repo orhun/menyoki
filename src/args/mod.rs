@@ -13,8 +13,6 @@ enum BaseCommand {
 pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
 	capture: App<'a, 'b>,
-	gif: App<'a, 'b>,
-	gif_edit: App<'a, 'b>,
 	edit: App<'a, 'b>,
 }
 
@@ -31,9 +29,7 @@ where
 		Self {
 			record: Self::get_base_args(BaseCommand::Record),
 			capture: Self::get_base_args(BaseCommand::Capture),
-			gif: Self::get_gif_args(false),
 			edit: Self::get_edit_args(),
-			gif_edit: Self::get_gif_args(true),
 		}
 	}
 
@@ -78,15 +74,16 @@ where
 			)
 			.subcommand(
 				args.record
-					.subcommand(args.gif.subcommand(Self::get_save_args("t.gif")))
+					.subcommand(
+						Self::get_gif_args(false)
+							.subcommand(Self::get_save_args("t.gif")),
+					)
 					.subcommand(Self::get_save_args("t.*")),
 			)
 			.subcommand(Self::get_image_args(args.capture))
-			.subcommand(Self::get_image_args(
-				args.edit.subcommand(
-					args.gif_edit.subcommand(Self::get_save_args("t.gif")),
-				),
-			))
+			.subcommand(Self::get_image_args(args.edit.subcommand(
+				Self::get_gif_args(true).subcommand(Self::get_save_args("t.gif")),
+			)))
 			.get_matches()
 	}
 
