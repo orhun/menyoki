@@ -64,7 +64,7 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 		let collector_thread = thread::spawn(move || {
 			for i in 0..images.len() {
 				let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
-				info!("Encoding... ({:.1}%)\r", percentage);
+				info!("Saving... ({:.1}%)\r", percentage);
 				debug!(
 					"Encoding... ({:.1}%) [{}/{}]\r",
 					percentage,
