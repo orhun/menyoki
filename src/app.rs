@@ -143,6 +143,7 @@ where
 	 */
 	fn get_image(&self) -> Option<Image> {
 		if self.settings.args.is_present("edit") {
+			debug!("{:?}", self.settings.edit);
 			info!("Opening {:?}...", self.settings.edit.path);
 			Some(self.edit_image())
 		} else {
