@@ -24,11 +24,11 @@ use std::io::Error;
 fn main() -> Result<(), Error> {
 	let args = Args::parse();
 	util::check_friday();
+	let settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
-		util::init_logger(args.occurrences_of("verbose"))
+		util::init_logger(args.occurrences_of("verbose"), settings.save.file.format)
 			.expect("Failed to initialize the logger");
 	}
-	let settings = AppSettings::new(&args);
 	App::new(
 		if !args.is_present("edit") {
 			WindowSystem::init(&settings)

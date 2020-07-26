@@ -2,6 +2,7 @@ pub mod cmd;
 pub mod file;
 pub mod settings;
 pub mod state;
+use crate::util::file::FileFormat;
 use chrono::{Datelike, Local, Utc, Weekday};
 use fern::colors::{Color, ColoredLevelConfig};
 use fern::{Dispatch, Output};
@@ -11,16 +12,20 @@ use log::{LevelFilter, SetLoggerError};
  * Initialize the logger library.
  *
  * @param  verbosity
+ * @param  format
  * @return Result
  */
-pub fn init_logger(verbosity: u64) -> Result<(), SetLoggerError> {
+pub fn init_logger(
+	verbosity: u64,
+	format: FileFormat,
+) -> Result<(), SetLoggerError> {
 	let colors = ColoredLevelConfig::new()
 		.info(Color::Magenta)
 		.error(Color::Red)
 		.warn(Color::Yellow)
 		.debug(Color::Blue)
 		.trace(Color::BrightBlack);
-	Dispatch::new()
+	let logger = Dispatch::new()
 		.format(move |out, message, record| {
 			let time = Local::now().format("%Y-%m-%dT%H:%M:%S");
 			let color = colors.color(record.level());
@@ -47,13 +52,17 @@ pub fn init_logger(verbosity: u64) -> Result<(), SetLoggerError> {
 				))
 			}
 		})
+		.chain(Output::stdout(""))
 		.level(match verbosity {
 			0 => LevelFilter::Info,
 			1 => LevelFilter::Debug,
 			_ => LevelFilter::Trace,
-		})
-		.chain(Output::stdout(""))
-		.apply()
+		});
+	if format == FileFormat::Gif {
+		logger.level_for("tgif::edit", LevelFilter::Warn).apply()
+	} else {
+		logger.apply()
+	}
 }
 
 /**
