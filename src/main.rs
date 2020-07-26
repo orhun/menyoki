@@ -22,8 +22,8 @@ use std::fs::File;
 use std::io::Error;
 
 fn main() -> Result<(), Error> {
-	let args = Args::parse();
 	util::check_friday();
+	let args = Args::parse();
 	let settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
 		util::init_logger(args.occurrences_of("verbose"), settings.save.file.format)
