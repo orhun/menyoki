@@ -61,12 +61,6 @@ where
 			.version(env!("CARGO_PKG_VERSION"))
 			.author(env!("CARGO_PKG_AUTHORS"))
 			.about(env!("CARGO_PKG_DESCRIPTION"))
-			.after_help(
-				"KEY BINDINGS:\n    \
-				Alt-S/Enter    Start/stop recording\n    \
-				Ctrl-D, ESC    Cancel the current operation\n    \
-				Ctrl-C         Exit/stop recording",
-			)
 			.global_settings(&[
 				AppSettings::ColorAuto,
 				AppSettings::ColoredHelp,
