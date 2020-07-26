@@ -1,5 +1,6 @@
 pub mod settings;
 
+use crate::edit::settings::ColorSettings;
 use crate::edit::settings::{EditSettings, Flip};
 use crate::image::geometry::Geometry;
 use crate::image::Image;
@@ -58,6 +59,7 @@ impl<'a> ImageOps<'a> {
 		}
 		self.geometry = Geometry::new(0, 0, width, height)
 			.with_padding(self.settings.image.crop);
+		debug!("{:?} -> {:?}", size, self.geometry);
 	}
 
 	/**
@@ -95,6 +97,10 @@ impl<'a> ImageOps<'a> {
 			|| (self.settings.image.ratio > 0.
 				&& (self.settings.image.ratio - 1.).abs() > f32::EPSILON)
 		{
+			info!(
+				"Resizing image... ({}x{})",
+				self.geometry.width, self.geometry.height
+			);
 			self.image = imageops::resize(
 				&self.image,
 				self.geometry.width,
@@ -108,6 +114,10 @@ impl<'a> ImageOps<'a> {
 	/* Crop the image */
 	fn crop(&mut self) -> &mut Self {
 		if !self.settings.image.crop.is_zero() {
+			info!(
+				"Cropping the image... ({}x{})",
+				self.geometry.width, self.geometry.height
+			);
 			self.image = imageops::crop(
 				&mut self.image,
 				self.geometry.x.try_into().unwrap_or_default(),
@@ -124,9 +134,11 @@ impl<'a> ImageOps<'a> {
 	fn flip(&mut self) -> &mut Self {
 		match self.settings.image.flip {
 			Some(Flip::Horizontal) => {
+				info!("Flipping the image horizontally...");
 				imageops::flip_horizontal_in_place(&mut self.image)
 			}
 			Some(Flip::Vertical) => {
+				info!("Flipping the image vertically...");
 				imageops::flip_vertical_in_place(&mut self.image)
 			}
 			_ => {}
@@ -137,10 +149,13 @@ impl<'a> ImageOps<'a> {
 	/* Rotate the image */
 	fn rotate(&mut self) -> &mut Self {
 		if self.settings.image.rotate == 90 {
+			info!("Rotating the image 90 degrees...");
 			self.image = imageops::rotate90(&self.image);
 		} else if self.settings.image.rotate == 180 {
+			info!("Rotating the image 180 degrees...");
 			self.image = imageops::rotate180(&self.image);
 		} else if self.settings.image.rotate == 270 {
+			info!("Rotating the image 270 degrees...");
 			self.image = imageops::rotate270(&self.image);
 		}
 		self
@@ -149,6 +164,10 @@ impl<'a> ImageOps<'a> {
 	/* Blur the image */
 	fn blur(&mut self) -> &mut Self {
 		if self.settings.image.blur > 0. {
+			info!(
+				"Blurring the image... (\u{03C3}={})",
+				self.settings.image.blur
+			);
 			self.image = imageops::blur(&self.image, self.settings.image.blur);
 		}
 		self
@@ -156,6 +175,11 @@ impl<'a> ImageOps<'a> {
 
 	/* Update the colors of the image */
 	fn update_colors(&mut self) -> &mut Self {
+		if format!("{:?}", self.settings.color)
+			!= format!("{:?}", ColorSettings::default())
+		{
+			info!("Updating the colors...");
+		}
 		if self.settings.color.grayscale {
 			self.image =
 				DynamicImage::ImageLuma8(colorops::grayscale(&self.image)).to_rgba();
