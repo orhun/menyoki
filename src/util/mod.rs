@@ -53,8 +53,7 @@ pub fn init_logger(verbosity: u64) -> Result<(), SetLoggerError> {
 			_ => LevelFilter::Trace,
 		})
 		.chain(Output::stdout(""))
-		.apply()?;
-	Ok(())
+		.apply()
 }
 
 /**
