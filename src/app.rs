@@ -65,7 +65,7 @@ where
 		&self,
 		mut output: Output,
 	) -> Result<(), Error> {
-		trace!("{:?}", self.window);
+		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
 		let (image, frames) = self.get_output();
