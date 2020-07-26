@@ -294,6 +294,7 @@ where
 		output: Output,
 	) -> Result<(), Error> {
 		let (images, fps) = frames.expect("Failed to get the frames");
+		debug!("FPS: {}", fps);
 		Gif::new(
 			fps,
 			images.first().expect("No frames found to save").geometry,
