@@ -44,6 +44,7 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		let first_frame = frames.first().expect("No frames found to edit");
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
 			* self.settings.speed) as u32;
+		info!("Processing the GIF frames...");
 		self.imageops
 			.init(first_frame.clone().into_buffer().dimensions());
 		let mut images = Vec::new();
