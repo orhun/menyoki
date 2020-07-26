@@ -14,11 +14,6 @@ pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
 	capture: App<'a, 'b>,
 	gif: App<'a, 'b>,
-	png: App<'a, 'b>,
-	jpg: App<'a, 'b>,
-	bmp: App<'a, 'b>,
-	tiff: App<'a, 'b>,
-	farbfeld: App<'a, 'b>,
 	gif_edit: App<'a, 'b>,
 	edit: App<'a, 'b>,
 }
@@ -37,14 +32,6 @@ where
 			record: Self::get_base_args(BaseCommand::Record),
 			capture: Self::get_base_args(BaseCommand::Capture),
 			gif: Self::get_gif_args(false),
-			png: Self::get_png_args(),
-			jpg: Self::get_jpg_args(),
-			bmp: SubCommand::with_name("bmp")
-				.about("Changes the BMP encoder settings"),
-			tiff: SubCommand::with_name("tiff")
-				.about("Changes the TIFF encoder settings"),
-			farbfeld: SubCommand::with_name("ff")
-				.about("Changes the farbfeld encoder settings"),
 			edit: Self::get_edit_args(),
 			gif_edit: Self::get_gif_args(true),
 		}
