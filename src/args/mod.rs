@@ -51,7 +51,7 @@ where
 				AppSettings::VersionlessSubcommands,
 				AppSettings::DeriveDisplayOrder,
 			])
-			.setting(AppSettings::SubcommandRequired)
+			.setting(AppSettings::SubcommandRequiredElseHelp)
 			.arg(
 				Arg::with_name("command")
 					.value_name("COMMAND")
