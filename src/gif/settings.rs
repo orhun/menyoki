@@ -71,12 +71,27 @@ mod tests {
 		let args = App::new("test")
 			.arg(Arg::with_name("repeat").long("repeat").takes_value(true))
 			.arg(Arg::with_name("quality").long("quality").takes_value(true))
-			.get_matches_from(vec!["test", "--repeat", "5", "--quality", "10"]);
+			.arg(Arg::with_name("speed").long("speed").takes_value(true))
+			.arg(Arg::with_name("fast").long("fast"))
+			.get_matches_from(vec![
+				"test",
+				"--repeat",
+				"5",
+				"--quality",
+				"10",
+				"--speed",
+				"1.1",
+				"--fast",
+			]);
 		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
+		assert_eq!(1.1, gif_settings.speed);
+		assert_eq!(true, gif_settings.fast);
 		let gif_settings = GifSettings::from_args(ArgParser::new(None));
 		assert_eq!(-1, gif_settings.repeat);
 		assert_eq!(75, gif_settings.quality);
+		assert_eq!(1.0, gif_settings.speed);
+		assert_eq!(false, gif_settings.fast);
 	}
 }
