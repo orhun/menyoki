@@ -46,7 +46,7 @@ jobs:
           repo: 'https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
           parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
           xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
-          test1: 'cargo tarpaulin -o Xml -v -- "test"'
+          test1: 'cargo tarpaulin -o Xml -v -- "test" rec'
           test2: 'cargo tarpaulin --features ski -o Xml -v -- "test" rec'
       - name: Upload reports to Codecov
         uses: codecov/codecov-action@v1.0.7
