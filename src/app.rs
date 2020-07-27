@@ -316,7 +316,6 @@ mod tests {
 	use crate::test::TestWindow;
 	use crate::util::file::FileFormat;
 	use image::Bgra;
-	use std::io::Cursor;
 	#[test]
 	fn test_app_mod() -> Result<(), Error> {
 		let args = Args::parse();
@@ -331,9 +330,9 @@ mod tests {
 		] {
 			settings.save.file.format = format;
 			let app = App::new(Some(window), &settings);
-			let mut output = Vec::new();
-			app.start(Cursor::new(&mut output))?;
-			assert!(output.len() > 0);
+			app.start(File::create("test")?)?;
+			app.edit_image(Path::new("test"));
+			fs::remove_file("test")?;
 		}
 		settings.save.file.format = FileFormat::Gif;
 		let app = App::new(Some(window), &settings);
