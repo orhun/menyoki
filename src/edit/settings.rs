@@ -111,7 +111,7 @@ impl ColorSettings {
 }
 
 /* Flip direction */
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Flip {
 	Horizontal,
 	Vertical,
@@ -204,5 +204,79 @@ impl<'a> EditSettings<'a> {
 	 */
 	pub fn get_imageops(self) -> ImageOps<'a> {
 		ImageOps::new(self)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use clap::{App, Arg};
+	#[test]
+	fn test_edit_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("input"))
+			.arg(Arg::with_name("convert").long("convert"))
+			.arg(Arg::with_name("crop").long("crop").takes_value(true))
+			.arg(Arg::with_name("resize").long("resize").takes_value(true))
+			.arg(Arg::with_name("ratio").long("ratio").takes_value(true))
+			.arg(Arg::with_name("flip").long("flip").takes_value(true))
+			.arg(Arg::with_name("rotate").long("rotate").takes_value(true))
+			.arg(Arg::with_name("blur").long("blur").takes_value(true))
+			.arg(Arg::with_name("grayscale").long("grayscale"))
+			.arg(Arg::with_name("invert").long("invert"))
+			.arg(
+				Arg::with_name("brighten")
+					.long("brighten")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("hue-rotate")
+					.long("hue-rotate")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("contrast")
+					.long("contrast")
+					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
+			.get_matches_from(vec![
+				"test",
+				"x",
+				"--convert",
+				"--crop",
+				"10",
+				"--resize",
+				"100:100",
+				"--ratio",
+				"0.5",
+				"--flip",
+				"horizontal",
+				"--rotate",
+				"90",
+				"--blur",
+				"1.5",
+				"--grayscale",
+				"--invert",
+				"--brighten",
+				"2",
+				"--hue-rotate",
+				"3",
+				"--contrast",
+				"-5",
+			]);
+		let edit_settings = EditSettings::from_args(ArgParser::new(Some(&args)));
+		assert_eq!(Path::new("x"), edit_settings.path);
+		assert_eq!(true, edit_settings.convert);
+		assert_eq!(10, edit_settings.image.crop.top);
+		assert_eq!(0.5, edit_settings.image.ratio);
+		assert_eq!(Some(Flip::Horizontal), edit_settings.image.flip);
+		assert_eq!(90, edit_settings.image.rotate);
+		assert_eq!(1.5, edit_settings.image.blur);
+		assert_eq!(true, edit_settings.color.grayscale);
+		assert_eq!(true, edit_settings.color.invert);
+		assert_eq!(2, edit_settings.color.brightness);
+		assert_eq!(3, edit_settings.color.hue);
+		assert_eq!(-5., edit_settings.color.contrast);
 	}
 }
