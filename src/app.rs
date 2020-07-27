@@ -128,7 +128,7 @@ where
 	 *
 	 * @return AppOutput
 	 */
-	fn get_output(&self) -> AppOutput {
+	fn get_output(self) -> AppOutput {
 		if self.settings.save.file.format == FileFormat::Gif {
 			(None, Some(self.get_frames()))
 		} else {
@@ -141,7 +141,7 @@ where
 	 *
 	 * @return Image (Option)
 	 */
-	fn get_image(&self) -> Option<Image> {
+	fn get_image(self) -> Option<Image> {
 		if self.settings.args.is_present("edit") {
 			debug!("{:?}", self.settings.edit);
 			info!("Opening {:?}...", self.settings.edit.path);
@@ -156,7 +156,7 @@ where
 	 *
 	 * @return Frames
 	 */
-	fn get_frames(&self) -> Frames {
+	fn get_frames(self) -> Frames {
 		if self.settings.args.is_present("edit") {
 			info!("Reading frames from {:?}...", self.settings.edit.path);
 			self.edit_gif(
@@ -260,7 +260,7 @@ where
 	 * @param color_type
 	 */
 	fn save_image<Encoder: ImageEncoder>(
-		&self,
+		self,
 		image: Option<Image>,
 		encoder: Encoder,
 		color_type: ColorType,
