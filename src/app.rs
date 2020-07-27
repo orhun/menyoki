@@ -20,6 +20,7 @@ use image::ImageEncoder;
 use std::fmt::Debug;
 use std::fs::{self, File};
 use std::io::{Error, Read, Seek, Write};
+use std::path::Path;
 use std::thread;
 
 /* Window system functions */
@@ -145,7 +146,7 @@ where
 		if self.settings.args.is_present("edit") {
 			debug!("{:?}", self.settings.edit);
 			info!("Opening {:?}...", self.settings.edit.path);
-			Some(self.edit_image())
+			Some(self.edit_image(self.settings.edit.path))
 		} else {
 			self.capture()
 		}
@@ -224,10 +225,11 @@ where
 	/**
 	 * Edit and return the image.
 	 *
+	 * @param  path
 	 * @return Image
 	 */
-	fn edit_image(self) -> Image {
-		let image = Reader::open(self.settings.edit.path)
+	fn edit_image(self, path: &Path) -> Image {
+		let image = Reader::open(path)
 			.expect("File not found")
 			.with_guessed_format()
 			.expect("File format not supported")
