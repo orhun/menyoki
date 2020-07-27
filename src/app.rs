@@ -341,9 +341,9 @@ mod tests {
 			false,
 			window.geometry,
 		));
-		let mut output = Vec::new();
-		app.save_gif(Some((images, 10)), &mut output)?;
-		assert!(output.len() > 0);
+		app.save_gif(Some((images, 10)), File::create("test.gif")?)?;
+		app.edit_gif(File::open("test.gif")?);
+		fs::remove_file("test.gif")?;
 		Ok(())
 	}
 }
