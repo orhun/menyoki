@@ -1,6 +1,6 @@
 use crate::edit::ImageOps;
-use crate::gif::settings::GifSettings;
 use crate::gif::encoder::Frames;
+use crate::gif::settings::GifSettings;
 use image::error::ImageError;
 use image::gif::GifDecoder;
 use image::AnimationDecoder;
