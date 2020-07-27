@@ -229,18 +229,10 @@ mod tests {
 			assert_eq!(
 				match info {
 					"date" => {
-						let file_info = FileInfo::Date("");
-						let mut file_name = String::from("x.y");
-						file_info.append(&mut file_name);
-						assert!(file_name.len() > 3);
-						Some(file_info)
+						Some(FileInfo::Date(""))
 					}
 					"timestamp" => {
-						let file_info = FileInfo::Timestamp;
-						let mut file_name = String::from("x.y.z");
-						file_info.append(&mut file_name);
-						assert!(file_name.len() > 5);
-						Some(file_info)
+						Some(FileInfo::Timestamp)
 					}
 					_ => None,
 				},
