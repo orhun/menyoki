@@ -209,6 +209,13 @@ where
 			.expect("Failed to edit the GIF")
 	}
 
+	/**
+	 * Save the application output.
+	 *
+	 * @param  app_output
+	 * @param  output
+	 * @return Result
+	 */
 	fn save<Output: Write + Seek>(
 		&self,
 		app_output: AppOutput,
