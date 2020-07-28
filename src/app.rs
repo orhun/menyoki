@@ -62,56 +62,11 @@ where
 	 * @param  output
 	 * @return Result
 	 */
-	pub fn start<Output: Write + Seek>(
-		&self,
-		mut output: Output,
-	) -> Result<(), Error> {
+	pub fn start<Output: Write + Seek>(&self, output: Output) -> Result<(), Error> {
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		let (image, frames) = self.get_output();
-		match self.settings.save.file.format {
-			FileFormat::Gif => {
-				debug!("{:?}", self.settings.gif);
-				self.save_gif(frames, output)?;
-			}
-			FileFormat::Png => {
-				debug!("{:?}", self.settings.png);
-				self.save_image(
-					image,
-					PNGEncoder::new_with_quality(
-						output,
-						self.settings.png.compression,
-						self.settings.png.filter,
-					),
-					ColorType::Rgba8,
-				)
-			}
-			FileFormat::Jpg => {
-				debug!("{:?}", self.settings.jpg);
-				self.save_image(
-					image,
-					JPEGEncoder::new_with_quality(
-						&mut output,
-						self.settings.jpg.quality,
-					),
-					ColorType::Rgb8,
-				)
-			}
-			FileFormat::Bmp => self.save_image(
-				image,
-				BMPEncoder::new(&mut output),
-				ColorType::Rgba8,
-			),
-			FileFormat::Tiff => {
-				self.save_image(image, TiffEncoder::new(output), ColorType::Rgba8)
-			}
-			FileFormat::Ff => self.save_image(
-				image,
-				FarbfeldEncoder::new(output),
-				ColorType::Rgba16,
-			),
-		}
+		self.save(self.get_output(), output)?;
 		info!(
 			"{} saved to: {:?} ({})",
 			self.settings.save.file.format.to_string().to_uppercase(),
@@ -252,6 +207,57 @@ where
 			.expect("Failed to decode the GIF")
 			.update_frames()
 			.expect("Failed to edit the GIF")
+	}
+
+	fn save<Output: Write + Seek>(
+		&self,
+		app_output: AppOutput,
+		mut output: Output,
+	) -> Result<(), Error> {
+		let (image, frames) = app_output;
+		match self.settings.save.file.format {
+			FileFormat::Gif => {
+				debug!("{:?}", self.settings.gif);
+				self.save_gif(frames, output)?;
+			}
+			FileFormat::Png => {
+				debug!("{:?}", self.settings.png);
+				self.save_image(
+					image,
+					PNGEncoder::new_with_quality(
+						output,
+						self.settings.png.compression,
+						self.settings.png.filter,
+					),
+					ColorType::Rgba8,
+				)
+			}
+			FileFormat::Jpg => {
+				debug!("{:?}", self.settings.jpg);
+				self.save_image(
+					image,
+					JPEGEncoder::new_with_quality(
+						&mut output,
+						self.settings.jpg.quality,
+					),
+					ColorType::Rgb8,
+				)
+			}
+			FileFormat::Bmp => self.save_image(
+				image,
+				BMPEncoder::new(&mut output),
+				ColorType::Rgba8,
+			),
+			FileFormat::Tiff => {
+				self.save_image(image, TiffEncoder::new(output), ColorType::Rgba8)
+			}
+			FileFormat::Ff => self.save_image(
+				image,
+				FarbfeldEncoder::new(output),
+				ColorType::Rgba16,
+			),
+		}
+		Ok(())
 	}
 
 	/**
