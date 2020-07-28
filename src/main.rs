@@ -18,7 +18,6 @@ use self::app::{App, WindowAccess};
 use self::args::Args;
 use self::settings::AppSettings;
 use self::x11::WindowSystem;
-use std::fs::File;
 use std::io::Error;
 
 fn main() -> Result<(), Error> {
@@ -39,9 +38,7 @@ fn main() -> Result<(), Error> {
 		},
 		&settings,
 	)
-	.start(
-		File::create(&settings.save.file.path).expect("Failed to create the file"),
-	)
+	.start()
 }
 
 #[cfg(test)]

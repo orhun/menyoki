@@ -59,14 +59,17 @@ where
 	/**
 	 * Start the application.
 	 *
-	 * @param  output
 	 * @return Result
 	 */
-	pub fn start<Output: Write + Seek>(&self, output: Output) -> Result<(), Error> {
+	pub fn start(&self) -> Result<(), Error> {
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		self.save(self.get_app_output(), output)?;
+		self.save(
+			self.get_app_output(),
+			File::create(&self.settings.save.file.path)
+				.expect("Failed to create the file"),
+		)?;
 		info!(
 			"{} saved to: {:?} ({})",
 			self.settings.save.file.format.to_string().to_uppercase(),
