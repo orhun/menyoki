@@ -66,7 +66,7 @@ where
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		self.save(self.get_output(), output)?;
+		self.save(self.get_app_output(), output)?;
 		info!(
 			"{} saved to: {:?} ({})",
 			self.settings.save.file.format.to_string().to_uppercase(),
@@ -84,7 +84,7 @@ where
 	 *
 	 * @return AppOutput
 	 */
-	fn get_output(self) -> AppOutput {
+	fn get_app_output(self) -> AppOutput {
 		if self.settings.save.file.format == FileFormat::Gif {
 			(None, Some(self.get_frames()))
 		} else {
