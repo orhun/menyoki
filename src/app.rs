@@ -65,7 +65,7 @@ where
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		self.save(
+		self.save_output(
 			self.get_app_output(),
 			File::create(&self.settings.save.file.path)
 				.expect("Failed to create the file"),
@@ -219,7 +219,7 @@ where
 	 * @param  output
 	 * @return Result
 	 */
-	fn save<Output: Write + Seek>(
+	fn save_output<Output: Write + Seek>(
 		&self,
 		app_output: AppOutput,
 		mut output: Output,
