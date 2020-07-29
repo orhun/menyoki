@@ -25,7 +25,6 @@ impl<'a> WindowAccess<'a, Window> for WindowSystem<'a> {
 	 * @return WindowSystem (Option)
 	 */
 	fn init(settings: &'a AppSettings<'a>) -> Option<Self> {
-		trace!("{:?}", settings);
 		if let Some(display) = Display::open(Some(settings.record)) {
 			unsafe { xlib::XSetErrorHandler(Some(handle_x11_errors)) };
 			Some(Self { display, settings })
