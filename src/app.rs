@@ -66,28 +66,8 @@ where
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
 		if self.settings.args.is_present("split") {
-			let input = File::open(self.settings.split.file)?;
-			fs::create_dir_all(self.settings.split.dir)?;
 			info!("Reading frames from {:?}...", self.settings.split.file);
-			let (frames, fps) = self.edit_gif(input);
-			for i in 0..frames.len() {
-				let path = FileUtil::get_path_with_extension(
-					self.settings.split.dir.join(format!(
-						"frame_{:0w$}_{}ms",
-						i,
-						1e3 / fps as f64,
-						w = frames.len().to_string().len(),
-					)),
-					self.settings.save.file.format,
-				);
-				debug!("Saving to {:?}\r", path);
-				io::stdout().flush().expect("Failed to flush stdout");
-				self.save_output(
-					(frames.get(i).cloned(), None),
-					File::create(path)?,
-				)?;
-			}
-			debug!("\n");
+			self.split_gif(File::open(self.settings.split.file)?)?;
 			info!(
 				"Frames saved to {:?} in {} format.",
 				self.settings.split.dir,
@@ -239,6 +219,33 @@ where
 			.expect("Failed to decode the GIF")
 			.update_frames()
 			.expect("Failed to edit the GIF")
+	}
+
+	/**
+	 * Split GIF into frames and save.
+	 *
+	 * @param  input
+	 * @return Frames
+	 */
+	fn split_gif<Input: Read>(self, input: Input) -> Result<(), Error> {
+		let (frames, fps) = self.edit_gif(input);
+		fs::create_dir_all(self.settings.split.dir)?;
+		for i in 0..frames.len() {
+			let path = FileUtil::get_path_with_extension(
+				self.settings.split.dir.join(format!(
+					"frame_{:0w$}_{}ms",
+					i,
+					1e3 / fps as f64,
+					w = frames.len().to_string().len(),
+				)),
+				self.settings.save.file.format,
+			);
+			debug!("Saving to {:?}\r", path);
+			io::stdout().flush().expect("Failed to flush stdout");
+			self.save_output((frames.get(i).cloned(), None), File::create(path)?)?;
+		}
+		debug!("\n");
+		Ok(())
 	}
 
 	/**
