@@ -14,6 +14,7 @@ pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
 	capture: App<'a, 'b>,
 	edit: App<'a, 'b>,
+	split: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -30,6 +31,7 @@ where
 			record: Self::get_base_args(BaseCommand::Record),
 			capture: Self::get_base_args(BaseCommand::Capture),
 			edit: Self::get_edit_args(),
+			split: Self::get_split_args(),
 		}
 	}
 
@@ -80,10 +82,15 @@ where
 					)
 					.subcommand(Self::get_save_args("t.*")),
 			)
-			.subcommand(Self::get_image_args(args.capture))
-			.subcommand(Self::get_image_args(args.edit.subcommand(
-				Self::get_gif_args(true).subcommand(Self::get_save_args("t.gif")),
-			)))
+			.subcommand(Self::get_image_args(args.capture, Vec::new()))
+			.subcommand(Self::get_image_args(
+				args.edit.subcommand(
+					Self::get_gif_args(true)
+						.subcommand(Self::get_save_args("t.gif")),
+				),
+				Vec::new(),
+			))
+			.subcommand(Self::get_image_args(args.split, vec![AppSettings::Hidden]))
 			.get_matches()
 	}
 
@@ -394,12 +401,39 @@ where
 	}
 
 	/**
+	 * Get the gif split arguments.
+	 *
+	 * @return App
+	 */
+	fn get_split_args() -> App<'a, 'b> {
+		SubCommand::with_name("split")
+			.about("Split GIF into frames")
+			.arg(
+				Arg::with_name("file")
+					.value_name("FILE")
+					.help("Sets the GIF file to split")
+					.required(true),
+			)
+			.arg(
+				Arg::with_name("dir")
+					.short("d")
+					.long("dir")
+					.value_name("DIRECTORY")
+					.help("Sets the output directory"),
+			)
+	}
+
+	/**
 	 * Add image related subcommands to the given arguments.
 	 *
 	 * @param  args
+	 * @param  save_settings
 	 * @return App
 	 */
-	fn get_image_args(args: App<'a, 'b>) -> App<'a, 'b> {
+	fn get_image_args(
+		args: App<'a, 'b>,
+		save_settings: Vec<AppSettings>,
+	) -> App<'a, 'b> {
 		args.subcommand(
 			SubCommand::with_name("png")
 			.about("Changes the PNG encoder settings")
@@ -422,7 +456,7 @@ where
 					.default_value("sub")
 					.help("Sets the filter algorithm that processes the image data")
 					.takes_value(true),
-			).subcommand(Self::get_save_args("t.png")),
+			).subcommand(Self::get_save_args("t.png").settings(&save_settings)),
 		)
 		.subcommand(SubCommand::with_name("jpg")
 		.about("Changes the JPG encoder settings")
@@ -434,23 +468,23 @@ where
 				.default_value("90")
 				.help("Sets the JPG quality (1-100)")
 				.takes_value(true),
-		).subcommand(Self::get_save_args("t.jpg")))
+		).subcommand(Self::get_save_args("t.jpg").settings(&save_settings)))
 		.subcommand(
 			SubCommand::with_name("bmp")
 				.about("Changes the BMP encoder settings")
-				.subcommand(Self::get_save_args("t.bmp")),
+				.subcommand(Self::get_save_args("t.bmp").settings(&save_settings)),
 		)
 		.subcommand(
 			SubCommand::with_name("tiff")
 				.about("Changes the TIFF encoder settings")
-				.subcommand(Self::get_save_args("t.tiff")),
+				.subcommand(Self::get_save_args("t.tiff").settings(&save_settings)),
 		)
 		.subcommand(
 			SubCommand::with_name("ff")
 				.about("Changes the farbfeld encoder settings")
-				.subcommand(Self::get_save_args("t.ff")),
+				.subcommand(Self::get_save_args("t.ff").settings(&save_settings)),
 		)
-		.subcommand(Self::get_save_args("t.*"))
+		.subcommand(Self::get_save_args("t.*").settings(&save_settings))
 	}
 
 	/**
