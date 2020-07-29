@@ -13,6 +13,7 @@ use {
 };
 
 /* Image data and geometric properties */
+#[derive(Clone)]
 pub struct Image {
 	data: Vec<Bgra<u8>>,
 	alpha_channel: bool,
