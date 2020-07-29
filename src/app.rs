@@ -7,7 +7,7 @@ use crate::gif::Gif;
 use crate::image::Image;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
-use crate::util::file::FileFormat;
+use crate::util::file::{File as FileUtil, FileFormat};
 use bytesize::ByteSize;
 use image::bmp::BMPEncoder;
 use image::farbfeld::FarbfeldEncoder;
@@ -19,7 +19,7 @@ use image::ColorType;
 use image::ImageEncoder;
 use std::fmt::Debug;
 use std::fs::{self, File};
-use std::io::{Error, Read, Seek, Write};
+use std::io::{self, Error, Read, Seek, Write};
 use std::path::Path;
 use std::thread;
 
@@ -65,17 +65,46 @@ where
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
-		self.save_output(
-			self.get_app_output(),
-			File::create(&self.settings.save.file.path)
-				.expect("Failed to create the file"),
-		)?;
-		info!(
-			"{} saved to: {:?} ({})",
-			self.settings.save.file.format.to_string().to_uppercase(),
-			self.settings.save.file.path,
-			ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
-		);
+		if self.settings.args.is_present("split") {
+			let input = File::open(self.settings.split.file)?;
+			fs::create_dir_all(self.settings.split.dir)?;
+			info!("Reading frames from {:?}...", self.settings.split.file);
+			let (frames, fps) = self.edit_gif(input);
+			for i in 0..frames.len() {
+				let path = FileUtil::get_path_with_extension(
+					self.settings.split.dir.join(format!(
+						"frame_{:0w$}_{}ms",
+						i,
+						1e3 / fps as f64,
+						w = frames.len().to_string().len(),
+					)),
+					self.settings.save.file.format,
+				);
+				debug!("Saving to {:?}\r", path);
+				io::stdout().flush().expect("Failed to flush stdout");
+				self.save_output(
+					(frames.get(i).cloned(), None),
+					File::create(path)?,
+				)?;
+			}
+			debug!("\n");
+			info!(
+				"Frames saved to {:?} in {} format.",
+				self.settings.split.dir,
+				self.settings.save.file.format.to_string().to_uppercase(),
+			);
+		} else {
+			self.save_output(
+				self.get_app_output(),
+				File::create(&self.settings.save.file.path)?,
+			)?;
+			info!(
+				"{} saved to: {:?} ({})",
+				self.settings.save.file.format.to_string().to_uppercase(),
+				self.settings.save.file.path,
+				ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
+			);
+		}
 		if let Some(window) = self.window {
 			window.release();
 		}
@@ -230,29 +259,23 @@ where
 				debug!("{:?}", self.settings.gif);
 				self.save_gif(frames, output)?;
 			}
-			FileFormat::Png => {
-				debug!("{:?}", self.settings.png);
-				self.save_image(
-					image,
-					PNGEncoder::new_with_quality(
-						output,
-						self.settings.png.compression,
-						self.settings.png.filter,
-					),
-					ColorType::Rgba8,
-				)
-			}
-			FileFormat::Jpg => {
-				debug!("{:?}", self.settings.jpg);
-				self.save_image(
-					image,
-					JPEGEncoder::new_with_quality(
-						&mut output,
-						self.settings.jpg.quality,
-					),
-					ColorType::Rgb8,
-				)
-			}
+			FileFormat::Png => self.save_image(
+				image,
+				PNGEncoder::new_with_quality(
+					output,
+					self.settings.png.compression,
+					self.settings.png.filter,
+				),
+				ColorType::Rgba8,
+			),
+			FileFormat::Jpg => self.save_image(
+				image,
+				JPEGEncoder::new_with_quality(
+					&mut output,
+					self.settings.jpg.quality,
+				),
+				ColorType::Rgb8,
+			),
 			FileFormat::Bmp => self.save_image(
 				image,
 				BMPEncoder::new(&mut output),
@@ -283,13 +306,17 @@ where
 		encoder: Encoder,
 		color_type: ColorType,
 	) {
-		let image = image.expect("Failed to get the window image");
-		info!(
-			"Saving the image as {}...",
-			self.settings.save.file.format.to_string().to_uppercase()
-		);
-		debug!("{:?}", image);
-		debug!("Color type: {:?}", color_type);
+		let image = image.expect("Failed to get the image");
+		if !self.settings.args.is_present("split") {
+			info!(
+				"Saving the image as {}...",
+				self.settings.save.file.format.to_string().to_uppercase()
+			);
+			debug!("{:?}", image);
+			debug!("{:?}", self.settings.png);
+			debug!("{:?}", self.settings.jpg);
+			debug!("Color type: {:?}", color_type);
+		}
 		encoder
 			.write_image(
 				&image.get_data(color_type),
