@@ -9,7 +9,7 @@ use fern::{Dispatch, Output};
 use log::{LevelFilter, SetLoggerError};
 
 /**
- * Initialize the logger library.
+ * Initialize the logger.
  *
  * @param  verbosity
  * @param  format
