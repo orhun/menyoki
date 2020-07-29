@@ -1,4 +1,5 @@
 use crate::args::parser::ArgParser;
+use crate::util::file::File;
 use std::path::Path;
 
 /* GIF and frame settings */
@@ -101,10 +102,20 @@ impl<'a> SplitSettings<'a> {
 		match parser.args {
 			Some(matches) => {
 				let file = Path::new(matches.value_of("file").unwrap_or_default());
-				Self::new(
-					file,
-					Path::new(matches.value_of("dir").unwrap_or_default()),
-				)
+				let dir = match matches.value_of("dir") {
+					Some(dir) => Path::new(dir),
+					None => Box::leak(
+						File::get_default_path(&format!(
+							"{}_frames",
+							file.file_stem()
+								.unwrap_or_default()
+								.to_str()
+								.unwrap_or_default(),
+						))
+						.into_boxed_path(),
+					),
+				};
+				Self::new(file, dir)
 			}
 			None => Self::default(),
 		}
