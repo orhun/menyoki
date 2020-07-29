@@ -21,14 +21,14 @@ use self::x11::WindowSystem;
 use std::io::Error;
 
 fn main() -> Result<(), Error> {
-	util::check_friday();
 	let args = Args::parse();
 	let settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
 		util::init_logger(args.occurrences_of("verbose"), settings.save.file.format)
 			.expect("Failed to initialize the logger");
 	}
-	trace!("{:?}", settings);
+	util::check_friday();
+	settings.check();
 	let window = if args.is_present("record") || args.is_present("capture") {
 		WindowSystem::init(&settings)
 			.expect("Failed to access the window system")
