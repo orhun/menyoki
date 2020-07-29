@@ -86,9 +86,6 @@ impl JpgSettings {
 	 * @return JpgSettings
 	 */
 	pub fn new(quality: u8) -> Self {
-		if quality <= 25 {
-			warn!("Image will be encoded in low quality.");
-		}
 		Self { quality }
 	}
 

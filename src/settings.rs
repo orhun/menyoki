@@ -90,4 +90,15 @@ impl<'a> AppSettings<'a> {
 			None => None,
 		}
 	}
+
+	/* Check the settings and warn the user. */
+	pub fn check(&self) {
+		trace!("{:?}", self);
+		if self.jpg.quality <= 25 {
+			warn!("Image will be encoded in low quality.");
+		}
+		if self.gif.quality <= 20 {
+			warn!("GIF will be encoded in low quality.");
+		}
+	}
 }
