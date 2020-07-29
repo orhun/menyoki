@@ -1,6 +1,6 @@
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
-use crate::gif::settings::GifSettings;
+use crate::gif::settings::{GifSettings, SplitSettings};
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::cmd::Command;
@@ -20,6 +20,7 @@ pub struct AppSettings<'a> {
 	pub jpg: JpgSettings,
 	pub save: SaveSettings,
 	pub edit: EditSettings<'a>,
+	pub split: SplitSettings<'a>,
 	pub input_state: &'static InputState,
 }
 
@@ -61,6 +62,9 @@ impl<'a> AppSettings<'a> {
 				},
 			),
 			edit,
+			split: SplitSettings::from_args(ArgParser::from_subcommand(
+				args, "split",
+			)),
 			input_state: Box::leak(Box::new(InputState::new())),
 		}
 	}
