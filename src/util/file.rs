@@ -174,7 +174,7 @@ impl File {
 	 * @param  format
 	 * @return PathBuf
 	 */
-	fn get_path_with_extension(path: PathBuf, format: FileFormat) -> PathBuf {
+	pub fn get_path_with_extension(path: PathBuf, format: FileFormat) -> PathBuf {
 		match path.extension().and_then(OsStr::to_str) {
 			Some("*") | None => {
 				path.with_extension(format.to_string().to_lowercase())
