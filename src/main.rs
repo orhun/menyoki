@@ -28,17 +28,15 @@ fn main() -> Result<(), Error> {
 		util::init_logger(args.occurrences_of("verbose"), settings.save.file.format)
 			.expect("Failed to initialize the logger");
 	}
-	App::new(
-		if !args.is_present("edit") {
-			WindowSystem::init(&settings)
-				.expect("Failed to access the window system")
-				.get_window()
-		} else {
-			None
-		},
-		&settings,
-	)
-	.start()
+	trace!("{:?}", settings);
+	let window = if args.is_present("record") || args.is_present("capture") {
+		WindowSystem::init(&settings)
+			.expect("Failed to access the window system")
+			.get_window()
+	} else {
+		None
+	};
+	App::new(window, &settings).start()
 }
 
 #[cfg(test)]
