@@ -89,6 +89,8 @@ impl FileFormat {
 	pub fn from_args<'a>(args: &'a ArgMatches<'a>) -> Self {
 		match args.subcommand_matches(if args.is_present("edit") {
 			"edit"
+		} else if args.is_present("split") {
+			"split"
 		} else {
 			"capture"
 		}) {
