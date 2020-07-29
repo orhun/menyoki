@@ -1,4 +1,5 @@
 use crate::args::parser::ArgParser;
+use std::path::Path;
 
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]
@@ -57,6 +58,54 @@ impl GifSettings {
 				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
 			),
+			None => Self::default(),
+		}
+	}
+}
+
+#[derive(Clone, Copy, Debug)]
+pub struct SplitSettings<'a> {
+	pub file: &'a Path,
+	pub dir: &'a Path,
+}
+
+/* Default initialization values for GifSettings */
+impl Default for SplitSettings<'_> {
+	fn default() -> Self {
+		Self {
+			file: Path::new(""),
+			dir: Path::new(""),
+		}
+	}
+}
+
+impl<'a> SplitSettings<'a> {
+	/**
+	 * Create a new SplitSettings object.
+	 *
+	 * @param  file
+	 * @param  dir
+	 * @return SplitSettings
+	 */
+	pub fn new(file: &'a Path, dir: &'a Path) -> Self {
+		Self { file, dir }
+	}
+
+	/**
+	 * Create a SplitSettings object from parsed arguments.
+	 *
+	 * @param  parser
+	 * @return SplitSettings
+	 */
+	pub fn from_args(parser: ArgParser<'a>) -> Self {
+		match parser.args {
+			Some(matches) => {
+				let file = Path::new(matches.value_of("file").unwrap_or_default());
+				Self::new(
+					file,
+					Path::new(matches.value_of("dir").unwrap_or_default()),
+				)
+			}
 			None => Self::default(),
 		}
 	}
