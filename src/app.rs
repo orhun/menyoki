@@ -380,13 +380,13 @@ mod tests {
 		] {
 			settings.save.file.format = format;
 			let app = App::new(Some(window), &settings);
-			app.start(File::create("test")?)?;
+			app.save_output((app.get_image(), None), File::create("test")?)?;
 			app.edit_image(Path::new("test"));
 			fs::remove_file("test")?;
 		}
 		settings.save.file.format = FileFormat::Gif;
 		let app = App::new(Some(window), &settings);
-		let mut images = app.record();
+		let mut images = app.get_frames().0;
 		images.push(Image::new(
 			vec![Bgra::from([0, 0, 0, 0])],
 			false,
