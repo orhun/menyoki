@@ -235,7 +235,7 @@ where
 				self.settings.split.dir.join(format!(
 					"frame_{:0w$}_{}ms",
 					i,
-					1e3 / fps as f64,
+					(1e3 / fps as f64) as u64,
 					w = frames.len().to_string().len(),
 				)),
 				self.settings.save.file.format,
