@@ -238,6 +238,9 @@ mod tests {
 			"Image { data_len: 4536, alpha_channel: true, \
 			geometry: Geometry { x: 0, y: 10, width: 84, height: 54 } }"
 		);
-		assert_eq!(width * height * 4, image.get_data(ColorType::Rgba8).len() as u32);
+		assert_eq!(
+			width * height * 4,
+			image.get_data(ColorType::Rgba8).len() as u32
+		);
 	}
 }
