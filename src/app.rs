@@ -366,8 +366,9 @@ mod tests {
 	use crate::test::TestWindow;
 	use crate::util::file::FileFormat;
 	use image::Bgra;
+	use std::env;
 	#[test]
-	fn test_app_mod() -> Result<(), Error> {
+	fn test_app_image() -> Result<(), Error> {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
 		let window = TestWindow::default();
@@ -384,7 +385,14 @@ mod tests {
 			app.edit_image(Path::new("test"));
 			fs::remove_file("test")?;
 		}
+		Ok(())
+	}
+	#[test]
+	fn test_app_gif() -> Result<(), Error> {
+		let args = Args::parse();
+		let mut settings = AppSettings::new(&args);
 		settings.save.file.format = FileFormat::Gif;
+		let window = TestWindow::default();
 		let app = App::new(Some(window), &settings);
 		let mut images = app.get_frames().0;
 		images.push(Image::new(
@@ -394,12 +402,14 @@ mod tests {
 		));
 		app.save_gif(Some((images, 10)), File::create("test.gif")?)?;
 		app.edit_gif(File::open("test.gif")?);
+		let dir = env::current_dir()?;
+		settings.split.dir = Path::new(dir.to_str().unwrap_or_default());
 		settings.save.file.format = FileFormat::Png;
 		let app = App::new(Some(window), &settings);
 		app.split_gif(File::open("test.gif")?)?;
 		fs::remove_file("test.gif")?;
 		fs::remove_file("frame_0_100ms.png")?;
 		fs::remove_file("frame_1_100ms.png")?;
-		app.start()
+		Ok(())
 	}
 }
