@@ -385,7 +385,7 @@ mod tests {
 			app.edit_image(Path::new("test"));
 			fs::remove_file("test")?;
 		}
-		Ok(())
+		App::new(Some(window), &settings).start()
 	}
 	#[test]
 	fn test_app_gif() -> Result<(), Error> {
