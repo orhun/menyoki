@@ -36,7 +36,7 @@ impl<'a> ImageOps<'a> {
 	 *
 	 * @param size
 	 */
-	pub fn init(&mut self, size: (u32, u32)) {
+	pub fn init(&mut self, size: (u32, u32)) -> &mut Self {
 		let (mut width, mut height) = if !self.settings.image.resize.is_zero() {
 			(
 				self.settings.image.resize.width,
@@ -60,6 +60,7 @@ impl<'a> ImageOps<'a> {
 		self.geometry = Geometry::new(0, 0, width, height)
 			.with_padding(self.settings.image.crop);
 		debug!("{:?} -> {:?}", size, self.geometry);
+		self
 	}
 
 	/**
@@ -227,8 +228,7 @@ mod tests {
 		settings.color.brightness = -2;
 		settings.color.hue = 15;
 		settings.color.contrast = -5.;
-		let mut imageops = ImageOps::new(settings);
-		imageops.init(image.dimensions());
+		let mut imageops = ImageOps::new(settings).init(image.dimensions());
 		imageops.process(image);
 		assert_eq!((84, 54), imageops.image.dimensions());
 	}
