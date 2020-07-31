@@ -394,7 +394,9 @@ mod tests {
 		));
 		app.save_gif(Some((images, 10)), File::create("test.gif")?)?;
 		app.edit_gif(File::open("test.gif")?);
-		fs::remove_file("test.gif")?;
-		Ok(())
+		settings.save.file.format = FileFormat::Png;
+		let app = App::new(Some(window), &settings);
+		app.split_gif(File::open("test.gif")?)?;
+		app.start()
 	}
 }
