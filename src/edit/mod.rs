@@ -206,7 +206,7 @@ impl<'a> ImageOps<'a> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use image::{Rgba, RgbaImage};
+	use image::{ColorType, Rgba, RgbaImage};
 	#[test]
 	fn test_edit_mod() {
 		let mut image = RgbaImage::new(32, 32);
@@ -228,8 +228,16 @@ mod tests {
 		settings.color.brightness = -2;
 		settings.color.hue = 15;
 		settings.color.contrast = -5.;
-		let mut imageops = ImageOps::new(settings).init(image.dimensions());
+		let mut imageops = ImageOps::new(settings);
+		imageops.init(image.dimensions());
 		imageops.process(image);
-		assert_eq!((84, 54), imageops.image.dimensions());
+		let image = imageops.get_image();
+		let (width, height) = imageops.image.dimensions();
+		assert_eq!(
+			format!("{:?}", image),
+			"Image { data_len: 4536, alpha_channel: true, \
+			geometry: Geometry { x: 0, y: 10, width: 84, height: 54 } }"
+		);
+		assert_eq!(width * height * 4, image.get_data(ColorType::Rgba8).len() as u32);
 	}
 }
