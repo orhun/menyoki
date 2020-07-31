@@ -31,8 +31,9 @@ pub trait WindowAccess<'a, Window: Record + Send + Sync + Copy + Debug + 'static
 	fn get_window(&mut self) -> Option<Window>;
 }
 
-/* Application output (Image or Frames) */
-type AppOutput = (Option<Image>, Option<Frames>);
+/* Application output and result types */
+pub type AppOutput = (Option<Image>, Option<Frames>);
+pub type AppResult = Result<(), Error>;
 
 /* Application and main functionalities */
 #[derive(Clone, Copy, Debug)]
@@ -61,7 +62,7 @@ where
 	 *
 	 * @return Result
 	 */
-	pub fn start(&self) -> Result<(), Error> {
+	pub fn start(&self) -> AppResult {
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.get_command());
@@ -227,7 +228,7 @@ where
 	 * @param  input
 	 * @return Frames
 	 */
-	fn split_gif<Input: Read>(self, input: Input) -> Result<(), Error> {
+	fn split_gif<Input: Read>(self, input: Input) -> AppResult {
 		let (frames, fps) = self.edit_gif(input);
 		fs::create_dir_all(self.settings.split.dir)?;
 		for i in 0..frames.len() {
@@ -259,7 +260,7 @@ where
 		&self,
 		app_output: AppOutput,
 		mut output: Output,
-	) -> Result<(), Error> {
+	) -> AppResult {
 		let (image, frames) = app_output;
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
@@ -345,7 +346,7 @@ where
 		self,
 		frames: Option<Frames>,
 		output: Output,
-	) -> Result<(), Error> {
+	) -> AppResult {
 		let (images, fps) = frames.expect("Failed to get the frames");
 		debug!("FPS: {}", fps);
 		Gif::new(
@@ -368,7 +369,7 @@ mod tests {
 	use image::Bgra;
 	use std::env;
 	#[test]
-	fn test_app_image() -> Result<(), Error> {
+	fn test_app_image() -> AppResult {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
 		let window = TestWindow::default();
@@ -388,7 +389,7 @@ mod tests {
 		App::new(Some(window), &settings).start()
 	}
 	#[test]
-	fn test_app_gif() -> Result<(), Error> {
+	fn test_app_gif() -> AppResult {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
 		settings.save.file.format = FileFormat::Gif;

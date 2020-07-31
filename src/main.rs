@@ -14,13 +14,12 @@ mod settings;
 mod test;
 mod util;
 mod x11;
-use self::app::{App, WindowAccess};
+use self::app::{App, AppResult, WindowAccess};
 use self::args::Args;
 use self::settings::AppSettings;
 use self::x11::WindowSystem;
-use std::io::Error;
 
-fn main() -> Result<(), Error> {
+fn main() -> AppResult {
 	let args = Args::parse();
 	let settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
