@@ -311,14 +311,14 @@ where
 			.arg(
 				Arg::with_name("convert")
 					.long("convert")
-					.help("Converts the image to the given format"),
+					.help("Converts image to the given format"),
 			)
 			.arg(
 				Arg::with_name("crop")
 					.long("crop")
 					.value_name("PADDING")
 					.default_value("0:0:0:0")
-					.help("Applies the given padding to crop the GIF")
+					.help("Applies the given padding to crop the image")
 					.takes_value(true),
 			)
 			.arg(
@@ -326,7 +326,7 @@ where
 					.long("resize")
 					.value_name("SIZE")
 					.default_value("W:H")
-					.help("Changes the GIF size and aspect ratio")
+					.help("Changes the image size and aspect ratio")
 					.takes_value(true),
 			)
 			.arg(
@@ -334,14 +334,14 @@ where
 					.long("ratio")
 					.value_name("RATIO")
 					.default_value("1.0")
-					.help("Resizes the GIF by changing the aspect ratio")
+					.help("Resizes the image by changing the aspect ratio")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("flip")
 					.long("flip")
 					.value_name("FLIP")
-					.help("Flips the GIF")
+					.help("Flips the image")
 					.possible_values(&["horizontal", "vertical"])
 					.takes_value(true),
 			)
@@ -349,7 +349,7 @@ where
 				Arg::with_name("rotate")
 					.long("rotate")
 					.value_name("ROTATE")
-					.help("Rotates the GIF clockwise")
+					.help("Rotates the image clockwise")
 					.possible_values(&["90", "180", "270"])
 					.takes_value(true),
 			)
@@ -358,25 +358,25 @@ where
 					.long("blur")
 					.value_name("SIGMA")
 					.default_value("0.0")
-					.help("Blurs the GIF")
+					.help("Blurs the image")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("grayscale")
 					.long("grayscale")
-					.help("Converts GIF to grayscale"),
+					.help("Converts image to grayscale"),
 			)
 			.arg(
 				Arg::with_name("invert")
 					.long("invert")
-					.help("Inverts the GIF colors"),
+					.help("Inverts the image colors"),
 			)
 			.arg(
 				Arg::with_name("brighten")
 					.long("brighten")
 					.value_name("BRIGHTNESS")
 					.default_value("0")
-					.help("Brightens the GIF")
+					.help("Brightens the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -385,7 +385,7 @@ where
 					.long("hue-rotate")
 					.value_name("HUE")
 					.default_value("0")
-					.help("Hue rotates the GIF")
+					.help("Hue rotates the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -394,7 +394,7 @@ where
 					.long("contrast")
 					.value_name("CONTRAST")
 					.default_value("0.0")
-					.help("Adjusts the contrast of the GIF")
+					.help("Adjusts the contrast of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -407,7 +407,7 @@ where
 	 */
 	fn get_split_args() -> App<'a, 'b> {
 		SubCommand::with_name("split")
-			.about("Split GIF into frames")
+			.about("Splits GIF into frames")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
