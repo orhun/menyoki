@@ -201,3 +201,35 @@ impl<'a> ImageOps<'a> {
 		self
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use image::{Rgba, RgbaImage};
+	#[test]
+	fn test_edit_mod() {
+		let mut image = RgbaImage::new(32, 32);
+		for x in 15..=17 {
+			for y in 8..24 {
+				image.put_pixel(x, y, Rgba([128, 0, 128, 255]));
+				image.put_pixel(y, x, Rgba([128, 0, 128, 255]));
+			}
+		}
+		let mut settings = EditSettings::default();
+		settings.image.crop.top = 10;
+		settings.image.ratio = 2.;
+		settings.image.resize = Geometry::new(0, 0, 32, 42);
+		settings.image.flip = Some(Flip::Vertical);
+		settings.image.rotate = 270;
+		settings.image.blur = 1.5;
+		settings.color.grayscale = true;
+		settings.color.invert = true;
+		settings.color.brightness = -2;
+		settings.color.hue = 15;
+		settings.color.contrast = -5.;
+		let mut imageops = ImageOps::new(settings);
+		imageops.init(image.dimensions());
+		imageops.process(image);
+		assert_eq!((84, 54), imageops.image.dimensions());
+	}
+}
