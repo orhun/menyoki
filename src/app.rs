@@ -382,6 +382,7 @@ mod tests {
 			let app = App::new(Some(window), &settings);
 			app.save_output((app.get_image(), None), File::create("test")?)?;
 			app.edit_image(Path::new("test"));
+			assert!(Path::new("test").exists());
 			fs::remove_file("test")?;
 		}
 		settings.save.file.format = FileFormat::Gif;
@@ -397,6 +398,11 @@ mod tests {
 		settings.save.file.format = FileFormat::Png;
 		let app = App::new(Some(window), &settings);
 		app.split_gif(File::open("test.gif")?)?;
+		assert!(Path::new("frame_0_100ms.png").exists());
+		assert!(Path::new("frame_1_100ms.png").exists());
+		fs::remove_file("test.gif")?;
+		fs::remove_file("frame_0_100ms.png")?;
+		fs::remove_file("frame_1_100ms.png")?;
 		app.start()
 	}
 }
