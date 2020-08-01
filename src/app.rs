@@ -230,6 +230,7 @@ where
 	 */
 	fn split_gif<Input: Read>(self, input: Input) -> AppResult {
 		let (frames, fps) = self.edit_gif(input);
+		debug!("FPS: {}", fps);
 		fs::create_dir_all(self.settings.split.dir)?;
 		for i in 0..frames.len() {
 			let path = FileUtil::get_path_with_extension(
