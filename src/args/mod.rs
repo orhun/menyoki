@@ -270,7 +270,6 @@ where
 			)
 			.arg(
 				Arg::with_name("fast")
-					.short("f")
 					.long("fast")
 					.help("Encodes 3 times faster (lower quality and bigger file)")
 					.hidden(!cfg!(feature = "ski") || !edit_mode),
