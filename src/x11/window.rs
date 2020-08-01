@@ -318,7 +318,6 @@ mod tests {
 	#[test]
 	fn test_window_mod() {
 		let settings = RecordSettings::new(
-			10,
 			0x00ff_00ff,
 			Some(0),
 			false,
