@@ -56,7 +56,6 @@ pub struct Recorder<Window> {
 	window: Window,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
-	fps: u32,
 	settings: RecordSettings,
 }
 
@@ -77,7 +76,6 @@ where
 			window,
 			clock: FpsClock::new(fps),
 			channel: mpsc::channel(),
-			fps,
 			settings,
 		}
 	}
@@ -99,10 +97,13 @@ where
 		self.window.show_countdown();
 		let start_time = Instant::now();
 		let duration = if let Some(duration) = self.settings.time.duration {
-			info!("Recording {} FPS for {} seconds...", self.fps, duration);
+			info!(
+				"Recording {} FPS for {} seconds...",
+				self.clock.fps, duration
+			);
 			duration
 		} else {
-			info!("Recording {} FPS...", self.fps);
+			info!("Recording {} FPS...", self.clock.fps);
 			f64::MAX
 		};
 		while recording.load(Ordering::SeqCst)
@@ -140,7 +141,7 @@ where
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				self.window.show_countdown();
-				info!("Recording {} FPS...", self.fps);
+				info!("Recording {} FPS...", self.clock.fps);
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
 					frames.push(
