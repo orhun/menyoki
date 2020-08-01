@@ -2,13 +2,6 @@ pub mod parser;
 use crate::util::file::File;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
-/* Main commands of the app */
-#[derive(Debug, PartialEq)]
-enum BaseCommand {
-	Record,
-	Capture,
-}
-
 /* Command-line arguments */
 pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
@@ -28,8 +21,8 @@ where
 	 */
 	fn init() -> Self {
 		Self {
-			record: Self::get_base_args(BaseCommand::Record),
-			capture: Self::get_base_args(BaseCommand::Capture),
+			record: Self::get_record_args(false),
+			capture: Self::get_record_args(true),
 			edit: Self::get_edit_args(),
 			split: Self::get_split_args(),
 		}
@@ -95,16 +88,17 @@ where
 	}
 
 	/**
-	 * Get the main subcommand arguments from BaseCommand.
+	 * Get record/capture subcommand arguments.
 	 *
-	 * @param  base_command
+	 * @param  capture_mode
 	 * @return App
 	 */
-	fn get_base_args(base_command: BaseCommand) -> App<'a, 'b> {
-		SubCommand::with_name(&format!("{:?}", base_command).to_lowercase())
-			.about(match base_command {
-				BaseCommand::Record => "Records a window",
-				BaseCommand::Capture => "Takes the screenshot of a window",
+	fn get_record_args(capture_mode: bool) -> App<'a, 'b> {
+		SubCommand::with_name(if capture_mode { "capture" } else { "record" })
+			.about(if capture_mode {
+				"Takes the screenshot of a window"
+			} else {
+				"Records a window"
 			})
 			.arg(
 				Arg::with_name("fps")
@@ -114,7 +108,7 @@ where
 					.default_value("10")
 					.help("Sets the FPS value")
 					.takes_value(true)
-					.hidden(base_command == BaseCommand::Capture),
+					.hidden(capture_mode),
 			)
 			.arg(
 				Arg::with_name("color")
@@ -140,11 +134,10 @@ where
 					.long("padding")
 					.value_name("PADDING")
 					.default_value("0:0:0:0")
-					.help(match base_command {
-						BaseCommand::Record => "Sets the record area padding value",
-						BaseCommand::Capture => {
-							"Sets the capture area padding value"
-						}
+					.help(if capture_mode {
+						"Sets the capture area padding value"
+					} else {
+						"Sets the record area padding value"
 					})
 					.takes_value(true),
 			)
@@ -154,13 +147,10 @@ where
 					.long("select")
 					.value_name("SIZE")
 					.default_value("W:H")
-					.help(match base_command {
-						BaseCommand::Record => {
-							"Sets the record area size and enables selection"
-						}
-						BaseCommand::Capture => {
-							"Sets the capture area size and enables selection"
-						}
+					.help(if capture_mode {
+						"Sets the capture area size and enables selection"
+					} else {
+						"Sets the record area size and enables selection"
 					})
 					.takes_value(true),
 			)
@@ -172,24 +162,18 @@ where
 					.default_value("\u{221E}")
 					.help("Sets the recording duration")
 					.takes_value(true)
-					.hidden(base_command == BaseCommand::Capture),
+					.hidden(capture_mode),
 			)
 			.arg(
 				Arg::with_name("countdown")
 					.short("c")
 					.long("countdown")
 					.value_name("S")
-					.default_value(match base_command {
-						BaseCommand::Record => "3",
-						BaseCommand::Capture => "0",
-					})
-					.help(match base_command {
-						BaseCommand::Record => {
-							"Sets the countdown value for recording"
-						}
-						BaseCommand::Capture => {
-							"Sets the countdown value for capturing"
-						}
+					.default_value(if capture_mode { "0" } else { "3" })
+					.help(if capture_mode {
+						"Sets the countdown value for capturing"
+					} else {
+						"Sets the countdown value for recording"
 					})
 					.takes_value(true),
 			)
@@ -212,9 +196,10 @@ where
 					.takes_value(true),
 			)
 			.arg(Arg::with_name("root").short("r").long("root").help(
-				match base_command {
-					BaseCommand::Record => "Records the root window",
-					BaseCommand::Capture => "Captures the root window",
+				if capture_mode {
+					"Captures the root window"
+				} else {
+					"Records the root window"
 				},
 			))
 			.arg(
@@ -222,22 +207,20 @@ where
 					.short("w")
 					.long("focus")
 					.conflicts_with("root")
-					.help(match base_command {
-						BaseCommand::Record => "Records the focus window",
-						BaseCommand::Capture => "Captures the focus window",
+					.help(if capture_mode {
+						"Captures the focus window"
+					} else {
+						"Records the focus window"
 					}),
 			)
 			.arg(
 				Arg::with_name("with-alpha")
 					.short("a")
 					.long("with-alpha")
-					.help(match base_command {
-						BaseCommand::Record => {
-							"Records with the alpha channel for transparency"
-						}
-						BaseCommand::Capture => {
-							"Captures with the alpha channel for transparency"
-						}
+					.help(if capture_mode {
+						"Captures with the alpha channel for transparency"
+					} else {
+						"Records with the alpha channel for transparency"
 					}),
 			)
 			.arg(
