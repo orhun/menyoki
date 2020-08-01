@@ -233,12 +233,7 @@ where
 		fs::create_dir_all(self.settings.split.dir)?;
 		for i in 0..frames.len() {
 			let path = FileUtil::get_path_with_extension(
-				self.settings.split.dir.join(format!(
-					"frame_{:0w$}_{}ms",
-					i,
-					(1e3 / fps as f64) as u64,
-					w = frames.len().to_string().len(),
-				)),
+				self.settings.split.dir.join(format!("frame_{}", i,)),
 				self.settings.save.file.format,
 			);
 			debug!("Saving to {:?}\r", path);
