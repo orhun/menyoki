@@ -101,16 +101,6 @@ where
 				"Records a window"
 			})
 			.arg(
-				Arg::with_name("fps")
-					.short("f")
-					.long("fps")
-					.value_name("FPS")
-					.default_value("10")
-					.help("Sets the FPS value")
-					.takes_value(true)
-					.hidden(capture_mode),
-			)
-			.arg(
 				Arg::with_name("color")
 					.short("x")
 					.long("color")
@@ -240,6 +230,15 @@ where
 	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
 		SubCommand::with_name("gif")
 			.about("Changes the GIF encoder settings")
+			.arg(
+				Arg::with_name("fps")
+					.short("f")
+					.long("fps")
+					.value_name("FPS")
+					.default_value("10")
+					.help("Sets the FPS value")
+					.takes_value(true),
+			)
 			.arg(
 				Arg::with_name("quality")
 					.short("q")

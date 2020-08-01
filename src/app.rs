@@ -132,7 +132,7 @@ where
 				File::open(self.settings.edit.path).expect("File not found"),
 			)
 		} else {
-			(self.record(), self.settings.record.fps)
+			(self.record(), self.settings.gif.fps)
 		}
 	}
 
@@ -172,6 +172,7 @@ where
 	fn record(self) -> Vec<Image> {
 		let mut recorder = Recorder::new(
 			self.window.expect("Failed to get the window"),
+			self.settings.gif.fps,
 			self.settings.record,
 		);
 		if self.settings.args.is_present("command") {

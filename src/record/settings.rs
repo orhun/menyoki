@@ -100,7 +100,6 @@ impl RecordTime {
 /* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
-	pub fps: u32,
 	pub color: u64,
 	pub border: Option<u32>,
 	pub alpha: bool,
@@ -113,7 +112,6 @@ pub struct RecordSettings {
 impl Default for RecordSettings {
 	fn default() -> Self {
 		Self {
-			fps: 10,
 			color: 0x00ff_00ff,
 			border: Some(1),
 			alpha: false,
@@ -128,7 +126,6 @@ impl RecordSettings {
 	/**
 	 * Create a new RecordSettings object.
 	 *
-	 * @param  fps
 	 * @param  color
 	 * @param  border (Option)
 	 * @param  alpha
@@ -138,7 +135,6 @@ impl RecordSettings {
 	 * @return RecordSettings
 	 */
 	pub fn new(
-		fps: u32,
 		color: u64,
 		border: Option<u32>,
 		alpha: bool,
@@ -147,7 +143,6 @@ impl RecordSettings {
 		window: RecordWindow,
 	) -> Self {
 		Self {
-			fps,
 			color,
 			border,
 			alpha,
@@ -169,10 +164,6 @@ impl RecordSettings {
 				let padding =
 					Padding::parse(matches.value_of("padding").unwrap_or_default());
 				Self::new(
-					match parser.parse("fps", Self::default().fps) {
-						fps if fps > 0 => fps,
-						_ => Self::default().fps,
-					},
 					u64::from_str_radix(
 						matches.value_of("color").unwrap_or_default(),
 						16,
@@ -206,7 +197,6 @@ mod tests {
 	#[test]
 	fn test_record_settings() {
 		let args = App::new("test")
-			.arg(Arg::with_name("fps").long("fps").takes_value(true))
 			.arg(Arg::with_name("color").long("color").takes_value(true))
 			.arg(Arg::with_name("border").long("border").takes_value(true))
 			.arg(Arg::with_name("padding").long("padding").takes_value(true))
@@ -227,8 +217,6 @@ mod tests {
 			.arg(Arg::with_name("no-border").long("no-border"))
 			.get_matches_from(vec![
 				"test",
-				"--fps",
-				"15",
 				"--color",
 				"000000",
 				"--border",
@@ -245,7 +233,6 @@ mod tests {
 				"--with-alpha",
 			]);
 		let record_settings = RecordSettings::from_args(ArgParser::new(Some(&args)));
-		assert_eq!(15, record_settings.fps);
 		assert_eq!(0x0000_0000, record_settings.color);
 		assert_eq!(10, record_settings.border.unwrap());
 		assert!(record_settings.padding.is_zero());

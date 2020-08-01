@@ -5,6 +5,7 @@ use std::path::Path;
 /* GIF and frame settings */
 #[derive(Clone, Copy, Debug)]
 pub struct GifSettings {
+	pub fps: u32,
 	pub repeat: i32,
 	pub quality: u8,
 	pub speed: f32,
@@ -15,6 +16,7 @@ pub struct GifSettings {
 impl Default for GifSettings {
 	fn default() -> Self {
 		Self {
+			fps: 10,
 			repeat: -1,
 			quality: 75,
 			speed: 1.,
@@ -27,14 +29,16 @@ impl GifSettings {
 	/**
 	 * Create a new GifSettings object.
 	 *
+	 * @param  fps
 	 * @param  repeat
 	 * @param  quality
 	 * @param  speed
 	 * @param  fast
 	 * @return GifSettings
 	 */
-	pub fn new(repeat: i32, quality: u8, speed: f32, fast: bool) -> Self {
+	pub fn new(fps: u32, repeat: i32, quality: u8, speed: f32, fast: bool) -> Self {
 		Self {
+			fps,
 			repeat,
 			quality,
 			speed,
@@ -51,6 +55,10 @@ impl GifSettings {
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
+				match parser.parse("fps", Self::default().fps) {
+					fps if fps > 0 => fps,
+					_ => Self::default().fps,
+				},
 				parser.parse("repeat", Self::default().repeat) - 1,
 				parser.parse("quality", Self::default().quality),
 				parser.parse("speed", Self::default().speed),
@@ -126,12 +134,15 @@ mod tests {
 	#[test]
 	fn test_gif_settings() {
 		let args = App::new("test")
+			.arg(Arg::with_name("fps").long("fps").takes_value(true))
 			.arg(Arg::with_name("repeat").long("repeat").takes_value(true))
 			.arg(Arg::with_name("quality").long("quality").takes_value(true))
 			.arg(Arg::with_name("speed").long("speed").takes_value(true))
 			.arg(Arg::with_name("fast").long("fast"))
 			.get_matches_from(vec![
 				"test",
+				"--fps",
+				"15",
 				"--repeat",
 				"5",
 				"--quality",
@@ -141,6 +152,7 @@ mod tests {
 				"--fast",
 			]);
 		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
+		assert_eq!(15, gif_settings.fps);
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
 		assert_eq!(1.1, gif_settings.speed);
