@@ -168,11 +168,11 @@ mod tests {
 	#[test]
 	fn test_record_mod() {
 		let window = TestWindow::default();
-		let recorder = Recorder::new(window, RecordSettings::default());
+		let recorder = Recorder::new(window, 10, RecordSettings::default());
 		let record = recorder.record_async();
 		thread::sleep(Duration::from_millis(200));
 		assert!(record.get().unwrap().unwrap().len() > 0);
-		let mut recorder = Recorder::new(window, RecordSettings::default());
+		let mut recorder = Recorder::new(window, 10, RecordSettings::default());
 		thread::spawn(|| {
 			thread::sleep(Duration::from_millis(200));
 			Enigo::new().key_down(Key::Escape);
