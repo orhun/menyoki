@@ -405,8 +405,8 @@ mod tests {
 		let app = App::new(Some(window), &settings);
 		app.split_gif(File::open("test.gif")?)?;
 		fs::remove_file("test.gif")?;
-		fs::remove_file("frame_0_100ms.png")?;
-		fs::remove_file("frame_1_100ms.png")?;
+		fs::remove_file("frame_0.png")?;
+		fs::remove_file("frame_1.png")?;
 		Ok(())
 	}
 }
