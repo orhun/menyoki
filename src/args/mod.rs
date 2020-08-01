@@ -112,7 +112,7 @@ where
 					.long("fps")
 					.value_name("FPS")
 					.default_value("10")
-					.help("Sets the FPS (frames per second) value")
+					.help("Sets the FPS value")
 					.takes_value(true)
 					.hidden(base_command == BaseCommand::Capture),
 			)
