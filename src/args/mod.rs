@@ -237,6 +237,7 @@ where
 					.value_name("FPS")
 					.default_value("10")
 					.help("Sets the FPS value")
+					.hidden(edit_mode)
 					.takes_value(true),
 			)
 			.arg(
