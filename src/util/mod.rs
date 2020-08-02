@@ -58,7 +58,9 @@ pub fn init_logger(
 			1 => LevelFilter::Debug,
 			_ => LevelFilter::Trace,
 		});
-	if format == FileFormat::Gif {
+	if cfg!(test) {
+		Ok(())
+	} else if format == FileFormat::Gif {
 		logger.level_for("tgif::edit", LevelFilter::Warn).apply()
 	} else {
 		logger.apply()
