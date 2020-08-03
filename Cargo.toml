@@ -23,6 +23,7 @@ gifski = { version = "0.10.4", optional = true }
 imgref = { version = "1.6.1", optional = true }
 rgb = { version = "0.8.18", optional = true }
 dirs = "3.0.0"
+natord = "1.0.9"
 
 [dependencies.clap]
 version = "2.33.0"
