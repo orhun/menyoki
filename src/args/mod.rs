@@ -299,6 +299,13 @@ where
 					.empty_values(false)
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("no-sort")
+					.short("n")
+					.long("no-sort")
+					.help("Uses frames in the order given")
+					.hidden(mode != GifMode::Make),
+			)
 	}
 
 	/**
