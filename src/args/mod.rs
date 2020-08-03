@@ -91,6 +91,10 @@ where
 				Vec::new(),
 			))
 			.subcommand(Self::get_image_args(args.split, vec![AppSettings::Hidden]))
+			.subcommand(
+				Self::get_gif_args(GifMode::Make)
+					.subcommand(Self::get_save_args("t.gif")),
+			)
 			.get_matches()
 	}
 
@@ -235,8 +239,12 @@ where
 	 * @return App
 	 */
 	fn get_gif_args(mode: GifMode) -> App<'a, 'b> {
-		SubCommand::with_name("gif")
-			.about("Changes the GIF encoder settings")
+		SubCommand::with_name(if mode == GifMode::Make { "make" } else { "gif" })
+			.about(if mode == GifMode::Make {
+				"Makes a GIF from frames"
+			} else {
+				"Changes the GIF encoder settings"
+			})
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
@@ -280,6 +288,16 @@ where
 					.long("fast")
 					.help("Encodes 3 times faster (lower quality and bigger file)")
 					.hidden(!cfg!(feature = "ski") || mode != GifMode::Edit),
+			)
+			.arg(
+				Arg::with_name("frames")
+					.value_name("FRAMES")
+					.help("Sets the frames of the GIF")
+					.min_values(1)
+					.hidden(mode != GifMode::Make)
+					.required(mode == GifMode::Make)
+					.empty_values(false)
+					.takes_value(true),
 			)
 	}
 
@@ -396,7 +414,7 @@ where
 	 */
 	fn get_split_args() -> App<'a, 'b> {
 		SubCommand::with_name("split")
-			.about("Splits GIF into frames")
+			.about("Splits a GIF into frames")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
