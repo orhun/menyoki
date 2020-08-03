@@ -2,6 +2,13 @@ pub mod parser;
 use crate::util::file::File;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
+#[derive(Debug, PartialEq)]
+enum GifMode {
+	Record,
+	Edit,
+	Make,
+}
+
 /* Command-line arguments */
 pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
@@ -70,7 +77,7 @@ where
 			.subcommand(
 				args.record
 					.subcommand(
-						Self::get_gif_args(false)
+						Self::get_gif_args(GifMode::Record)
 							.subcommand(Self::get_save_args("t.gif")),
 					)
 					.subcommand(Self::get_save_args("t.*")),
@@ -78,7 +85,7 @@ where
 			.subcommand(Self::get_image_args(args.capture, Vec::new()))
 			.subcommand(Self::get_image_args(
 				args.edit.subcommand(
-					Self::get_gif_args(true)
+					Self::get_gif_args(GifMode::Edit)
 						.subcommand(Self::get_save_args("t.gif")),
 				),
 				Vec::new(),
@@ -224,10 +231,10 @@ where
 	/**
 	 * Get gif subcommand arguments.
 	 *
-	 * @param  edit_mode
+	 * @param  mode
 	 * @return App
 	 */
-	fn get_gif_args(edit_mode: bool) -> App<'a, 'b> {
+	fn get_gif_args(mode: GifMode) -> App<'a, 'b> {
 		SubCommand::with_name("gif")
 			.about("Changes the GIF encoder settings")
 			.arg(
@@ -237,7 +244,7 @@ where
 					.value_name("FPS")
 					.default_value("10")
 					.help("Sets the FPS value")
-					.hidden(edit_mode)
+					.hidden(mode == GifMode::Edit)
 					.takes_value(true),
 			)
 			.arg(
@@ -265,14 +272,14 @@ where
 					.value_name("SPEED")
 					.default_value("1.0")
 					.help("Sets the GIF speed")
-					.hidden(!edit_mode)
+					.hidden(mode != GifMode::Edit)
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("fast")
 					.long("fast")
 					.help("Encodes 3 times faster (lower quality and bigger file)")
-					.hidden(!cfg!(feature = "ski") || !edit_mode),
+					.hidden(!cfg!(feature = "ski") || mode != GifMode::Edit),
 			)
 	}
 
