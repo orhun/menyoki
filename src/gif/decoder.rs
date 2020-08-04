@@ -10,7 +10,7 @@ use std::io::Read;
 pub struct Decoder<'a, Input: Read> {
 	decoder: GifDecoder<Input>,
 	imageops: ImageOps<'a>,
-	settings: GifSettings,
+	settings: &'a GifSettings,
 }
 
 impl<'a, Input: Read> Decoder<'a, Input> {
@@ -25,7 +25,7 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 	pub fn new(
 		input: Input,
 		imageops: ImageOps<'a>,
-		settings: GifSettings,
+		settings: &'a GifSettings,
 	) -> Result<Self, ImageError> {
 		Ok(Self {
 			decoder: GifDecoder::new(input)?,

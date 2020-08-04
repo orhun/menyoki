@@ -1,15 +1,16 @@
 use crate::args::parser::ArgParser;
 use crate::util::file::File;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 /* GIF and frame settings */
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Debug)]
 pub struct GifSettings {
 	pub fps: u32,
 	pub repeat: i32,
 	pub quality: u8,
 	pub speed: f32,
 	pub fast: bool,
+	pub frames: Vec<PathBuf>,
 }
 
 /* Default initialization values for GifSettings */
@@ -21,6 +22,7 @@ impl Default for GifSettings {
 			quality: 75,
 			speed: 1.,
 			fast: false,
+			frames: Vec::new(),
 		}
 	}
 }
@@ -34,15 +36,24 @@ impl GifSettings {
 	 * @param  quality
 	 * @param  speed
 	 * @param  fast
+	 * @param  frames
 	 * @return GifSettings
 	 */
-	pub fn new(fps: u32, repeat: i32, quality: u8, speed: f32, fast: bool) -> Self {
+	pub fn new(
+		fps: u32,
+		repeat: i32,
+		quality: u8,
+		speed: f32,
+		fast: bool,
+		frames: Vec<PathBuf>,
+	) -> Self {
 		Self {
 			fps,
 			repeat,
 			quality,
 			speed,
 			fast,
+			frames,
 		}
 	}
 
@@ -63,6 +74,19 @@ impl GifSettings {
 				parser.parse("quality", Self::default().quality),
 				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
+				match matches.values_of("frames") {
+					Some(values) => {
+						let mut values: Vec<&str> = values.collect();
+						if !matches.is_present("no-sort") {
+							values.sort_by(|a, b| natord::compare(a, b));
+						}
+						values
+							.into_iter()
+							.map(|v| Path::new(v).to_path_buf())
+							.collect()
+					}
+					None => Vec::new(),
+				},
 			),
 			None => Self::default(),
 		}

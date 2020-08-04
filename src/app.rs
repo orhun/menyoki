@@ -217,7 +217,7 @@ where
 	 * @return Frames
 	 */
 	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
-		Decoder::new(input, self.settings.edit.get_imageops(), self.settings.gif)
+		Decoder::new(input, self.settings.edit.get_imageops(), &self.settings.gif)
 			.expect("Failed to decode the GIF")
 			.update_frames()
 			.expect("Failed to edit the GIF")
@@ -350,7 +350,7 @@ where
 			fps,
 			images.first().expect("No frames found to save").geometry,
 			output,
-			self.settings.gif,
+			&self.settings.gif,
 		)?
 		.save(images, &self.settings.input_state)
 	}
