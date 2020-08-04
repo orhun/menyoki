@@ -80,10 +80,7 @@ impl GifSettings {
 						if !matches.is_present("no-sort") {
 							values.sort_by(|a, b| natord::compare(a, b));
 						}
-						values
-							.into_iter()
-							.map(|v| Path::new(v).to_path_buf())
-							.collect()
+						values.into_iter().map(|v| PathBuf::from(v)).collect()
 					}
 					None => Vec::new(),
 				},
