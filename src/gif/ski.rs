@@ -15,7 +15,7 @@ pub struct Gif<Output: Write> {
 	output: Output,
 }
 
-impl<Output: Write> Encoder<Output> for Gif<Output> {
+impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 	/**
 	 * Create a new Gif object.
 	 *
@@ -29,7 +29,7 @@ impl<Output: Write> Encoder<Output> for Gif<Output> {
 		fps: u32,
 		geometry: Geometry,
 		output: Output,
-		settings: GifSettings,
+		settings: &'a GifSettings,
 	) -> Result<Self, Error> {
 		let (collector, writer) = gifski::new(gifski::Settings {
 			width: Some(geometry.width),
