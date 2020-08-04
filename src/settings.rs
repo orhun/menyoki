@@ -1,3 +1,4 @@
+use crate::app::AppResult;
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
 use crate::gif::settings::{GifSettings, SplitSettings};
@@ -8,6 +9,7 @@ use crate::util::file::FileFormat;
 use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
 use clap::ArgMatches;
+use std::io::{Error, ErrorKind};
 use std::str::FromStr;
 
 /* General application settings */
@@ -99,13 +101,17 @@ impl<'a> AppSettings<'a> {
 	}
 
 	/* Check the settings and warn the user. */
-	pub fn check(&self) {
+	pub fn check(&self) -> AppResult {
 		trace!("{:?}", self);
 		if self.jpg.quality <= 25 {
-			warn!("Image will be encoded in low quality.");
-		}
-		if self.gif.quality <= 20 {
-			warn!("GIF will be encoded in low quality.");
+			Ok(warn!("Image will be encoded in low quality."))
+		} else if self.gif.quality <= 20 {
+			Ok(warn!("GIF will be encoded in low quality."))
+		} else if self.gif.frames.is_empty() {
+			error!("No frames found to make a GIF.");
+			Err(Error::new(ErrorKind::Other, "No frames specified"))
+		} else {
+			Ok(())
 		}
 	}
 }
