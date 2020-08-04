@@ -1,5 +1,7 @@
 use crate::args::parser::ArgParser;
 use crate::util::file::File;
+use clap::ArgMatches;
+use std::fs;
 use std::path::{Path, PathBuf};
 
 /* GIF and frame settings */
@@ -74,19 +76,40 @@ impl GifSettings {
 				parser.parse("quality", Self::default().quality),
 				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
-				match matches.values_of("frames") {
-					Some(values) => {
-						let mut values: Vec<&str> = values.collect();
-						if !matches.is_present("no-sort") {
-							values.sort_by(|a, b| natord::compare(a, b));
-						}
-						values.into_iter().map(|v| PathBuf::from(v)).collect()
-					}
-					None => Vec::new(),
-				},
+				Self::get_frames(matches),
 			),
 			None => Self::default(),
 		}
+	}
+
+	/**
+	 * Get the frame files from parsed arguments.
+	 *
+	 * @param  args
+	 * @return Vector of PathBuf
+	 */
+	fn get_frames(args: &ArgMatches<'_>) -> Vec<PathBuf> {
+		let mut values = if let Some(dir) = args.value_of("dir") {
+			fs::read_dir(dir)
+				.expect("Could not read files from directory")
+				.map(|entry| {
+					entry
+						.expect("Failed to get directory entry")
+						.path()
+						.into_os_string()
+						.into_string()
+						.unwrap_or_default()
+				})
+				.collect()
+		} else if let Some(values) = args.values_of("frames") {
+			values.map(|v| String::from(v)).collect()
+		} else {
+			Vec::new()
+		};
+		if !args.is_present("no-sort") {
+			values.sort_by(|a, b| natord::compare(a, b));
+		}
+		values.into_iter().map(|v| PathBuf::from(v)).collect()
 	}
 }
 
