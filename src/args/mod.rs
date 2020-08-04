@@ -309,6 +309,7 @@ where
 				Arg::with_name("dir")
 					.short("d")
 					.long("dir")
+					.conflicts_with("frames")
 					.value_name("DIRECTORY")
 					.help("Sets the directory to read frames")
 					.hidden(mode != GifMode::Make),
