@@ -131,6 +131,19 @@ where
 			self.edit_gif(
 				File::open(self.settings.edit.path).expect("File not found"),
 			)
+		} else if self.settings.args.is_present("make") {
+			info!(
+				"Making a GIF from {} frames...",
+				self.settings.gif.frames.len()
+			);
+			let mut images = Vec::new();
+			for path in &self.settings.gif.frames {
+				debug!("Reading a frame from {:?}   \r", path);
+				io::stdout().flush().expect("Failed to flush stdout");
+				images.push(self.edit_image(path));
+			}
+			debug!("\n");
+			(images, self.settings.gif.fps)
 		} else {
 			(self.record(), self.settings.gif.fps)
 		}
