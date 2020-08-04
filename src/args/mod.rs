@@ -295,7 +295,6 @@ where
 					.help("Sets the frames of the GIF")
 					.min_values(1)
 					.hidden(mode != GifMode::Make)
-					.required(mode == GifMode::Make)
 					.empty_values(false)
 					.takes_value(true),
 			)
@@ -304,6 +303,14 @@ where
 					.short("n")
 					.long("no-sort")
 					.help("Uses frames in the order given")
+					.hidden(mode != GifMode::Make),
+			)
+			.arg(
+				Arg::with_name("dir")
+					.short("d")
+					.long("dir")
+					.value_name("DIRECTORY")
+					.help("Sets the directory to read frames")
 					.hidden(mode != GifMode::Make),
 			)
 	}
