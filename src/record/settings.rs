@@ -1,6 +1,7 @@
 use crate::args::parser::ArgParser;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
+use crate::util::cmd::Command;
 use clap::ArgMatches;
 
 /* Window to record, with geometric properties  */
@@ -197,6 +198,18 @@ impl RecordSettings {
 				)
 			}
 			None => RecordSettings::default(),
+		}
+	}
+
+	/**
+	 * Get Command from parsed settings.
+	 *
+	 * @return Command (Option)
+	 */
+	pub fn get_command<'a>(&self) -> Option<Command<'a>> {
+		match self.command {
+			Some(v) => Some(Command::from(v)),
+			_ => None,
 		}
 	}
 }
