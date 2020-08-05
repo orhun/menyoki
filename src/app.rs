@@ -65,7 +65,7 @@ where
 	pub fn start(&self) -> AppResult {
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
-		debug!("Command: {:?}", self.settings.get_command());
+		debug!("Command: {:?}", self.settings.record.get_command());
 		if self.settings.args.is_present("split") {
 			info!("Reading frames from {:?}...", self.settings.split.file);
 			self.split_gif(File::open(self.settings.split.file)?)?;
@@ -163,6 +163,7 @@ where
 				window.get_image()
 			});
 			self.settings
+				.record
 				.get_command()
 				.expect("No command specified to run")
 				.execute()
@@ -191,6 +192,7 @@ where
 		if self.settings.args.is_present("command") {
 			let record = recorder.record_async();
 			self.settings
+				.record
 				.get_command()
 				.expect("No command specified to run")
 				.execute()

@@ -3,7 +3,6 @@ use crate::edit::settings::EditSettings;
 use crate::gif::settings::{GifSettings, SplitSettings};
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
-use crate::util::cmd::Command;
 use crate::util::file::FileFormat;
 use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
@@ -73,28 +72,6 @@ impl<'a> AppSettings<'a> {
 				args, "split",
 			)),
 			input_state: Box::leak(Box::new(InputState::new())),
-		}
-	}
-
-	/**
-	 * Get a Command object from parsed arguments.
-	 *
-	 * @return Command (Option)
-	 */
-	pub fn get_command(&self) -> Option<Command> {
-		match self.args.value_of("command") {
-			Some(cmd) => {
-				let cmd = String::from(cmd);
-				if !cmd.contains(' ') {
-					Some(Command::new(cmd, Vec::new()))
-				} else {
-					Some(Command::new(
-						String::from("sh"),
-						vec![String::from("-c"), cmd],
-					))
-				}
-			}
-			None => None,
 		}
 	}
 
