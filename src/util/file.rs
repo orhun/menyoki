@@ -65,7 +65,7 @@ impl fmt::Display for FileFormat {
 
 /* Implementation for parsing FileFormat from a string */
 impl FromStr for FileFormat {
-	type Err = ();
+	type Err = &'static str;
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
 			"gif" => Ok(Self::Gif),
@@ -74,7 +74,7 @@ impl FromStr for FileFormat {
 			"bmp" => Ok(Self::Bmp),
 			"tiff" => Ok(Self::Tiff),
 			"ff" => Ok(Self::Ff),
-			_ => Err(()),
+			_ => Err("Unrecognized file format"),
 		}
 	}
 }
