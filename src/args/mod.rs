@@ -519,9 +519,10 @@ where
 	 * @return App
 	 */
 	fn get_save_args(default_file: &'a str) -> App<'a, 'b> {
-		let default_path = Box::leak(Box::new(File::get_default_path(default_file)))
-			.to_str()
-			.unwrap_or_default();
+		let default_path =
+			Box::leak(File::get_default_path(default_file).into_boxed_path())
+				.to_str()
+				.unwrap_or_default();
 		SubCommand::with_name("save")
 			.about("Changes the output file settings")
 			.arg(
