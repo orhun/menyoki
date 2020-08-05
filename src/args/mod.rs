@@ -295,6 +295,8 @@ where
 					.help("Sets the frames of the GIF")
 					.min_values(1)
 					.hidden(mode != GifMode::Make)
+					.default_value_if("dir", None, "-")
+					.required(true)
 					.empty_values(false)
 					.takes_value(true),
 			)
@@ -312,7 +314,8 @@ where
 					.conflicts_with("frames")
 					.value_name("DIRECTORY")
 					.help("Sets the directory to read frames")
-					.hidden(mode != GifMode::Make),
+					.hidden(mode != GifMode::Make)
+					.takes_value(true),
 			)
 	}
 
