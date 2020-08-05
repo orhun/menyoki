@@ -9,7 +9,6 @@ use crate::util::file::FileFormat;
 use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
 use clap::ArgMatches;
-use std::io::{Error, ErrorKind};
 use std::str::FromStr;
 
 /* General application settings */
@@ -107,9 +106,6 @@ impl<'a> AppSettings<'a> {
 			Ok(warn!("Image will be encoded in low quality."))
 		} else if self.gif.quality <= 20 {
 			Ok(warn!("GIF will be encoded in low quality."))
-		} else if self.args.is_present("make") && self.gif.frames.is_empty() {
-			error!("No frames found to make a GIF.");
-			Err(Error::new(ErrorKind::Other, "No frames specified"))
 		} else {
 			Ok(())
 		}
