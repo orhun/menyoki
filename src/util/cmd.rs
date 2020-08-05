@@ -8,6 +8,17 @@ pub struct Command<'a> {
 	args: Vec<&'a str>,
 }
 
+/* Implementation for parsing Command from a string */
+impl<'a> From<&'a str> for Command<'a> {
+	fn from(s: &'a str) -> Command<'a> {
+		if !s.contains(' ') {
+			Command::new(s, Vec::new())
+		} else {
+			Command::new("sh", vec!["-c", s])
+		}
+	}
+}
+
 impl<'a> Command<'a> {
 	/**
 	 * Create a new Command object.
