@@ -55,11 +55,6 @@ where
 			])
 			.setting(AppSettings::SubcommandRequiredElseHelp)
 			.arg(
-				Arg::with_name("command")
-					.value_name("COMMAND")
-					.help("Sets the command to run"),
-			)
-			.arg(
 				Arg::with_name("verbose")
 					.short("v")
 					.long("verbose")
@@ -111,6 +106,11 @@ where
 			} else {
 				"Records a window"
 			})
+			.arg(
+				Arg::with_name("command")
+					.value_name("COMMAND")
+					.help("Sets the command to run"),
+			)
 			.arg(
 				Arg::with_name("color")
 					.short("x")
