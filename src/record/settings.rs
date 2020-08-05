@@ -100,6 +100,7 @@ impl RecordTime {
 /* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
+	pub command: Option<&'static str>,
 	pub color: u64,
 	pub border: Option<u32>,
 	pub alpha: bool,
@@ -112,6 +113,7 @@ pub struct RecordSettings {
 impl Default for RecordSettings {
 	fn default() -> Self {
 		Self {
+			command: None,
 			color: 0x00ff_00ff,
 			border: Some(1),
 			alpha: false,
@@ -126,6 +128,7 @@ impl RecordSettings {
 	/**
 	 * Create a new RecordSettings object.
 	 *
+	 * @param  command (Option)
 	 * @param  color
 	 * @param  border (Option)
 	 * @param  alpha
@@ -135,6 +138,7 @@ impl RecordSettings {
 	 * @return RecordSettings
 	 */
 	pub fn new(
+		command: Option<&'static str>,
 		color: u64,
 		border: Option<u32>,
 		alpha: bool,
@@ -143,6 +147,7 @@ impl RecordSettings {
 		window: RecordWindow,
 	) -> Self {
 		Self {
+			command,
 			color,
 			border,
 			alpha,
@@ -164,6 +169,12 @@ impl RecordSettings {
 				let padding =
 					Padding::parse(matches.value_of("padding").unwrap_or_default());
 				Self::new(
+					match matches.value_of("command") {
+						Some(cmd) => {
+							Some(Box::leak(cmd.to_string().into_boxed_str()))
+						}
+						_ => None,
+					},
 					u64::from_str_radix(
 						matches.value_of("color").unwrap_or_default(),
 						16,
