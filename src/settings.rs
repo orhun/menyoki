@@ -107,7 +107,7 @@ impl<'a> AppSettings<'a> {
 			Ok(warn!("Image will be encoded in low quality."))
 		} else if self.gif.quality <= 20 {
 			Ok(warn!("GIF will be encoded in low quality."))
-		} else if self.gif.frames.is_empty() {
+		} else if self.args.is_present("make") && self.gif.frames.is_empty() {
 			error!("No frames found to make a GIF.");
 			Err(Error::new(ErrorKind::Other, "No frames specified"))
 		} else {
