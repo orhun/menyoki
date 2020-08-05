@@ -27,7 +27,7 @@ fn main() -> AppResult {
 			.expect("Failed to initialize the logger");
 	}
 	util::check_friday();
-	settings.check()?;
+	settings.check();
 	let window = if args.is_present("record") || args.is_present("capture") {
 		WindowSystem::init(&settings)
 			.expect("Failed to access the window system")

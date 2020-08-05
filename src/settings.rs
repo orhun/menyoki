@@ -1,4 +1,3 @@
-use crate::app::AppResult;
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
 use crate::gif::settings::{GifSettings, SplitSettings};
@@ -100,14 +99,13 @@ impl<'a> AppSettings<'a> {
 	}
 
 	/* Check the settings and warn the user. */
-	pub fn check(&self) -> AppResult {
+	pub fn check(&self) {
 		trace!("{:?}", self);
 		if self.jpg.quality <= 25 {
-			Ok(warn!("Image will be encoded in low quality."))
-		} else if self.gif.quality <= 20 {
-			Ok(warn!("GIF will be encoded in low quality."))
-		} else {
-			Ok(())
+			warn!("Image will be encoded in low quality.")
+		}
+		if self.gif.quality <= 20 {
+			warn!("GIF will be encoded in low quality.")
 		}
 	}
 }
