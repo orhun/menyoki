@@ -102,14 +102,14 @@ impl GifSettings {
 				})
 				.collect()
 		} else if let Some(values) = args.values_of("frames") {
-			values.map(|v| String::from(v)).collect()
+			values.map(String::from).collect()
 		} else {
 			Vec::new()
 		};
 		if !args.is_present("no-sort") {
 			values.sort_by(|a, b| natord::compare(a, b));
 		}
-		values.into_iter().map(|v| PathBuf::from(v)).collect()
+		values.into_iter().map(PathBuf::from).collect()
 	}
 }
 
