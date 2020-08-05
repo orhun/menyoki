@@ -3,12 +3,12 @@ use std::process::Command as OsCommand;
 
 /* The command and its arguments */
 #[derive(Debug)]
-pub struct Command {
-	cmd: String,
-	args: Vec<String>,
+pub struct Command<'a> {
+	cmd: &'a str,
+	args: Vec<&'a str>,
 }
 
-impl Command {
+impl<'a> Command<'a> {
 	/**
 	 * Create a new Command object.
 	 *
@@ -16,7 +16,7 @@ impl Command {
 	 * @param  args
 	 * @return Command
 	 */
-	pub fn new(cmd: String, args: Vec<String>) -> Self {
+	pub fn new(cmd: &'a str, args: Vec<&'a str>) -> Self {
 		Self { cmd, args }
 	}
 
@@ -27,10 +27,7 @@ impl Command {
 	 */
 	pub fn execute(&self) -> Result<(), Error> {
 		info!("Running the command...");
-		match OsCommand::new(&self.cmd)
-			.args(self.args.iter().map(AsRef::as_ref).collect::<Vec<&str>>())
-			.spawn()
-		{
+		match OsCommand::new(&self.cmd).args(&self.args).spawn() {
 			Ok(mut child) => {
 				child.wait()?;
 				Ok(())
@@ -54,7 +51,7 @@ mod tests {
 		);
 		let sleep_time = Duration::from_millis(10);
 		let now = Instant::now();
-		Command::new(String::from("sleep"), vec![String::from("0.01")]).execute()?;
+		Command::new("sleep", vec!["0.01"]).execute()?;
 		assert!(now.elapsed() >= sleep_time);
 		Ok(())
 	}
