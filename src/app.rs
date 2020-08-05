@@ -156,7 +156,7 @@ where
 	 */
 	fn capture(self) -> Option<Image> {
 		let window = self.window.expect("Failed to get the window");
-		if self.settings.args.is_present("command") {
+		if self.settings.record.command.is_some() {
 			let image_thread = thread::spawn(move || {
 				window.show_countdown();
 				info!("Capturing an image...");
@@ -189,7 +189,7 @@ where
 			self.settings.gif.fps,
 			self.settings.record,
 		);
-		if self.settings.args.is_present("command") {
+		if self.settings.record.command.is_some() {
 			let record = recorder.record_async();
 			self.settings
 				.record

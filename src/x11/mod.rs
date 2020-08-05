@@ -45,7 +45,7 @@ impl<'a> WindowAccess<'a, Window> for WindowSystem<'a> {
 			RecordWindow::Focus(None) => self.display.get_focused_window(),
 			RecordWindow::Root(None) => Some(self.display.get_root_window()),
 			_ => {
-				if self.settings.args.is_present("command") {
+				if self.settings.record.command.is_some() {
 					self.display.get_focused_window()
 				} else {
 					self.display.select_window(&self.settings.input_state)
