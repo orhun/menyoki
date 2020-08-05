@@ -170,6 +170,7 @@ where
 					.short("c")
 					.long("countdown")
 					.value_name("S")
+					.default_value_if("command", None, "3")
 					.default_value(if capture_mode { "0" } else { "3" })
 					.help(if capture_mode {
 						"Sets the countdown value for capturing"
