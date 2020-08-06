@@ -367,7 +367,7 @@ where
 			output,
 			&self.settings.gif,
 		)?
-		.save(images, &self.settings.input_state)
+		.save(images, Some(&self.settings.input_state))
 	}
 }
 
