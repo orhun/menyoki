@@ -61,16 +61,11 @@ impl InputState {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use enigo::*;
 	#[test]
+	#[ignore]
 	fn test_input_state() {
 		let input_state = InputState::new();
-		let mut enigo = Enigo::new();
-		enigo.mouse_move_to(0, 0);
-		assert_eq!(
-			format!("{:?}", input_state),
-			"InputState { mouse: MouseState { coords: (0, 0), \
-			button_pressed: [false, false, false, false, false, false] }, keys: [] }"
-		);
+		assert!(!input_state.check_action_keys());
+		assert!(!input_state.check_cancel_keys());
 	}
 }
