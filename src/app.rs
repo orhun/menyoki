@@ -202,7 +202,12 @@ where
 				None => Vec::new(),
 			}
 		} else {
-			recorder.record_sync(&self.settings.input_state)
+			recorder.record_sync(
+				&self
+					.settings
+					.input_state
+					.expect("Failed to get the input state"),
+			)
 		}
 	}
 
@@ -367,7 +372,7 @@ where
 			output,
 			&self.settings.gif,
 		)?
-		.save(images, Some(&self.settings.input_state))
+		.save(images, self.settings.input_state)
 	}
 }
 

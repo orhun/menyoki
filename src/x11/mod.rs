@@ -48,7 +48,12 @@ impl<'a> WindowAccess<'a, Window> for WindowSystem<'a> {
 				if self.settings.record.command.is_some() {
 					self.display.get_focused_window()
 				} else {
-					self.display.select_window(&self.settings.input_state)
+					self.display.select_window(
+						&self
+							.settings
+							.input_state
+							.expect("Failed to get the input state"),
+					)
 				}
 			}
 		}
