@@ -405,6 +405,7 @@ mod tests {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
 		settings.save.file.format = FileFormat::Gif;
+		settings.record.command = Some("test");
 		let window = TestWindow::default();
 		let app = App::new(Some(window), &settings);
 		let mut images = app.get_frames().0;
