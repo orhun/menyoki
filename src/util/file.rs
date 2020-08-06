@@ -6,6 +6,8 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
+const DEFAULT_FILE_NAME: &str = "t";
+
 /* Information to include in file name */
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub enum FileInfo<'a> {
@@ -151,7 +153,8 @@ impl File {
 	pub fn from_format(format: FileFormat) -> Self {
 		Self::new(
 			Self::get_default_path(&format!(
-				"t.{}",
+				"{}.{}",
+				DEFAULT_FILE_NAME,
 				format.to_string().to_lowercase()
 			)),
 			format,
