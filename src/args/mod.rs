@@ -53,7 +53,11 @@ where
 				AppSettings::VersionlessSubcommands,
 				AppSettings::DeriveDisplayOrder,
 			])
-			.setting(AppSettings::SubcommandRequiredElseHelp)
+			.settings(if !cfg!(test) {
+				&[AppSettings::SubcommandRequiredElseHelp]
+			} else {
+				&[]
+			})
 			.arg(
 				Arg::with_name("verbose")
 					.short("v")
