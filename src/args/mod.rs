@@ -301,7 +301,7 @@ where
 					.min_values(1)
 					.hidden(mode != GifMode::Make)
 					.default_value_if("dir", None, "-")
-					.required(true)
+					.required(mode == GifMode::Make)
 					.empty_values(false)
 					.takes_value(true),
 			)
