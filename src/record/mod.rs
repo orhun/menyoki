@@ -166,6 +166,7 @@ mod tests {
 	use std::thread;
 	use std::time::Duration;
 	#[test]
+	#[ignore]
 	fn test_record_mod() {
 		let window = TestWindow::default();
 		let recorder = Recorder::new(window, 10, RecordSettings::default());
