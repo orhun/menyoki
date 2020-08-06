@@ -21,6 +21,7 @@ pub struct AppSettings<'a> {
 	pub edit: EditSettings<'a>,
 	pub split: SplitSettings<'a>,
 	pub input_state: &'static InputState,
+	pub window_required: bool,
 }
 
 impl<'a> AppSettings<'a> {
@@ -72,6 +73,7 @@ impl<'a> AppSettings<'a> {
 				args, "split",
 			)),
 			input_state: Box::leak(Box::new(InputState::new())),
+			window_required: args.is_present("record") || args.is_present("capture"),
 		}
 	}
 

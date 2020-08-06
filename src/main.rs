@@ -28,7 +28,7 @@ fn main() -> AppResult {
 	}
 	util::check_friday();
 	settings.check();
-	let window = if args.is_present("record") || args.is_present("capture") {
+	let window = if settings.window_required {
 		WindowSystem::init(&settings)
 			.expect("Failed to access the window system")
 			.get_window()
