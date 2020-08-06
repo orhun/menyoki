@@ -163,7 +163,7 @@ impl File {
 		dirs::home_dir()
 			.expect("Failed to access the home directory")
 			.as_path()
-			.join("tgif")
+			.join(env!("CARGO_PKG_NAME"))
 			.join(file_name)
 	}
 

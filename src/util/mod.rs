@@ -61,7 +61,12 @@ pub fn init_logger(
 	if cfg!(test) {
 		Ok(())
 	} else if format == FileFormat::Gif {
-		logger.level_for("tgif::edit", LevelFilter::Warn).apply()
+		logger
+			.level_for(
+				format!("{}::edit", env!("CARGO_PKG_NAME")),
+				LevelFilter::Warn,
+			)
+			.apply()
 	} else {
 		logger.apply()
 	}
