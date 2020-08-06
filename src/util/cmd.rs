@@ -56,14 +56,10 @@ mod tests {
 	use std::time::{Duration, Instant};
 	#[test]
 	fn test_cmd_mod() -> Result<(), Error> {
-		assert_eq!(
-			"test",
-			AppSettings::new(&Args::parse())
-				.record
-				.get_command()
-				.unwrap()
-				.cmd
-		);
+		assert!(AppSettings::new(&Args::parse())
+			.record
+			.get_command()
+			.is_none());
 		let sleep_time = Duration::from_millis(10);
 		let now = Instant::now();
 		Command::new("sleep", vec!["0.01"]).execute()?;
