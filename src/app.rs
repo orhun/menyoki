@@ -314,6 +314,7 @@ where
 				FarbfeldEncoder::new(output),
 				ColorType::Rgba16,
 			),
+			_ => {}
 		}
 		Ok(())
 	}

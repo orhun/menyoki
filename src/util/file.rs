@@ -48,6 +48,7 @@ impl fmt::Display for FileInfo<'_> {
 /* Format of the output file */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum FileFormat {
+	Any,
 	Gif,
 	Png,
 	Jpg,
@@ -59,7 +60,11 @@ pub enum FileFormat {
 /* Display implementation for user-facing output */
 impl fmt::Display for FileFormat {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "{:?}", self)
+		if self != &Self::Any {
+			write!(f, "{:?}", self)
+		} else {
+			write!(f, "*")
+		}
 	}
 }
 
