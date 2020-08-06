@@ -51,15 +51,9 @@ impl<'a> Command<'a> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::args::Args;
-	use crate::settings::AppSettings;
 	use std::time::{Duration, Instant};
 	#[test]
 	fn test_cmd_mod() -> Result<(), Error> {
-		assert!(AppSettings::new(&Args::parse())
-			.record
-			.get_command()
-			.is_none());
 		let sleep_time = Duration::from_millis(10);
 		let now = Instant::now();
 		Command::new("sleep", vec!["0.01"]).execute()?;
