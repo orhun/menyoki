@@ -73,6 +73,12 @@ where
 					.help("Shows no output")
 					.display_order(1001),
 			)
+			.arg(
+				Arg::with_name("ignored")
+					.long("ignored")
+					.help("[Placeholder argument for ignored tests]")
+					.hidden(true),
+			)
 			.subcommand(
 				args.record
 					.subcommand(
