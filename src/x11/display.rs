@@ -289,6 +289,7 @@ mod tests {
 	#[test]
 	fn test_display_mod() {
 		let settings = RecordSettings::new(
+			None,
 			0x00ff_00ff,
 			Some(0),
 			false,
