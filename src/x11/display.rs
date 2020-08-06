@@ -287,6 +287,7 @@ mod tests {
 	use crate::image::padding::Padding;
 	use crate::record::settings::RecordTime;
 	#[test]
+	#[ignore]
 	fn test_display_mod() {
 		let settings = RecordSettings::new(
 			None,

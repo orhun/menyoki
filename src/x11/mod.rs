@@ -92,6 +92,7 @@ mod tests {
 	use crate::record::Record;
 	use image::ColorType;
 	#[test]
+	#[ignore]
 	fn test_x11_mod() {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);

@@ -316,6 +316,7 @@ mod tests {
 	use crate::x11::display::Display;
 	use image::ColorType;
 	#[test]
+	#[ignore]
 	fn test_window_mod() {
 		let settings = RecordSettings::new(
 			None,
