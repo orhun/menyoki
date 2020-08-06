@@ -38,16 +38,16 @@ jobs:
           bash -c "curl -s $repo | $parse | wget -qi -"
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
-          bash -c "$xvfb $test1"
+          bash -c "$xvfb $test"
           mv cobertura.xml main_coverage.xml
-          bash -c "$xvfb $test2"
-          mv cobertura.xml feat_coverage.xml
+          bash -c "$xvfb $test $features"
+          mv cobertura.xml feature_coverage.xml
         env:
           repo: 'https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
           parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
           xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
-          test1: 'cargo tarpaulin -o Xml -v -- "test" rec'
-          test2: 'cargo tarpaulin --features ski -o Xml -v -- "test" rec'
+          test: 'cargo tarpaulin -o Xml -v'
+          features: '--features ski'
       - name: Upload reports to Codecov
         uses: codecov/codecov-action@v1.0.7
         with:
