@@ -1,5 +1,5 @@
 pub mod parser;
-use crate::util::file::File;
+use crate::util::file::{File, FileFormat};
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
 #[derive(Debug, PartialEq)]
@@ -83,22 +83,22 @@ where
 				args.record
 					.subcommand(
 						Self::get_gif_args(GifMode::Record)
-							.subcommand(Self::get_save_args("t.gif")),
+							.subcommand(Self::get_save_args(FileFormat::Gif)),
 					)
-					.subcommand(Self::get_save_args("t.*")),
+					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
 			.subcommand(Self::get_image_args(args.capture, Vec::new()))
 			.subcommand(Self::get_image_args(
 				args.edit.subcommand(
 					Self::get_gif_args(GifMode::Edit)
-						.subcommand(Self::get_save_args("t.gif")),
+						.subcommand(Self::get_save_args(FileFormat::Gif)),
 				),
 				Vec::new(),
 			))
 			.subcommand(Self::get_image_args(args.split, vec![AppSettings::Hidden]))
 			.subcommand(
 				Self::get_gif_args(GifMode::Make)
-					.subcommand(Self::get_save_args("t.gif")),
+					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
 			.get_matches()
 	}
@@ -492,7 +492,7 @@ where
 					.default_value("sub")
 					.help("Sets the filter algorithm that processes the image data")
 					.takes_value(true),
-			).subcommand(Self::get_save_args("t.png").settings(&save_settings)),
+			).subcommand(Self::get_save_args(FileFormat::Png).settings(&save_settings)),
 		)
 		.subcommand(SubCommand::with_name("jpg")
 		.about("Changes the JPG encoder settings")
@@ -504,42 +504,44 @@ where
 				.default_value("90")
 				.help("Sets the JPG quality (1-100)")
 				.takes_value(true),
-		).subcommand(Self::get_save_args("t.jpg").settings(&save_settings)))
+		).subcommand(Self::get_save_args(FileFormat::Jpg).settings(&save_settings)))
 		.subcommand(
 			SubCommand::with_name("bmp")
 				.about("Changes the BMP encoder settings")
-				.subcommand(Self::get_save_args("t.bmp").settings(&save_settings)),
+				.subcommand(Self::get_save_args(FileFormat::Bmp).settings(&save_settings)),
 		)
 		.subcommand(
 			SubCommand::with_name("tiff")
 				.about("Changes the TIFF encoder settings")
-				.subcommand(Self::get_save_args("t.tiff").settings(&save_settings)),
+				.subcommand(Self::get_save_args(FileFormat::Tiff).settings(&save_settings)),
 		)
 		.subcommand(
 			SubCommand::with_name("ff")
 				.about("Changes the farbfeld encoder settings")
-				.subcommand(Self::get_save_args("t.ff").settings(&save_settings)),
+				.subcommand(Self::get_save_args(FileFormat::Ff).settings(&save_settings)),
 		)
-		.subcommand(Self::get_save_args("t.*").settings(&save_settings))
+		.subcommand(Self::get_save_args(FileFormat::Any).settings(&save_settings))
 	}
 
 	/**
 	 * Get save subcommand arguments.
 	 *
-	 * @param  default_file
+	 * @param  file_format
 	 * @return App
 	 */
-	fn get_save_args(default_file: &'a str) -> App<'a, 'b> {
-		let default_path =
-			Box::leak(File::get_default_path(default_file).into_boxed_path())
-				.to_str()
-				.unwrap_or_default();
+	fn get_save_args(file_format: FileFormat) -> App<'a, 'b> {
 		SubCommand::with_name("save")
 			.about("Changes the output file settings")
 			.arg(
 				Arg::with_name("output")
 					.value_name("FILE")
-					.default_value(default_path)
+					.default_value(
+						Box::leak(
+							File::from_format(file_format).path.into_boxed_path(),
+						)
+						.to_str()
+						.unwrap_or_default(),
+					)
 					.help("Sets the output file path"),
 			)
 			.arg(
