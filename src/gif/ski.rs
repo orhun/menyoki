@@ -51,13 +51,13 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 	 * Encode images as frame and write to the GIF file.
 	 *
 	 * @param  images
-	 * @param  input_state
+	 * @param  input_state (Option)
 	 * @return Result
 	 */
 	fn save(
 		self,
 		images: Vec<Image>,
-		input_state: &'static InputState,
+		input_state: Option<&'static InputState>,
 	) -> Result<(), Error> {
 		let fps = self.fps;
 		let mut collector = self.collector;
@@ -72,10 +72,12 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 					images.len()
 				);
 				io::stdout().flush().expect("Failed to flush stdout");
-				if input_state.check_cancel_keys() {
-					info!("\n");
-					warn!("User interrupt detected.");
-					panic!("Failed to write the frames")
+				if let Some(state) = input_state {
+					if state.check_cancel_keys() {
+						info!("\n");
+						warn!("User interrupt detected.");
+						panic!("Failed to write the frames")
+					}
 				}
 				collector
 					.add_frame_rgba(

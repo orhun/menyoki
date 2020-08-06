@@ -20,7 +20,7 @@ pub trait Encoder<'a, Output: Write> {
 	fn save(
 		self,
 		images: Vec<Image>,
-		input_state: &'static InputState,
+		input_state: Option<&'static InputState>,
 	) -> Result<(), Error>;
 }
 
@@ -42,7 +42,7 @@ mod tests {
 			Image::new(data.into_iter().rev().collect(), false, geometry),
 		];
 		let gif = GifEncoder::new(10, geometry, Vec::new(), &settings)?;
-		gif.save(images, Box::leak(Box::new(InputState::new())))?;
+		gif.save(images, None)?;
 		Ok(())
 	}
 }

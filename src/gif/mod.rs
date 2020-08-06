@@ -59,13 +59,13 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 	 * Encode images as frame and write to the GIF file.
 	 *
 	 * @param  images
-	 * @param  input_state
+	 * @param  input_state (Option)
 	 * @return Result
 	 */
 	fn save(
 		mut self,
 		mut images: Vec<Image>,
-		input_state: &'static InputState,
+		input_state: Option<&'static InputState>,
 	) -> Result<(), Error> {
 		let speed = 30
 			- util::map_range(self.settings.quality.into(), (1., 100.), (0., 29.))
@@ -80,10 +80,12 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 				images.len()
 			);
 			io::stdout().flush().expect("Failed to flush stdout");
-			if input_state.check_cancel_keys() {
-				info!("\n");
-				warn!("User interrupt detected.");
-				panic!("Failed to write the frames")
+			if let Some(state) = input_state {
+				if state.check_cancel_keys() {
+					info!("\n");
+					warn!("User interrupt detected.");
+					panic!("Failed to write the frames")
+				}
 			}
 			let mut frame = Frame::from_rgba_speed(
 				images[i].geometry.width.try_into().unwrap_or_default(),
