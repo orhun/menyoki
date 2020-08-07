@@ -228,7 +228,7 @@ mod tests {
 		settings.color.brightness = -2;
 		settings.color.hue = 15;
 		settings.color.contrast = -5.;
-		let mut imageops = ImageOps::new(settings);
+		let mut imageops = ImageOps::new(&settings);
 		imageops.init(image.dimensions());
 		imageops.process(image);
 		let image = imageops.get_image();
