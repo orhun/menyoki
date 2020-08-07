@@ -64,13 +64,13 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 	 */
 	fn save(
 		mut self,
-		mut images: Vec<Image>,
+		images: Vec<Image>,
 		input_state: Option<&'static InputState>,
 	) -> Result<(), Error> {
 		let speed = 30
 			- util::map_range(self.settings.quality.into(), (1., 100.), (0., 29.))
 				as i32;
-		for i in 0..images.len() {
+		for (i, image) in images.iter().enumerate() {
 			let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
 			info!("Saving... ({:.1}%)\r", percentage);
 			debug!(
@@ -88,9 +88,9 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 				}
 			}
 			let mut frame = Frame::from_rgba_speed(
-				images[i].geometry.width.try_into().unwrap_or_default(),
-				images[i].geometry.height.try_into().unwrap_or_default(),
-				&mut images[i].get_data(ColorType::Rgba8),
+				image.geometry.width.try_into().unwrap_or_default(),
+				image.geometry.height.try_into().unwrap_or_default(),
+				&mut image.get_data(ColorType::Rgba8),
 				speed,
 			);
 			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;

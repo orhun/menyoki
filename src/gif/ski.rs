@@ -62,7 +62,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 		let fps = self.fps;
 		let mut collector = self.collector;
 		let collector_thread = thread::spawn(move || {
-			for i in 0..images.len() {
+			for (i, image) in images.iter().enumerate() {
 				let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
 				info!("Saving... ({:.1}%)\r", percentage);
 				debug!(
@@ -80,11 +80,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 					}
 				}
 				collector
-					.add_frame_rgba(
-						i,
-						images[i].get_img_vec(),
-						i as f64 / fps as f64,
-					)
+					.add_frame_rgba(i, image.get_img_vec(), i as f64 / fps as f64)
 					.expect("Failed to collect a frame");
 			}
 			info!("\n");
