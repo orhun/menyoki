@@ -20,13 +20,13 @@ use self::settings::AppSettings;
 use self::x11::WindowSystem;
 
 fn main() -> AppResult {
+	util::check_friday();
 	let args = Args::parse();
 	let settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
 		util::init_logger(args.occurrences_of("verbose"), settings.save.file.format)
 			.expect("Failed to initialize the logger");
 	}
-	util::check_friday();
 	settings.check();
 	let window = if settings.window_required {
 		WindowSystem::init(&settings)

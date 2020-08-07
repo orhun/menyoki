@@ -102,6 +102,6 @@ pub fn read_input(message: &str) -> Option<String> {
 /* Check if today is friday. */
 pub fn check_friday() {
 	if Utc::now().weekday() == Weekday::Fri {
-		info!("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Thank God It's Friday! ┬──┬ ノ( ゜-゜ノ)");
+		println!("(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧ Thank God It's Friday! ┬──┬ ノ( ゜-゜ノ)");
 	}
 }
