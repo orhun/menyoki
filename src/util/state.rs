@@ -32,6 +32,15 @@ impl InputState {
 	}
 
 	/**
+	 * Get the Box'ed value.
+	 *
+	 * @return Box
+	 */
+	pub fn as_boxed_state(self) -> Box<Self> {
+		Box::new(self)
+	}
+
+	/**
 	 * Check if the action keys are pressed.
 	 *
 	 * @return bool

@@ -75,7 +75,7 @@ impl<'a> AppSettings<'a> {
 				args, "split",
 			)),
 			input_state: if window_required {
-				Some(Box::leak(Box::new(InputState::new())))
+				Some(Box::leak(InputState::new().as_boxed_state()))
 			} else {
 				None
 			},
