@@ -2,10 +2,10 @@ use crate::args::parser::ArgParser;
 use crate::util::file::File;
 use clap::ArgMatches;
 use std::fs;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 /* GIF and frame settings */
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct GifSettings {
 	pub fps: u32,
 	pub repeat: i32,
@@ -113,23 +113,23 @@ impl GifSettings {
 	}
 }
 
-#[derive(Clone, Copy, Debug)]
-pub struct SplitSettings<'a> {
-	pub file: &'a Path,
-	pub dir: &'a Path,
+#[derive(Debug)]
+pub struct SplitSettings {
+	pub file: PathBuf,
+	pub dir: PathBuf,
 }
 
 /* Default initialization values for GifSettings */
-impl Default for SplitSettings<'_> {
+impl Default for SplitSettings {
 	fn default() -> Self {
 		Self {
-			file: Path::new(""),
-			dir: Path::new(""),
+			file: PathBuf::new(),
+			dir: PathBuf::new(),
 		}
 	}
 }
 
-impl<'a> SplitSettings<'a> {
+impl SplitSettings {
 	/**
 	 * Create a new SplitSettings object.
 	 *
@@ -137,7 +137,7 @@ impl<'a> SplitSettings<'a> {
 	 * @param  dir
 	 * @return SplitSettings
 	 */
-	pub fn new(file: &'a Path, dir: &'a Path) -> Self {
+	pub fn new(file: PathBuf, dir: PathBuf) -> Self {
 		Self { file, dir }
 	}
 
@@ -147,22 +147,20 @@ impl<'a> SplitSettings<'a> {
 	 * @param  parser
 	 * @return SplitSettings
 	 */
-	pub fn from_args(parser: ArgParser<'a>) -> Self {
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
-				let file = Path::new(matches.value_of("file").unwrap_or_default());
+				let file =
+					PathBuf::from(matches.value_of("file").unwrap_or_default());
 				let dir = match matches.value_of("dir") {
-					Some(dir) => Path::new(dir),
-					None => Box::leak(
-						File::get_default_path(&format!(
-							"{}_frames",
-							file.file_stem()
-								.unwrap_or_default()
-								.to_str()
-								.unwrap_or_default(),
-						))
-						.into_boxed_path(),
-					),
+					Some(dir) => PathBuf::from(dir),
+					None => File::get_default_path(&format!(
+						"{}_frames",
+						file.file_stem()
+							.unwrap_or_default()
+							.to_str()
+							.unwrap_or_default(),
+					)),
 				};
 				Self::new(file, dir)
 			}

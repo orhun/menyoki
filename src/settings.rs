@@ -19,7 +19,7 @@ pub struct AppSettings<'a> {
 	pub jpg: JpgSettings,
 	pub save: SaveSettings,
 	pub edit: EditSettings<'a>,
-	pub split: SplitSettings<'a>,
+	pub split: SplitSettings,
 	pub input_state: Option<&'static InputState>,
 	pub window_required: bool,
 }

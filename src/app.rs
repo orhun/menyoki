@@ -68,7 +68,7 @@ where
 		debug!("Command: {:?}", self.settings.record.get_command());
 		if self.settings.args.is_present("split") {
 			info!("Reading frames from {:?}...", self.settings.split.file);
-			self.split_gif(File::open(self.settings.split.file)?)?;
+			self.split_gif(File::open(&self.settings.split.file)?)?;
 			info!(
 				"Frames saved to {:?} in {} format.",
 				self.settings.split.dir,
@@ -252,7 +252,7 @@ where
 	fn split_gif<Input: Read>(self, input: Input) -> AppResult {
 		let (frames, fps) = self.edit_gif(input);
 		debug!("FPS: {}", fps);
-		fs::create_dir_all(self.settings.split.dir)?;
+		fs::create_dir_all(&self.settings.split.dir)?;
 		for i in 0..frames.len() {
 			let path = FileUtil::get_path_with_extension(
 				self.settings.split.dir.join(format!("frame_{}", i,)),
