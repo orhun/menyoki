@@ -18,7 +18,7 @@ pub struct AppSettings<'a> {
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
 	pub save: SaveSettings,
-	pub edit: EditSettings<'a>,
+	pub edit: EditSettings,
 	pub split: SplitSettings,
 	pub input_state: Option<&'static InputState>,
 	pub window_required: bool,

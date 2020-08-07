@@ -9,11 +9,11 @@ use image::{Bgra, DynamicImage, ImageBuffer, RgbaImage};
 use std::convert::TryInto;
 
 /* Image processor */
-#[derive(Clone, Debug)]
+#[derive(Debug)]
 pub struct ImageOps<'a> {
 	pub image: RgbaImage,
 	pub geometry: Geometry,
-	settings: EditSettings<'a>,
+	settings: &'a EditSettings,
 }
 
 impl<'a> ImageOps<'a> {
@@ -23,7 +23,7 @@ impl<'a> ImageOps<'a> {
 	 * @param  settings
 	 * @return ImageOps
 	 */
-	pub fn new(settings: EditSettings<'a>) -> Self {
+	pub fn new(settings: &'a EditSettings) -> Self {
 		Self {
 			image: ImageBuffer::new(0, 0),
 			geometry: Geometry::default(),

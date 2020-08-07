@@ -2,7 +2,7 @@ use crate::args::parser::ArgParser;
 use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
-use std::path::Path;
+use std::path::PathBuf;
 
 /* Image settings */
 #[derive(Clone, Copy, Debug)]
@@ -118,19 +118,19 @@ pub enum Flip {
 }
 
 /* Image editing settings */
-#[derive(Clone, Copy, Debug)]
-pub struct EditSettings<'a> {
-	pub path: &'a Path,
+#[derive(Debug)]
+pub struct EditSettings {
+	pub path: PathBuf,
 	pub convert: bool,
 	pub image: ImageSettings,
 	pub color: ColorSettings,
 }
 
 /* Default initialization values for EditSettings */
-impl Default for EditSettings<'_> {
+impl Default for EditSettings {
 	fn default() -> Self {
 		Self {
-			path: Path::new(""),
+			path: PathBuf::new(),
 			convert: false,
 			image: ImageSettings::default(),
 			color: ColorSettings::default(),
@@ -138,7 +138,7 @@ impl Default for EditSettings<'_> {
 	}
 }
 
-impl<'a> EditSettings<'a> {
+impl EditSettings {
 	/**
 	 * Create a new EditSettings object.
 	 *
@@ -149,7 +149,7 @@ impl<'a> EditSettings<'a> {
 	 * @return EditSettings
 	 */
 	pub fn new(
-		path: &'a Path,
+		path: PathBuf,
 		convert: bool,
 		image: ImageSettings,
 		color: ColorSettings,
@@ -168,10 +168,10 @@ impl<'a> EditSettings<'a> {
 	 * @param  parser
 	 * @return EditSettings
 	 */
-	pub fn from_args(parser: ArgParser<'a>) -> Self {
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
-				Path::new(matches.value_of("input").unwrap_or_default()),
+				PathBuf::from(matches.value_of("input").unwrap_or_default()),
 				matches.is_present("convert"),
 				ImageSettings::new(
 					Padding::parse(matches.value_of("crop").unwrap_or_default()),
@@ -202,7 +202,7 @@ impl<'a> EditSettings<'a> {
 	 *
 	 * @return ImageOps
 	 */
-	pub fn get_imageops(self) -> ImageOps<'a> {
+	pub fn get_imageops(&self) -> ImageOps<'_> {
 		ImageOps::new(self)
 	}
 }
@@ -266,7 +266,7 @@ mod tests {
 				"-5",
 			]);
 		let edit_settings = EditSettings::from_args(ArgParser::new(Some(&args)));
-		assert_eq!(Path::new("x"), edit_settings.path);
+		assert_eq!(PathBuf::from("x"), edit_settings.path);
 		assert_eq!(true, edit_settings.convert);
 		assert_eq!(10, edit_settings.image.crop.top);
 		assert_eq!(0.5, edit_settings.image.ratio);

@@ -114,7 +114,7 @@ where
 		if self.settings.args.is_present("edit") {
 			debug!("{:?}", self.settings.edit);
 			info!("Opening {:?}...", self.settings.edit.path);
-			Some(self.edit_image(self.settings.edit.path))
+			Some(self.edit_image(&self.settings.edit.path))
 		} else {
 			self.capture()
 		}
@@ -129,7 +129,7 @@ where
 		if self.settings.args.is_present("edit") {
 			info!("Reading frames from {:?}...", self.settings.edit.path);
 			self.edit_gif(
-				File::open(self.settings.edit.path).expect("File not found"),
+				File::open(&self.settings.edit.path).expect("File not found"),
 			)
 		} else if self.settings.args.is_present("make") {
 			info!(
