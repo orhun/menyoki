@@ -386,6 +386,7 @@ mod tests {
 	use crate::util::file::FileFormat;
 	use image::Bgra;
 	use std::env;
+	use std::path::PathBuf;
 	#[test]
 	fn test_app_image() -> AppResult {
 		let args = Args::parse();
@@ -423,7 +424,7 @@ mod tests {
 		app.save_gif(Some((images, 10)), File::create("test.gif")?)?;
 		app.edit_gif(File::open("test.gif")?);
 		let dir = env::current_dir()?;
-		settings.split.dir = Path::new(dir.to_str().unwrap_or_default());
+		settings.split.dir = PathBuf::from(dir.to_str().unwrap_or_default());
 		settings.save.file.format = FileFormat::Png;
 		let app = App::new(Some(window), &settings);
 		app.split_gif(File::open("test.gif")?)?;
