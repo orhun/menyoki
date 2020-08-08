@@ -98,15 +98,45 @@ impl RecordTime {
 	}
 }
 
+/* Flag values of recording */
+#[derive(Clone, Copy, Debug)]
+pub struct RecordFlag {
+	pub alpha: bool,
+	pub keys: bool,
+}
+
+/* Default initialization values for RecordFlag */
+impl Default for RecordFlag {
+	fn default() -> Self {
+		Self {
+			alpha: false,
+			keys: true,
+		}
+	}
+}
+
+impl RecordFlag {
+	/**
+	 * Create a new RecordFlag object.
+	 *
+	 * @param  alpha
+	 * @param  keys
+	 * @return RecordFlag
+	 */
+	pub fn new(alpha: bool, keys: bool) -> Self {
+		Self { alpha, keys }
+	}
+}
+
 /* Recording and window settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordSettings {
 	pub command: Option<&'static str>,
 	pub color: u64,
 	pub border: Option<u32>,
-	pub alpha: bool,
 	pub padding: Padding,
 	pub time: RecordTime,
+	pub flag: RecordFlag,
 	pub window: RecordWindow,
 }
 
@@ -117,9 +147,9 @@ impl Default for RecordSettings {
 			command: None,
 			color: 0x00ff_00ff,
 			border: Some(1),
-			alpha: false,
 			padding: Padding::default(),
 			time: RecordTime::default(),
+			flag: RecordFlag::default(),
 			window: RecordWindow::Focus(Some(Geometry::default())),
 		}
 	}
@@ -132,9 +162,9 @@ impl RecordSettings {
 	 * @param  command (Option)
 	 * @param  color
 	 * @param  border (Option)
-	 * @param  alpha
 	 * @param  padding
 	 * @param  time
+	 * @param  flag
 	 * @param  window
 	 * @return RecordSettings
 	 */
@@ -142,18 +172,18 @@ impl RecordSettings {
 		command: Option<&'static str>,
 		color: u64,
 		border: Option<u32>,
-		alpha: bool,
 		padding: Padding,
 		time: RecordTime,
+		flag: RecordFlag,
 		window: RecordWindow,
 	) -> Self {
 		Self {
 			command,
 			color,
 			border,
-			alpha,
 			padding,
 			time,
+			flag,
 			window,
 		}
 	}
@@ -191,9 +221,12 @@ impl RecordSettings {
 							Self::default().border.unwrap_or_default(),
 						))
 					},
-					matches.is_present("with-alpha"),
 					padding,
 					RecordTime::from_args(parser),
+					RecordFlag::new(
+						matches.is_present("with-alpha"),
+						matches.is_present("no-keys"),
+					),
 					RecordWindow::from_args(matches),
 				)
 			}

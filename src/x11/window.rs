@@ -270,7 +270,7 @@ impl Record for Window {
 				)
 				.to_vec();
 				xlib::XDestroyImage(window_image);
-				Some(Image::new(data, self.settings.alpha, self.area))
+				Some(Image::new(data, self.settings.flag.alpha, self.area))
 			} else {
 				None
 			}
