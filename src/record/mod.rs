@@ -83,10 +83,10 @@ where
 	/**
 	 * Record frames synchronously with blocking the current thread.
 	 *
-	 * @param  input_state
+	 * @param  input_state (Option)
 	 * @return Vector of Image
 	 */
-	pub fn record_sync(&mut self, input_state: &InputState) -> Vec<Image> {
+	pub fn record_sync(&mut self, input_state: Option<&InputState>) -> Vec<Image> {
 		let mut frames = Vec::new();
 		let recording = Arc::new(AtomicBool::new(true));
 		let rec_state = recording.clone();
@@ -107,14 +107,17 @@ where
 			f64::MAX
 		};
 		while recording.load(Ordering::SeqCst)
-			&& !input_state.check_action_keys()
 			&& (start_time.elapsed().as_nanos() as f64 / 1e9) < duration
 		{
-			if input_state.check_cancel_keys() {
-				frames.clear();
-				debug!("\n");
-				warn!("User interrupt detected.");
-				break;
+			if let Some(state) = input_state {
+				if state.check_cancel_keys() {
+					frames.clear();
+					debug!("\n");
+					warn!("User interrupt detected.");
+					break;
+				} else if state.check_action_keys() {
+					break;
+				}
 			}
 			self.clock.tick();
 			frames.push(self.window.get_image().expect("Failed to get the image"));
@@ -178,7 +181,7 @@ mod tests {
 			thread::sleep(Duration::from_millis(200));
 			Enigo::new().key_down(Key::Escape);
 		});
-		assert_eq!(0, recorder.record_sync(&InputState::new()).len());
+		assert_eq!(0, recorder.record_sync(Some(&InputState::new())).len());
 		Enigo::new().key_up(Key::Escape);
 	}
 }

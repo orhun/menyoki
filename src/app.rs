@@ -203,12 +203,11 @@ where
 				None => Vec::new(),
 			}
 		} else {
-			recorder.record_sync(
-				&self
-					.settings
-					.input_state
-					.expect("Failed to get the input state"),
-			)
+			recorder.record_sync(if self.settings.record.flag.keys {
+				self.settings.input_state
+			} else {
+				None
+			})
 		}
 	}
 
