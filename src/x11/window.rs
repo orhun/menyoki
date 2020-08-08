@@ -312,7 +312,7 @@ impl Record for Window {
 mod tests {
 	use super::*;
 	use crate::image::padding::Padding;
-	use crate::record::settings::{RecordTime, RecordWindow};
+	use crate::record::settings::{RecordFlag, RecordTime, RecordWindow};
 	use crate::x11::display::Display;
 	use image::ColorType;
 	#[test]
@@ -322,9 +322,9 @@ mod tests {
 			None,
 			0x00ff_00ff,
 			Some(0),
-			false,
 			Padding::default(),
 			RecordTime::new(Some(0.0), 1, 0, 10),
+			RecordFlag::default(),
 			RecordWindow::Focus(Some(Geometry::default())),
 		);
 		let display = Display::open(Some(settings)).unwrap();

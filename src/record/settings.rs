@@ -272,6 +272,7 @@ mod tests {
 			.arg(Arg::with_name("focus").long("focus"))
 			.arg(Arg::with_name("with-alpha").long("with-alpha"))
 			.arg(Arg::with_name("no-border").long("no-border"))
+			.arg(Arg::with_name("no-keys").long("no-keys"))
 			.get_matches_from(vec![
 				"test",
 				"--color",
@@ -288,6 +289,7 @@ mod tests {
 				"12",
 				"--root",
 				"--with-alpha",
+				"--no-keys",
 			]);
 		let record_settings = RecordSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(0x0000_0000, record_settings.color);
@@ -297,6 +299,7 @@ mod tests {
 		assert_eq!(60, record_settings.time.timeout);
 		assert_eq!(12, record_settings.time.interval);
 		assert_eq!(RecordWindow::Root(None), record_settings.window);
-		assert!(record_settings.alpha);
+		assert!(record_settings.flag.alpha);
+		assert!(!record_settings.flag.keys);
 	}
 }

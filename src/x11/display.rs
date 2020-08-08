@@ -285,7 +285,7 @@ impl Display {
 mod tests {
 	use super::*;
 	use crate::image::padding::Padding;
-	use crate::record::settings::RecordTime;
+	use crate::record::settings::{RecordFlag, RecordTime};
 	#[test]
 	#[ignore]
 	fn test_display_mod() {
@@ -293,9 +293,9 @@ mod tests {
 			None,
 			0x00ff_00ff,
 			Some(0),
-			false,
 			Padding::default(),
 			RecordTime::new(Some(0.0), 0, 0, 10),
+			RecordFlag::default(),
 			RecordWindow::Focus(Some(Geometry::default())),
 		);
 		let mut display = Display::open(Some(settings)).unwrap();
