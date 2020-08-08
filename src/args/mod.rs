@@ -237,9 +237,14 @@ where
 			)
 			.arg(
 				Arg::with_name("no-border")
-					.short("n")
 					.long("no-border")
 					.help("Shows no border for window selection"),
+			)
+			.arg(
+				Arg::with_name("no-keys")
+					.long("no-keys")
+					.help("Disables the action keys while recording")
+					.hidden(capture_mode),
 			)
 	}
 
