@@ -86,9 +86,6 @@ where
 				ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 			);
 		}
-		if let Some(window) = self.window {
-			window.release();
-		}
 		Ok(())
 	}
 
@@ -98,11 +95,15 @@ where
 	 * @return AppOutput
 	 */
 	fn get_app_output(self) -> AppOutput {
-		if self.settings.save.file.format == FileFormat::Gif {
+		let output = if self.settings.save.file.format == FileFormat::Gif {
 			(None, Some(self.get_frames()))
 		} else {
 			(self.get_image(), None)
+		};
+		if let Some(window) = self.window {
+			window.release();
 		}
+		output
 	}
 
 	/**
