@@ -225,7 +225,7 @@ impl RecordSettings {
 					RecordTime::from_args(parser),
 					RecordFlag::new(
 						matches.is_present("with-alpha"),
-						matches.is_present("no-keys"),
+						!matches.is_present("no-keys"),
 					),
 					RecordWindow::from_args(matches),
 				)
