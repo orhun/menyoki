@@ -298,7 +298,7 @@ where
 				Arg::with_name("fast")
 					.long("fast")
 					.help("Encodes 3 times faster (lower quality and bigger file)")
-					.hidden(!cfg!(feature = "ski") || mode != GifMode::Edit),
+					.hidden(!cfg!(feature = "ski")),
 			)
 			.arg(
 				Arg::with_name("frames")
