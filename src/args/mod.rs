@@ -290,6 +290,12 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("fast")
+					.long("fast")
+					.help("Encodes 3 times faster (lower quality and bigger file)")
+					.hidden(!cfg!(feature = "ski")),
+			)
+			.arg(
 				Arg::with_name("speed")
 					.short("s")
 					.long("speed")
@@ -298,12 +304,6 @@ where
 					.help("Sets the GIF speed")
 					.hidden(mode != GifMode::Edit)
 					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("fast")
-					.long("fast")
-					.help("Encodes 3 times faster (lower quality and bigger file)")
-					.hidden(!cfg!(feature = "ski")),
 			)
 			.arg(
 				Arg::with_name("frames")
