@@ -10,8 +10,8 @@ pub struct GifSettings {
 	pub fps: u32,
 	pub repeat: i32,
 	pub quality: u8,
-	pub speed: f32,
 	pub fast: bool,
+	pub speed: f32,
 	pub frames: Vec<PathBuf>,
 }
 
@@ -22,8 +22,8 @@ impl Default for GifSettings {
 			fps: 10,
 			repeat: -1,
 			quality: 75,
-			speed: 1.,
 			fast: false,
+			speed: 1.,
 			frames: Vec::new(),
 		}
 	}
@@ -36,8 +36,8 @@ impl GifSettings {
 	 * @param  fps
 	 * @param  repeat
 	 * @param  quality
-	 * @param  speed
 	 * @param  fast
+	 * @param  speed
 	 * @param  frames
 	 * @return GifSettings
 	 */
@@ -45,16 +45,16 @@ impl GifSettings {
 		fps: u32,
 		repeat: i32,
 		quality: u8,
-		speed: f32,
 		fast: bool,
+		speed: f32,
 		frames: Vec<PathBuf>,
 	) -> Self {
 		Self {
 			fps,
 			repeat,
 			quality,
-			speed,
 			fast,
+			speed,
 			frames,
 		}
 	}
@@ -74,8 +74,8 @@ impl GifSettings {
 				},
 				parser.parse("repeat", Self::default().repeat) - 1,
 				parser.parse("quality", Self::default().quality),
-				parser.parse("speed", Self::default().speed),
 				matches.is_present("fast"),
+				parser.parse("speed", Self::default().speed),
 				Self::get_frames(matches),
 			),
 			None => Self::default(),
@@ -179,8 +179,8 @@ mod tests {
 			.arg(Arg::with_name("fps").long("fps").takes_value(true))
 			.arg(Arg::with_name("repeat").long("repeat").takes_value(true))
 			.arg(Arg::with_name("quality").long("quality").takes_value(true))
-			.arg(Arg::with_name("speed").long("speed").takes_value(true))
 			.arg(Arg::with_name("fast").long("fast"))
+			.arg(Arg::with_name("speed").long("speed").takes_value(true))
 			.get_matches_from(vec![
 				"test",
 				"--fps",
@@ -189,20 +189,20 @@ mod tests {
 				"5",
 				"--quality",
 				"10",
+				"--fast",
 				"--speed",
 				"1.1",
-				"--fast",
 			]);
 		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(15, gif_settings.fps);
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
-		assert_eq!(1.1, gif_settings.speed);
 		assert_eq!(true, gif_settings.fast);
+		assert_eq!(1.1, gif_settings.speed);
 		let gif_settings = GifSettings::from_args(ArgParser::new(None));
 		assert_eq!(-1, gif_settings.repeat);
 		assert_eq!(75, gif_settings.quality);
-		assert_eq!(1.0, gif_settings.speed);
 		assert_eq!(false, gif_settings.fast);
+		assert_eq!(1.0, gif_settings.speed);
 	}
 }
