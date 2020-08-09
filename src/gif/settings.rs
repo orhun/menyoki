@@ -12,6 +12,7 @@ pub struct GifSettings {
 	pub quality: u8,
 	pub fast: bool,
 	pub speed: f32,
+	pub cut: (f32, f32),
 	pub frames: Vec<PathBuf>,
 }
 
@@ -24,6 +25,7 @@ impl Default for GifSettings {
 			quality: 75,
 			fast: false,
 			speed: 1.,
+			cut: (0., 0.),
 			frames: Vec::new(),
 		}
 	}
@@ -38,6 +40,7 @@ impl GifSettings {
 	 * @param  quality
 	 * @param  fast
 	 * @param  speed
+	 * @param  cut
 	 * @param  frames
 	 * @return GifSettings
 	 */
@@ -47,6 +50,7 @@ impl GifSettings {
 		quality: u8,
 		fast: bool,
 		speed: f32,
+		cut: (f32, f32),
 		frames: Vec<PathBuf>,
 	) -> Self {
 		Self {
@@ -55,6 +59,7 @@ impl GifSettings {
 			quality,
 			fast,
 			speed,
+			cut,
 			frames,
 		}
 	}
@@ -76,6 +81,10 @@ impl GifSettings {
 				parser.parse("quality", Self::default().quality),
 				matches.is_present("fast"),
 				parser.parse("speed", Self::default().speed),
+				(
+					parser.parse("cut-begin", Self::default().cut.0) * 1000.,
+					parser.parse("cut-end", Self::default().cut.1) * 1000.,
+				),
 				Self::get_frames(matches),
 			),
 			None => Self::default(),
