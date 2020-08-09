@@ -306,6 +306,24 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("cut-begin")
+					.long("cut-begin")
+					.value_name("MS")
+					.default_value("0.0")
+					.help("Cuts the beginning of the GIF")
+					.hidden(mode != GifMode::Edit)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("cut-end")
+					.long("cut-end")
+					.value_name("MS")
+					.default_value("0.0")
+					.help("Cuts the end of the GIF")
+					.hidden(mode != GifMode::Edit)
+					.takes_value(true),
+			)
+			.arg(
 				Arg::with_name("frames")
 					.value_name("FRAMES")
 					.help("Sets the frames of the GIF")
