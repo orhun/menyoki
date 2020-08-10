@@ -411,6 +411,7 @@ mod tests {
 		let mut settings = AppSettings::new(&args);
 		settings.save.file.format = FileFormat::Gif;
 		settings.record.command = Some("sleep 0.3");
+		settings.gif.cut = (0.1, 0.1);
 		let window = TestWindow::default();
 		let app = App::new(Some(window), &settings);
 		let images = app.get_frames().0;
