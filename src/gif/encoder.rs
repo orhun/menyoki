@@ -35,12 +35,12 @@ mod tests {
 	#[test]
 	fn test_gif_encoder() -> Result<(), Error> {
 		let geometry = Geometry::new(0, 0, 1, 2);
-		let settings = GifSettings::new(10, -1, 10, false, 1., Vec::new());
 		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
 		let images = vec![
 			Image::new(data.clone(), false, geometry),
 			Image::new(data.into_iter().rev().collect(), false, geometry),
 		];
+		let settings = GifSettings::default();
 		let gif = GifEncoder::new(10, geometry, Vec::new(), &settings)?;
 		gif.save(images, None)?;
 		Ok(())
