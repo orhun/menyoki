@@ -381,10 +381,8 @@ where
 mod tests {
 	use super::*;
 	use crate::args::Args;
-	use crate::image::Image;
 	use crate::test::TestWindow;
 	use crate::util::file::FileFormat;
-	use image::Bgra;
 	use std::env;
 	use std::path::PathBuf;
 	#[test]
@@ -412,16 +410,11 @@ mod tests {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
 		settings.save.file.format = FileFormat::Gif;
-		settings.record.command = Some("test");
+		settings.record.command = Some("sleep 0.3");
 		let window = TestWindow::default();
 		let app = App::new(Some(window), &settings);
-		let mut images = app.get_frames().0;
-		images.push(Image::new(
-			vec![Bgra::from([0, 0, 0, 0])],
-			false,
-			window.geometry,
-		));
-		app.save_gif(Some((images, 10)), File::create("test.gif")?)?;
+		let images = app.get_frames().0;
+		app.save_gif(Some((images.clone(), 10)), File::create("test.gif")?)?;
 		app.edit_gif(File::open("test.gif")?);
 		let dir = env::current_dir()?;
 		settings.split.dir = PathBuf::from(dir.to_str().unwrap_or_default());
@@ -429,8 +422,9 @@ mod tests {
 		let app = App::new(Some(window), &settings);
 		app.split_gif(File::open("test.gif")?)?;
 		fs::remove_file("test.gif")?;
-		fs::remove_file("frame_0.png")?;
-		fs::remove_file("frame_1.png")?;
+		for i in 0..images.len() {
+			fs::remove_file(format!("frame_{}.png", i))?;
+		}
 		Ok(())
 	}
 }
