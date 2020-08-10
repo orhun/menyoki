@@ -190,6 +190,12 @@ mod tests {
 			.arg(Arg::with_name("quality").long("quality").takes_value(true))
 			.arg(Arg::with_name("fast").long("fast"))
 			.arg(Arg::with_name("speed").long("speed").takes_value(true))
+			.arg(
+				Arg::with_name("cut-begin")
+					.long("cut-begin")
+					.takes_value(true),
+			)
+			.arg(Arg::with_name("cut-end").long("cut-end").takes_value(true))
 			.get_matches_from(vec![
 				"test",
 				"--fps",
@@ -201,6 +207,10 @@ mod tests {
 				"--fast",
 				"--speed",
 				"1.1",
+				"--cut-begin",
+				"0.9",
+				"--cut-end",
+				"0.8",
 			]);
 		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(15, gif_settings.fps);
@@ -208,10 +218,12 @@ mod tests {
 		assert_eq!(10, gif_settings.quality);
 		assert_eq!(true, gif_settings.fast);
 		assert_eq!(1.1, gif_settings.speed);
+		assert_eq!((900., 800.), gif_settings.cut);
 		let gif_settings = GifSettings::from_args(ArgParser::new(None));
 		assert_eq!(-1, gif_settings.repeat);
 		assert_eq!(75, gif_settings.quality);
 		assert_eq!(false, gif_settings.fast);
 		assert_eq!(1.0, gif_settings.speed);
+		assert_eq!((0., 0.), gif_settings.cut);
 	}
 }
