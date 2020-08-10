@@ -49,15 +49,13 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 			.init(first_frame.clone().into_buffer().dimensions());
 		if self.settings.cut != (0., 0.) {
 			let (start, end) = self.settings.cut;
-			let frame_delay = 1000_u32.checked_div(fps).unwrap_or_default();
+			let frame_delay = 1000_u32.checked_div(fps).unwrap_or_default() as f32;
 			frames = frames
 				.drain(
-					((start / (frame_delay as f32)) as u32)
+					((start / frame_delay) as u32)
 						.try_into()
 						.unwrap_or_default()
-						..frames
-							.len()
-							.saturating_sub((end / (frame_delay as f32)) as usize),
+						..frames.len().saturating_sub((end / frame_delay) as usize),
 				)
 				.collect();
 		}
