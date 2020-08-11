@@ -81,12 +81,20 @@ impl Padding {
 	 *
 	 * @return Vector of Tuple
 	 */
-	pub fn get_modifiers(&mut self) -> Vec<(&mut u32, Keycode, Keycode)> {
+	pub fn get_modifiers<'a>(
+		&mut self,
+	) -> Vec<(&mut u32, &'a [Keycode; 2], &'a [Keycode; 2])> {
+		let (left, down, up, right) = (
+			&[Keycode::Left, Keycode::H],
+			&[Keycode::Down, Keycode::J],
+			&[Keycode::Up, Keycode::K],
+			&[Keycode::Right, Keycode::L],
+		);
 		vec![
-			(&mut self.top, Keycode::Down, Keycode::Up),
-			(&mut self.right, Keycode::Left, Keycode::Right),
-			(&mut self.bottom, Keycode::Up, Keycode::Down),
-			(&mut self.left, Keycode::Right, Keycode::Left),
+			(&mut self.top, down, up),
+			(&mut self.right, left, right),
+			(&mut self.bottom, up, down),
+			(&mut self.left, right, left),
 		]
 	}
 }

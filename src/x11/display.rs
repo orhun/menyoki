@@ -229,38 +229,37 @@ impl Display {
 		let mut reset_area = false;
 		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
 			match input_state.state.get_keys().as_slice() {
-				[Keycode::LAlt, key] => {
-					if key == &increase {
+				[Keycode::R, Keycode::LAlt] => reset_area = true,
+				[Keycode::LAlt, key] | [key, Keycode::LAlt] => {
+					if key == &increase[0] || key == &increase[1] {
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
+					} else {
+						let key = format!("{:?}", key);
+						if key.contains("Key") {
+							*change = key
+								.trim_start_matches("Key")
+								.parse::<u32>()
+								.unwrap_or(*change);
+						}
 					}
 				}
-				[Keycode::LControl, Keycode::LAlt, key] => {
-					if key == &decrease {
+				[Keycode::LControl, Keycode::LAlt, key]
+				| [Keycode::LControl, key, Keycode::LAlt] => {
+					if key == &decrease[0] || key == &decrease[1] {
 						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
 					}
 				}
-				[Keycode::LShift, Keycode::LAlt, key] => {
-					if key == &increase {
+				[Keycode::LShift, Keycode::LAlt, key]
+				| [key, Keycode::LShift, Keycode::LAlt] => {
+					if key == &increase[0] || key == &increase[1] {
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					}
-					if key == &decrease {
+					if key == &decrease[0] || key == &decrease[1] {
 						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
-					}
-				}
-				[Keycode::R, Keycode::LAlt] => {
-					reset_area = true;
-				}
-				[key, Keycode::LAlt] => {
-					let key = format!("{:?}", key);
-					if key.contains("Key") {
-						*change = key
-							.trim_start_matches("Key")
-							.parse::<u32>()
-							.unwrap_or(*change);
 					}
 				}
 				_ => {}
