@@ -300,6 +300,7 @@ mod tests {
 		let mut display = Display::open(Some(settings)).unwrap();
 		display
 			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);
+		display.update_padding(Geometry::new(0, 0, 10, 10), Geometry::default());
 		assert_eq!(
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
