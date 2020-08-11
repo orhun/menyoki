@@ -182,6 +182,7 @@ impl SplitSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
+	use std::ffi::OsStr;
 	#[test]
 	fn test_gif_settings() {
 		let args = App::new("test")
@@ -225,5 +226,14 @@ mod tests {
 		assert_eq!(false, gif_settings.fast);
 		assert_eq!(1.0, gif_settings.speed);
 		assert_eq!((0., 0.), gif_settings.cut);
+	}
+	#[test]
+	fn test_split_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("file").required(true))
+			.get_matches_from(vec!["test", "x"]);
+		let split_settings = SplitSettings::from_args(ArgParser::new(Some(&args)));
+		assert_eq!(PathBuf::from("x"), split_settings.file);
+		assert_eq!(Some(OsStr::new("x_frames")), split_settings.dir.file_name());
 	}
 }
