@@ -478,7 +478,8 @@ where
 					.short("d")
 					.long("dir")
 					.value_name("DIRECTORY")
-					.help("Sets the output directory"),
+					.help("Sets the output directory")
+					.takes_value(true),
 			)
 	}
 
