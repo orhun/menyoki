@@ -40,15 +40,6 @@ impl Display {
 	}
 
 	/**
-	 * Get the default screen of display.
-	 *
-	 * @return Screen
-	 */
-	unsafe fn get_default_screen(&self) -> *mut xlib::Screen {
-		xlib::XDefaultScreenOfDisplay(self.display)
-	}
-
-	/**
 	 * Get the root window of the default screen.
 	 *
 	 * @return Window
@@ -56,7 +47,9 @@ impl Display {
 	pub fn get_root_window(&self) -> Window {
 		unsafe {
 			Window::new(
-				xlib::XRootWindowOfScreen(self.get_default_screen()),
+				xlib::XRootWindowOfScreen(xlib::XDefaultScreenOfDisplay(
+					self.display,
+				)),
 				self.display,
 				self.settings,
 			)
