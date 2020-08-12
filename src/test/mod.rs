@@ -3,6 +3,7 @@ use crate::image::Image;
 use crate::record::Record;
 use image::Bgra;
 
+/* Testing window */
 #[derive(Clone, Copy, Debug)]
 pub struct TestWindow {
 	pub geometry: Geometry,
@@ -45,6 +46,6 @@ impl Record for TestWindow {
 	/* Do not show countdown for testing window. */
 	fn show_countdown(&self) {}
 
-	/* Do not do anything for the release operation */
+	/* Do not do anything with respect to release. */
 	fn release(&self) {}
 }
