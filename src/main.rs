@@ -11,7 +11,6 @@ mod gif;
 mod image;
 mod record;
 mod settings;
-mod test;
 mod util;
 mod x11;
 use self::app::{App, AppResult, WindowAccess};
