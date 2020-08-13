@@ -94,13 +94,32 @@ unsafe extern "C" fn handle_x11_errors(
 mod tests {
 	use super::*;
 	use crate::args::Args;
+	use crate::image::geometry::Geometry;
 	use crate::record::Record;
+	use crate::util::state::InputState;
 	use image::ColorType;
 	#[test]
 	#[ignore]
 	fn test_x11_mod() {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
+		settings.record.window = RecordWindow::Root(None);
+		assert!(WindowSystem::init(&settings)
+			.unwrap()
+			.get_window()
+			.is_some());
+		settings.record.window = RecordWindow::Root(Some(Geometry::default()));
+		settings.input_state = Some(Box::leak(InputState::new().into_boxed_state()));
+		assert!(WindowSystem::init(&settings)
+			.unwrap()
+			.get_window()
+			.is_none());
+		settings.record.window = RecordWindow::Focus(Some(Geometry::default()));
+		settings.record.command = Some("test");
+		assert!(WindowSystem::init(&settings)
+			.unwrap()
+			.get_window()
+			.is_some());
 		settings.record.window = RecordWindow::Focus(None);
 		let mut window_system = WindowSystem::init(&settings).unwrap();
 		window_system.display.set_focused_window(
