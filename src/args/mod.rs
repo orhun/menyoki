@@ -587,7 +587,7 @@ where
 				Arg::with_name("prompt")
 					.short("p")
 					.long("prompt")
-					.help("Shows prompt for the file name input"),
+					.help("Shows input prompt for the file name"),
 			)
 	}
 }
