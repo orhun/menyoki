@@ -349,5 +349,6 @@ mod tests {
 			1366 * 768 * 3,
 			window.get_image().unwrap().get_data(ColorType::Rgb8).len()
 		);
+		window.release();
 	}
 }
