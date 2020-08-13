@@ -278,6 +278,7 @@ mod tests {
 	use super::*;
 	use crate::image::padding::Padding;
 	use crate::record::settings::{RecordFlag, RecordTime};
+	use crate::record::Record;
 	#[test]
 	#[ignore]
 	fn test_display_mod() {
@@ -299,5 +300,6 @@ mod tests {
 			display.get_focused_window().unwrap().xid
 		);
 		assert!(display.select_window(&InputState::new()).is_none());
+		display.get_root_window().release();
 	}
 }
