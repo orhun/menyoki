@@ -1,6 +1,6 @@
 pub mod fps;
 pub mod settings;
-pub mod test;
+pub mod window;
 
 use crate::image::Image;
 use crate::record::fps::FpsClock;
@@ -165,7 +165,7 @@ where
 mod tests {
 	use super::*;
 	use crate::record::settings::RecordSettings;
-	use crate::record::test::TestWindow;
+	use crate::record::window::TestWindow;
 	use enigo::*;
 	use std::thread;
 	use std::time::Duration;

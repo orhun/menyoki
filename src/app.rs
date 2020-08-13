@@ -381,7 +381,7 @@ where
 mod tests {
 	use super::*;
 	use crate::args::Args;
-	use crate::record::test::TestWindow;
+	use crate::record::window::TestWindow;
 	use crate::util::file::FileFormat;
 	use std::env;
 	use std::path::PathBuf;
