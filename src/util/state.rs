@@ -73,8 +73,9 @@ mod tests {
 	#[test]
 	#[ignore]
 	fn test_input_state() {
-		let input_state = InputState::new();
+		let input_state = InputState::new().into_boxed_state();
 		assert!(!input_state.check_action_keys());
 		assert!(!input_state.check_cancel_keys());
+		assert!(format!("{:?}", input_state).len() > 0);
 	}
 }
