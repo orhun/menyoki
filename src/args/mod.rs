@@ -457,6 +457,21 @@ where
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("filter")
+					.long("filter")
+					.value_name("FILTER")
+					.possible_values(&[
+						"nearest",
+						"triangle",
+						"catmull-rom",
+						"gaussian",
+						"lanczos3",
+					])
+					.default_value("lanczos3")
+					.help("Sets the sampling filter")
+					.takes_value(true),
+			)
 	}
 
 	/**
