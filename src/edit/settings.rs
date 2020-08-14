@@ -2,6 +2,7 @@ use crate::args::parser::ArgParser;
 use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
+use image::imageops::FilterType;
 use std::path::PathBuf;
 
 /* Image settings */
@@ -13,6 +14,7 @@ pub struct ImageSettings {
 	pub flip: Option<Flip>,
 	pub rotate: u32,
 	pub blur: f32,
+	pub filter: FilterType,
 }
 
 /* Default initialization values for ImageSettings */
@@ -25,6 +27,7 @@ impl Default for ImageSettings {
 			flip: None,
 			rotate: 0,
 			blur: 0.,
+			filter: FilterType::Lanczos3,
 		}
 	}
 }
@@ -39,6 +42,7 @@ impl ImageSettings {
 	 * @param  flip (Option)
 	 * @param  rotate
 	 * @param  blur
+	 * @param  filter
 	 */
 	pub fn new(
 		crop: Padding,
@@ -47,6 +51,7 @@ impl ImageSettings {
 		flip: Option<Flip>,
 		rotate: u32,
 		blur: f32,
+		filter: FilterType,
 	) -> Self {
 		Self {
 			crop,
@@ -55,6 +60,7 @@ impl ImageSettings {
 			flip,
 			rotate,
 			blur,
+			filter,
 		}
 	}
 }
@@ -184,6 +190,13 @@ impl EditSettings {
 					},
 					parser.parse("rotate", ImageSettings::default().rotate),
 					parser.parse("blur", ImageSettings::default().blur),
+					match matches.value_of("filter") {
+						Some("nearest") => FilterType::Nearest,
+						Some("triangle") => FilterType::Triangle,
+						Some("catmull-rom") => FilterType::CatmullRom,
+						Some("gaussian") => FilterType::Gaussian,
+						_ => FilterType::Lanczos3,
+					},
 				),
 				ColorSettings::new(
 					matches.is_present("grayscale"),

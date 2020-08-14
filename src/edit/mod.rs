@@ -4,7 +4,7 @@ use crate::edit::settings::ColorSettings;
 use crate::edit::settings::{EditSettings, Flip};
 use crate::image::geometry::Geometry;
 use crate::image::Image;
-use image::imageops::{self, colorops, FilterType};
+use image::imageops::{self, colorops};
 use image::{Bgra, DynamicImage, ImageBuffer, RgbaImage};
 use std::convert::TryInto;
 
@@ -106,7 +106,7 @@ impl<'a> ImageOps<'a> {
 				&self.image,
 				self.geometry.width,
 				self.geometry.height,
-				FilterType::Lanczos3,
+				self.settings.image.filter,
 			);
 		}
 		self
