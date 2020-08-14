@@ -253,6 +253,7 @@ mod tests {
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
+			.arg(Arg::with_name("filter").long("filter").takes_value(true))
 			.get_matches_from(vec![
 				"test",
 				"x",
@@ -277,6 +278,8 @@ mod tests {
 				"3",
 				"--contrast",
 				"-5",
+				"--filter",
+				"triangle",
 			]);
 		let edit_settings = EditSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(PathBuf::from("x"), edit_settings.path);
@@ -291,5 +294,6 @@ mod tests {
 		assert_eq!(2, edit_settings.color.brightness);
 		assert_eq!(3, edit_settings.color.hue);
 		assert_eq!(-5., edit_settings.color.contrast);
+		assert_eq!("Triangle", format!("{:?}", edit_settings.image.filter));
 	}
 }
