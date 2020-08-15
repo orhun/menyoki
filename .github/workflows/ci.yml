@@ -29,33 +29,28 @@ jobs:
       - uses: actions/checkout@master
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          profile: minimal
+          toolchain: nightly
           override: true
-      - name: Run tests
-        run: |
+        - run: |
           sudo apt-get update
           sudo apt-get install -y -qq xvfb libxdo-dev
-          bash -c "curl -s $repo | $parse | wget -qi -"
-          tar -xzf cargo-tarpaulin-*.tar.gz
-          mv cargo-tarpaulin ~/.cargo/bin/
-          bash -c "$xvfb $test"
-          mv cobertura.xml main_coverage.xml
-          bash -c "$xvfb $test $features"
-          mv cobertura.xml feature_coverage.xml
+          export CARGO_INCREMENTAL=0
+          export RUSTFLAGS="$rustflags"
+          export RUSTDOCFLAGS="-Cpanic=abort"
+          bash -c "curl -L $repo | tar jxf -"
+          bash -c "$test && $test $features && $xvfb $test $ignored"
+          bash -c "$zip && $grcov && $upload"
         env:
-          repo: 'https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
-          parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
+          repo: 'https://github.com/mozilla/grcov/releases/latest/download/grcov-linux-x86_64.tar.bz2'
+          rustflags: '-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort'
           xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
-          test: 'cargo tarpaulin -o Xml -i -v'
+          test: 'cargo test --verbose $CARGO_OPTIONS'
           features: '--features ski'
-      - name: Upload reports to Codecov
-        uses: codecov/codecov-action@v1.0.7
-        with:
-          token: ${{secrets.CODECOV_TOKEN}}
-          file: ./*_coverage.xml
-          flags: unittests
-          name: code-coverage-report
-          fail_ci_if_error: true
+          ignored: '-- --ignored'
+          zip: 'zip -0 ccov.zip `find . \( -name "tgif*.gc*" \) -print`'
+          grcov: './grcov ccov.zip -s . -t lcov --llvm --branch --ignore-not-existing --ignore "/*" -o lcov.info'
+          upload: 'bash <(curl -s https://codecov.io/bash) -v -f lcov.info'
 
   fmt:
     name: Rustfmt
