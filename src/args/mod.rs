@@ -266,7 +266,7 @@ where
 					.short("f")
 					.long("fps")
 					.value_name("FPS")
-					.default_value("10")
+					.default_value("20")
 					.help("Sets the FPS value")
 					.hidden(mode == GifMode::Edit)
 					.takes_value(true),

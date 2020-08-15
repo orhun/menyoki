@@ -20,7 +20,7 @@ pub struct GifSettings {
 impl Default for GifSettings {
 	fn default() -> Self {
 		Self {
-			fps: 10,
+			fps: 20,
 			repeat: -1,
 			quality: 75,
 			fast: false,
