@@ -103,6 +103,7 @@ mod tests {
 	fn test_x11_mod() {
 		let args = Args::parse();
 		let mut settings = AppSettings::new(&args);
+		settings.record.time.timeout = 1;
 		settings.record.window = RecordWindow::Root(None);
 		assert!(WindowSystem::init(&settings)
 			.unwrap()
