@@ -220,7 +220,8 @@ impl Display {
 		change: &mut u32,
 	) -> bool {
 		let mut reset_area = false;
-		for (value, increase, decrease) in self.settings.padding.get_modifiers() {
+		let modifiers = self.settings.padding.get_modifiers();
+		for (value, increase, decrease) in modifiers {
 			match input_state.state.get_keys().as_slice() {
 				[Keycode::R, Keycode::LAlt] => reset_area = true,
 				[Keycode::LAlt, key] | [key, Keycode::LAlt] => {
