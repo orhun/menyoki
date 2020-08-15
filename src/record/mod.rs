@@ -81,6 +81,29 @@ where
 	}
 
 	/**
+	 * Get the maximum number of frames to record.
+	 *
+	 * @return usize
+	 */
+	fn get_max_frames(&self) -> usize {
+		if let Some(duration) = self.settings.time.duration {
+			info!(
+				"Recording {} FPS for {} seconds...",
+				self.clock.fps, duration
+			);
+			if cfg!(features = "ski") {
+				(duration * (self.clock.fps as f64)) as usize
+			} else {
+				(((duration * 100.) as u16) / (1e2 / self.clock.fps as f32) as u16)
+					as usize
+			}
+		} else {
+			info!("Recording {} FPS...", self.clock.fps);
+			usize::MAX
+		}
+	}
+
+	/**
 	 * Record frames synchronously with blocking the current thread.
 	 *
 	 * @param  input_state (Option)
@@ -95,21 +118,7 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		self.window.show_countdown();
-		let max_frames = if let Some(duration) = self.settings.time.duration {
-			info!(
-				"Recording {} FPS for {} seconds...",
-				self.clock.fps, duration
-			);
-			if cfg!(features = "ski") {
-				(duration * (self.clock.fps as f64)) as usize
-			} else {
-				(((duration * 100.) as u16) / (1e2 / self.clock.fps as f32) as u16)
-					as usize
-			}
-		} else {
-			info!("Recording {} FPS...", self.clock.fps);
-			usize::MAX
-		};
+		let max_frames = self.get_max_frames();
 		while recording.load(Ordering::SeqCst) && frames.len() < max_frames {
 			if let Some(state) = input_state {
 				if state.check_cancel_keys() {
