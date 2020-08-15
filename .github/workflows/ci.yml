@@ -32,25 +32,25 @@ jobs:
           profile: minimal
           toolchain: nightly
           override: true
-        - run: |
-          sudo apt-get update
-          sudo apt-get install -y -qq xvfb libxdo-dev
-          export CARGO_INCREMENTAL=0
-          export RUSTFLAGS="$rustflags"
-          export RUSTDOCFLAGS="-Cpanic=abort"
-          bash -c "curl -L $repo | tar jxf -"
-          bash -c "$test && $test $features && $xvfb $test $ignored"
-          bash -c "$zip && $grcov && $upload"
-        env:
-          repo: 'https://github.com/mozilla/grcov/releases/latest/download/grcov-linux-x86_64.tar.bz2'
-          rustflags: '-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort'
-          xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
-          test: 'cargo test --verbose $CARGO_OPTIONS'
-          features: '--features ski'
-          ignored: '-- --ignored'
-          zip: 'zip -0 ccov.zip `find . \( -name "tgif*.gc*" \) -print`'
-          grcov: './grcov ccov.zip -s . -t lcov --llvm --branch --ignore-not-existing --ignore "/*" -o lcov.info'
-          upload: 'bash <(curl -s https://codecov.io/bash) -v -f lcov.info'
+      - run: |
+        sudo apt-get update
+        sudo apt-get install -y -qq xvfb libxdo-dev
+        export CARGO_INCREMENTAL=0
+        export RUSTFLAGS="$rustflags"
+        export RUSTDOCFLAGS="-Cpanic=abort"
+        bash -c "curl -L $repo | tar jxf -"
+        bash -c "$test && $test $features && $xvfb $test $ignored"
+        bash -c "$zip && $grcov && $upload"
+      env:
+        repo: 'https://github.com/mozilla/grcov/releases/latest/download/grcov-linux-x86_64.tar.bz2'
+        rustflags: '-Zprofile -Ccodegen-units=1 -Copt-level=0 -Clink-dead-code -Coverflow-checks=off -Zpanic_abort_tests -Cpanic=abort'
+        xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
+        test: 'cargo test --verbose $CARGO_OPTIONS'
+        features: '--features ski'
+        ignored: '-- --ignored'
+        zip: 'zip -0 ccov.zip `find . \( -name "tgif*.gc*" \) -print`'
+        grcov: './grcov ccov.zip -s . -t lcov --llvm --branch --ignore-not-existing --ignore "/*" -o lcov.info'
+        upload: 'bash <(curl -s https://codecov.io/bash) -v -f lcov.info'
 
   fmt:
     name: Rustfmt
