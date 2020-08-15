@@ -10,7 +10,6 @@ use std::io::{self, Write};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc};
 use std::thread;
-use std::time::Instant;
 
 /* Required window methods for recording */
 pub trait Record {
@@ -96,20 +95,22 @@ where
 		})
 		.expect("Failed to set the signal handler");
 		self.window.show_countdown();
-		let start_time = Instant::now();
-		let duration = if let Some(duration) = self.settings.time.duration {
+		let max_frames = if let Some(duration) = self.settings.time.duration {
 			info!(
 				"Recording {} FPS for {} seconds...",
 				self.clock.fps, duration
 			);
-			duration
+			if cfg!(features = "ski") {
+				(duration * (self.clock.fps as f64)) as usize
+			} else {
+				(((duration * 100.) as u16) / (1e2 / self.clock.fps as f32) as u16)
+					as usize
+			}
 		} else {
 			info!("Recording {} FPS...", self.clock.fps);
-			f64::MAX
+			usize::MAX
 		};
-		while recording.load(Ordering::SeqCst)
-			&& (start_time.elapsed().as_nanos() as f64 / 1e9) < duration
-		{
+		while recording.load(Ordering::SeqCst) && frames.len() < max_frames {
 			if let Some(state) = input_state {
 				if state.check_cancel_keys() {
 					frames.clear();
@@ -126,11 +127,6 @@ where
 			io::stdout().flush().expect("Failed to flush stdout");
 		}
 		debug!("\n");
-		trace!(
-			"{:.3} < {:?}",
-			start_time.elapsed().as_nanos() as f64 / 1e9,
-			self.settings.time.duration
-		);
 		frames
 	}
 
