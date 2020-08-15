@@ -93,7 +93,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 				&mut image.get_data(ColorType::Rgba8),
 				speed,
 			);
-			frame.delay = ((1. / self.fps as f32) * 1e2) as u16;
+			frame.delay = (1e2 / self.fps as f32) as u16;
 			self.encoder.write_frame(&frame)?;
 		}
 		info!("\n");
