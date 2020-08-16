@@ -74,19 +74,19 @@ impl Geometry {
 		self.x = self
 			.x
 			.checked_add(i32::try_from(padding.left).unwrap_or_default())
-			.unwrap_or(self.x);
+			.unwrap_or_default();
 		self.y = self
 			.y
 			.checked_add(i32::try_from(padding.top).unwrap_or_default())
-			.unwrap_or(self.y);
+			.unwrap_or_default();
 		self.width = self
 			.width
 			.checked_sub(padding.right + padding.left)
-			.unwrap_or(self.width);
+			.unwrap_or_default();
 		self.height = self
 			.height
 			.checked_sub(padding.top + padding.bottom)
-			.unwrap_or(self.height);
+			.unwrap_or_default();
 		*self
 	}
 }
