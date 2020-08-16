@@ -424,7 +424,10 @@ mod tests {
 		app.split_gif(File::open("test.gif")?)?;
 		fs::remove_file("test.gif")?;
 		for i in 0..images.len() {
-			fs::remove_file(format!("frame_{}.png", i))?;
+			let path = PathBuf::from(format!("frame_{}.png", i));
+			if path.exists() {
+				fs::remove_file(path)?;
+			}
 		}
 		Ok(())
 	}
