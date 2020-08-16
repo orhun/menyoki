@@ -225,7 +225,10 @@ impl Display {
 			match input_state.state.get_keys().as_slice() {
 				[Keycode::R, Keycode::LAlt] => reset_area = true,
 				[Keycode::LAlt, key] | [key, Keycode::LAlt] => {
-					if key == &increase[0] || key == &increase[1] {
+					if (key == &increase[0] || key == &increase[1])
+						&& (window.area.height > 10 && window.area.width > 10)
+					{
+						info!("{}", window.geometry.height);
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					} else {
@@ -247,11 +250,15 @@ impl Display {
 				}
 				[Keycode::LShift, Keycode::LAlt, key]
 				| [key, Keycode::LShift, Keycode::LAlt] => {
-					if key == &increase[0] || key == &increase[1] {
+					if (key == &increase[0] || key == &increase[1])
+						&& (window.area.height > 10 && window.area.width > 10)
+					{
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					}
-					if key == &decrease[0] || key == &decrease[1] {
+					if (key == &decrease[0] || key == &decrease[1])
+						&& (window.area.height > 10 && window.area.width > 10)
+					{
 						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
 					}
