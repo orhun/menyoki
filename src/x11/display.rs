@@ -228,7 +228,6 @@ impl Display {
 					if (key == &increase[0] || key == &increase[1])
 						&& (window.area.height > 10 && window.area.width > 10)
 					{
-						info!("{}", window.geometry.height);
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					} else {
