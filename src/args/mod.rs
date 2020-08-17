@@ -144,7 +144,7 @@ where
 					.short("p")
 					.long("padding")
 					.value_name("PADDING")
-					.default_value("0:0:0:0")
+					.default_value("T:R:B:L")
 					.help(if capture_mode {
 						"Sets the capture area padding value"
 					} else {
@@ -376,7 +376,7 @@ where
 				Arg::with_name("crop")
 					.long("crop")
 					.value_name("PADDING")
-					.default_value("0:0:0:0")
+					.default_value("T:R:B:L")
 					.help("Applies the given padding to crop the image")
 					.takes_value(true),
 			)
