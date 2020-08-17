@@ -13,8 +13,10 @@ jobs:
     name: Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout the repository
+        uses: actions/checkout@master
+      - name: Install the Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
@@ -68,8 +70,10 @@ jobs:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout the repository
+        uses: actions/checkout@master
+      - name: Install the Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
@@ -83,8 +87,10 @@ jobs:
     name: Clippy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout the repository
+        uses: actions/checkout@master
+      - name: Install the Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           override: true
