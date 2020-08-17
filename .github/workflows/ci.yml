@@ -66,8 +66,8 @@ jobs:
           name: code-coverage-report
           fail_ci_if_error: true
 
-  fmt:
-    name: Rustfmt
+  format:
+    name: Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -77,8 +77,9 @@ jobs:
         with:
           toolchain: stable
           override: true
-      - run: rustup component add rustfmt
-      - uses: actions-rs/cargo@v1
+          components: rustfmt
+      - name: Check the formatting
+        uses: actions-rs/cargo@v1
         with:
           command: fmt
           args: --all -- --check
