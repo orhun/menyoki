@@ -157,7 +157,7 @@ where
 					.short("s")
 					.long("select")
 					.value_name("SIZE")
-					.default_value("W:H")
+					.default_value("WxH")
 					.help(if capture_mode {
 						"Sets the capture area size and enables selection"
 					} else {
@@ -384,7 +384,7 @@ where
 				Arg::with_name("resize")
 					.long("resize")
 					.value_name("SIZE")
-					.default_value("W:H")
+					.default_value("WxH")
 					.help("Changes the image size and aspect ratio")
 					.takes_value(true),
 			)

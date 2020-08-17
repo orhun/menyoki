@@ -51,7 +51,7 @@ impl Geometry {
 	 */
 	pub fn parse(geometry: &str) -> Self {
 		geometry
-			.split(':')
+			.split('x')
 			.map(|v| v.parse::<u32>().unwrap_or_default())
 			.collect()
 	}
