@@ -84,8 +84,8 @@ jobs:
           command: fmt
           args: --all -- --check
 
-  clippy:
-    name: Clippy
+  lints:
+    name: Lints
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -95,8 +95,9 @@ jobs:
         with:
           toolchain: stable
           override: true
-      - run: rustup component add clippy
-      - uses: actions-rs/cargo@v1
+          components: clippy
+      - name: Check the lints
+        uses: actions-rs/cargo@v1
         with:
           command: clippy
           args: -- -D warnings
