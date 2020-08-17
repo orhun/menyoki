@@ -9,8 +9,8 @@ on:
       - master
 
 jobs:
-  check:
-    name: Check
+  analyze:
+    name: Analyze
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
@@ -20,7 +20,8 @@ jobs:
         with:
           toolchain: stable
           override: true
-      - uses: actions-rs/cargo@v1
+      - name: Analyze the project files
+        uses: actions-rs/cargo@v1
         with:
           command: check
 
