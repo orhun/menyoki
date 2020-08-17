@@ -86,7 +86,7 @@ jobs:
           args: --all -- --check --verbose
 
   lints:
-    name: Lints
+    name: Lint Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
