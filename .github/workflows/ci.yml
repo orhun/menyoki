@@ -23,7 +23,7 @@ jobs:
       - name: Analyze the project files
         uses: actions-rs/cargo@v1
         with:
-          command: check --verbose
+          command: check
 
   test:
     name: Test
