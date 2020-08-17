@@ -311,22 +311,14 @@ impl Record for Window {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::padding::Padding;
-	use crate::record::settings::{RecordFlag, RecordTime, RecordWindow};
+	use crate::record::settings::RecordTime;
 	use crate::x11::display::Display;
 	use image::ColorType;
 	#[test]
 	#[ignore]
 	fn test_window_mod() {
-		let settings = RecordSettings::new(
-			None,
-			0x00ff_00ff,
-			Some(0),
-			Padding::default(),
-			RecordTime::new(Some(0.0), 1, 0, 10),
-			RecordFlag::default(),
-			RecordWindow::Focus(Some(Geometry::default())),
-		);
+		let mut settings = RecordSettings::default();
+		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
 		let display = Display::open(Some(settings)).unwrap();
 		let window = display.get_root_window();
 		unsafe {

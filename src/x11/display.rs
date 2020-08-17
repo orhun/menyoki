@@ -283,21 +283,13 @@ impl Display {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::image::padding::Padding;
-	use crate::record::settings::{RecordFlag, RecordTime};
+	use crate::record::settings::RecordTime;
 	use crate::record::Record;
 	#[test]
 	#[ignore]
 	fn test_display_mod() {
-		let settings = RecordSettings::new(
-			None,
-			0x00ff_00ff,
-			Some(0),
-			Padding::default(),
-			RecordTime::new(Some(0.0), 0, 0, 10),
-			RecordFlag::default(),
-			RecordWindow::Focus(Some(Geometry::default())),
-		);
+		let mut settings = RecordSettings::default();
+		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
 		let mut display = Display::open(Some(settings)).unwrap();
 		display
 			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);
