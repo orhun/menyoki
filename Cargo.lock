@@ -467,9 +467,9 @@ dependencies = [
 
 [[package]]
 name = "imgref"
-version = "1.6.1"
+version = "1.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e82542789c712bcb3a1051b7db56998f75a44838aa7dbff842442473304d55b8"
+checksum = "d8767843be7909b5b3ffd9b52cdc042882b94e2cfe0c00abc4ce1c301cb1fcae"
 
 [[package]]
 name = "input-event-codes"
@@ -734,9 +734,9 @@ checksum = "04d90e9bbc087131e45af0987e701ba91910ccb5da78560dc1889e5105cf552d"
 
 [[package]]
 name = "rgb"
-version = "0.8.23"
+version = "0.8.24"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "552cbc6167bf0a06c79f8c2a92fdb91cfb5257966c02c2c8f462cb1433e92f15"
+checksum = "7466cad0eb3303798229ffab23bb8f598d185c71f3dfa17cd751d440e375782a"
 dependencies = [
  "bytemuck",
 ]
