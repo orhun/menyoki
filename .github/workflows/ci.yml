@@ -23,7 +23,7 @@ jobs:
       - name: Analyze the project files
         uses: actions-rs/cargo@v1
         with:
-          command: check
+          command: check --verbose
 
   test:
     name: Test
@@ -83,7 +83,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: fmt
-          args: --all -- --check
+          args: --all -- --check --verbose
 
   lints:
     name: Lints
@@ -101,4 +101,4 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: -- -D warnings
+          args: --verbose -- -D warnings
