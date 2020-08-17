@@ -168,10 +168,13 @@ impl File {
 	 * @param  PathBuf
 	 */
 	pub fn get_default_path(file_name: &str) -> PathBuf {
-		dirs::home_dir()
-			.expect("Failed to access the home directory")
-			.as_path()
-			.join(env!("CARGO_PKG_NAME"))
+		dirs::picture_dir()
+			.unwrap_or_else(|| {
+				dirs::home_dir()
+					.expect("Failed to access the home directory")
+					.as_path()
+					.join(env!("CARGO_PKG_NAME"))
+			})
 			.join(file_name)
 	}
 
