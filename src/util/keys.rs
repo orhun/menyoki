@@ -8,6 +8,13 @@ pub struct ActionKeys {
 	opt_keys: Vec<Keycode>,
 }
 
+/* Default initialization values for ActionKeys */
+impl Default for ActionKeys {
+	fn default() -> Self {
+		Self::parse("")
+	}
+}
+
 impl ActionKeys {
 	/**
 	 * Create a new ActionKeys object.
