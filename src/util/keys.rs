@@ -29,14 +29,13 @@ impl ActionKeys {
 	pub fn parse(keys: &str) -> Self {
 		let keys = keys.split('-').collect::<Vec<&str>>();
 		Self::new(
-			Keycode::from_str(keys.get(0).unwrap_or(&"LAlt"))
-				.unwrap_or(Keycode::LAlt),
+			Keycode::from_str(keys.get(0).unwrap_or(&"LAlt")).expect("Invalid key"),
 			keys.get(1)
 				.unwrap_or(&"S/Enter")
 				.split('/')
 				.map(|k| {
 					Keycode::from_str(k)
-						.expect(&format!("Failed to parse the keycode: {}", k))
+						.unwrap_or_else(|_| panic!(format!("Invalid key ({})", k)))
 				})
 				.collect(),
 		)
