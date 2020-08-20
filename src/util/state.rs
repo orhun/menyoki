@@ -1,9 +1,11 @@
+use crate::util::keys::ActionKeys;
 use device_query::{DeviceQuery, DeviceState, Keycode};
 use std::fmt;
 
 /* State of the mouse and keyboard inputs */
 pub struct InputState {
 	pub state: DeviceState,
+	action_keys: ActionKeys,
 }
 
 /* Debug implementation for programmer-facing output */
@@ -23,11 +25,13 @@ impl InputState {
 	/**
 	 * Create a new InputState object.
 	 *
+	 * @param  action_keys
 	 * @return InputState
 	 */
-	pub fn new() -> Self {
+	pub fn new(action_keys: ActionKeys) -> Self {
 		Self {
 			state: DeviceState::new(),
+			action_keys,
 		}
 	}
 
@@ -46,11 +50,7 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_action_keys(&self) -> bool {
-		match self.state.get_keys().as_slice() {
-			[Keycode::S, Keycode::LAlt] => true,
-			[Keycode::Enter, Keycode::LAlt] => true,
-			_ => false,
-		}
+		self.action_keys.check(self.state.get_keys())
 	}
 
 	/**
