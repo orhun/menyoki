@@ -126,7 +126,7 @@ where
 					.short("k")
 					.long("keys")
 					.value_name("KEYS")
-					.default_value("ALT-S/ENTER")
+					.default_value("LAlt-S/Enter")
 					.help("Sets the action keys")
 					.takes_value(true),
 			)
