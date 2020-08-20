@@ -122,6 +122,15 @@ where
 					.help("Sets the command to run"),
 			)
 			.arg(
+				Arg::with_name("keys")
+					.short("k")
+					.long("keys")
+					.value_name("KEYS")
+					.default_value("ALT-S/ENTER")
+					.help("Sets the action keys")
+					.takes_value(true),
+			)
+			.arg(
 				Arg::with_name("color")
 					.short("x")
 					.long("color")
