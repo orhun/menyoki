@@ -102,7 +102,7 @@ impl RecordTime {
 #[derive(Clone, Copy, Debug)]
 pub struct RecordFlag {
 	pub alpha: bool,
-	pub keys: bool,
+	pub keys: Option<&'static str>,
 }
 
 /* Default initialization values for RecordFlag */
@@ -110,7 +110,7 @@ impl Default for RecordFlag {
 	fn default() -> Self {
 		Self {
 			alpha: false,
-			keys: true,
+			keys: Some(""),
 		}
 	}
 }
@@ -120,10 +120,10 @@ impl RecordFlag {
 	 * Create a new RecordFlag object.
 	 *
 	 * @param  alpha
-	 * @param  keys
+	 * @param  keys (Option)
 	 * @return RecordFlag
 	 */
-	pub fn new(alpha: bool, keys: bool) -> Self {
+	pub fn new(alpha: bool, keys: Option<&'static str>) -> Self {
 		Self { alpha, keys }
 	}
 }
@@ -225,7 +225,17 @@ impl RecordSettings {
 					RecordTime::from_args(parser),
 					RecordFlag::new(
 						matches.is_present("with-alpha"),
-						!matches.is_present("no-keys"),
+						if matches.is_present("no-keys") {
+							None
+						} else {
+							Some(Box::leak(
+								matches
+									.value_of("keys")
+									.unwrap_or_default()
+									.to_string()
+									.into_boxed_str(),
+							))
+						},
 					),
 					RecordWindow::from_args(matches),
 				)
