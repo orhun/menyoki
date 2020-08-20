@@ -1,5 +1,6 @@
 pub mod cmd;
 pub mod file;
+pub mod keys;
 pub mod settings;
 pub mod state;
 use crate::util::file::FileFormat;
