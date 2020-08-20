@@ -4,6 +4,7 @@ use crate::gif::settings::{GifSettings, SplitSettings};
 use crate::image::settings::{JpgSettings, PngSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::file::FileFormat;
+use crate::util::keys::ActionKeys;
 use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
 use clap::ArgMatches;
@@ -34,17 +35,18 @@ impl<'a> AppSettings<'a> {
 	pub fn new(args: &'a ArgMatches<'a>) -> Self {
 		let window_required =
 			args.is_present("record") || args.is_present("capture");
+		let record = RecordSettings::from_args(ArgParser::from_subcommand(
+			args,
+			if args.is_present("capture") {
+				"capture"
+			} else {
+				"record"
+			},
+		));
 		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
 		Self {
 			args,
-			record: RecordSettings::from_args(ArgParser::from_subcommand(
-				args,
-				if args.is_present("capture") {
-					"capture"
-				} else {
-					"record"
-				},
-			)),
+			record,
 			gif: GifSettings::from_args(ArgParser::from_subcommand(
 				args,
 				if args.is_present("make") {
@@ -75,7 +77,12 @@ impl<'a> AppSettings<'a> {
 				args, "split",
 			)),
 			input_state: if window_required {
-				Some(Box::leak(InputState::new().into_boxed_state()))
+				Some(Box::leak(
+					InputState::new(ActionKeys::parse(
+						record.flag.keys.unwrap_or_default(),
+					))
+					.into_boxed_state(),
+				))
 			} else {
 				None
 			},
