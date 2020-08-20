@@ -264,9 +264,9 @@ dependencies = [
 
 [[package]]
 name = "device_query"
-version = "0.2.4"
+version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "65173f8f999a7cbe8e28f3847dcb7fec292fccd660bb41010e80a1105e22f2ec"
+checksum = "fcad51c11501653fea06630f87f85e1a8d2fca41f14778c46e4548b613e83e71"
 dependencies = [
  "input-event-codes",
  "pkg-config",
