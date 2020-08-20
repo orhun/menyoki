@@ -203,7 +203,7 @@ where
 				None => Vec::new(),
 			}
 		} else {
-			recorder.record_sync(if self.settings.record.flag.keys {
+			recorder.record_sync(if self.settings.record.flag.keys.is_some() {
 				self.settings.input_state
 			} else {
 				None
