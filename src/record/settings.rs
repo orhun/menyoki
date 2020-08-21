@@ -310,6 +310,6 @@ mod tests {
 		assert_eq!(12, record_settings.time.interval);
 		assert_eq!(RecordWindow::Root(None), record_settings.window);
 		assert!(record_settings.flag.alpha);
-		assert!(!record_settings.flag.keys);
+		assert!(!record_settings.flag.keys.is_some());
 	}
 }
