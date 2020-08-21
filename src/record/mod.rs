@@ -187,7 +187,7 @@ mod tests {
 			thread::sleep(Duration::from_millis(200));
 			Enigo::new().key_down(Key::Escape);
 		});
-		assert_eq!(0, recorder.record_sync(Some(&InputState::new())).len());
+		assert_eq!(0, recorder.record_sync(Some(&InputState::default())).len());
 		Enigo::new().key_up(Key::Escape);
 	}
 }
