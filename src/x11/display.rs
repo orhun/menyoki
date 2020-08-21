@@ -285,7 +285,6 @@ mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
 	use crate::record::Record;
-	use crate::util::keys::ActionKeys;
 	#[test]
 	#[ignore]
 	fn test_display_mod() {
