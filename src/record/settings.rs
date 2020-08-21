@@ -264,6 +264,7 @@ mod tests {
 	#[test]
 	fn test_record_settings() {
 		let args = App::new("test")
+			.arg(Arg::with_name("keys").long("keys").takes_value(true))
 			.arg(Arg::with_name("color").long("color").takes_value(true))
 			.arg(Arg::with_name("border").long("border").takes_value(true))
 			.arg(Arg::with_name("padding").long("padding").takes_value(true))
@@ -285,6 +286,8 @@ mod tests {
 			.arg(Arg::with_name("no-keys").long("no-keys"))
 			.get_matches_from(vec![
 				"test",
+				"--keys",
+				"LControl-Q/S",
 				"--color",
 				"000000",
 				"--border",
@@ -299,7 +302,6 @@ mod tests {
 				"12",
 				"--root",
 				"--with-alpha",
-				"--no-keys",
 			]);
 		let record_settings = RecordSettings::from_args(ArgParser::new(Some(&args)));
 		assert_eq!(0x0000_0000, record_settings.color);
@@ -310,6 +312,6 @@ mod tests {
 		assert_eq!(12, record_settings.time.interval);
 		assert_eq!(RecordWindow::Root(None), record_settings.window);
 		assert!(record_settings.flag.alpha);
-		assert!(!record_settings.flag.keys.is_some());
+		assert_eq!("LControl-Q/S", record_settings.flag.keys.unwrap());
 	}
 }
