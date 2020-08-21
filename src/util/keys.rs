@@ -11,7 +11,10 @@ pub struct ActionKeys {
 /* Default initialization values for ActionKeys */
 impl Default for ActionKeys {
 	fn default() -> Self {
-		Self::parse("")
+		Self {
+			main_key: Keycode::LAlt,
+			opt_keys: vec![Keycode::S, Keycode::Enter],
+		}
 	}
 }
 
