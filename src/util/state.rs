@@ -8,6 +8,13 @@ pub struct InputState {
 	action_keys: ActionKeys,
 }
 
+/* Default initialization values for InputState */
+impl Default for InputState {
+	fn default() -> Self {
+		Self::new(ActionKeys::default())
+	}
+}
+
 /* Debug implementation for programmer-facing output */
 impl fmt::Debug for InputState {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -73,7 +80,7 @@ mod tests {
 	#[test]
 	#[ignore]
 	fn test_input_state() {
-		let input_state = InputState::new().into_boxed_state();
+		let input_state = InputState::default().into_boxed_state();
 		assert!(!input_state.check_action_keys());
 		assert!(!input_state.check_cancel_keys());
 		assert!(format!("{:?}", input_state).len() > 0);
