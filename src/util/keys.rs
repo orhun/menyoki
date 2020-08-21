@@ -72,3 +72,20 @@ impl ActionKeys {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_action_keys() {
+		let action_keys = ActionKeys::parse("LControl-Q/W");
+		assert_eq!(Keycode::LControl, action_keys.main_key);
+		assert_eq!(vec![Keycode::Q, Keycode::W], action_keys.opt_keys);
+		assert!(!action_keys.check(vec![Keycode::RAlt, Keycode::X]));
+		assert!(!action_keys.check(vec![Keycode::LControl, Keycode::X]));
+		assert!(!action_keys.check(vec![Keycode::LControl]));
+		assert!(!action_keys.check(vec![Keycode::W]));
+		assert!(action_keys.check(vec![Keycode::LControl, Keycode::Q]));
+		assert!(action_keys.check(vec![Keycode::LControl, Keycode::W]));
+	}
+}
