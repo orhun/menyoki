@@ -285,6 +285,7 @@ mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
 	use crate::record::Record;
+	use crate::util::keys::ActionKeys;
 	#[test]
 	#[ignore]
 	fn test_display_mod() {
@@ -298,7 +299,7 @@ mod tests {
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
 		);
-		assert!(display.select_window(&InputState::new()).is_none());
+		assert!(display.select_window(&InputState::default()).is_none());
 		display.get_root_window().release();
 	}
 }

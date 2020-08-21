@@ -110,7 +110,8 @@ mod tests {
 			.get_window()
 			.is_some());
 		settings.record.window = RecordWindow::Root(Some(Geometry::default()));
-		settings.input_state = Some(Box::leak(InputState::new().into_boxed_state()));
+		settings.input_state =
+			Some(Box::leak(InputState::default().into_boxed_state()));
 		assert!(WindowSystem::init(&settings)
 			.unwrap()
 			.get_window()
