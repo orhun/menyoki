@@ -4,7 +4,7 @@ use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::{DeviceQuery, Keycode};
-use std::convert::TryInto;
+use std::ffi::CString;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
@@ -117,9 +117,9 @@ impl Display {
 	 * Get the corresponding key symbol from keycode.
 	 *
 	 * @param  keycode
-	 * @return u32
+	 * @return u64
 	 */
-	fn get_keysym_from_keycode(&self, keycode: &Keycode) -> u32 {
+	fn get_keysym_from_keycode(&self, keycode: &Keycode) -> u64 {
 		let mut key = format!("{:?}", keycode)
 			.trim_start_matches("Key")
 			.to_string();
@@ -133,11 +133,8 @@ impl Display {
 				key.chars().next().unwrap_or_default()
 			);
 		}
-		unsafe {
-			xlib::XStringToKeysym(key.as_ptr() as *const i8)
-				.try_into()
-				.unwrap_or_default()
-		}
+		let key = CString::new(key).expect("Failed to create CString");
+		unsafe { xlib::XStringToKeysym(key.as_ptr()) }
 	}
 
 	/**

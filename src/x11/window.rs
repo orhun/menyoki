@@ -225,13 +225,11 @@ impl Window {
 	 *
 	 * @param key
 	 */
-	pub fn grab_key(&self, key: u32) {
+	pub fn grab_key(&self, key: u64) {
 		unsafe {
 			xlib::XGrabKey(
 				self.display,
-				xlib::XKeysymToKeycode(self.display, key.into())
-					.try_into()
-					.expect("Failed to get the keycode"),
+				xlib::XKeysymToKeycode(self.display, key).into(),
 				xlib::AnyModifier,
 				self.xid,
 				xlib::False,
