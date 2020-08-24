@@ -5,7 +5,7 @@ use std::fmt;
 /* State of the mouse and keyboard inputs */
 pub struct InputState {
 	pub state: DeviceState,
-	action_keys: ActionKeys,
+	pub action_keys: ActionKeys,
 }
 
 /* Default initialization values for InputState */

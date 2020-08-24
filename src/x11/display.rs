@@ -4,12 +4,13 @@ use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::{DeviceQuery, Keycode};
+use std::convert::TryInto;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::thread;
 use std::time::{Duration, Instant};
-use x11::{keysym, xlib};
+use x11::xlib;
 
 /* X11 display */
 pub struct Display {
@@ -113,6 +114,33 @@ impl Display {
 	}
 
 	/**
+	 * Get the corresponding key symbol from keycode.
+	 *
+	 * @param  keycode
+	 * @return u32
+	 */
+	fn get_keysym_from_keycode(&self, keycode: &Keycode) -> u32 {
+		let mut key = format!("{:?}", keycode)
+			.trim_start_matches("Key")
+			.to_string();
+		if (key.starts_with('L') | key.starts_with('R')) && key.len() > 3 {
+			key = format!(
+				"{}_{}",
+				key.chars()
+					.next()
+					.map(|c| &key[c.len_utf8()..])
+					.unwrap_or_default(),
+				key.chars().next().unwrap_or_default()
+			);
+		}
+		unsafe {
+			xlib::XStringToKeysym(key.as_ptr() as *const i8)
+				.try_into()
+				.unwrap_or_default()
+		}
+	}
+
+	/**
 	 * Ungrab the keys in the given window.
 	 *
 	 * @param xid (Option)
@@ -165,7 +193,9 @@ impl Display {
 				self.settings.padding = window_padding;
 				self.update_padding(size, window.geometry);
 				window.clear_area();
-				window.grab_key(keysym::XK_Alt_L);
+				window.grab_key(
+					self.get_keysym_from_keycode(&input_state.action_keys.main_key),
+				);
 				xid = Some(window.xid);
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));

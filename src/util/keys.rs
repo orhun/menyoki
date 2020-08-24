@@ -4,8 +4,8 @@ use std::str::FromStr;
 /* Operational keys and combinations */
 #[derive(Debug)]
 pub struct ActionKeys {
-	main_key: Keycode,
-	opt_keys: Vec<Keycode>,
+	pub main_key: Keycode,
+	pub opt_keys: Vec<Keycode>,
 }
 
 /* Default initialization values for ActionKeys */
