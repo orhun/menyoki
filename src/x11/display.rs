@@ -312,6 +312,8 @@ mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
 	use crate::record::Record;
+	use std::convert::TryFrom;
+	use x11::keysym;
 	#[test]
 	#[ignore]
 	fn test_display_mod() {
@@ -325,7 +327,20 @@ mod tests {
 			display.get_root_window().xid,
 			display.get_focused_window().unwrap().xid
 		);
-		assert!(display.select_window(&InputState::default()).is_none());
+		let input_state = InputState::default();
+		assert!(display.select_window(&input_state).is_none());
+		assert_eq!(
+			u64::try_from(keysym::XK_Alt_L).unwrap(),
+			display.get_keysym_from_keycode(&input_state.action_keys.main_key)
+		);
+		assert_eq!(
+			u64::try_from(keysym::XK_Control_R).unwrap(),
+			display.get_keysym_from_keycode(&Keycode::RControl)
+		);
+		assert_eq!(
+			u64::try_from(keysym::XK_X).unwrap(),
+			display.get_keysym_from_keycode(&Keycode::X)
+		);
 		display.get_root_window().release();
 	}
 }
