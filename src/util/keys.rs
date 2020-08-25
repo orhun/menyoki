@@ -1,4 +1,5 @@
 use device_query::Keycode;
+use std::fmt;
 use std::str::FromStr;
 
 /* Operational keys and combinations */
@@ -6,6 +7,20 @@ use std::str::FromStr;
 pub struct ActionKeys {
 	pub main_key: Keycode,
 	pub opt_keys: Vec<Keycode>,
+}
+
+/* Display implementation for user-facing output */
+impl fmt::Display for ActionKeys {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		let mut keys = format!("{:?}-", self.main_key);
+		for (i, opt_key) in self.opt_keys.iter().enumerate() {
+			keys += &format!("{:?}", opt_key);
+			if i != self.opt_keys.len() - 1 {
+				keys += "/"
+			}
+		}
+		write!(f, "{}", keys)
+	}
 }
 
 /* Default initialization values for ActionKeys */
@@ -78,7 +93,9 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_action_keys() {
-		let action_keys = ActionKeys::parse("LControl-Q/W");
+		let keys = "LControl-Q/W";
+		let action_keys = ActionKeys::parse(keys);
+		assert_eq!(keys, action_keys.to_string());
 		assert_eq!(Keycode::LControl, action_keys.main_key);
 		assert_eq!(vec![Keycode::Q, Keycode::W], action_keys.opt_keys);
 		assert!(!action_keys.check(vec![Keycode::RAlt, Keycode::X]));
