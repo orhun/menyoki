@@ -99,5 +99,13 @@ impl<'a> AppSettings<'a> {
 		if self.gif.quality <= 20 {
 			warn!("GIF will be encoded in low quality.")
 		}
+		if let Some(input_state) = self.input_state {
+			if self.record.flag.keys != Some(&ActionKeys::default().to_string()) {
+				info!(
+					"Using custom action keys: {}",
+					input_state.action_keys.to_string()
+				);
+			}
+		}
 	}
 }
