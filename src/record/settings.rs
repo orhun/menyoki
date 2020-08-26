@@ -4,36 +4,6 @@ use crate::image::padding::Padding;
 use crate::util::cmd::Command;
 use clap::ArgMatches;
 
-/* Window to record, with geometric properties  */
-#[derive(Clone, Copy, Debug, PartialEq)]
-pub enum RecordWindow {
-	Focus(Option<Geometry>),
-	Root(Option<Geometry>),
-}
-
-impl RecordWindow {
-	/**
-	 * Create a RecordWindow enum from parsed arguments.
-	 *
-	 * @param  args
-	 * @return RecordWindow
-	 */
-	fn from_args(args: &ArgMatches<'_>) -> Self {
-		let select = if args.occurrences_of("select") != 0 {
-			Some(Geometry::parse(args.value_of("select").unwrap_or_default()))
-		} else {
-			None
-		};
-		if args.is_present("focus") {
-			Self::Focus(select)
-		} else if args.is_present("root") {
-			Self::Root(select)
-		} else {
-			Self::Focus(Some(select.unwrap_or_default()))
-		}
-	}
-}
-
 /* Time related recording settings */
 #[derive(Clone, Copy, Debug)]
 pub struct RecordTime {
@@ -125,6 +95,36 @@ impl RecordFlag {
 	 */
 	pub fn new(alpha: bool, keys: Option<&'static str>) -> Self {
 		Self { alpha, keys }
+	}
+}
+
+/* Window to record, with geometric properties  */
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum RecordWindow {
+	Focus(Option<Geometry>),
+	Root(Option<Geometry>),
+}
+
+impl RecordWindow {
+	/**
+	 * Create a RecordWindow enum from parsed arguments.
+	 *
+	 * @param  args
+	 * @return RecordWindow
+	 */
+	fn from_args(args: &ArgMatches<'_>) -> Self {
+		let select = if args.occurrences_of("select") != 0 {
+			Some(Geometry::parse(args.value_of("select").unwrap_or_default()))
+		} else {
+			None
+		};
+		if args.is_present("focus") {
+			Self::Focus(select)
+		} else if args.is_present("root") {
+			Self::Root(select)
+		} else {
+			Self::Focus(Some(select.unwrap_or_default()))
+		}
 	}
 }
 
