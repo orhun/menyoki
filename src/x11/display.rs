@@ -99,7 +99,7 @@ impl Display {
 	/**
 	 * Get the type of Window given with RecordWindow enum.
 	 *
-	 * @return Window, Geometry
+	 * @return Tuple (Window, Geometry)
 	 */
 	fn get_window(&self) -> (Window, Geometry) {
 		match self.settings.window {
