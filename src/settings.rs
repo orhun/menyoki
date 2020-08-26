@@ -16,11 +16,11 @@ pub struct AppSettings<'a> {
 	pub args: &'a ArgMatches<'a>,
 	pub record: RecordSettings,
 	pub gif: GifSettings,
+	pub split: SplitSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
-	pub save: SaveSettings,
 	pub edit: EditSettings,
-	pub split: SplitSettings,
+	pub save: SaveSettings,
 	pub input_state: Option<&'static InputState>,
 	pub window_required: bool,
 }
@@ -35,58 +35,111 @@ impl<'a> AppSettings<'a> {
 	pub fn new(args: &'a ArgMatches<'a>) -> Self {
 		let window_required =
 			args.is_present("record") || args.is_present("capture");
-		let record = RecordSettings::from_args(ArgParser::from_subcommand(
+		let record = Self::get_record_settings(args);
+		let gif = Self::get_gif_settings(args);
+		let split =
+			SplitSettings::from_args(ArgParser::from_subcommand(args, "split"));
+		let png = PngSettings::from_args(ArgParser::from_subcommand(args, "png"));
+		let jpg = JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg"));
+		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
+		let save = Self::get_save_settings(args, &edit);
+		let input_state = Self::get_input_state(window_required, &record);
+		Self {
+			args,
+			record,
+			gif,
+			split,
+			png,
+			jpg,
+			edit,
+			save,
+			input_state,
+			window_required,
+		}
+	}
+
+	/**
+	 * Get RecordSettings from parsed arguments.
+	 *
+	 * @param  args
+	 * @return RecordSettings
+	 */
+	fn get_record_settings(args: &'a ArgMatches<'a>) -> RecordSettings {
+		RecordSettings::from_args(ArgParser::from_subcommand(
 			args,
 			if args.is_present("capture") {
 				"capture"
 			} else {
 				"record"
 			},
-		));
-		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
-		Self {
+		))
+	}
+
+	/**
+	 * Get GifSettings from parsed arguments.
+	 *
+	 * @param  args
+	 * @return GifSettings
+	 */
+	fn get_gif_settings(args: &'a ArgMatches<'a>) -> GifSettings {
+		GifSettings::from_args(ArgParser::from_subcommand(
 			args,
-			record,
-			gif: GifSettings::from_args(ArgParser::from_subcommand(
-				args,
-				if args.is_present("make") {
-					"make"
-				} else {
-					"gif"
-				},
-			)),
-			png: PngSettings::from_args(ArgParser::from_subcommand(args, "png")),
-			jpg: JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg")),
-			save: SaveSettings::from_args(
-				ArgParser::from_subcommand(args, "save"),
-				if edit.convert {
-					FileFormat::from_args(args)
-				} else {
-					FileFormat::from_str(
-						edit.path
-							.extension()
-							.unwrap_or_default()
-							.to_str()
-							.unwrap_or_default(),
-					)
-					.unwrap_or_else(|_| FileFormat::from_args(args))
-				},
-			),
-			edit,
-			split: SplitSettings::from_args(ArgParser::from_subcommand(
-				args, "split",
-			)),
-			input_state: if window_required {
-				Some(Box::leak(
-					InputState::new(ActionKeys::parse(
-						record.flag.keys.unwrap_or_default(),
-					))
-					.into_boxed_state(),
-				))
+			if args.is_present("make") {
+				"make"
 			} else {
-				None
+				"gif"
 			},
-			window_required,
+		))
+	}
+
+	/**
+	 * Get SaveSettings from parsed arguments.
+	 *
+	 * @param  args
+	 * @param  edit
+	 * @return SaveSettings
+	 */
+	fn get_save_settings(
+		args: &'a ArgMatches<'a>,
+		edit: &EditSettings,
+	) -> SaveSettings {
+		SaveSettings::from_args(
+			ArgParser::from_subcommand(args, "save"),
+			if edit.convert {
+				FileFormat::from_args(args)
+			} else {
+				FileFormat::from_str(
+					edit.path
+						.extension()
+						.unwrap_or_default()
+						.to_str()
+						.unwrap_or_default(),
+				)
+				.unwrap_or_else(|_| FileFormat::from_args(args))
+			},
+		)
+	}
+
+	/**
+	 * Get InputState if a window is required.
+	 *
+	 * @param  window_required
+	 * @param  record
+	 * @return InputState (Option)
+	 */
+	fn get_input_state(
+		window_required: bool,
+		record: &RecordSettings,
+	) -> Option<&'static InputState> {
+		if window_required {
+			Some(Box::leak(
+				InputState::new(ActionKeys::parse(
+					record.flag.keys.unwrap_or_default(),
+				))
+				.into_boxed_state(),
+			))
+		} else {
+			None
 		}
 	}
 
