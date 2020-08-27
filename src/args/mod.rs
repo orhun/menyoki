@@ -73,7 +73,7 @@ where
 				Arg::with_name("quiet")
 					.short("q")
 					.long("quiet")
-					.help("Show no output")
+					.help("Do not show output")
 					.display_order(1001),
 			)
 			.arg(
@@ -115,9 +115,9 @@ where
 	fn get_record_args(capture_mode: bool) -> App<'a, 'b> {
 		SubCommand::with_name(if capture_mode { "capture" } else { "record" })
 			.about(if capture_mode {
-				"Take the screenshot of a window"
+				"Take a screenshot"
 			} else {
-				"Record a window"
+				"Record a GIF"
 			})
 			.help_message("Print help information")
 			.arg(
@@ -375,7 +375,7 @@ where
 	fn get_edit_args() -> App<'a, 'b> {
 		SubCommand::with_name("edit")
 			.help_message("Print help information")
-			.about("Edit an image/GIF")
+			.about("Edit an image")
 			.help_message("Print help information")
 			.arg(
 				Arg::with_name("input")
