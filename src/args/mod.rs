@@ -47,6 +47,8 @@ where
 			.version(env!("CARGO_PKG_VERSION"))
 			.author(env!("CARGO_PKG_AUTHORS"))
 			.about(env!("CARGO_PKG_DESCRIPTION"))
+			.help_message("Print help information")
+			.version_message("Print version information")
 			.global_settings(&[
 				AppSettings::ColorAuto,
 				AppSettings::ColoredHelp,
@@ -63,7 +65,7 @@ where
 				Arg::with_name("verbose")
 					.short("v")
 					.long("verbose")
-					.help("Increases the logging verbosity")
+					.help("Increase the logging verbosity")
 					.multiple(true)
 					.display_order(1000),
 			)
@@ -71,7 +73,7 @@ where
 				Arg::with_name("quiet")
 					.short("q")
 					.long("quiet")
-					.help("Shows no output")
+					.help("Show no output")
 					.display_order(1001),
 			)
 			.arg(
@@ -113,14 +115,15 @@ where
 	fn get_record_args(capture_mode: bool) -> App<'a, 'b> {
 		SubCommand::with_name(if capture_mode { "capture" } else { "record" })
 			.about(if capture_mode {
-				"Takes the screenshot of a window"
+				"Take the screenshot of a window"
 			} else {
-				"Records a window"
+				"Record a window"
 			})
+			.help_message("Print help information")
 			.arg(
 				Arg::with_name("command")
 					.value_name("COMMAND")
-					.help("Sets the command to run"),
+					.help("Set the command to run"),
 			)
 			.arg(
 				Arg::with_name("keys")
@@ -128,7 +131,7 @@ where
 					.long("keys")
 					.value_name("KEYS")
 					.default_value("LAlt-S/Enter")
-					.help("Sets the action keys")
+					.help("Set the action keys")
 					.takes_value(true),
 			)
 			.arg(
@@ -137,7 +140,7 @@ where
 					.long("color")
 					.value_name("HEX")
 					.default_value("FF00FF")
-					.help("Sets the main color to use")
+					.help("Set the main color to use")
 					.takes_value(true),
 			)
 			.arg(
@@ -146,7 +149,7 @@ where
 					.long("border")
 					.value_name("BORDER")
 					.default_value("1")
-					.help("Sets the border padding value")
+					.help("Set the border padding value")
 					.takes_value(true),
 			)
 			.arg(
@@ -156,9 +159,9 @@ where
 					.value_name("PADDING")
 					.default_value("T:R:B:L")
 					.help(if capture_mode {
-						"Sets the capture area padding value"
+						"Set the capture area padding value"
 					} else {
-						"Sets the record area padding value"
+						"Set the record area padding value"
 					})
 					.takes_value(true),
 			)
@@ -169,9 +172,9 @@ where
 					.value_name("SIZE")
 					.default_value("WxH")
 					.help(if capture_mode {
-						"Sets the capture area size and enables selection"
+						"Set the capture area size and enable selection"
 					} else {
-						"Sets the record area size and enables selection"
+						"Set the record area size and enable selection"
 					})
 					.takes_value(true),
 			)
@@ -181,7 +184,7 @@ where
 					.long("duration")
 					.value_name("S")
 					.default_value("\u{221E}")
-					.help("Sets the recording duration")
+					.help("Set the recording duration")
 					.takes_value(true)
 					.hidden(capture_mode),
 			)
@@ -193,9 +196,9 @@ where
 					.default_value_if("command", None, "3")
 					.default_value(if capture_mode { "0" } else { "3" })
 					.help(if capture_mode {
-						"Sets the countdown value for capturing"
+						"Set the countdown value for capturing"
 					} else {
-						"Sets the countdown value for recording"
+						"Set the countdown value for recording"
 					})
 					.takes_value(true),
 			)
@@ -205,7 +208,7 @@ where
 					.long("timeout")
 					.value_name("S")
 					.default_value("60")
-					.help("Sets the timeout for window selection")
+					.help("Set the timeout for window selection")
 					.takes_value(true),
 			)
 			.arg(
@@ -214,14 +217,14 @@ where
 					.long("interval")
 					.value_name("MS")
 					.default_value("10")
-					.help("Sets the interval time for window selection")
+					.help("Set the interval time for window selection")
 					.takes_value(true),
 			)
 			.arg(Arg::with_name("root").short("r").long("root").help(
 				if capture_mode {
-					"Captures the root window"
+					"Capture the root window"
 				} else {
-					"Records the root window"
+					"Record the root window"
 				},
 			))
 			.arg(
@@ -230,9 +233,9 @@ where
 					.long("focus")
 					.conflicts_with("root")
 					.help(if capture_mode {
-						"Captures the focus window"
+						"Capture the focus window"
 					} else {
-						"Records the focus window"
+						"Record the focus window"
 					}),
 			)
 			.arg(
@@ -240,20 +243,20 @@ where
 					.short("a")
 					.long("with-alpha")
 					.help(if capture_mode {
-						"Captures with the alpha channel for transparency"
+						"Capture with the alpha channel for transparency"
 					} else {
-						"Records with the alpha channel for transparency"
+						"Record with the alpha channel for transparency"
 					}),
 			)
 			.arg(
 				Arg::with_name("no-border")
 					.long("no-border")
-					.help("Shows no border for window selection"),
+					.help("Show no border for window selection"),
 			)
 			.arg(
 				Arg::with_name("no-keys")
 					.long("no-keys")
-					.help("Disables the action keys while recording")
+					.help("Disable the action keys while recording")
 					.hidden(capture_mode),
 			)
 	}
@@ -267,17 +270,18 @@ where
 	fn get_gif_args(mode: GifMode) -> App<'a, 'b> {
 		SubCommand::with_name(if mode == GifMode::Make { "make" } else { "gif" })
 			.about(if mode == GifMode::Make {
-				"Makes a GIF from frames"
+				"Make a GIF from frames"
 			} else {
-				"Changes the GIF encoder settings"
+				"Change the GIF encoder settings"
 			})
+			.help_message("Print help information")
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
 					.long("fps")
 					.value_name("FPS")
 					.default_value("20")
-					.help("Sets the FPS value")
+					.help("Set the FPS value")
 					.hidden(mode == GifMode::Edit)
 					.takes_value(true),
 			)
@@ -287,7 +291,7 @@ where
 					.long("quality")
 					.value_name("QUALITY")
 					.default_value("75")
-					.help("Sets the frame quality (1-100)")
+					.help("Set the frame quality (1-100)")
 					.takes_value(true),
 			)
 			.arg(
@@ -296,13 +300,13 @@ where
 					.long("repeat")
 					.value_name("REPEAT")
 					.default_value("\u{221E}")
-					.help("Sets the number of repetitions")
+					.help("Set the number of repetitions")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("fast")
 					.long("fast")
-					.help("Encodes 3 times faster (lower quality and bigger file)")
+					.help("Encode 3 times faster (lower quality and bigger file)")
 					.hidden(!cfg!(feature = "ski")),
 			)
 			.arg(
@@ -311,7 +315,7 @@ where
 					.long("speed")
 					.value_name("SPEED")
 					.default_value("1.0")
-					.help("Sets the GIF speed")
+					.help("Set the GIF speed")
 					.hidden(mode != GifMode::Edit)
 					.takes_value(true),
 			)
@@ -320,7 +324,7 @@ where
 					.long("cut-begin")
 					.value_name("S")
 					.default_value("0.0")
-					.help("Cuts the beginning of the GIF")
+					.help("Cut the beginning of the GIF")
 					.hidden(mode != GifMode::Edit)
 					.takes_value(true),
 			)
@@ -329,14 +333,14 @@ where
 					.long("cut-end")
 					.value_name("S")
 					.default_value("0.0")
-					.help("Cuts the end of the GIF")
+					.help("Cut the end of the GIF")
 					.hidden(mode != GifMode::Edit)
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("frames")
 					.value_name("FRAMES")
-					.help("Sets the frames of the GIF")
+					.help("Set the frames of the GIF")
 					.min_values(1)
 					.hidden(mode != GifMode::Make)
 					.default_value_if("dir", None, "-")
@@ -348,7 +352,7 @@ where
 				Arg::with_name("no-sort")
 					.short("n")
 					.long("no-sort")
-					.help("Uses frames in the order given")
+					.help("Use frames in the order given")
 					.hidden(mode != GifMode::Make),
 			)
 			.arg(
@@ -357,7 +361,7 @@ where
 					.long("dir")
 					.conflicts_with("frames")
 					.value_name("DIRECTORY")
-					.help("Sets the directory to read frames")
+					.help("Set the directory to read frames")
 					.hidden(mode != GifMode::Make)
 					.takes_value(true),
 			)
@@ -370,24 +374,26 @@ where
 	 */
 	fn get_edit_args() -> App<'a, 'b> {
 		SubCommand::with_name("edit")
-			.about("Edits an image/GIF")
+			.help_message("Print help information")
+			.about("Edit an image/GIF")
+			.help_message("Print help information")
 			.arg(
 				Arg::with_name("input")
 					.value_name("FILE")
-					.help("Sets the input file path")
+					.help("Set the input file path")
 					.required(true),
 			)
 			.arg(
 				Arg::with_name("convert")
 					.long("convert")
-					.help("Converts image to the given format"),
+					.help("Convert image to the given format"),
 			)
 			.arg(
 				Arg::with_name("crop")
 					.long("crop")
 					.value_name("PADDING")
 					.default_value("T:R:B:L")
-					.help("Applies the given padding to crop the image")
+					.help("Apply the given padding to crop the image")
 					.takes_value(true),
 			)
 			.arg(
@@ -395,7 +401,7 @@ where
 					.long("resize")
 					.value_name("SIZE")
 					.default_value("WxH")
-					.help("Changes the image size and aspect ratio")
+					.help("Change the image size and aspect ratio")
 					.takes_value(true),
 			)
 			.arg(
@@ -403,14 +409,14 @@ where
 					.long("ratio")
 					.value_name("RATIO")
 					.default_value("1.0")
-					.help("Resizes the image by changing the aspect ratio")
+					.help("Resize the image by changing the aspect ratio")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("flip")
 					.long("flip")
 					.value_name("FLIP")
-					.help("Flips the image")
+					.help("Flip the image")
 					.possible_values(&["horizontal", "vertical"])
 					.takes_value(true),
 			)
@@ -418,7 +424,7 @@ where
 				Arg::with_name("rotate")
 					.long("rotate")
 					.value_name("ROTATE")
-					.help("Rotates the image clockwise")
+					.help("Rotate the image clockwise")
 					.possible_values(&["90", "180", "270"])
 					.takes_value(true),
 			)
@@ -427,25 +433,25 @@ where
 					.long("blur")
 					.value_name("SIGMA")
 					.default_value("0.0")
-					.help("Blurs the image")
+					.help("Blur the image")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("grayscale")
 					.long("grayscale")
-					.help("Converts image to grayscale"),
+					.help("Convert image to grayscale"),
 			)
 			.arg(
 				Arg::with_name("invert")
 					.long("invert")
-					.help("Inverts the image colors"),
+					.help("Invert the image colors"),
 			)
 			.arg(
 				Arg::with_name("brighten")
 					.long("brighten")
 					.value_name("BRIGHTNESS")
 					.default_value("0")
-					.help("Brightens the image")
+					.help("Brighten the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -454,7 +460,7 @@ where
 					.long("hue-rotate")
 					.value_name("HUE")
 					.default_value("0")
-					.help("Hue rotates the image")
+					.help("Hue rotate the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -463,7 +469,7 @@ where
 					.long("contrast")
 					.value_name("CONTRAST")
 					.default_value("0.0")
-					.help("Adjusts the contrast of the image")
+					.help("Adjust the contrast of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -479,7 +485,7 @@ where
 						"lanczos3",
 					])
 					.default_value("lanczos3")
-					.help("Sets the sampling filter")
+					.help("Set the sampling filter")
 					.takes_value(true),
 			)
 	}
@@ -491,11 +497,12 @@ where
 	 */
 	fn get_split_args() -> App<'a, 'b> {
 		SubCommand::with_name("split")
-			.about("Splits a GIF into frames")
+			.about("Split a GIF into frames")
+			.help_message("Print help information")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
-					.help("Sets the GIF file to split")
+					.help("Set the GIF file to split")
 					.required(true),
 			)
 			.arg(
@@ -503,7 +510,7 @@ where
 					.short("d")
 					.long("dir")
 					.value_name("DIRECTORY")
-					.help("Sets the output directory")
+					.help("Set the output directory")
 					.takes_value(true),
 			)
 	}
@@ -521,53 +528,76 @@ where
 	) -> App<'a, 'b> {
 		args.subcommand(
 			SubCommand::with_name("png")
-			.about("Changes the PNG encoder settings")
-			.arg(
-				Arg::with_name("compression")
-					.short("c")
-					.long("compress")
-					.value_name("COMPRESSION")
-					.possible_values(&["default", "fast", "best", "huffman", "rle"])
-					.default_value("fast")
-					.help("Sets the compression level of PNG encoder")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("filter")
-					.short("f")
-					.long("filter")
-					.value_name("FILTER")
-					.possible_values(&["none", "sub", "up", "avg", "paeth"])
-					.default_value("sub")
-					.help("Sets the filter algorithm that processes the image data")
-					.takes_value(true),
-			).subcommand(Self::get_save_args(FileFormat::Png).settings(&save_settings)),
+				.about("Change the PNG encoder settings")
+				.help_message("Print help information")
+				.arg(
+					Arg::with_name("compression")
+						.short("c")
+						.long("compress")
+						.value_name("COMPRESSION")
+						.possible_values(&[
+							"default", "fast", "best", "huffman", "rle",
+						])
+						.default_value("fast")
+						.help("Set the compression level of PNG encoder")
+						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("filter")
+						.short("f")
+						.long("filter")
+						.value_name("FILTER")
+						.possible_values(&["none", "sub", "up", "avg", "paeth"])
+						.default_value("sub")
+						.help(
+							"Set the filter algorithm that processes the image data",
+						)
+						.takes_value(true),
+				)
+				.subcommand(
+					Self::get_save_args(FileFormat::Png).settings(&save_settings),
+				),
 		)
-		.subcommand(SubCommand::with_name("jpg")
-		.about("Changes the JPG encoder settings")
-		.arg(
-			Arg::with_name("quality")
-				.short("q")
-				.long("quality")
-				.value_name("QUALITY")
-				.default_value("90")
-				.help("Sets the JPG quality (1-100)")
-				.takes_value(true),
-		).subcommand(Self::get_save_args(FileFormat::Jpg).settings(&save_settings)))
+		.subcommand(
+			SubCommand::with_name("jpg")
+				.about("Change the JPG encoder settings")
+				.help_message("Print help information")
+				.arg(
+					Arg::with_name("quality")
+						.short("q")
+						.long("quality")
+						.value_name("QUALITY")
+						.default_value("90")
+						.help("Set the JPG quality (1-100)")
+						.takes_value(true),
+				)
+				.subcommand(
+					Self::get_save_args(FileFormat::Jpg).settings(&save_settings),
+				),
+		)
 		.subcommand(
 			SubCommand::with_name("bmp")
-				.about("Changes the BMP encoder settings")
-				.subcommand(Self::get_save_args(FileFormat::Bmp).settings(&save_settings)),
+				.about("Change the BMP encoder settings")
+				.help_message("Print help information")
+				.subcommand(
+					Self::get_save_args(FileFormat::Bmp).settings(&save_settings),
+				),
 		)
 		.subcommand(
 			SubCommand::with_name("tiff")
-				.about("Changes the TIFF encoder settings")
-				.subcommand(Self::get_save_args(FileFormat::Tiff).settings(&save_settings)),
+				.about("Change the TIFF encoder settings")
+				.help_message("Print help information")
+				.subcommand(
+					Self::get_save_args(FileFormat::Tiff).settings(&save_settings),
+				),
 		)
 		.subcommand(
 			SubCommand::with_name("ff")
-				.about("Changes the farbfeld encoder settings")
-				.subcommand(Self::get_save_args(FileFormat::Ff).settings(&save_settings)),
+				.about("Change the farbfeld encoder settings")
+				.help_message("Print help information")
+				.subcommand(
+					Self::get_save_args(FileFormat::Ff).settings(&save_settings),
+				),
 		)
 		.subcommand(Self::get_save_args(FileFormat::Any).settings(&save_settings))
 	}
@@ -580,7 +610,8 @@ where
 	 */
 	fn get_save_args(file_format: FileFormat) -> App<'a, 'b> {
 		SubCommand::with_name("save")
-			.about("Changes the output file settings")
+			.about("Change the output file settings")
+			.help_message("Print help information")
 			.arg(
 				Arg::with_name("output")
 					.value_name("FILE")
@@ -591,7 +622,7 @@ where
 						.to_str()
 						.unwrap_or_default(),
 					)
-					.help("Sets the output file path"),
+					.help("Set the output file path"),
 			)
 			.arg(
 				Arg::with_name("date")
@@ -599,20 +630,20 @@ where
 					.long("date")
 					.value_name("FORMAT")
 					.default_value("%Y%m%dT%H%M%S")
-					.help("Adds date and time to the file name")
+					.help("Add date and time to the file name")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("timestamp")
 					.short("t")
 					.long("timestamp")
-					.help("Adds timestamp to the file name"),
+					.help("Add timestamp to the file name"),
 			)
 			.arg(
 				Arg::with_name("prompt")
 					.short("p")
 					.long("prompt")
-					.help("Shows input prompt for the file name"),
+					.help("Show input prompt for the file name"),
 			)
 	}
 }
