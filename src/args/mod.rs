@@ -115,7 +115,7 @@ where
 	fn get_record_args(capture_mode: bool) -> App<'a, 'b> {
 		SubCommand::with_name(if capture_mode { "capture" } else { "record" })
 			.about(if capture_mode {
-				"Take a screenshot"
+				"Capture an image"
 			} else {
 				"Record a GIF"
 			})
