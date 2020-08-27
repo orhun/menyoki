@@ -65,7 +65,7 @@ where
 				Arg::with_name("verbose")
 					.short("v")
 					.long("verbose")
-					.help("Increase the logging verbosity")
+					.help("Increase logging verbosity")
 					.multiple(true)
 					.display_order(1000),
 			)
