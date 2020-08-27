@@ -90,6 +90,11 @@ where
 					)
 					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
+			.subcommand(Self::get_image_args(args.split, vec![AppSettings::Hidden]))
+			.subcommand(
+				Self::get_gif_args(GifMode::Make)
+					.subcommand(Self::get_save_args(FileFormat::Gif)),
+			)
 			.subcommand(Self::get_image_args(args.capture, Vec::new()))
 			.subcommand(Self::get_image_args(
 				args.edit.subcommand(
@@ -98,11 +103,6 @@ where
 				),
 				Vec::new(),
 			))
-			.subcommand(Self::get_image_args(args.split, vec![AppSettings::Hidden]))
-			.subcommand(
-				Self::get_gif_args(GifMode::Make)
-					.subcommand(Self::get_save_args(FileFormat::Gif)),
-			)
 			.get_matches()
 	}
 
