@@ -125,6 +125,42 @@ where
 					.value_name("COMMAND")
 					.help("Set the command to run"),
 			)
+			.arg(Arg::with_name("root").short("r").long("root").help(
+				if capture_mode {
+					"Capture the root window"
+				} else {
+					"Record the root window"
+				},
+			))
+			.arg(
+				Arg::with_name("focus")
+					.short("f")
+					.long("focus")
+					.conflicts_with("root")
+					.help(if capture_mode {
+						"Capture the focus window"
+					} else {
+						"Record the focused window"
+					}),
+			)
+			.arg(Arg::with_name("with-alpha").long("with-alpha").help(
+				if capture_mode {
+					"Capture with the alpha channel"
+				} else {
+					"Record with the alpha channel"
+				},
+			))
+			.arg(
+				Arg::with_name("no-borders")
+					.long("no-borders")
+					.help("Do not show borders on the focused window"),
+			)
+			.arg(
+				Arg::with_name("no-keys")
+					.long("no-keys")
+					.help("Disable the action keys while recording")
+					.hidden(capture_mode),
+			)
 			.arg(
 				Arg::with_name("keys")
 					.short("k")
@@ -140,7 +176,7 @@ where
 					.long("color")
 					.value_name("HEX")
 					.default_value("FF00FF")
-					.help("Set the main color to use")
+					.help("Set the main color")
 					.takes_value(true),
 			)
 			.arg(
@@ -149,7 +185,7 @@ where
 					.long("border")
 					.value_name("BORDER")
 					.default_value("1")
-					.help("Set the border padding value")
+					.help("Set the border padding")
 					.takes_value(true),
 			)
 			.arg(
@@ -159,9 +195,9 @@ where
 					.value_name("PADDING")
 					.default_value("T:R:B:L")
 					.help(if capture_mode {
-						"Set the capture area padding value"
+						"Set the capture area padding"
 					} else {
-						"Set the record area padding value"
+						"Set the record area padding"
 					})
 					.takes_value(true),
 			)
@@ -172,9 +208,9 @@ where
 					.value_name("SIZE")
 					.default_value("WxH")
 					.help(if capture_mode {
-						"Set the capture area size and enable selection"
+						"Set the capture area size"
 					} else {
-						"Set the record area size and enable selection"
+						"Set the record area size"
 					})
 					.takes_value(true),
 			)
@@ -184,7 +220,7 @@ where
 					.long("duration")
 					.value_name("S")
 					.default_value("\u{221E}")
-					.help("Set the recording duration")
+					.help("Set the duration for recording")
 					.takes_value(true)
 					.hidden(capture_mode),
 			)
@@ -196,9 +232,9 @@ where
 					.default_value_if("command", None, "3")
 					.default_value(if capture_mode { "0" } else { "3" })
 					.help(if capture_mode {
-						"Set the countdown value for capturing"
+						"Set the countdown before capturing"
 					} else {
-						"Set the countdown value for recording"
+						"Set the countdown before recording"
 					})
 					.takes_value(true),
 			)
@@ -217,47 +253,8 @@ where
 					.long("interval")
 					.value_name("MS")
 					.default_value("10")
-					.help("Set the interval time for window selection")
+					.help("Set the refresh interval for window selection")
 					.takes_value(true),
-			)
-			.arg(Arg::with_name("root").short("r").long("root").help(
-				if capture_mode {
-					"Capture the root window"
-				} else {
-					"Record the root window"
-				},
-			))
-			.arg(
-				Arg::with_name("focus")
-					.short("w")
-					.long("focus")
-					.conflicts_with("root")
-					.help(if capture_mode {
-						"Capture the focus window"
-					} else {
-						"Record the focus window"
-					}),
-			)
-			.arg(
-				Arg::with_name("with-alpha")
-					.short("a")
-					.long("with-alpha")
-					.help(if capture_mode {
-						"Capture with the alpha channel for transparency"
-					} else {
-						"Record with the alpha channel for transparency"
-					}),
-			)
-			.arg(
-				Arg::with_name("no-border")
-					.long("no-border")
-					.help("Show no border for window selection"),
-			)
-			.arg(
-				Arg::with_name("no-keys")
-					.long("no-keys")
-					.help("Disable the action keys while recording")
-					.hidden(capture_mode),
 			)
 	}
 
@@ -610,7 +607,7 @@ where
 	 */
 	fn get_save_args(file_format: FileFormat) -> App<'a, 'b> {
 		SubCommand::with_name("save")
-			.about("Change the output file settings")
+			.about("Change the output settings")
 			.help_message("Print help information")
 			.arg(
 				Arg::with_name("output")
