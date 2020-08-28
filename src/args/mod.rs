@@ -386,6 +386,16 @@ where
 					.help("Convert image to the given format"),
 			)
 			.arg(
+				Arg::with_name("grayscale")
+					.long("grayscale")
+					.help("Convert image to grayscale"),
+			)
+			.arg(
+				Arg::with_name("invert")
+					.long("invert")
+					.help("Invert the image colors"),
+			)
+			.arg(
 				Arg::with_name("crop")
 					.long("crop")
 					.value_name("PADDING")
@@ -398,7 +408,7 @@ where
 					.long("resize")
 					.value_name("SIZE")
 					.default_value("WxH")
-					.help("Change the image size and aspect ratio")
+					.help("Resize the image without keeping the aspect ratio")
 					.takes_value(true),
 			)
 			.arg(
@@ -410,19 +420,19 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("rotate")
+					.long("rotate")
+					.value_name("ROTATE")
+					.help("Rotate the image (clockwise)")
+					.possible_values(&["90", "180", "270"])
+					.takes_value(true),
+			)
+			.arg(
 				Arg::with_name("flip")
 					.long("flip")
 					.value_name("FLIP")
 					.help("Flip the image")
 					.possible_values(&["horizontal", "vertical"])
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("rotate")
-					.long("rotate")
-					.value_name("ROTATE")
-					.help("Rotate the image clockwise")
-					.possible_values(&["90", "180", "270"])
 					.takes_value(true),
 			)
 			.arg(
@@ -434,30 +444,11 @@ where
 					.takes_value(true),
 			)
 			.arg(
-				Arg::with_name("grayscale")
-					.long("grayscale")
-					.help("Convert image to grayscale"),
-			)
-			.arg(
-				Arg::with_name("invert")
-					.long("invert")
-					.help("Invert the image colors"),
-			)
-			.arg(
-				Arg::with_name("brighten")
-					.long("brighten")
-					.value_name("BRIGHTNESS")
-					.default_value("0")
-					.help("Brighten the image")
-					.allow_hyphen_values(true)
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("hue-rotate")
-					.long("hue-rotate")
+				Arg::with_name("hue")
+					.long("hue")
 					.value_name("HUE")
 					.default_value("0")
-					.help("Hue rotate the image")
+					.help("Adjust the hue of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -467,6 +458,15 @@ where
 					.value_name("CONTRAST")
 					.default_value("0.0")
 					.help("Adjust the contrast of the image")
+					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("brightness")
+					.long("brightness")
+					.value_name("BRIGHTNESS")
+					.default_value("0")
+					.help("Adjust the brightness of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
@@ -482,7 +482,7 @@ where
 						"lanczos3",
 					])
 					.default_value("lanczos3")
-					.help("Set the sampling filter")
+					.help("Set the sampling filter for scaling")
 					.takes_value(true),
 			)
 	}
