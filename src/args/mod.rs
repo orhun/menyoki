@@ -337,7 +337,7 @@ where
 			.arg(
 				Arg::with_name("frames")
 					.value_name("FRAMES")
-					.help("Set the frames of the GIF")
+					.help("Set the GIF frames")
 					.min_values(1)
 					.hidden(mode != GifMode::Make)
 					.default_value_if("dir", None, "-")
@@ -349,7 +349,7 @@ where
 				Arg::with_name("no-sort")
 					.short("n")
 					.long("no-sort")
-					.help("Use frames in the order given")
+					.help("Use frames in the given order")
 					.hidden(mode != GifMode::Make),
 			)
 			.arg(
@@ -499,7 +499,7 @@ where
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
-					.help("Set the GIF file to split")
+					.help("Set the GIF file")
 					.required(true),
 			)
 			.arg(
