@@ -530,13 +530,13 @@ where
 				.arg(
 					Arg::with_name("compression")
 						.short("c")
-						.long("compress")
+						.long("compression")
 						.value_name("COMPRESSION")
 						.possible_values(&[
 							"default", "fast", "best", "huffman", "rle",
 						])
 						.default_value("fast")
-						.help("Set the compression level of PNG encoder")
+						.help("Set the compression level")
 						.takes_value(true),
 				)
 				.arg(
@@ -546,9 +546,7 @@ where
 						.value_name("FILTER")
 						.possible_values(&["none", "sub", "up", "avg", "paeth"])
 						.default_value("sub")
-						.help(
-							"Set the filter algorithm that processes the image data",
-						)
+						.help("Set the filter algorithm")
 						.takes_value(true),
 				)
 				.subcommand(
@@ -565,7 +563,7 @@ where
 						.long("quality")
 						.value_name("QUALITY")
 						.default_value("90")
-						.help("Set the JPG quality (1-100)")
+						.help("Set the image quality (1-100)")
 						.takes_value(true),
 				)
 				.subcommand(
