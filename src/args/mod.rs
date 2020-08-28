@@ -278,7 +278,7 @@ where
 					.long("fps")
 					.value_name("FPS")
 					.default_value("20")
-					.help("Set the FPS value")
+					.help("Set the FPS")
 					.hidden(mode == GifMode::Edit)
 					.takes_value(true),
 			)
@@ -303,7 +303,7 @@ where
 			.arg(
 				Arg::with_name("fast")
 					.long("fast")
-					.help("Encode 3 times faster (lower quality and bigger file)")
+					.help("Encode 3 times faster")
 					.hidden(!cfg!(feature = "ski")),
 			)
 			.arg(
