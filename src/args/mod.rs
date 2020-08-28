@@ -377,7 +377,7 @@ where
 			.arg(
 				Arg::with_name("input")
 					.value_name("FILE")
-					.help("Set the input file path")
+					.help("Set the input file")
 					.required(true),
 			)
 			.arg(
@@ -617,16 +617,7 @@ where
 						.to_str()
 						.unwrap_or_default(),
 					)
-					.help("Set the output file path"),
-			)
-			.arg(
-				Arg::with_name("date")
-					.short("d")
-					.long("date")
-					.value_name("FORMAT")
-					.default_value("%Y%m%dT%H%M%S")
-					.help("Add date and time to the file name")
-					.takes_value(true),
+					.help("Set the output file"),
 			)
 			.arg(
 				Arg::with_name("timestamp")
@@ -638,7 +629,16 @@ where
 				Arg::with_name("prompt")
 					.short("p")
 					.long("prompt")
-					.help("Show input prompt for the file name"),
+					.help("Read file name from input prompt"),
+			)
+			.arg(
+				Arg::with_name("date")
+					.short("d")
+					.long("date")
+					.value_name("FORMAT")
+					.default_value("%Y%m%dT%H%M%S")
+					.help("Add date and time to the file name")
+					.takes_value(true),
 			)
 	}
 }
