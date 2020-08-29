@@ -225,9 +225,12 @@ where
 			.decode()
 			.expect("Failed to decode the image")
 			.to_rgba();
-		let mut imageops = self.settings.edit.get_imageops();
-		imageops.init(image.dimensions());
-		imageops.process(image).get_image()
+		self.settings
+			.edit
+			.get_imageops()
+			.init(image.dimensions())
+			.process(image)
+			.get_image()
 	}
 
 	/**

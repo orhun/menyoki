@@ -229,9 +229,7 @@ mod tests {
 		settings.color.hue = 15;
 		settings.color.contrast = -5.;
 		let mut imageops = ImageOps::new(&settings);
-		imageops.init(image.dimensions());
-		imageops.process(image);
-		let image = imageops.get_image();
+		let image = imageops.init(image.dimensions()).process(image).get_image();
 		let (width, height) = imageops.image.dimensions();
 		assert_eq!(
 			format!("{:?}", image),
