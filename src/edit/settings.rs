@@ -70,9 +70,9 @@ impl ImageSettings {
 pub struct ColorSettings {
 	pub grayscale: bool,
 	pub invert: bool,
-	pub brightness: i32,
 	pub hue: i32,
 	pub contrast: f32,
+	pub brightness: i32,
 }
 
 /* Default initialization values for ColorSettings */
@@ -81,9 +81,9 @@ impl Default for ColorSettings {
 		Self {
 			grayscale: false,
 			invert: false,
-			brightness: 0,
 			hue: 0,
 			contrast: 0.,
+			brightness: 0,
 		}
 	}
 }
@@ -94,24 +94,24 @@ impl ColorSettings {
 	 *
 	 * @param  grayscale
 	 * @param  invert
-	 * @param  brightness
 	 * @param  hue
 	 * @param  contrast
+	 * @param  brightness
 	 * @return ColorSettings
 	 */
 	pub fn new(
 		grayscale: bool,
 		invert: bool,
-		brightness: i32,
 		hue: i32,
 		contrast: f32,
+		brightness: i32,
 	) -> Self {
 		Self {
 			grayscale,
 			invert,
-			brightness,
 			hue,
 			contrast,
+			brightness,
 		}
 	}
 }
@@ -201,9 +201,9 @@ impl EditSettings {
 				ColorSettings::new(
 					matches.is_present("grayscale"),
 					matches.is_present("invert"),
-					parser.parse("brighten", ColorSettings::default().brightness),
-					parser.parse("hue-rotate", ColorSettings::default().hue),
+					parser.parse("hue", ColorSettings::default().hue),
 					parser.parse("contrast", ColorSettings::default().contrast),
+					parser.parse("brightness", ColorSettings::default().brightness),
 				),
 			),
 			None => Self::default(),
@@ -229,28 +229,24 @@ mod tests {
 		let args = App::new("test")
 			.arg(Arg::with_name("input"))
 			.arg(Arg::with_name("convert").long("convert"))
+			.arg(Arg::with_name("grayscale").long("grayscale"))
+			.arg(Arg::with_name("invert").long("invert"))
 			.arg(Arg::with_name("crop").long("crop").takes_value(true))
 			.arg(Arg::with_name("resize").long("resize").takes_value(true))
 			.arg(Arg::with_name("ratio").long("ratio").takes_value(true))
 			.arg(Arg::with_name("flip").long("flip").takes_value(true))
 			.arg(Arg::with_name("rotate").long("rotate").takes_value(true))
 			.arg(Arg::with_name("blur").long("blur").takes_value(true))
-			.arg(Arg::with_name("grayscale").long("grayscale"))
-			.arg(Arg::with_name("invert").long("invert"))
-			.arg(
-				Arg::with_name("brighten")
-					.long("brighten")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("hue-rotate")
-					.long("hue-rotate")
-					.takes_value(true),
-			)
+			.arg(Arg::with_name("hue").long("hue").takes_value(true))
 			.arg(
 				Arg::with_name("contrast")
 					.long("contrast")
 					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("brightness")
+					.long("brightness")
 					.takes_value(true),
 			)
 			.arg(Arg::with_name("filter").long("filter").takes_value(true))
@@ -272,12 +268,12 @@ mod tests {
 				"1.5",
 				"--grayscale",
 				"--invert",
-				"--brighten",
-				"2",
-				"--hue-rotate",
+				"--hue",
 				"3",
 				"--contrast",
 				"-5",
+				"--brightness",
+				"2",
 				"--filter",
 				"triangle",
 			]);
