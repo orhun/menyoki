@@ -90,18 +90,18 @@ where
 					)
 					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
-			.subcommand(Self::get_image_args(args.split, vec![AppSettings::Hidden]))
+			.subcommand(Self::get_image_args(args.split, false))
 			.subcommand(
 				Self::get_gif_args(GifMode::Make)
 					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
-			.subcommand(Self::get_image_args(args.capture, Vec::new()))
+			.subcommand(Self::get_image_args(args.capture, true))
 			.subcommand(Self::get_image_args(
 				args.edit.subcommand(
 					Self::get_gif_args(GifMode::Edit)
 						.subcommand(Self::get_save_args(FileFormat::Gif)),
 				),
-				Vec::new(),
+				true,
 			))
 			.get_matches()
 	}
@@ -516,13 +516,14 @@ where
 	 * Add image related subcommands to the given arguments.
 	 *
 	 * @param  args
-	 * @param  save_settings
+	 * @param  save
 	 * @return App
 	 */
-	fn get_image_args(
-		args: App<'a, 'b>,
-		save_settings: Vec<AppSettings>,
-	) -> App<'a, 'b> {
+	fn get_image_args(args: App<'a, 'b>, save: bool) -> App<'a, 'b> {
+		let mut save_settings = Vec::new();
+		if !save {
+			save_settings.push(AppSettings::Hidden);
+		}
 		args.subcommand(
 			SubCommand::with_name("png")
 				.about("Change the PNG encoder settings")
