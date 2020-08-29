@@ -82,7 +82,7 @@ impl GifSettings {
 				matches.is_present("fast"),
 				parser.parse("speed", Self::default().speed),
 				(
-					parser.parse("cut-begin", Self::default().cut.0) * 1000.,
+					parser.parse("cut-beginning", Self::default().cut.0) * 1000.,
 					parser.parse("cut-end", Self::default().cut.1) * 1000.,
 				),
 				Self::get_frames(matches),
@@ -192,8 +192,8 @@ mod tests {
 			.arg(Arg::with_name("fast").long("fast"))
 			.arg(Arg::with_name("speed").long("speed").takes_value(true))
 			.arg(
-				Arg::with_name("cut-begin")
-					.long("cut-begin")
+				Arg::with_name("cut-beginning")
+					.long("cut-beginning")
 					.takes_value(true),
 			)
 			.arg(Arg::with_name("cut-end").long("cut-end").takes_value(true))
@@ -208,7 +208,7 @@ mod tests {
 				"--fast",
 				"--speed",
 				"1.1",
-				"--cut-begin",
+				"--cut-beginning",
 				"0.9",
 				"--cut-end",
 				"0.8",

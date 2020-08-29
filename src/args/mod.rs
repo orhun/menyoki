@@ -317,8 +317,8 @@ where
 					.takes_value(true),
 			)
 			.arg(
-				Arg::with_name("cut-begin")
-					.long("cut-begin")
+				Arg::with_name("cut-beginning")
+					.long("cut-beginning")
 					.value_name("S")
 					.default_value("0.0")
 					.help("Cut the beginning of the GIF")
