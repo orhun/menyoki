@@ -211,7 +211,7 @@ impl RecordSettings {
 						16,
 					)
 					.unwrap_or(Self::default().color),
-					if matches.is_present("no-border") {
+					if matches.is_present("no-borders") {
 						None
 					} else if !padding.is_zero() {
 						Some(1)
@@ -282,7 +282,7 @@ mod tests {
 			.arg(Arg::with_name("root").long("root"))
 			.arg(Arg::with_name("focus").long("focus"))
 			.arg(Arg::with_name("with-alpha").long("with-alpha"))
-			.arg(Arg::with_name("no-border").long("no-border"))
+			.arg(Arg::with_name("no-borders").long("no-borders"))
 			.arg(Arg::with_name("no-keys").long("no-keys"))
 			.get_matches_from(vec![
 				"test",
