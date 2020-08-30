@@ -444,7 +444,7 @@ where
 				Arg::with_name("hue")
 					.long("hue")
 					.value_name("HUE")
-					.default_value("0")
+					.default_value("\u{00B1}0")
 					.help("Adjust the hue of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
@@ -453,7 +453,7 @@ where
 				Arg::with_name("contrast")
 					.long("contrast")
 					.value_name("CONTRAST")
-					.default_value("0.0")
+					.default_value("\u{00B1}0.0")
 					.help("Adjust the contrast of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
@@ -462,7 +462,7 @@ where
 				Arg::with_name("brightness")
 					.long("brightness")
 					.value_name("BRIGHTNESS")
-					.default_value("0")
+					.default_value("\u{00B1}0")
 					.help("Adjust the brightness of the image")
 					.allow_hyphen_values(true)
 					.takes_value(true),
