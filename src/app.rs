@@ -9,11 +9,11 @@ use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
 use crate::util::file::{File as FileUtil, FileFormat};
 use bytesize::ByteSize;
-use image::bmp::BMPEncoder;
+use image::bmp::BmpEncoder;
 use image::farbfeld::FarbfeldEncoder;
 use image::io::Reader;
-use image::jpeg::JPEGEncoder;
-use image::png::PNGEncoder;
+use image::jpeg::JpegEncoder;
+use image::png::PngEncoder;
 use image::tiff::TiffEncoder;
 use image::ColorType;
 use image::ImageEncoder;
@@ -289,7 +289,7 @@ where
 			}
 			FileFormat::Png => self.save_image(
 				image,
-				PNGEncoder::new_with_quality(
+				PngEncoder::new_with_quality(
 					output,
 					self.settings.png.compression,
 					self.settings.png.filter,
@@ -298,7 +298,7 @@ where
 			),
 			FileFormat::Jpg => self.save_image(
 				image,
-				JPEGEncoder::new_with_quality(
+				JpegEncoder::new_with_quality(
 					&mut output,
 					self.settings.jpg.quality,
 				),
@@ -306,7 +306,7 @@ where
 			),
 			FileFormat::Bmp => self.save_image(
 				image,
-				BMPEncoder::new(&mut output),
+				BmpEncoder::new(&mut output),
 				ColorType::Rgba8,
 			),
 			FileFormat::Tiff => {
