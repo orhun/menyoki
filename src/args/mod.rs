@@ -109,12 +109,12 @@ where
 	/**
 	 * Get record/capture subcommand arguments.
 	 *
-	 * @param  capture_mode
+	 * @param  capture
 	 * @return App
 	 */
-	fn get_record_args(capture_mode: bool) -> App<'a, 'b> {
-		SubCommand::with_name(if capture_mode { "capture" } else { "record" })
-			.about(if capture_mode {
+	fn get_record_args(capture: bool) -> App<'a, 'b> {
+		SubCommand::with_name(if capture { "capture" } else { "record" })
+			.about(if capture {
 				"Capture an image"
 			} else {
 				"Record a GIF"
@@ -125,31 +125,36 @@ where
 					.value_name("COMMAND")
 					.help("Set the command to run"),
 			)
-			.arg(Arg::with_name("root").short("r").long("root").help(
-				if capture_mode {
-					"Capture the root window"
-				} else {
-					"Record the root window"
-				},
-			))
+			.arg(
+				Arg::with_name("root")
+					.short("r")
+					.long("root")
+					.help(if capture {
+						"Capture the root window"
+					} else {
+						"Record the root window"
+					}),
+			)
 			.arg(
 				Arg::with_name("focus")
 					.short("f")
 					.long("focus")
 					.conflicts_with("root")
-					.help(if capture_mode {
+					.help(if capture {
 						"Capture the focus window"
 					} else {
 						"Record the focused window"
 					}),
 			)
-			.arg(Arg::with_name("with-alpha").long("with-alpha").help(
-				if capture_mode {
-					"Capture with the alpha channel"
-				} else {
-					"Record with the alpha channel"
-				},
-			))
+			.arg(
+				Arg::with_name("with-alpha")
+					.long("with-alpha")
+					.help(if capture {
+						"Capture with the alpha channel"
+					} else {
+						"Record with the alpha channel"
+					}),
+			)
 			.arg(
 				Arg::with_name("no-borders")
 					.long("no-borders")
@@ -159,7 +164,7 @@ where
 				Arg::with_name("no-keys")
 					.long("no-keys")
 					.help("Disable the action keys while recording")
-					.hidden(capture_mode),
+					.hidden(capture),
 			)
 			.arg(
 				Arg::with_name("keys")
@@ -193,7 +198,7 @@ where
 					.short("p")
 					.long("padding")
 					.value_name("T:R:B:L")
-					.help(if capture_mode {
+					.help(if capture {
 						"Set the capture area padding"
 					} else {
 						"Set the record area padding"
@@ -205,7 +210,7 @@ where
 					.short("s")
 					.long("select")
 					.value_name("WxH")
-					.help(if capture_mode {
+					.help(if capture {
 						"Set the capture area size"
 					} else {
 						"Set the record area size"
@@ -221,7 +226,7 @@ where
 					.default_value("\u{221E}")
 					.help("Set the duration for recording")
 					.takes_value(true)
-					.hidden(capture_mode),
+					.hidden(capture),
 			)
 			.arg(
 				Arg::with_name("countdown")
@@ -229,8 +234,8 @@ where
 					.long("countdown")
 					.value_name("S")
 					.default_value_if("command", None, "3")
-					.default_value(if capture_mode { "0" } else { "3" })
-					.help(if capture_mode {
+					.default_value(if capture { "0" } else { "3" })
+					.help(if capture {
 						"Set the countdown before capturing"
 					} else {
 						"Set the countdown before recording"
