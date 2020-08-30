@@ -146,6 +146,11 @@ where
 						"Record the focused window"
 					}),
 			)
+			.arg(Arg::with_name("select").long("select").help(if capture {
+				"Select the window to capture"
+			} else {
+				"Select the window to record"
+			}))
 			.arg(
 				Arg::with_name("with-alpha")
 					.long("with-alpha")
@@ -206,9 +211,9 @@ where
 					.takes_value(true),
 			)
 			.arg(
-				Arg::with_name("select")
+				Arg::with_name("size")
 					.short("s")
-					.long("select")
+					.long("size")
 					.value_name("WxH")
 					.help(if capture {
 						"Set the capture area size"
