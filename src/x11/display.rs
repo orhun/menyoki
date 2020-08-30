@@ -119,7 +119,7 @@ impl Display {
 	 * @param  keycode
 	 * @return u64
 	 */
-	fn get_keysym_from_keycode(&self, keycode: &Keycode) -> u64 {
+	fn get_symbol_from_keycode(&self, keycode: &Keycode) -> u64 {
 		let mut key = format!("{:?}", keycode)
 			.trim_start_matches("Key")
 			.to_string();
@@ -191,7 +191,7 @@ impl Display {
 				self.update_padding(size, window.geometry);
 				window.clear_area();
 				window.grab_key(
-					self.get_keysym_from_keycode(&input_state.action_keys.main_key),
+					self.get_symbol_from_keycode(&input_state.action_keys.main_key),
 				);
 				xid = Some(window.xid);
 			}
@@ -331,15 +331,15 @@ mod tests {
 		assert!(display.select_window(&input_state).is_none());
 		assert_eq!(
 			u64::try_from(keysym::XK_Alt_L).unwrap(),
-			display.get_keysym_from_keycode(&input_state.action_keys.main_key)
+			display.get_symbol_from_keycode(&input_state.action_keys.main_key)
 		);
 		assert_eq!(
 			u64::try_from(keysym::XK_Control_R).unwrap(),
-			display.get_keysym_from_keycode(&Keycode::RControl)
+			display.get_symbol_from_keycode(&Keycode::RControl)
 		);
 		assert_eq!(
 			u64::try_from(keysym::XK_X).unwrap(),
-			display.get_keysym_from_keycode(&Keycode::X)
+			display.get_symbol_from_keycode(&Keycode::X)
 		);
 		display.get_root_window().release();
 	}
