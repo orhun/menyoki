@@ -113,8 +113,9 @@ impl RecordWindow {
 	 * @return RecordWindow
 	 */
 	fn from_args(args: &ArgMatches<'_>) -> Self {
-		let select = if args.occurrences_of("select") != 0 {
-			Some(Geometry::parse(args.value_of("select").unwrap_or_default()))
+		let select = if args.occurrences_of("size") != 0 || args.is_present("select")
+		{
+			Some(Geometry::parse(args.value_of("size").unwrap_or_default()))
 		} else {
 			None
 		};
