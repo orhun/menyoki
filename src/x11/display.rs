@@ -167,7 +167,7 @@ impl Display {
 		let mut xid = None;
 		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
-		let mut change_factor = 2;
+		let mut change_factor = 3;
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
 			window.draw_borders();
