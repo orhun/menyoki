@@ -55,6 +55,7 @@ pub enum FileFormat {
 	Png,
 	Jpg,
 	Bmp,
+	Ico,
 	Tiff,
 	Ff,
 }
@@ -79,6 +80,7 @@ impl FromStr for FileFormat {
 			"png" => Ok(Self::Png),
 			"jpg" => Ok(Self::Jpg),
 			"bmp" => Ok(Self::Bmp),
+			"ico" => Ok(Self::Ico),
 			"tiff" => Ok(Self::Tiff),
 			"ff" => Ok(Self::Ff),
 			_ => Err("Unrecognized file format"),
@@ -110,6 +112,8 @@ impl FileFormat {
 					Self::Tiff
 				} else if matches.is_present("bmp") {
 					Self::Bmp
+				} else if matches.is_present("ico") {
+					Self::Ico
 				} else if matches.is_present("jpg") {
 					Self::Jpg
 				} else {
@@ -213,7 +217,7 @@ mod tests {
 	use clap::{App, Arg, SubCommand};
 	#[test]
 	fn test_file() {
-		for format in vec!["png", "jpg", "bmp", "tiff", "ff"] {
+		for format in vec!["png", "jpg", "bmp", "ico", "tiff", "ff"] {
 			let args = App::new("test")
 				.subcommand(
 					SubCommand::with_name("capture")

@@ -582,6 +582,14 @@ where
 				),
 		)
 		.subcommand(
+			SubCommand::with_name("ico")
+				.about("Change the ICO encoder settings")
+				.help_message("Print help information")
+				.subcommand(
+					Self::get_save_args(FileFormat::Ico).settings(&save_settings),
+				),
+		)
+		.subcommand(
 			SubCommand::with_name("tiff")
 				.about("Change the TIFF encoder settings")
 				.help_message("Print help information")

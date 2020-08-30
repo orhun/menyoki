@@ -11,6 +11,7 @@ use crate::util::file::{File as FileUtil, FileFormat};
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
 use image::farbfeld::FarbfeldEncoder;
+use image::ico::IcoEncoder;
 use image::io::Reader;
 use image::jpeg::JpegEncoder;
 use image::png::PngEncoder;
@@ -309,6 +310,9 @@ where
 				BmpEncoder::new(&mut output),
 				ColorType::Rgba8,
 			),
+			FileFormat::Ico => {
+				self.save_image(image, IcoEncoder::new(output), ColorType::Rgba8)
+			}
 			FileFormat::Tiff => {
 				self.save_image(image, TiffEncoder::new(output), ColorType::Rgba8)
 			}
@@ -397,6 +401,7 @@ mod tests {
 			FileFormat::Png,
 			FileFormat::Jpg,
 			FileFormat::Bmp,
+			FileFormat::Ico,
 			FileFormat::Tiff,
 			FileFormat::Ff,
 		] {
