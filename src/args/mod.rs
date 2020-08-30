@@ -640,7 +640,7 @@ where
 					.long("date")
 					.value_name("FORMAT")
 					.default_value("%Y%m%dT%H%M%S")
-					.help("Add formatted date and time to the file name")
+					.help("Add formatted date/time to the file name")
 					.takes_value(true),
 			)
 	}
