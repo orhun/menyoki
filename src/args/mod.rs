@@ -397,16 +397,14 @@ where
 			.arg(
 				Arg::with_name("crop")
 					.long("crop")
-					.value_name("PADDING")
-					.default_value("T:R:B:L")
+					.value_name("T:R:B:L")
 					.help("Apply the given padding to crop the image")
 					.takes_value(true),
 			)
 			.arg(
 				Arg::with_name("resize")
 					.long("resize")
-					.value_name("SIZE")
-					.default_value("WxH")
+					.value_name("WxH")
 					.help("Resize the image without keeping the aspect ratio")
 					.takes_value(true),
 			)
