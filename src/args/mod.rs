@@ -192,8 +192,7 @@ where
 				Arg::with_name("padding")
 					.short("p")
 					.long("padding")
-					.value_name("PADDING")
-					.default_value("T:R:B:L")
+					.value_name("T:R:B:L")
 					.help(if capture_mode {
 						"Set the capture area padding"
 					} else {
@@ -205,13 +204,13 @@ where
 				Arg::with_name("select")
 					.short("s")
 					.long("select")
-					.value_name("SIZE")
-					.default_value("WxH")
+					.value_name("WxH")
 					.help(if capture_mode {
 						"Set the capture area size"
 					} else {
 						"Set the record area size"
 					})
+					.empty_values(true)
 					.takes_value(true),
 			)
 			.arg(
