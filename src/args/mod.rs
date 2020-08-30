@@ -141,7 +141,7 @@ where
 					.long("focus")
 					.conflicts_with("root")
 					.help(if capture {
-						"Capture the focus window"
+						"Capture the focused window"
 					} else {
 						"Record the focused window"
 					}),
