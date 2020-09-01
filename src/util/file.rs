@@ -1,5 +1,6 @@
 use chrono::Local;
 use clap::ArgMatches;
+use image::pnm::PnmSubtype;
 use std::ffi::OsStr;
 use std::fmt;
 use std::fs;
@@ -57,7 +58,7 @@ pub enum FileFormat {
 	Bmp,
 	Ico,
 	Tiff,
-	Pnm,
+	Pnm(String),
 	Ff,
 }
 
@@ -83,7 +84,7 @@ impl FromStr for FileFormat {
 			"bmp" => Ok(Self::Bmp),
 			"ico" => Ok(Self::Ico),
 			"tiff" => Ok(Self::Tiff),
-			"pnm" => Ok(Self::Pnm),
+			"pnm" => Ok(Self::Pnm(String::from("ppm"))),
 			"ff" => Ok(Self::Ff),
 			_ => Err("Unrecognized file format"),
 		}
@@ -95,9 +96,10 @@ impl FileFormat {
 	 * Create a FileFormat enum fron parsed arguments.
 	 *
 	 * @param  args
+	 * @param  pnm_subtype
 	 * @return FileFormat
 	 */
-	pub fn from_args<'a>(args: &'a ArgMatches<'a>) -> Self {
+	pub fn from_args<'a>(args: &'a ArgMatches<'a>, pnm_subtype: PnmSubtype) -> Self {
 		match args.subcommand_matches(if args.is_present("edit") {
 			"edit"
 		} else if args.is_present("split") {
@@ -113,7 +115,12 @@ impl FileFormat {
 				} else if matches.is_present("tiff") {
 					Self::Tiff
 				} else if matches.is_present("pnm") {
-					Self::Pnm
+					Self::Pnm(String::from(match pnm_subtype {
+						PnmSubtype::Bitmap(_) => "pbm",
+						PnmSubtype::Graymap(_) => "pgm",
+						PnmSubtype::Pixmap(_) => "ppm",
+						PnmSubtype::ArbitraryMap => "pnm",
+					}))
 				} else if matches.is_present("bmp") {
 					Self::Bmp
 				} else if matches.is_present("ico") {
@@ -126,6 +133,19 @@ impl FileFormat {
 			}
 			None => Self::Gif,
 		}
+	}
+
+	/**
+	 * Get extension from format.
+	 *
+	 * @return String
+	 */
+	pub fn to_extension(&self) -> String {
+		match self {
+			Self::Pnm(v) => v.to_string(),
+			_ => self.to_string(),
+		}
+		.to_lowercase()
 	}
 }
 
@@ -163,7 +183,7 @@ impl File {
 			Self::get_default_path(&format!(
 				"{}.{}",
 				DEFAULT_FILE_NAME,
-				format.to_string().to_lowercase()
+				format.to_extension()
 			)),
 			format,
 		)
@@ -195,9 +215,7 @@ impl File {
 	 */
 	pub fn get_path_with_extension(path: PathBuf, format: &FileFormat) -> PathBuf {
 		match path.extension().and_then(OsStr::to_str) {
-			Some("*") | None => {
-				path.with_extension(format.to_string().to_lowercase())
-			}
+			Some("*") | None => path.with_extension(format.to_extension()),
 			_ => path,
 		}
 	}
