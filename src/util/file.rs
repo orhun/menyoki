@@ -48,7 +48,7 @@ impl fmt::Display for FileInfo<'_> {
 }
 
 /* Format of the output file */
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Debug, PartialEq)]
 pub enum FileFormat {
 	Any,
 	Gif,
@@ -147,7 +147,7 @@ impl File {
 	pub fn new(path: PathBuf, format: FileFormat) -> Self {
 		Self::create_path(&path);
 		Self {
-			path: Self::get_path_with_extension(path, format),
+			path: Self::get_path_with_extension(path, &format),
 			format,
 		}
 	}
@@ -193,7 +193,7 @@ impl File {
 	 * @param  format
 	 * @return PathBuf
 	 */
-	pub fn get_path_with_extension(path: PathBuf, format: FileFormat) -> PathBuf {
+	pub fn get_path_with_extension(path: PathBuf, format: &FileFormat) -> PathBuf {
 		match path.extension().and_then(OsStr::to_str) {
 			Some("*") | None => {
 				path.with_extension(format.to_string().to_lowercase())

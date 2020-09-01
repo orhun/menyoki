@@ -23,8 +23,11 @@ fn main() -> AppResult {
 	let args = Args::parse();
 	let settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
-		util::init_logger(args.occurrences_of("verbose"), settings.save.file.format)
-			.expect("Failed to initialize the logger");
+		util::init_logger(
+			args.occurrences_of("verbose"),
+			&settings.save.file.format,
+		)
+		.expect("Failed to initialize the logger");
 	}
 	settings.check();
 	let window = if settings.window_required {
