@@ -119,7 +119,7 @@ impl FileFormat {
 						PnmSubtype::Bitmap(_) => "pbm",
 						PnmSubtype::Graymap(_) => "pgm",
 						PnmSubtype::Pixmap(_) => "ppm",
-						PnmSubtype::ArbitraryMap => "pnm",
+						PnmSubtype::ArbitraryMap => "pam",
 					}))
 				} else if matches.is_present("bmp") {
 					Self::Bmp
