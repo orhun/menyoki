@@ -1,6 +1,7 @@
 use crate::args::parser::ArgParser;
 use image::png::CompressionType;
 use image::png::FilterType;
+use image::pnm::{PnmSubtype, SampleEncoding};
 
 /* PNG compression and filter settings */
 #[derive(Clone, Copy, Debug)]
@@ -103,6 +104,57 @@ impl JpgSettings {
 	}
 }
 
+/* PNM subtype settings */
+#[derive(Clone, Copy, Debug)]
+pub struct PnmSettings {
+	pub subtype: PnmSubtype,
+}
+
+/* Default initialization values for PnmSettings */
+impl Default for PnmSettings {
+	fn default() -> Self {
+		Self {
+			subtype: PnmSubtype::Pixmap(SampleEncoding::Binary),
+		}
+	}
+}
+
+impl PnmSettings {
+	/**
+	 * Create a new PnmSettings object.
+	 *
+	 * @param  subtype
+	 * @return PnmSettings
+	 */
+	pub fn new(subtype: PnmSubtype) -> Self {
+		Self { subtype }
+	}
+
+	/**
+	 * Create a PnmSettings object from parsed arguments.
+	 *
+	 * @param  parser
+	 * @return PnmSettings
+	 */
+	pub fn from_args(parser: ArgParser<'_>) -> Self {
+		match parser.args {
+			Some(matches) => {
+				let encoding = match matches.value_of("encoding") {
+					Some("ascii") => SampleEncoding::Ascii,
+					_ => SampleEncoding::Binary,
+				};
+				Self::new(match matches.value_of("format") {
+					Some("bitmap") => PnmSubtype::Bitmap(encoding),
+					Some("graymap") => PnmSubtype::Graymap(encoding),
+					Some("arbitrary") => PnmSubtype::ArbitraryMap,
+					_ => PnmSubtype::Pixmap(encoding),
+				})
+			}
+			None => Self::default(),
+		}
+	}
+}
+
 #[cfg(test)]
 mod tests {
 	use super::*;
@@ -157,5 +209,30 @@ mod tests {
 			JpgSettings::from_args(ArgParser::new(Some(&args))).quality
 		);
 		assert_eq!(90, JpgSettings::from_args(ArgParser::new(None)).quality);
+	}
+	#[test]
+	fn test_pnm_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("format").long("format").takes_value(true))
+			.arg(
+				Arg::with_name("encoding")
+					.long("encoding")
+					.takes_value(true),
+			)
+			.get_matches_from(vec![
+				"test",
+				"--format",
+				"graymap",
+				"--encoding",
+				"ascii",
+			]);
+		assert_eq!(
+			PnmSubtype::Graymap(SampleEncoding::Ascii),
+			PnmSettings::from_args(ArgParser::new(Some(&args))).subtype
+		);
+		assert_eq!(
+			PnmSubtype::Pixmap(SampleEncoding::Binary),
+			PnmSettings::from_args(ArgParser::new(None)).subtype
+		)
 	}
 }
