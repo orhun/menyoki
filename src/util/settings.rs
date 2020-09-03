@@ -80,7 +80,7 @@ mod tests {
 			]);
 		let save_settings = SaveSettings::from_args(
 			ArgParser::from_subcommand(&args, "save"),
-			FileFormat::from_args(&args),
+			FileFormat::from_args(&args, None),
 		);
 		assert!(save_settings.file.path.to_str().unwrap().contains("test_"));
 		assert_eq!(FileFormat::Jpg, save_settings.file.format);

@@ -99,7 +99,10 @@ impl FileFormat {
 	 * @param  pnm_subtype
 	 * @return FileFormat
 	 */
-	pub fn from_args<'a>(args: &'a ArgMatches<'a>, pnm_subtype: PnmSubtype) -> Self {
+	pub fn from_args<'a>(
+		args: &'a ArgMatches<'a>,
+		pnm_subtype: Option<PnmSubtype>,
+	) -> Self {
 		match args.subcommand_matches(if args.is_present("edit") {
 			"edit"
 		} else if args.is_present("split") {
@@ -116,10 +119,11 @@ impl FileFormat {
 					Self::Tiff
 				} else if matches.is_present("pnm") {
 					Self::Pnm(String::from(match pnm_subtype {
-						PnmSubtype::Bitmap(_) => "pbm",
-						PnmSubtype::Graymap(_) => "pgm",
-						PnmSubtype::Pixmap(_) => "ppm",
-						PnmSubtype::ArbitraryMap => "pam",
+						Some(PnmSubtype::Bitmap(_)) => "pbm",
+						Some(PnmSubtype::Graymap(_)) => "pgm",
+						Some(PnmSubtype::Pixmap(_)) => "ppm",
+						Some(PnmSubtype::ArbitraryMap) => "pam",
+						None => "pnm",
 					}))
 				} else if matches.is_present("bmp") {
 					Self::Bmp
@@ -250,7 +254,7 @@ mod tests {
 				File::get_default_path(&format!("t.{}", format))
 					.to_str()
 					.unwrap(),
-				File::from_format(FileFormat::from_args(&args))
+				File::from_format(FileFormat::from_args(&args, None))
 					.path
 					.to_str()
 					.unwrap()
@@ -258,8 +262,11 @@ mod tests {
 		}
 		assert_eq!(
 			"Gif",
-			FileFormat::from_args(&App::new("test").get_matches_from(vec!["test"]))
-				.to_string()
+			FileFormat::from_args(
+				&App::new("test").get_matches_from(vec!["test"]),
+				None
+			)
+			.to_string()
 		);
 		for info in vec!["", "date", "timestamp"] {
 			let args = App::new("test")
