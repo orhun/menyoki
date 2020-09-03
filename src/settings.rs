@@ -1,7 +1,7 @@
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
 use crate::gif::settings::{GifSettings, SplitSettings};
-use crate::image::settings::{JpgSettings, PngSettings};
+use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::RecordSettings;
 use crate::util::file::FileFormat;
 use crate::util::keys::ActionKeys;
@@ -19,6 +19,7 @@ pub struct AppSettings<'a> {
 	pub split: SplitSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
+	pub pnm: PnmSettings,
 	pub edit: EditSettings,
 	pub save: SaveSettings,
 	pub input_state: Option<&'static InputState>,
@@ -41,8 +42,9 @@ impl<'a> AppSettings<'a> {
 			SplitSettings::from_args(ArgParser::from_subcommand(args, "split"));
 		let png = PngSettings::from_args(ArgParser::from_subcommand(args, "png"));
 		let jpg = JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg"));
+		let pnm = PnmSettings::from_args(ArgParser::from_subcommand(args, "pnm"));
 		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
-		let save = Self::get_save_settings(args, &edit);
+		let save = Self::get_save_settings(args, &edit, &pnm);
 		let input_state = Self::get_input_state(window_required, &record);
 		Self {
 			args,
@@ -51,6 +53,7 @@ impl<'a> AppSettings<'a> {
 			split,
 			png,
 			jpg,
+			pnm,
 			edit,
 			save,
 			input_state,
@@ -102,11 +105,12 @@ impl<'a> AppSettings<'a> {
 	fn get_save_settings(
 		args: &'a ArgMatches<'a>,
 		edit: &EditSettings,
+		pnm: &PnmSettings,
 	) -> SaveSettings {
 		SaveSettings::from_args(
 			ArgParser::from_subcommand(args, "save"),
 			if edit.convert {
-				FileFormat::from_args(args)
+				FileFormat::from_args(args, Some(pnm.subtype))
 			} else {
 				FileFormat::from_str(
 					edit.path
@@ -115,7 +119,7 @@ impl<'a> AppSettings<'a> {
 						.to_str()
 						.unwrap_or_default(),
 				)
-				.unwrap_or_else(|_| FileFormat::from_args(args))
+				.unwrap_or_else(|_| FileFormat::from_args(args, Some(pnm.subtype)))
 			},
 		)
 	}
