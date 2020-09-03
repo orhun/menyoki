@@ -603,6 +603,14 @@ where
 				),
 		)
 		.subcommand(
+			SubCommand::with_name("tga")
+				.about("Change the TGA encoder settings")
+				.help_message("Print help information")
+				.subcommand(
+					Self::get_save_args(FileFormat::Tga).settings(&save_settings),
+				),
+		)
+		.subcommand(
 			SubCommand::with_name("pnm")
 				.about("Change the PNM encoder settings")
 				.help_message("Print help information")

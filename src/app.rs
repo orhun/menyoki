@@ -16,6 +16,7 @@ use image::io::Reader;
 use image::jpeg::JpegEncoder;
 use image::png::PngEncoder;
 use image::pnm::{PnmEncoder, PnmSubtype};
+use image::tga::TgaEncoder;
 use image::tiff::TiffEncoder;
 use image::ImageEncoder;
 use image::{ColorType, ExtendedColorType};
@@ -321,6 +322,11 @@ where
 				TiffEncoder::new(output),
 				ExtendedColorType::Rgba8,
 			),
+			FileFormat::Tga => self.save_image(
+				image,
+				TgaEncoder::new(output),
+				ExtendedColorType::Rgba8,
+			),
 			FileFormat::Pnm(_) => self.save_image(
 				image,
 				PnmEncoder::new(output).with_subtype(self.settings.pnm.subtype),
@@ -424,6 +430,7 @@ mod tests {
 			FileFormat::Bmp,
 			FileFormat::Ico,
 			FileFormat::Tiff,
+			FileFormat::Tga,
 			FileFormat::Pnm(String::from("ppm")),
 			FileFormat::Ff,
 		] {
