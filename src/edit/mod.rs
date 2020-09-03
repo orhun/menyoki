@@ -206,7 +206,7 @@ impl<'a> ImageOps<'a> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use image::{ColorType, Rgba, RgbaImage};
+	use image::{ExtendedColorType, Rgba, RgbaImage};
 	#[test]
 	fn test_edit_mod() {
 		let mut image = RgbaImage::new(32, 32);
@@ -238,7 +238,7 @@ mod tests {
 		);
 		assert_eq!(
 			width * height * 4,
-			image.get_data(ColorType::Rgba8).len() as u32
+			image.get_data(ExtendedColorType::Rgba8).len() as u32
 		);
 	}
 }

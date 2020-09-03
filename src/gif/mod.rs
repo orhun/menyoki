@@ -11,7 +11,7 @@ use crate::image::Image;
 use crate::util;
 use crate::util::state::InputState;
 use gif::{Encoder as GifEncoder, Frame, Repeat, SetParameter};
-use image::ColorType;
+use image::ExtendedColorType;
 use std::convert::TryInto;
 use std::io::{self, Error, Write};
 
@@ -90,7 +90,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 			let mut frame = Frame::from_rgba_speed(
 				image.geometry.width.try_into().unwrap_or_default(),
 				image.geometry.height.try_into().unwrap_or_default(),
-				&mut image.get_data(ColorType::Rgba8),
+				&mut image.get_data(ExtendedColorType::Rgba8),
 				speed,
 			);
 			frame.delay = (1e2 / self.fps as f32) as u16;

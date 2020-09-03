@@ -97,7 +97,7 @@ mod tests {
 	use crate::image::geometry::Geometry;
 	use crate::record::Record;
 	use crate::util::state::InputState;
-	use image::ColorType;
+	use image::ExtendedColorType;
 	#[test]
 	#[ignore]
 	fn test_x11_mod() {
@@ -135,7 +135,7 @@ mod tests {
 				.unwrap()
 				.get_image()
 				.unwrap()
-				.get_data(ColorType::Rgb8)
+				.get_data(ExtendedColorType::Rgb8)
 				.len()
 		);
 		unsafe {

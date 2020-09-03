@@ -311,7 +311,7 @@ mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
 	use crate::x11::display::Display;
-	use image::ColorType;
+	use image::ExtendedColorType;
 	#[test]
 	#[ignore]
 	fn test_window_mod() {
@@ -337,7 +337,11 @@ mod tests {
 		assert_eq!("root-window", window.get_name().unwrap());
 		assert_eq!(
 			1366 * 768 * 3,
-			window.get_image().unwrap().get_data(ColorType::Rgb8).len()
+			window
+				.get_image()
+				.unwrap()
+				.get_data(ExtendedColorType::Rgb8)
+				.len()
 		);
 		window.release();
 	}

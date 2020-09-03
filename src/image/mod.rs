@@ -4,13 +4,16 @@ pub mod settings;
 use std::fmt;
 
 use crate::image::geometry::Geometry;
-use image::{Bgra, ColorType};
+use image::{Bgra, ExtendedColorType};
 #[cfg(feature = "ski")]
 use {
 	imgref::{Img, ImgVec},
 	rgb::RGBA8,
 	std::convert::TryInto,
 };
+
+/* Coefficients for transforming sRGB to CIE Y (luminance value) */
+const SRGB_LUMA: [f32; 3] = [0.2126, 0.7152, 0.0722];
 
 /* Image data and geometric properties */
 #[derive(Clone)]
@@ -58,12 +61,22 @@ impl Image {
 	 * @param  color_type
 	 * @return Vector of u8
 	 */
-	pub fn get_data(&self, color_type: ColorType) -> Vec<u8> {
+	pub fn get_data(&self, color_type: ExtendedColorType) -> Vec<u8> {
 		self.data.iter().fold(Vec::<u8>::new(), |mut data, bgra| {
 			let alpha = if self.alpha_channel { bgra[3] } else { 255 };
 			data.extend(&match color_type {
-				ColorType::Rgb8 => vec![bgra[2], bgra[1], bgra[0]],
-				ColorType::Rgba16 => vec![
+				ExtendedColorType::L1 | ExtendedColorType::L8 => vec![{
+					let y = (SRGB_LUMA[0] * bgra[2] as f32
+						+ SRGB_LUMA[1] * bgra[1] as f32
+						+ SRGB_LUMA[2] * bgra[0] as f32) as u8;
+					if color_type == ExtendedColorType::L1 {
+						(y >> 7) * 0xFF
+					} else {
+						y
+					}
+				}],
+				ExtendedColorType::Rgb8 => vec![bgra[2], bgra[1], bgra[0]],
+				ExtendedColorType::Rgba16 => vec![
 					bgra[2], bgra[2], bgra[1], bgra[1], bgra[0], bgra[0], alpha,
 					alpha,
 				],
@@ -115,11 +128,15 @@ mod tests {
 			"Image { data_len: 2, alpha_channel: false, \
 			geometry: Geometry { x: 0, y: 0, width: 200, height: 200 } }"
 		);
-		assert_eq!(6, image.get_data(ColorType::Rgb8).len());
-		assert_eq!(8, image.get_data(ColorType::Rgba8).len());
-		assert_eq!(16, image.get_data(ColorType::Rgba16).len());
-		assert_eq!(255, image.get_data(ColorType::Rgb8)[4]);
-		assert_eq!(255, image.get_data(ColorType::Rgba8)[5]);
-		assert_eq!(128, image.get_data(ColorType::Rgba16)[5]);
+		assert_eq!(2, image.get_data(ExtendedColorType::L1).len());
+		assert_eq!(2, image.get_data(ExtendedColorType::L8).len());
+		assert_eq!(6, image.get_data(ExtendedColorType::Rgb8).len());
+		assert_eq!(8, image.get_data(ExtendedColorType::Rgba8).len());
+		assert_eq!(16, image.get_data(ExtendedColorType::Rgba16).len());
+		assert_eq!(255, image.get_data(ExtendedColorType::L1)[0]);
+		assert_eq!(255, image.get_data(ExtendedColorType::L8)[1]);
+		assert_eq!(255, image.get_data(ExtendedColorType::Rgb8)[4]);
+		assert_eq!(255, image.get_data(ExtendedColorType::Rgba8)[5]);
+		assert_eq!(128, image.get_data(ExtendedColorType::Rgba16)[5]);
 	}
 }
