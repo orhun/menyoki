@@ -15,9 +15,10 @@ use image::ico::IcoEncoder;
 use image::io::Reader;
 use image::jpeg::JpegEncoder;
 use image::png::PngEncoder;
+use image::pnm::{PnmEncoder, PnmSubtype};
 use image::tiff::TiffEncoder;
-use image::ColorType;
 use image::ImageEncoder;
+use image::{ColorType, ExtendedColorType};
 use std::fmt::Debug;
 use std::fs::{self, File};
 use std::io::{self, Error, Read, Seek, Write};
@@ -73,7 +74,7 @@ where
 			info!(
 				"Frames saved to {:?} in {} format.",
 				self.settings.split.dir,
-				self.settings.save.file.format.to_string().to_uppercase(),
+				self.settings.save.file.format.to_extension().to_uppercase(),
 			);
 		} else {
 			self.save_output(
@@ -82,7 +83,7 @@ where
 			)?;
 			info!(
 				"{} saved to: {:?} ({})",
-				self.settings.save.file.format.to_string().to_uppercase(),
+				self.settings.save.file.format.to_extension().to_uppercase(),
 				self.settings.save.file.path,
 				ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 			);
@@ -260,7 +261,7 @@ where
 		for i in 0..frames.len() {
 			let path = FileUtil::get_path_with_extension(
 				self.settings.split.dir.join(format!("frame_{}", i,)),
-				self.settings.save.file.format,
+				&self.settings.save.file.format,
 			);
 			debug!("Saving to {:?}\r", path);
 			io::stdout().flush().expect("Failed to flush stdout");
@@ -295,7 +296,7 @@ where
 					self.settings.png.compression,
 					self.settings.png.filter,
 				),
-				ColorType::Rgba8,
+				ExtendedColorType::Rgba8,
 			),
 			FileFormat::Jpg => self.save_image(
 				image,
@@ -303,23 +304,37 @@ where
 					&mut output,
 					self.settings.jpg.quality,
 				),
-				ColorType::Rgb8,
+				ExtendedColorType::Rgb8,
 			),
 			FileFormat::Bmp => self.save_image(
 				image,
 				BmpEncoder::new(&mut output),
-				ColorType::Rgba8,
+				ExtendedColorType::Rgba8,
 			),
-			FileFormat::Ico => {
-				self.save_image(image, IcoEncoder::new(output), ColorType::Rgba8)
-			}
-			FileFormat::Tiff => {
-				self.save_image(image, TiffEncoder::new(output), ColorType::Rgba8)
-			}
+			FileFormat::Ico => self.save_image(
+				image,
+				IcoEncoder::new(output),
+				ExtendedColorType::Rgba8,
+			),
+			FileFormat::Tiff => self.save_image(
+				image,
+				TiffEncoder::new(output),
+				ExtendedColorType::Rgba8,
+			),
+			FileFormat::Pnm(_) => self.save_image(
+				image,
+				PnmEncoder::new(output).with_subtype(self.settings.pnm.subtype),
+				match self.settings.pnm.subtype {
+					PnmSubtype::Bitmap(_) => ExtendedColorType::L1,
+					PnmSubtype::Graymap(_) => ExtendedColorType::L8,
+					PnmSubtype::Pixmap(_) => ExtendedColorType::Rgb8,
+					PnmSubtype::ArbitraryMap => ExtendedColorType::Rgba8,
+				},
+			),
 			FileFormat::Ff => self.save_image(
 				image,
 				FarbfeldEncoder::new(output),
-				ColorType::Rgba16,
+				ExtendedColorType::Rgba16,
 			),
 			_ => {}
 		}
@@ -337,13 +352,13 @@ where
 		self,
 		image: Option<Image>,
 		encoder: Encoder,
-		color_type: ColorType,
+		color_type: ExtendedColorType,
 	) {
 		let image = image.expect("Failed to get the image");
 		if !self.settings.args.is_present("split") {
 			info!(
 				"Saving the image as {}...",
-				self.settings.save.file.format.to_string().to_uppercase()
+				self.settings.save.file.format.to_extension().to_uppercase()
 			);
 			debug!("{:?}", image);
 			debug!("{:?}", self.settings.png);
@@ -355,7 +370,12 @@ where
 				&image.get_data(color_type),
 				image.geometry.width,
 				image.geometry.height,
-				color_type,
+				match color_type {
+					ExtendedColorType::L1 | ExtendedColorType::L8 => ColorType::L8,
+					ExtendedColorType::Rgb8 => ColorType::Rgb8,
+					ExtendedColorType::Rgba16 => ColorType::Rgba16,
+					_ => ColorType::Rgba8,
+				},
 			)
 			.expect("Failed to encode the image");
 	}
@@ -403,6 +423,7 @@ mod tests {
 			FileFormat::Bmp,
 			FileFormat::Ico,
 			FileFormat::Tiff,
+			FileFormat::Pnm(String::from("ppm")),
 			FileFormat::Ff,
 		] {
 			settings.save.file.format = format;
