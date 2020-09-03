@@ -603,6 +603,40 @@ where
 				),
 		)
 		.subcommand(
+			SubCommand::with_name("pnm")
+				.about("Change the PNM encoder settings")
+				.help_message("Print help information")
+				.arg(
+					Arg::with_name("format")
+						.short("f")
+						.long("format")
+						.value_name("FORMAT")
+						.help("Set the PNM format")
+						.possible_values(&[
+							"bitmap",
+							"graymap",
+							"pixmap",
+							"arbitrary",
+						])
+						.default_value("pixmap")
+						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("encoding")
+						.short("e")
+						.long("encoding")
+						.value_name("ENCODING")
+						.help("Set the encoding for storing the samples")
+						.possible_values(&["binary", "ascii"])
+						.default_value("binary")
+						.takes_value(true),
+				)
+				.subcommand(
+					Self::get_save_args(FileFormat::Pnm(String::from("ppm")))
+						.settings(&save_settings),
+				),
+		)
+		.subcommand(
 			SubCommand::with_name("ff")
 				.about("Change the farbfeld encoder settings")
 				.help_message("Print help information")
