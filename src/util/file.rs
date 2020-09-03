@@ -49,7 +49,7 @@ impl fmt::Display for FileInfo<'_> {
 }
 
 /* Format of the output file */
-#[derive(Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum FileFormat {
 	Any,
 	Gif,

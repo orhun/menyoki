@@ -416,7 +416,6 @@ mod tests {
 	use super::*;
 	use crate::args::Args;
 	use crate::record::window::TestWindow;
-	use crate::util::file::FileFormat;
 	use std::env;
 	use std::path::PathBuf;
 	#[test]
@@ -434,11 +433,13 @@ mod tests {
 			FileFormat::Pnm(String::from("ppm")),
 			FileFormat::Ff,
 		] {
-			settings.save.file.format = format;
+			settings.save.file.format = format.clone();
 			let app = App::new(Some(window), &settings);
-			app.save_output((app.get_image(), None), File::create("test")?)?;
-			app.edit_image(Path::new("test"));
-			fs::remove_file("test")?;
+			let path =
+				FileUtil::get_path_with_extension(PathBuf::from("test.*"), &format);
+			app.save_output((app.get_image(), None), File::create(&path)?)?;
+			app.edit_image(&path);
+			fs::remove_file(path)?;
 		}
 		App::new(Some(window), &settings).start()
 	}
