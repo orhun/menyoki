@@ -363,6 +363,7 @@ where
 			debug!("{:?}", image);
 			debug!("{:?}", self.settings.png);
 			debug!("{:?}", self.settings.jpg);
+			debug!("{:?}", self.settings.pnm);
 			debug!("Color type: {:?}", color_type);
 		}
 		encoder
