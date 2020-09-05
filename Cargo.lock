@@ -298,6 +298,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "dominant_color"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2494b5d589b485e8b75ef5e81b4dc271fb0d5814132c308d5d11f0de9b300d96"
+
+[[package]]
 name = "dunce"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -428,6 +434,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "hex"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "644f9158b2f133fd50f5fb3242878846d9eb792e445c893805ff0e3824006e35"
+
+[[package]]
 name = "image"
 version = "0.23.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -485,6 +497,15 @@ checksum = "cc797adac5f083b8ff0ca6f6294a999393d76e197c36488e2ef732c4715f6fa3"
 dependencies = [
  "byteorder",
  "rayon",
+]
+
+[[package]]
+name = "kamadak-exif"
+version = "0.5.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "524f22a6373f7d4f4e7caa44d54efbaf1e92c09d41f38647db2784ebce610aa8"
+dependencies = [
+ "mutate_once",
 ]
 
 [[package]]
@@ -556,6 +577,12 @@ checksum = "791daaae1ed6889560f8c4359194f56648355540573244a5448a83ba1ecc7435"
 dependencies = [
  "adler32",
 ]
+
+[[package]]
+name = "mutate_once"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "16cf681a23b4d0a43fc35024c176437f9dcd818db34e0f42ab456a0ee5ad497b"
 
 [[package]]
 name = "natord"
@@ -807,12 +834,15 @@ dependencies = [
  "ctrlc",
  "device_query",
  "dirs",
+ "dominant_color",
  "enigo",
  "fern",
  "gif",
  "gifski",
+ "hex",
  "image",
  "imgref",
+ "kamadak-exif",
  "log",
  "natord",
  "rgb",
