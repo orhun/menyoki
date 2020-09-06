@@ -17,6 +17,7 @@ pub struct Args<'a, 'b> {
 	make: App<'a, 'b>,
 	capture: App<'a, 'b>,
 	edit: App<'a, 'b>,
+	analyze: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -35,6 +36,7 @@ where
 			make: Self::get_gif_args(GifMode::Make),
 			capture: Self::get_record_args(true),
 			edit: Self::get_edit_args(),
+			analyze: Self::get_analyze_args(),
 		}
 	}
 
@@ -102,6 +104,10 @@ where
 				),
 				true,
 			))
+			.subcommand(
+				args.analyze
+					.subcommand(Self::get_save_args(FileFormat::Txt)),
+			)
 			.get_matches()
 	}
 
@@ -515,6 +521,23 @@ where
 					.value_name("DIRECTORY")
 					.help("Set the output directory")
 					.takes_value(true),
+			)
+	}
+
+	/**
+	 * Get the image analysis arguments.
+	 *
+	 * @return App
+	 */
+	fn get_analyze_args() -> App<'a, 'b> {
+		SubCommand::with_name("analyze")
+			.about("Analyze an image")
+			.help_message("Print help information")
+			.arg(
+				Arg::with_name("file")
+					.value_name("FILE")
+					.help("Set the image file")
+					.required(true),
 			)
 	}
 
