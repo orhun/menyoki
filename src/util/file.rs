@@ -61,6 +61,7 @@ pub enum FileFormat {
 	Tga,
 	Pnm(String),
 	Ff,
+	Txt,
 }
 
 /* Display implementation for user-facing output */
@@ -88,6 +89,7 @@ impl FromStr for FileFormat {
 			"tga" => Ok(Self::Tga),
 			"pnm" => Ok(Self::Pnm(String::from("ppm"))),
 			"ff" => Ok(Self::Ff),
+			"txt" => Ok(Self::Txt),
 			_ => Err("Unrecognized file format"),
 		}
 	}
@@ -109,11 +111,19 @@ impl FileFormat {
 			"edit"
 		} else if args.is_present("split") {
 			"split"
+		} else if args.is_present("analyze") {
+			"analyze"
 		} else {
 			"capture"
 		}) {
 			Some(matches) => {
-				if matches.is_present("gif") {
+				if args.is_present("analyze") {
+					if matches.is_present("save") {
+						Self::Txt
+					} else {
+						Self::Any
+					}
+				} else if matches.is_present("gif") {
 					Self::Gif
 				} else if matches.is_present("ff") {
 					Self::Ff
