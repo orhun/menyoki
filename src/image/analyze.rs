@@ -64,6 +64,16 @@ impl ImageAnalyzer {
 			String::from("(?)")
 		}
 	}
+
+	/**
+	 * Get the formatted width and height of the image.
+	 *
+	 * @return dimensions
+	 */
+	pub fn get_image_dimensions(&self) -> String {
+		let (width, height) = self.image.clone().into_rgba().dimensions();
+		format!("{}x{}", width, height)
+	}
 }
 
 #[cfg(test)]
@@ -108,8 +118,7 @@ mod tests {
 			ByteSize(analyzer.metadata.len()).to_string_as(false)
 		);
 		assert_eq!(ColorType::Rgba8, analyzer.image.color());
-		let (width, height) = analyzer.image.clone().into_rgba().dimensions();
-		assert_eq!("1x2", format!("{}x{}", width, height));
+		assert_eq!("1x2", analyzer.get_image_dimensions());
 		let colors =
 			dominant_color::get_colors(&analyzer.image.into_rgba().into_vec(), true)
 				.chunks(4)
