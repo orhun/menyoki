@@ -3,10 +3,8 @@ use chrono::{DateTime, Utc};
 use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
 use image::io::Reader as ImageReader;
-use image::ColorType;
-use image::DynamicImage;
-use std::fs::File;
-use std::fs::{self, Metadata};
+use image::{ColorType, DynamicImage, ImageBuffer, Rgba};
+use std::fs::{self, File, Metadata};
 use std::io::BufReader;
 use std::path::Path;
 
@@ -48,36 +46,51 @@ mod tests {
 	use super::*;
 	#[test]
 	fn test_analyze_mod() {
-		let analyzer = ImageAnalyzer::new(Path::new("t.png"));
+		let file_name = "test.png";
+		ImageBuffer::<Rgba<u8>, Vec<u8>>::from_vec(
+			1,
+			2,
+			vec![255, 255, 255, 255, 0, 0, 0, 255],
+		)
+		.unwrap()
+		.save(file_name)
+		.unwrap();
+		let analyzer = ImageAnalyzer::new(Path::new(file_name));
 		assert_eq!(
-			"2020-07-05 12:50:22.935074397 UTC",
+			Utc::now().format("%F").to_string(),
 			match analyzer.metadata.created() {
 				Ok(d) => DateTime::<Utc>::from(d).to_string(),
 				Err(_) => String::from("(?)"),
 			}
+			.split_whitespace()
+			.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(
-			"2020-07-24 13:08:45.999968059 UTC",
+			Utc::now().format("%F").to_string(),
 			match analyzer.metadata.modified() {
 				Ok(d) => DateTime::<Utc>::from(d).to_string(),
 				Err(_) => String::from("(?)"),
 			}
+			.split_whitespace()
+			.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(
-			"2020-09-05 09:23:46.631859511 UTC",
+			Utc::now().format("%F").to_string(),
 			match analyzer.metadata.accessed() {
 				Ok(d) => DateTime::<Utc>::from(d).to_string(),
 				Err(_) => String::from("(?)"),
 			}
+			.split_whitespace()
+			.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(false, analyzer.metadata.permissions().readonly());
 		assert_eq!(
-			"672.9 KB",
+			"73 B",
 			ByteSize(analyzer.metadata.len()).to_string_as(false)
 		);
 		assert_eq!(ColorType::Rgba8, analyzer.image.color());
 		let (width, height) = analyzer.image.clone().into_rgba().dimensions();
-		assert_eq!("920x485", format!("{}x{}", width, height));
+		assert_eq!("1x2", format!("{}x{}", width, height));
 		let colors =
 			dominant_color::get_colors(&analyzer.image.into_rgba().into_vec(), true)
 				.chunks(4)
@@ -85,9 +98,8 @@ mod tests {
 					format!("#{}", rgba.encode_hex::<String>()).to_uppercase()
 				})
 				.collect::<Vec<String>>();
-		assert_eq!(
-			"#2A3D41FF-#C247B2FF-#E3CBE5FF-#60509BFF-#9D356FFF",
-			colors.join("-")
-		);
+		assert_eq!("#000000FF-#FFFFFFFF", colors.join("-"));
+		assert!(analyzer.exif.is_none());
+		fs::remove_file(file_name).unwrap();
 	}
 }
