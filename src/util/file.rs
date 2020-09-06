@@ -67,11 +67,7 @@ pub enum FileFormat {
 /* Display implementation for user-facing output */
 impl fmt::Display for FileFormat {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		if self != &Self::Any {
-			write!(f, "{:?}", self)
-		} else {
-			write!(f, "*")
-		}
+		write!(f, "{:?}", self)
 	}
 }
 
@@ -160,6 +156,7 @@ impl FileFormat {
 	 */
 	pub fn to_extension(&self) -> String {
 		match self {
+			Self::Any => String::from("*"),
 			Self::Pnm(v) => v.to_string(),
 			_ => self.to_string(),
 		}
