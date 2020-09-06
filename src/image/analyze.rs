@@ -74,6 +74,19 @@ impl ImageAnalyzer {
 		let (width, height) = self.image.clone().into_rgba().dimensions();
 		format!("{}x{}", width, height)
 	}
+
+	/**
+	 * Get dominant colors of the image.
+	 *
+	 * @return colors
+	 */
+	pub fn get_dominant_colors(&self) -> String {
+		dominant_color::get_colors(&self.image.clone().into_rgba().into_vec(), true)
+			.chunks(4)
+			.map(|rgba| format!("#{}", rgba.encode_hex::<String>()).to_uppercase())
+			.collect::<Vec<String>>()
+			.join("-")
+	}
 }
 
 #[cfg(test)]
@@ -119,14 +132,7 @@ mod tests {
 		);
 		assert_eq!(ColorType::Rgba8, analyzer.image.color());
 		assert_eq!("1x2", analyzer.get_image_dimensions());
-		let colors =
-			dominant_color::get_colors(&analyzer.image.into_rgba().into_vec(), true)
-				.chunks(4)
-				.map(|rgba| {
-					format!("#{}", rgba.encode_hex::<String>()).to_uppercase()
-				})
-				.collect::<Vec<String>>();
-		assert_eq!("#000000FF-#FFFFFFFF", colors.join("-"));
+		assert_eq!("#000000FF-#FFFFFFFF", analyzer.get_dominant_colors());
 		assert!(analyzer.exif.is_none());
 		fs::remove_file(file_name).unwrap();
 	}
