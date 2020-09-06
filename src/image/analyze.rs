@@ -8,6 +8,13 @@ use std::fs::{self, File, Metadata};
 use std::io::BufReader;
 use std::path::Path;
 
+/* Time information of a file */
+pub enum TimeInfo {
+	Created,
+	Modified,
+	Accessed,
+}
+
 /* Analyzer for image files */
 pub struct ImageAnalyzer {
 	pub image: DynamicImage,
@@ -39,6 +46,24 @@ impl ImageAnalyzer {
 				.ok(),
 		}
 	}
+
+	/**
+	 * Get the time information of the file.
+	 *
+	 * @param  info
+	 * @return date
+	 */
+	pub fn get_time_info(&self, info: TimeInfo) -> String {
+		if let Ok(d) = match info {
+			TimeInfo::Created => self.metadata.created(),
+			TimeInfo::Modified => self.metadata.modified(),
+			TimeInfo::Accessed => self.metadata.accessed(),
+		} {
+			DateTime::<Utc>::from(d).to_string()
+		} else {
+			String::from("(?)")
+		}
+	}
 }
 
 #[cfg(test)]
@@ -58,30 +83,24 @@ mod tests {
 		let analyzer = ImageAnalyzer::new(Path::new(file_name));
 		assert_eq!(
 			Utc::now().format("%F").to_string(),
-			match analyzer.metadata.created() {
-				Ok(d) => DateTime::<Utc>::from(d).to_string(),
-				Err(_) => String::from("(?)"),
-			}
-			.split_whitespace()
-			.collect::<Vec<&str>>()[0]
+			analyzer
+				.get_time_info(TimeInfo::Created)
+				.split_whitespace()
+				.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(
 			Utc::now().format("%F").to_string(),
-			match analyzer.metadata.modified() {
-				Ok(d) => DateTime::<Utc>::from(d).to_string(),
-				Err(_) => String::from("(?)"),
-			}
-			.split_whitespace()
-			.collect::<Vec<&str>>()[0]
+			analyzer
+				.get_time_info(TimeInfo::Modified)
+				.split_whitespace()
+				.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(
 			Utc::now().format("%F").to_string(),
-			match analyzer.metadata.accessed() {
-				Ok(d) => DateTime::<Utc>::from(d).to_string(),
-				Err(_) => String::from("(?)"),
-			}
-			.split_whitespace()
-			.collect::<Vec<&str>>()[0]
+			analyzer
+				.get_time_info(TimeInfo::Accessed)
+				.split_whitespace()
+				.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(false, analyzer.metadata.permissions().readonly());
 		assert_eq!(
