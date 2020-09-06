@@ -10,12 +10,13 @@ enum GifMode {
 	Make,
 }
 
-/* Command-line arguments */
+/* Command line arguments */
 pub struct Args<'a, 'b> {
 	record: App<'a, 'b>,
+	split: App<'a, 'b>,
+	make: App<'a, 'b>,
 	capture: App<'a, 'b>,
 	edit: App<'a, 'b>,
-	split: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
@@ -30,9 +31,10 @@ where
 	fn init() -> Self {
 		Self {
 			record: Self::get_record_args(false),
+			split: Self::get_split_args(),
+			make: Self::get_gif_args(GifMode::Make),
 			capture: Self::get_record_args(true),
 			edit: Self::get_edit_args(),
-			split: Self::get_split_args(),
 		}
 	}
 
@@ -91,10 +93,7 @@ where
 					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
 			.subcommand(Self::get_image_args(args.split, false))
-			.subcommand(
-				Self::get_gif_args(GifMode::Make)
-					.subcommand(Self::get_save_args(FileFormat::Gif)),
-			)
+			.subcommand(args.make.subcommand(Self::get_save_args(FileFormat::Gif)))
 			.subcommand(Self::get_image_args(args.capture, true))
 			.subcommand(Self::get_image_args(
 				args.edit.subcommand(
