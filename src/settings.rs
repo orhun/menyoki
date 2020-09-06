@@ -107,10 +107,11 @@ impl<'a> AppSettings<'a> {
 		edit: &EditSettings,
 		pnm: &PnmSettings,
 	) -> SaveSettings {
+		let format = FileFormat::from_args(args, Some(pnm.subtype));
 		SaveSettings::from_args(
 			ArgParser::from_subcommand(args, "save"),
 			if edit.convert {
-				FileFormat::from_args(args, Some(pnm.subtype))
+				format
 			} else {
 				FileFormat::from_str(
 					edit.path
@@ -119,7 +120,7 @@ impl<'a> AppSettings<'a> {
 						.to_str()
 						.unwrap_or_default(),
 				)
-				.unwrap_or_else(|_| FileFormat::from_args(args, Some(pnm.subtype)))
+				.unwrap_or(format)
 			},
 		)
 	}
