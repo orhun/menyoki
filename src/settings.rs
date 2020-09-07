@@ -1,3 +1,4 @@
+use crate::analyze::settings::AnalyzeSettings;
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
 use crate::gif::settings::{GifSettings, SplitSettings};
@@ -21,6 +22,7 @@ pub struct AppSettings<'a> {
 	pub jpg: JpgSettings,
 	pub pnm: PnmSettings,
 	pub edit: EditSettings,
+	pub analyze: AnalyzeSettings,
 	pub save: SaveSettings,
 	pub input_state: Option<&'static InputState>,
 	pub window_required: bool,
@@ -44,6 +46,8 @@ impl<'a> AppSettings<'a> {
 		let jpg = JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg"));
 		let pnm = PnmSettings::from_args(ArgParser::from_subcommand(args, "pnm"));
 		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
+		let analyze =
+			AnalyzeSettings::from_args(ArgParser::from_subcommand(args, "analyze"));
 		let save = Self::get_save_settings(args, &edit, &pnm);
 		let input_state = Self::get_input_state(window_required, &record);
 		Self {
@@ -55,6 +59,7 @@ impl<'a> AppSettings<'a> {
 			jpg,
 			pnm,
 			edit,
+			analyze,
 			save,
 			input_state,
 			window_required,

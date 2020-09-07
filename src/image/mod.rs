@@ -2,7 +2,6 @@ pub mod geometry;
 pub mod padding;
 pub mod settings;
 use std::fmt;
-pub mod analyze;
 
 use crate::image::geometry::Geometry;
 use image::{Bgra, ExtendedColorType};

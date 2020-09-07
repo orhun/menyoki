@@ -1,3 +1,5 @@
+pub mod settings;
+
 use bytesize::ByteSize;
 use chrono::{DateTime, Utc};
 use exif::{Exif, Reader as ExifReader};
