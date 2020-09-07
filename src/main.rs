@@ -4,6 +4,7 @@
 #[macro_use]
 extern crate log;
 
+mod analyze;
 mod app;
 mod args;
 mod edit;

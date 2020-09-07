@@ -87,6 +87,8 @@ impl ImageAnalyzer {
 			.collect::<Vec<String>>()
 			.join("-")
 	}
+
+	pub fn print_report() {}
 }
 
 #[cfg(test)]
