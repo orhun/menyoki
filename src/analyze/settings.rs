@@ -48,8 +48,8 @@ impl AnalyzeSettings {
 	 *
 	 * @return ImageAnalyzer
 	 */
-	pub fn get_analyzer(&self) -> ImageAnalyzer {
-		ImageAnalyzer::new(&self.file)
+	pub fn get_analyzer(&self) -> ImageAnalyzer<'_> {
+		ImageAnalyzer::new(self)
 	}
 }
 

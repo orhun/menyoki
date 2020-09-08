@@ -1,5 +1,6 @@
 pub mod settings;
 
+use crate::analyze::settings::AnalyzeSettings;
 use bytesize::ByteSize;
 use chrono::{DateTime, Utc};
 use exif::{Exif, Reader as ExifReader};
@@ -8,7 +9,6 @@ use image::io::Reader as ImageReader;
 use image::{DynamicImage, ImageFormat};
 use std::fs::{self, File, Metadata};
 use std::io::BufReader;
-use std::path::{Path, PathBuf};
 
 /* Time information of a file */
 pub enum TimeInfo {
@@ -18,37 +18,37 @@ pub enum TimeInfo {
 }
 
 /* Analyzer for image files */
-pub struct ImageAnalyzer {
-	path: PathBuf,
+pub struct ImageAnalyzer<'a> {
 	format: Option<ImageFormat>,
 	image: DynamicImage,
 	metadata: Metadata,
 	exif: Option<Exif>,
+	settings: &'a AnalyzeSettings,
 }
 
-impl ImageAnalyzer {
+impl<'a> ImageAnalyzer<'a> {
 	/**
 	 * Create a new ImageAnalyzer object.
 	 *
-	 * @param  path
+	 * @param  settings
 	 * @return ImageAnalyzer
 	 */
-	pub fn new(path: &Path) -> Self {
-		let reader = ImageReader::open(path)
+	pub fn new(settings: &'a AnalyzeSettings) -> Self {
+		let reader = ImageReader::open(&settings.file)
 			.expect("File not found")
 			.with_guessed_format()
 			.expect("File format not supported");
 		Self {
-			path: path.to_path_buf(),
 			format: reader.format(),
 			image: reader.decode().expect("Failed to decode the image"),
-			metadata: fs::metadata(path)
+			metadata: fs::metadata(&settings.file)
 				.expect("Failed to get information about the file"),
 			exif: ExifReader::new()
 				.read_from_container(&mut BufReader::new(
-					File::open(path).expect("File not found"),
+					File::open(&settings.file).expect("File not found"),
 				))
 				.ok(),
+			settings,
 		}
 	}
 
@@ -122,7 +122,7 @@ impl ImageAnalyzer {
 			\n  Main Colors:\
 			\n   \u{2022} {}\n\
 			",
-			self.path,
+			self.settings.file,
 			self.get_file_size(),
 			if self.metadata.permissions().readonly() {
 				" [readonly]"
