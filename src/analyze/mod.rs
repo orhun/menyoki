@@ -167,6 +167,7 @@ impl<'a> ImageAnalyzer<'a> {
 mod tests {
 	use super::*;
 	use image::{ColorType, ImageBuffer, Rgba};
+	use std::path::PathBuf;
 	#[test]
 	fn test_analyze_mod() {
 		let file_name = "test.png";
@@ -178,7 +179,8 @@ mod tests {
 		.unwrap()
 		.save(file_name)
 		.unwrap();
-		let analyzer = ImageAnalyzer::new(Path::new(file_name));
+		let settings = AnalyzeSettings::new(PathBuf::from(file_name));
+		let analyzer = ImageAnalyzer::new(&settings);
 		assert_eq!("73 B", analyzer.get_file_size());
 		assert_eq!(
 			Utc::now().format("%F").to_string(),
