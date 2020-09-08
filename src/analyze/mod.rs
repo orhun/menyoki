@@ -5,10 +5,10 @@ use chrono::{DateTime, Utc};
 use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
 use image::io::Reader as ImageReader;
-use image::{ColorType, DynamicImage, ImageBuffer, Rgba};
+use image::{DynamicImage, ImageFormat};
 use std::fs::{self, File, Metadata};
 use std::io::BufReader;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 /* Time information of a file */
 pub enum TimeInfo {
@@ -19,9 +19,11 @@ pub enum TimeInfo {
 
 /* Analyzer for image files */
 pub struct ImageAnalyzer {
-	pub image: DynamicImage,
-	pub metadata: Metadata,
-	pub exif: Option<Exif>,
+	path: PathBuf,
+	format: Option<ImageFormat>,
+	image: DynamicImage,
+	metadata: Metadata,
+	exif: Option<Exif>,
 }
 
 impl ImageAnalyzer {
@@ -32,13 +34,14 @@ impl ImageAnalyzer {
 	 * @return ImageAnalyzer
 	 */
 	pub fn new(path: &Path) -> Self {
+		let reader = ImageReader::open(path)
+			.expect("File not found")
+			.with_guessed_format()
+			.expect("File format not supported");
 		Self {
-			image: ImageReader::open(path)
-				.expect("File not found")
-				.with_guessed_format()
-				.expect("File format not supported")
-				.decode()
-				.expect("Failed to decode the image"),
+			path: path.to_path_buf(),
+			format: reader.format(),
+			image: reader.decode().expect("Failed to decode the image"),
 			metadata: fs::metadata(path)
 				.expect("Failed to get information about the file"),
 			exif: ExifReader::new()
@@ -55,7 +58,7 @@ impl ImageAnalyzer {
 	 * @param  info
 	 * @return date
 	 */
-	pub fn get_time_info(&self, info: TimeInfo) -> String {
+	fn get_time_info(&self, info: TimeInfo) -> String {
 		if let Ok(d) = match info {
 			TimeInfo::Created => self.metadata.created(),
 			TimeInfo::Modified => self.metadata.modified(),
@@ -68,11 +71,20 @@ impl ImageAnalyzer {
 	}
 
 	/**
+	 * Get the size of the file.
+	 *
+	 * @return String
+	 */
+	fn get_file_size(&self) -> String {
+		ByteSize(self.metadata.len()).to_string_as(false)
+	}
+
+	/**
 	 * Get the formatted width and height of the image.
 	 *
 	 * @return dimensions
 	 */
-	pub fn get_image_dimensions(&self) -> String {
+	fn get_image_dimensions(&self) -> String {
 		let (width, height) = self.image.clone().into_rgba().dimensions();
 		format!("{}x{}", width, height)
 	}
@@ -80,22 +92,81 @@ impl ImageAnalyzer {
 	/**
 	 * Get dominant colors of the image.
 	 *
-	 * @return colors
+	 * @return Vector of String
 	 */
-	pub fn get_dominant_colors(&self) -> String {
+	fn get_dominant_colors(&self) -> Vec<String> {
 		dominant_color::get_colors(&self.image.clone().into_rgba().into_vec(), true)
 			.chunks(4)
 			.map(|rgba| format!("#{}", rgba.encode_hex::<String>()).to_uppercase())
-			.collect::<Vec<String>>()
-			.join("-")
+			.collect()
 	}
 
-	pub fn print_report() {}
+	/**
+	 * Get the analysis report.
+	 *
+	 * @return report
+	 */
+	pub fn get_report(self) -> String {
+		let mut report =
+			format!("{} - image analysis report\n\n", env!("CARGO_PKG_NAME"));
+		report += &format!(
+			"File Information\
+			\n  File:     {:?} ({}){}\
+			\n  Created:  {}\
+			\n  Modified: {}\
+			\n  Accessed: {}\
+			\n\nImage Information\
+			\n  Format:     {}\
+			\n  Dimensions: {}px\
+			\n  Color Type: {}\
+			\n  Main Colors:\
+			\n   \u{2022} {}\n\
+			",
+			self.path,
+			self.get_file_size(),
+			if self.metadata.permissions().readonly() {
+				" [readonly]"
+			} else {
+				""
+			},
+			self.get_time_info(TimeInfo::Created),
+			self.get_time_info(TimeInfo::Modified),
+			self.get_time_info(TimeInfo::Accessed),
+			self.format.map_or_else(
+				|| String::from("(?)"),
+				|f| format!("{:?}", f).to_uppercase()
+			),
+			self.get_image_dimensions(),
+			format!("{:?}", self.image.color()).to_uppercase(),
+			self.get_dominant_colors().join("\n   \u{2022} "),
+		);
+		if let Some(exif) = self.exif {
+			report += "\nEXIF Data\n";
+			for f in exif.fields() {
+				let mut value = f.display_value().with_unit(&exif).to_string();
+				if value.len() > 64
+					&& (f.tag.to_string() == "MakerNote"
+						|| f.tag.to_string() == "UserComment")
+				{
+					value = format!("({} bytes binary data)", value.len());
+				}
+				report += &format!(
+					"  {}: {}{}\n",
+					f.tag,
+					value,
+					if f.ifd_num.index() == 1 { " (T)" } else { "" }
+				);
+			}
+		}
+		report += &format!("\ngenerated on {}", Utc::now());
+		report
+	}
 }
 
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use image::{ColorType, ImageBuffer, Rgba};
 	#[test]
 	fn test_analyze_mod() {
 		let file_name = "test.png";
@@ -108,6 +179,7 @@ mod tests {
 		.save(file_name)
 		.unwrap();
 		let analyzer = ImageAnalyzer::new(Path::new(file_name));
+		assert_eq!("73 B", analyzer.get_file_size());
 		assert_eq!(
 			Utc::now().format("%F").to_string(),
 			analyzer
@@ -130,13 +202,13 @@ mod tests {
 				.collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(false, analyzer.metadata.permissions().readonly());
-		assert_eq!(
-			"73 B",
-			ByteSize(analyzer.metadata.len()).to_string_as(false)
-		);
+		assert_eq!(Some(ImageFormat::Png), analyzer.format);
 		assert_eq!(ColorType::Rgba8, analyzer.image.color());
 		assert_eq!("1x2", analyzer.get_image_dimensions());
-		assert_eq!("#000000FF-#FFFFFFFF", analyzer.get_dominant_colors());
+		assert_eq!(
+			"#000000FF-#FFFFFFFF",
+			analyzer.get_dominant_colors().join("-")
+		);
 		assert!(analyzer.exif.is_none());
 		fs::remove_file(file_name).unwrap();
 	}

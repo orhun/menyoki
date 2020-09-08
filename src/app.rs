@@ -77,6 +77,21 @@ where
 				self.settings.split.dir,
 				self.settings.save.file.format.to_extension().to_uppercase(),
 			);
+		} else if self.settings.args.is_present("analyze") {
+			let analyzer = self.settings.analyze.get_analyzer();
+			if self.settings.save.file.format == FileFormat::Txt {
+				fs::write(
+					&self.settings.save.file.path,
+					analyzer.get_report() + "\n",
+				)?;
+				info!(
+					"Report saved to: {:?} ({})",
+					self.settings.save.file.path,
+					ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
+				);
+			} else {
+				println!("{}", analyzer.get_report());
+			}
 		} else {
 			self.save_output(
 				self.get_app_output(),
