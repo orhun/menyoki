@@ -172,6 +172,7 @@ mod tests {
 	use crate::record::settings::RecordSettings;
 	use crate::record::window::TestWindow;
 	use enigo::*;
+	use pretty_assertions::assert_eq;
 	use std::thread;
 	use std::time::Duration;
 	#[test]

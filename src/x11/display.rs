@@ -312,6 +312,7 @@ mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
 	use crate::record::Record;
+	use pretty_assertions::assert_eq;
 	use std::convert::TryFrom;
 	use x11::keysym;
 	#[test]

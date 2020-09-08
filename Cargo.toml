@@ -28,6 +28,9 @@ dominant_color = "0.3.0"
 hex = "0.4.2"
 kamadak-exif = "0.5.2"
 
+[dev-dependencies]
+pretty_assertions = "0.6.1"
+
 [dependencies.clap]
 version = "2.33.3"
 default-features = false

@@ -57,6 +57,7 @@ impl AnalyzeSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_analyze_settings() {
 		let args = App::new("test")

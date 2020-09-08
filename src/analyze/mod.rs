@@ -167,6 +167,7 @@ impl<'a> ImageAnalyzer<'a> {
 mod tests {
 	use super::*;
 	use image::{ColorType, ImageBuffer, Rgba};
+	use pretty_assertions::assert_eq;
 	use std::path::PathBuf;
 	#[test]
 	fn test_analyze_mod() {

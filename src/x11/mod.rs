@@ -98,6 +98,7 @@ mod tests {
 	use crate::record::Record;
 	use crate::util::state::InputState;
 	use image::ExtendedColorType;
+	use pretty_assertions::assert_eq;
 	#[test]
 	#[ignore]
 	fn test_x11_mod() {

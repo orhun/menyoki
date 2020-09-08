@@ -182,6 +182,7 @@ impl SplitSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
+	use pretty_assertions::assert_eq;
 	use std::ffi::OsStr;
 	#[test]
 	fn test_gif_settings() {

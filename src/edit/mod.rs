@@ -207,6 +207,7 @@ impl<'a> ImageOps<'a> {
 mod tests {
 	use super::*;
 	use image::{ExtendedColorType, Rgba, RgbaImage};
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_edit_mod() {
 		let mut image = RgbaImage::new(32, 32);

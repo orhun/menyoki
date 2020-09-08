@@ -262,6 +262,7 @@ impl RecordSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_record_settings() {
 		let args = App::new("test")

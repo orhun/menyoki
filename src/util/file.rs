@@ -252,6 +252,7 @@ impl File {
 mod tests {
 	use super::*;
 	use clap::{App, Arg, SubCommand};
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_file() {
 		for format in vec!["png", "jpg", "bmp", "ico", "tiff", "tga", "pnm", "ff"] {

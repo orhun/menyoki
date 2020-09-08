@@ -159,6 +159,7 @@ impl PnmSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
+	use pretty_assertions::{assert_eq, assert_ne};
 	#[test]
 	fn test_png_settings() {
 		for value in vec![

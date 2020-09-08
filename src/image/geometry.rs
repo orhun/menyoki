@@ -94,6 +94,7 @@ impl Geometry {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_geometry() {
 		let padding = Padding::new(10, 20, 30, 40);

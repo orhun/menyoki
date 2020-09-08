@@ -59,6 +59,7 @@ mod tests {
 	use super::*;
 	use crate::util::file::FileFormat;
 	use clap::{App, Arg, SubCommand};
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_save_settings() {
 		let args = App::new("test")

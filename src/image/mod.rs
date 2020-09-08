@@ -115,6 +115,7 @@ impl Image {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_image_mod() {
 		let geometry = Geometry::new(0, 0, 200, 200);

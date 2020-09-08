@@ -56,6 +56,7 @@ impl<'a> ArgParser<'a> {
 mod tests {
 	use super::*;
 	use crate::args::Args;
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_parser() {
 		let args = Args::parse();

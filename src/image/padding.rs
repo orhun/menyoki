@@ -102,6 +102,7 @@ impl Padding {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_padding() {
 		let values = "10:30:20:40";

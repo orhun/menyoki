@@ -312,6 +312,7 @@ mod tests {
 	use crate::record::settings::RecordTime;
 	use crate::x11::display::Display;
 	use image::ExtendedColorType;
+	use pretty_assertions::assert_eq;
 	#[test]
 	#[ignore]
 	fn test_window_mod() {
