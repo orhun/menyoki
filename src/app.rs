@@ -90,7 +90,7 @@ where
 					ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 				);
 			} else {
-				println!("{}", analyzer.get_report());
+				print!("{}", analyzer.get_colored_report());
 			}
 		} else {
 			self.save_output(

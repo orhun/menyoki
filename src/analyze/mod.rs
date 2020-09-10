@@ -3,6 +3,7 @@ pub mod settings;
 use crate::analyze::settings::AnalyzeSettings;
 use bytesize::ByteSize;
 use chrono::{DateTime, Utc};
+use colored::Colorize;
 use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
 use image::io::Reader as ImageReader;
@@ -102,6 +103,32 @@ impl<'a> ImageAnalyzer<'a> {
 	}
 
 	/**
+	 * Colorize the report by using the predefined format.
+	 *
+	 * @param  report
+	 * @return colored_report
+	 */
+	fn colorize_report(report: String) -> String {
+		let mut colored_report = String::new();
+		for line in report.lines() {
+			if !(line.starts_with("  ") || line.contains("-")) {
+				colored_report += &format!("{}", line.white().bold());
+			} else if line.starts_with("  ") && line.contains(":") {
+				let mut values = line.split(":");
+				colored_report += &format!(
+					"{}:{}",
+					values.next().unwrap_or_default().purple(),
+					values.collect::<String>()
+				);
+			} else {
+				colored_report += line;
+			}
+			colored_report += "\n";
+		}
+		colored_report
+	}
+
+	/**
 	 * Get the analysis report.
 	 *
 	 * @return report
@@ -160,6 +187,15 @@ impl<'a> ImageAnalyzer<'a> {
 		}
 		report += &format!("\ngenerated on {}", Utc::now());
 		report
+	}
+
+	/**
+	 * Get the colored analysis report.
+	 *
+	 * @return report
+	 */
+	pub fn get_colored_report(self) -> String {
+		Self::colorize_report(self.get_report())
 	}
 }
 
