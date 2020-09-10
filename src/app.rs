@@ -78,6 +78,7 @@ where
 				self.settings.save.file.format.to_extension().to_uppercase(),
 			);
 		} else if self.settings.args.is_present("analyze") {
+			debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
 			let analyzer = self.settings.analyze.get_analyzer();
 			if self.settings.save.file.format == FileFormat::Txt {
 				fs::write(
@@ -90,7 +91,6 @@ where
 					ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 				);
 			} else {
-				debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
 				info!("{}#", analyzer.get_colored_report());
 			}
 		} else {
