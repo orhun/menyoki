@@ -90,7 +90,8 @@ where
 					ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 				);
 			} else {
-				print!("{}", analyzer.get_colored_report());
+				debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
+				info!("{}#", analyzer.get_colored_report());
 			}
 		} else {
 			self.save_output(
