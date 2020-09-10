@@ -103,6 +103,79 @@ impl<'a> ImageAnalyzer<'a> {
 	}
 
 	/**
+	 * Get EXIF data from the image.
+	 *
+	 * @return data
+	 */
+	fn get_exif_data(self) -> String {
+		let mut data = String::new();
+		if let Some(exif) = self.exif {
+			data += "\nEXIF Data\n";
+			for f in exif.fields() {
+				let mut value = f.display_value().with_unit(&exif).to_string();
+				if value.len() > 64
+					&& (f.tag.to_string() == "MakerNote"
+						|| f.tag.to_string() == "UserComment")
+				{
+					value = format!("({} bytes binary data)", value.len());
+				}
+				data += &format!(
+					"  {}: {}{}\n",
+					f.tag,
+					value,
+					if f.ifd_num.index() == 1 { " (T)" } else { "" }
+				);
+			}
+		}
+		data
+	}
+
+	/**
+	 * Get the analysis report.
+	 *
+	 * @return report
+	 */
+	pub fn get_report(self) -> String {
+		format!(
+			"{} - image analysis report\n\n\
+			File Information\
+			\n  File:     {:?} ({}){}\
+			\n  Created:  {}\
+			\n  Modified: {}\
+			\n  Accessed: {}\
+			\n\nImage Information\
+			\n  Format:     {}\
+			\n  Dimensions: {}px\
+			\n  Color Type: {}\
+			\n  Main Colors:\
+			\n   \u{2022} {}\
+			\n{}\n\
+			generated on {}\
+			",
+			env!("CARGO_PKG_NAME"),
+			self.settings.file,
+			self.get_file_size(),
+			if self.metadata.permissions().readonly() {
+				" [readonly]"
+			} else {
+				""
+			},
+			self.get_time_info(TimeInfo::Created),
+			self.get_time_info(TimeInfo::Modified),
+			self.get_time_info(TimeInfo::Accessed),
+			self.format.map_or_else(
+				|| String::from("(?)"),
+				|f| format!("{:?}", f).to_uppercase()
+			),
+			self.get_image_dimensions(),
+			format!("{:?}", self.image.color()).to_uppercase(),
+			self.get_dominant_colors().join("\n   \u{2022} "),
+			self.get_exif_data(),
+			Utc::now(),
+		)
+	}
+
+	/**
 	 * Colorize the report by using the predefined format.
 	 *
 	 * @param  report
@@ -126,67 +199,6 @@ impl<'a> ImageAnalyzer<'a> {
 			colored_report += "\n";
 		}
 		colored_report
-	}
-
-	/**
-	 * Get the analysis report.
-	 *
-	 * @return report
-	 */
-	pub fn get_report(self) -> String {
-		let mut report =
-			format!("{} - image analysis report\n\n", env!("CARGO_PKG_NAME"));
-		report += &format!(
-			"File Information\
-			\n  File:     {:?} ({}){}\
-			\n  Created:  {}\
-			\n  Modified: {}\
-			\n  Accessed: {}\
-			\n\nImage Information\
-			\n  Format:     {}\
-			\n  Dimensions: {}px\
-			\n  Color Type: {}\
-			\n  Main Colors:\
-			\n   \u{2022} {}\n\
-			",
-			self.settings.file,
-			self.get_file_size(),
-			if self.metadata.permissions().readonly() {
-				" [readonly]"
-			} else {
-				""
-			},
-			self.get_time_info(TimeInfo::Created),
-			self.get_time_info(TimeInfo::Modified),
-			self.get_time_info(TimeInfo::Accessed),
-			self.format.map_or_else(
-				|| String::from("(?)"),
-				|f| format!("{:?}", f).to_uppercase()
-			),
-			self.get_image_dimensions(),
-			format!("{:?}", self.image.color()).to_uppercase(),
-			self.get_dominant_colors().join("\n   \u{2022} "),
-		);
-		if let Some(exif) = self.exif {
-			report += "\nEXIF Data\n";
-			for f in exif.fields() {
-				let mut value = f.display_value().with_unit(&exif).to_string();
-				if value.len() > 64
-					&& (f.tag.to_string() == "MakerNote"
-						|| f.tag.to_string() == "UserComment")
-				{
-					value = format!("({} bytes binary data)", value.len());
-				}
-				report += &format!(
-					"  {}: {}{}\n",
-					f.tag,
-					value,
-					if f.ifd_num.index() == 1 { " (T)" } else { "" }
-				);
-			}
-		}
-		report += &format!("\ngenerated on {}", Utc::now());
-		report
 	}
 
 	/**
