@@ -3,7 +3,7 @@ pub mod settings;
 use crate::analyze::settings::AnalyzeSettings;
 use bytesize::ByteSize;
 use chrono::{DateTime, Utc};
-use colored::Colorize;
+use colored::{Color, Colorize};
 use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
 use image::io::Reader as ImageReader;
@@ -178,10 +178,11 @@ impl<'a> ImageAnalyzer<'a> {
 	/**
 	 * Colorize the report by using the predefined format.
 	 *
+	 * @param  color
 	 * @param  report
 	 * @return colored_report
 	 */
-	fn colorize_report(report: String) -> String {
+	fn colorize_report(color: Color, report: String) -> String {
 		let mut colored_report = String::new();
 		for line in report.lines() {
 			colored_report += &if !(line.starts_with("  ") || line.contains('-')) {
@@ -190,7 +191,7 @@ impl<'a> ImageAnalyzer<'a> {
 				let mut values = line.split(':');
 				format!(
 					"{}:{}",
-					values.next().unwrap_or_default().purple(),
+					values.next().unwrap_or_default().color(color),
 					values.collect::<String>()
 				)
 			} else if line.starts_with("  ") && line.contains("\u{2022}") {
@@ -218,13 +219,14 @@ impl<'a> ImageAnalyzer<'a> {
 	 * @return report
 	 */
 	pub fn get_colored_report(self) -> String {
-		Self::colorize_report(self.get_report())
+		Self::colorize_report(self.settings.color, self.get_report())
 	}
 }
 
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use colored::Color;
 	use image::{ColorType, ImageBuffer, Rgba};
 	use pretty_assertions::assert_eq;
 	use std::path::PathBuf;
@@ -239,7 +241,7 @@ mod tests {
 		.unwrap()
 		.save(file_name)
 		.unwrap();
-		let settings = AnalyzeSettings::new(PathBuf::from(file_name));
+		let settings = AnalyzeSettings::new(PathBuf::from(file_name), Color::White);
 		let analyzer = ImageAnalyzer::new(&settings);
 		assert_eq!("73 B", analyzer.get_file_size());
 		assert_eq!(

@@ -46,8 +46,10 @@ impl<'a> AppSettings<'a> {
 		let jpg = JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg"));
 		let pnm = PnmSettings::from_args(ArgParser::from_subcommand(args, "pnm"));
 		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
-		let analyze =
-			AnalyzeSettings::from_args(ArgParser::from_subcommand(args, "analyze"));
+		let analyze = AnalyzeSettings::from_args(
+			ArgParser::from_subcommand(args, "analyze"),
+			args.value_of("color").unwrap_or_default(),
+		);
 		let save = Self::get_save_settings(args, &edit, &pnm);
 		let input_state = Self::get_input_state(window_required, &record);
 		Self {
