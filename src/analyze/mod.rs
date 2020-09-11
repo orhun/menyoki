@@ -184,33 +184,29 @@ impl<'a> ImageAnalyzer<'a> {
 	fn colorize_report(report: String) -> String {
 		let mut colored_report = String::new();
 		for line in report.lines() {
-			if !(line.starts_with("  ") || line.contains("-")) {
-				colored_report += &format!("{}", line.white().bold());
-			} else if line.starts_with("  ") && line.contains(":") {
-				let mut values = line.split(":");
-				colored_report += &format!(
+			colored_report += &if !(line.starts_with("  ") || line.contains('-')) {
+				line.white().bold().to_string()
+			} else if line.starts_with("  ") && line.contains(':') {
+				let mut values = line.split(':');
+				format!(
 					"{}:{}",
 					values.next().unwrap_or_default().purple(),
 					values.collect::<String>()
-				);
+				)
 			} else if line.starts_with("  ") && line.contains("\u{2022}") {
-				colored_report += &format!(
-					"{}",
-					match hex::decode(
-						line.split('#')
-							.collect::<Vec<&str>>()
-							.get(1)
-							.cloned()
-							.unwrap_or_default()
-					) {
-						Ok(rgb) =>
-							line.truecolor(rgb[0], rgb[1], rgb[2]).to_string(),
-						Err(_) => line.to_string(),
-					}
-				);
+				match hex::decode(
+					line.split('#')
+						.collect::<Vec<&str>>()
+						.get(1)
+						.cloned()
+						.unwrap_or_default(),
+				) {
+					Ok(rgb) => line.truecolor(rgb[0], rgb[1], rgb[2]).to_string(),
+					Err(_) => line.to_string(),
+				}
 			} else {
-				colored_report += line;
-			}
+				line.to_string()
+			};
 			colored_report += "\n";
 		}
 		colored_report
