@@ -73,14 +73,17 @@ impl<'a> AppSettings<'a> {
 	 * @return RecordSettings
 	 */
 	fn get_record_settings(args: &'a ArgMatches<'a>) -> RecordSettings {
-		RecordSettings::from_args(ArgParser::from_subcommand(
-			args,
-			if args.is_present("capture") {
-				"capture"
-			} else {
-				"record"
-			},
-		))
+		RecordSettings::from_args(
+			ArgParser::from_subcommand(
+				args,
+				if args.is_present("capture") {
+					"capture"
+				} else {
+					"record"
+				},
+			),
+			args.value_of("color").unwrap_or_default(),
+		)
 	}
 
 	/**

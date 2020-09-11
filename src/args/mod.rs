@@ -86,6 +86,15 @@ where
 					.help("[Placeholder argument for ignored tests]")
 					.hidden(true),
 			)
+			.arg(
+				Arg::with_name("color")
+					.short("c")
+					.long("color")
+					.value_name("HEX")
+					.default_value("FF00FF")
+					.help("Set the main color")
+					.takes_value(true),
+			)
 			.subcommand(
 				args.record
 					.subcommand(
@@ -183,15 +192,6 @@ where
 					.value_name("KEYS")
 					.default_value("LAlt-S/Enter")
 					.help("Set the action keys")
-					.takes_value(true),
-			)
-			.arg(
-				Arg::with_name("color")
-					.short("x")
-					.long("color")
-					.value_name("HEX")
-					.default_value("FF00FF")
-					.help("Set the main color")
 					.takes_value(true),
 			)
 			.arg(

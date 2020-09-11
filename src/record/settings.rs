@@ -193,9 +193,10 @@ impl RecordSettings {
 	 * Create a RecordSettings object from parsed arguments.
 	 *
 	 * @param  parser
+	 * @param  color
 	 * @return RecordSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_args(parser: ArgParser<'_>, color: &str) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let padding =
@@ -207,11 +208,7 @@ impl RecordSettings {
 						}
 						_ => None,
 					},
-					u64::from_str_radix(
-						matches.value_of("color").unwrap_or_default(),
-						16,
-					)
-					.unwrap_or(Self::default().color),
+					u64::from_str_radix(color, 16).unwrap_or(Self::default().color),
 					if matches.is_present("no-borders") {
 						None
 					} else if !padding.is_zero() {
@@ -267,7 +264,6 @@ mod tests {
 	fn test_record_settings() {
 		let args = App::new("test")
 			.arg(Arg::with_name("keys").long("keys").takes_value(true))
-			.arg(Arg::with_name("color").long("color").takes_value(true))
 			.arg(Arg::with_name("border").long("border").takes_value(true))
 			.arg(Arg::with_name("padding").long("padding").takes_value(true))
 			.arg(
@@ -290,8 +286,6 @@ mod tests {
 				"test",
 				"--keys",
 				"LControl-Q/S",
-				"--color",
-				"000000",
 				"--border",
 				"10",
 				"--padding",
@@ -305,7 +299,8 @@ mod tests {
 				"--root",
 				"--with-alpha",
 			]);
-		let record_settings = RecordSettings::from_args(ArgParser::new(Some(&args)));
+		let record_settings =
+			RecordSettings::from_args(ArgParser::new(Some(&args)), "000000");
 		assert_eq!(0x0000_0000, record_settings.color);
 		assert_eq!(10, record_settings.border.unwrap());
 		assert!(record_settings.padding.is_zero());
