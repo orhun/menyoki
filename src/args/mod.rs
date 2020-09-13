@@ -713,7 +713,7 @@ where
 				Arg::with_name("timestamp")
 					.short("t")
 					.long("timestamp")
-					.help("Add timestamp to the file name"),
+					.help("Add Unix timestamp to the file name"),
 			)
 			.arg(
 				Arg::with_name("prompt")
