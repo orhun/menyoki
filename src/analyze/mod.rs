@@ -245,7 +245,7 @@ mod tests {
 		let settings = AnalyzeSettings::new(
 			PathBuf::from(file_name),
 			Color::White,
-			TimeZone::Utc,
+			TimeZone::Utc(false),
 		);
 		let analyzer = ImageAnalyzer::new(&settings);
 		assert_eq!("73 B", analyzer.get_file_size());

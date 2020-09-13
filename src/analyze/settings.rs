@@ -5,11 +5,11 @@ use colored::Color;
 use std::path::PathBuf;
 use std::time::SystemTime;
 
-/* Time zone */
+/* Time zone with the timestamp flag */
 #[derive(Debug)]
 pub enum TimeZone {
-	Local,
-	Utc,
+	Local(bool),
+	Utc(bool),
 }
 
 impl TimeZone {
@@ -21,8 +21,14 @@ impl TimeZone {
 	 */
 	pub fn get(&self, system_time: SystemTime) -> String {
 		match self {
-			Self::Local => DateTime::<Local>::from(system_time).to_string(),
-			Self::Utc => DateTime::<Utc>::from(system_time).to_string(),
+			Self::Local(false) => DateTime::<Local>::from(system_time).to_string(),
+			Self::Local(true) => {
+				DateTime::<Local>::from(system_time).timestamp().to_string()
+			}
+			Self::Utc(false) => DateTime::<Utc>::from(system_time).to_string(),
+			Self::Utc(true) => {
+				DateTime::<Utc>::from(system_time).timestamp().to_string()
+			}
 		}
 	}
 
@@ -33,8 +39,10 @@ impl TimeZone {
 	 */
 	pub fn now(&self) -> String {
 		match self {
-			Self::Local => Local::now().to_string(),
-			Self::Utc => Utc::now().to_string(),
+			Self::Local(false) => Local::now().to_string(),
+			Self::Local(true) => Local::now().timestamp().to_string(),
+			Self::Utc(false) => Utc::now().to_string(),
+			Self::Utc(true) => Utc::now().timestamp().to_string(),
 		}
 	}
 }
@@ -53,7 +61,7 @@ impl Default for AnalyzeSettings {
 		Self {
 			file: PathBuf::new(),
 			color: Color::White,
-			time: TimeZone::Utc,
+			time: TimeZone::Utc(false),
 		}
 	}
 }
@@ -79,21 +87,24 @@ impl AnalyzeSettings {
 	 */
 	pub fn from_args(parser: ArgParser<'_>, color: &str) -> Self {
 		match parser.args {
-			Some(matches) => Self::new(
-				PathBuf::from(matches.value_of("file").unwrap_or_default()),
-				match hex::decode(color) {
-					Ok(rgb) => Color::TrueColor {
-						r: rgb[0],
-						g: rgb[1],
-						b: rgb[2],
+			Some(matches) => {
+				let timestamp = matches.is_present("timestamp");
+				Self::new(
+					PathBuf::from(matches.value_of("file").unwrap_or_default()),
+					match hex::decode(color) {
+						Ok(rgb) => Color::TrueColor {
+							r: rgb[0],
+							g: rgb[1],
+							b: rgb[2],
+						},
+						Err(_) => Self::default().color,
 					},
-					Err(_) => Self::default().color,
-				},
-				match matches.value_of("time-zone") {
-					Some("local") => TimeZone::Local,
-					_ => TimeZone::Utc,
-				},
-			),
+					match matches.value_of("time-zone") {
+						Some("local") => TimeZone::Local(timestamp),
+						_ => TimeZone::Utc(timestamp),
+					},
+				)
+			}
 			None => Self::default(),
 		}
 	}
@@ -136,8 +147,8 @@ mod tests {
 	#[test]
 	fn test_time_zone() {
 		let system_time = SystemTime::now();
-		let utc_time = TimeZone::Utc.get(system_time);
-		let local_time = TimeZone::Local.get(system_time);
+		let utc_time = TimeZone::Utc(false).get(system_time);
+		let local_time = TimeZone::Local(false).get(system_time);
 		assert!(utc_time.contains("UTC"));
 		assert_eq!(
 			Utc::now().format("%F").to_string(),
@@ -146,6 +157,20 @@ mod tests {
 		assert_eq!(
 			Local::now().format("%F").to_string(),
 			local_time.split_whitespace().collect::<Vec<&str>>()[0]
+		);
+		assert!(
+			Utc::now().timestamp() - 1
+				< TimeZone::Utc(true)
+					.get(system_time)
+					.parse()
+					.unwrap_or_default()
+		);
+		assert!(
+			Local::now().timestamp() - 1
+				< TimeZone::Local(true)
+					.get(system_time)
+					.parse()
+					.unwrap_or_default()
 		);
 	}
 }
