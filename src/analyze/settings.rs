@@ -1,13 +1,50 @@
 use crate::analyze::ImageAnalyzer;
 use crate::args::parser::ArgParser;
+use chrono::{DateTime, Local, Utc};
 use colored::Color;
 use std::path::PathBuf;
+use std::time::SystemTime;
+
+/* Time zone */
+#[derive(Debug)]
+pub enum TimeZone {
+	Local,
+	Utc,
+}
+
+impl TimeZone {
+	/**
+	 * Get the system time as String.
+	 *
+	 * @param  system_time
+	 * @return time
+	 */
+	pub fn get(&self, system_time: SystemTime) -> String {
+		match self {
+			Self::Local => DateTime::<Local>::from(system_time).to_string(),
+			Self::Utc => DateTime::<Utc>::from(system_time).to_string(),
+		}
+	}
+
+	/**
+	 * Get the current date.
+	 *
+	 * @return time
+	 */
+	pub fn now(&self) -> String {
+		match self {
+			Self::Local => Local::now().to_string(),
+			Self::Utc => Utc::now().to_string(),
+		}
+	}
+}
 
 /* Image analysis settings */
 #[derive(Debug)]
 pub struct AnalyzeSettings {
 	pub file: PathBuf,
 	pub color: Color,
+	pub time: TimeZone,
 }
 
 /* Default initialization values for AnalyzeSettings */
@@ -16,6 +53,7 @@ impl Default for AnalyzeSettings {
 		Self {
 			file: PathBuf::new(),
 			color: Color::White,
+			time: TimeZone::Utc,
 		}
 	}
 }
@@ -26,10 +64,11 @@ impl AnalyzeSettings {
 	 *
 	 * @param  file
 	 * @param  color
+	 * @param  time
 	 * @return AnalyzeSettings
 	 */
-	pub fn new(file: PathBuf, color: Color) -> Self {
-		Self { file, color }
+	pub fn new(file: PathBuf, color: Color, time: TimeZone) -> Self {
+		Self { file, color, time }
 	}
 
 	/**
@@ -49,6 +88,10 @@ impl AnalyzeSettings {
 						b: rgb[2],
 					},
 					Err(_) => Self::default().color,
+				},
+				match matches.value_of("time-zone") {
+					Some("local") => TimeZone::Local,
+					_ => TimeZone::Utc,
 				},
 			),
 			None => Self::default(),
@@ -89,5 +132,26 @@ mod tests {
 		let analyze_settings = AnalyzeSettings::default();
 		assert_eq!(Some(""), analyze_settings.file.to_str());
 		assert_eq!(Color::White, analyze_settings.color);
+	}
+	#[test]
+	fn test_time_zone() {
+		let system_time = SystemTime::now();
+		let utc_time = TimeZone::Utc.get(system_time);
+		let local_time = TimeZone::Local.get(system_time);
+		assert!(utc_time.contains("UTC"));
+		assert_eq!(
+			Utc::now()
+				.to_string()
+				.split_whitespace()
+				.collect::<Vec<&str>>()[0],
+			utc_time.split_whitespace().collect::<Vec<&str>>()[0]
+		);
+		assert_eq!(
+			Local::now()
+				.to_string()
+				.split_whitespace()
+				.collect::<Vec<&str>>()[0],
+			local_time.split_whitespace().collect::<Vec<&str>>()[0]
+		);
 	}
 }
