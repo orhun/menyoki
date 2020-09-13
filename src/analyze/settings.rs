@@ -140,17 +140,11 @@ mod tests {
 		let local_time = TimeZone::Local.get(system_time);
 		assert!(utc_time.contains("UTC"));
 		assert_eq!(
-			Utc::now()
-				.to_string()
-				.split_whitespace()
-				.collect::<Vec<&str>>()[0],
+			Utc::now().format("%F").to_string(),
 			utc_time.split_whitespace().collect::<Vec<&str>>()[0]
 		);
 		assert_eq!(
-			Local::now()
-				.to_string()
-				.split_whitespace()
-				.collect::<Vec<&str>>()[0],
+			Local::now().format("%F").to_string(),
 			local_time.split_whitespace().collect::<Vec<&str>>()[0]
 		);
 	}
