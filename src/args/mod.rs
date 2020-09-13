@@ -549,6 +549,11 @@ where
 					.help("Set the time zone of the report")
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("timestamp")
+					.long("timestamp")
+					.help("Use Unix timestamp for report dates"),
+			)
 	}
 
 	/**
