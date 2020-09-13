@@ -2,7 +2,6 @@ pub mod settings;
 
 use crate::analyze::settings::AnalyzeSettings;
 use bytesize::ByteSize;
-use chrono::{DateTime, Utc};
 use colored::{Color, Colorize};
 use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
@@ -65,7 +64,7 @@ impl<'a> ImageAnalyzer<'a> {
 			TimeInfo::Modified => self.metadata.modified(),
 			TimeInfo::Accessed => self.metadata.accessed(),
 		} {
-			DateTime::<Utc>::from(d).to_string()
+			self.settings.time.get(d)
 		} else {
 			String::from("(?)")
 		}
@@ -107,12 +106,12 @@ impl<'a> ImageAnalyzer<'a> {
 	 *
 	 * @return data
 	 */
-	fn get_exif_data(self) -> String {
+	fn get_exif_data(&self) -> String {
 		let mut data = String::new();
-		if let Some(exif) = self.exif {
+		if let Some(exif) = &self.exif {
 			data += "\nEXIF Data\n";
 			for f in exif.fields() {
-				let mut value = f.display_value().with_unit(&exif).to_string();
+				let mut value = f.display_value().with_unit(exif).to_string();
 				if value.len() > 64
 					&& (f.tag.to_string() == "MakerNote"
 						|| f.tag.to_string() == "UserComment")
@@ -171,7 +170,7 @@ impl<'a> ImageAnalyzer<'a> {
 			format!("{:?}", self.image.color()).to_uppercase(),
 			self.get_dominant_colors().join("\n   \u{2022} "),
 			self.get_exif_data(),
-			Utc::now(),
+			self.settings.time.now(),
 		)
 	}
 
@@ -226,6 +225,8 @@ impl<'a> ImageAnalyzer<'a> {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::analyze::settings::TimeZone;
+	use chrono::Utc;
 	use colored::Color;
 	use image::{ColorType, ImageBuffer, Rgba};
 	use pretty_assertions::assert_eq;
@@ -241,7 +242,11 @@ mod tests {
 		.unwrap()
 		.save(file_name)
 		.unwrap();
-		let settings = AnalyzeSettings::new(PathBuf::from(file_name), Color::White);
+		let settings = AnalyzeSettings::new(
+			PathBuf::from(file_name),
+			Color::White,
+			TimeZone::Utc,
+		);
 		let analyzer = ImageAnalyzer::new(&settings);
 		assert_eq!("73 B", analyzer.get_file_size());
 		assert_eq!(
