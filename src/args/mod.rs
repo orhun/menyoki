@@ -539,6 +539,16 @@ where
 					.help("Set the image file")
 					.required(true),
 			)
+			.arg(
+				Arg::with_name("time-zone")
+					.short("t")
+					.long("time-zone")
+					.value_name("TIMEZONE")
+					.possible_values(&["utc", "local"])
+					.default_value("utc")
+					.help("Set the time zone of the report")
+					.takes_value(true),
+			)
 	}
 
 	/**
