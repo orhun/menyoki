@@ -715,6 +715,12 @@ where
 					.help("Set the output file"),
 			)
 			.arg(
+				Arg::with_name("with-extension")
+					.short("e")
+					.long("with-extension")
+					.help("Always save the file with an extension"),
+			)
+			.arg(
 				Arg::with_name("timestamp")
 					.short("t")
 					.long("timestamp")

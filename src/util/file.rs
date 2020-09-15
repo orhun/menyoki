@@ -177,14 +177,15 @@ impl File {
 	 *
 	 * @param  path
 	 * @param  format
+	 * @param  with_extension
 	 * @return File
 	 */
-	pub fn new(path: PathBuf, format: FileFormat) -> Self {
+	pub fn new(mut path: PathBuf, format: FileFormat, with_extension: bool) -> Self {
 		Self::create_path(&path);
-		Self {
-			path: Self::get_path_with_extension(path, &format),
-			format,
+		if with_extension || path.extension().and_then(OsStr::to_str) == Some("*") {
+			path = Self::get_path_with_extension(path, &format)
 		}
+		Self { path, format }
 	}
 
 	/**
@@ -201,6 +202,7 @@ impl File {
 				format.to_extension()
 			)),
 			format,
+			true,
 		)
 	}
 

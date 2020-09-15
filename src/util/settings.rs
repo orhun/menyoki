@@ -47,7 +47,11 @@ impl SaveSettings {
 						info
 					));
 				}
-				Self::new(File::new(path, file_format))
+				Self::new(File::new(
+					path,
+					file_format,
+					matches.is_present("with-extension"),
+				))
 			}
 			None => Self::new(File::from_format(file_format)),
 		}
