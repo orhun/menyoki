@@ -8,6 +8,7 @@ mod analyze;
 mod app;
 mod args;
 mod edit;
+mod file;
 mod gif;
 mod image;
 mod record;

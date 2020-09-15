@@ -1,12 +1,12 @@
 use crate::analyze::settings::AnalyzeSettings;
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
+use crate::file::settings::SaveSettings;
+use crate::file::FileFormat;
 use crate::gif::settings::{GifSettings, SplitSettings};
 use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::RecordSettings;
-use crate::util::file::FileFormat;
 use crate::util::keys::ActionKeys;
-use crate::util::settings::SaveSettings;
 use crate::util::state::InputState;
 use clap::ArgMatches;
 use std::str::FromStr;

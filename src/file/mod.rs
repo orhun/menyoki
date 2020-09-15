@@ -1,3 +1,5 @@
+pub mod settings;
+
 use chrono::Local;
 use clap::ArgMatches;
 use image::pnm::PnmSubtype;

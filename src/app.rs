@@ -1,3 +1,4 @@
+use crate::file::{File as FileUtil, FileFormat};
 use crate::gif::decoder::Decoder;
 use crate::gif::encoder::{Encoder, Frames};
 #[cfg(feature = "ski")]
@@ -7,7 +8,6 @@ use crate::gif::Gif;
 use crate::image::Image;
 use crate::record::{Record, Recorder};
 use crate::settings::AppSettings;
-use crate::util::file::{File as FileUtil, FileFormat};
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
 use image::farbfeld::FarbfeldEncoder;

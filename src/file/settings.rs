@@ -1,6 +1,6 @@
 use crate::args::parser::ArgParser;
+use crate::file::{File, FileFormat, FileInfo};
 use crate::util;
-use crate::util::file::{File, FileFormat, FileInfo};
 use std::path::PathBuf;
 
 /* Output file settings */
@@ -61,7 +61,6 @@ impl SaveSettings {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::util::file::FileFormat;
 	use clap::{App, Arg, SubCommand};
 	use pretty_assertions::assert_eq;
 	#[test]

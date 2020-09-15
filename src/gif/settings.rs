@@ -1,5 +1,5 @@
 use crate::args::parser::ArgParser;
-use crate::util::file::File;
+use crate::file::File;
 use clap::ArgMatches;
 use std::fs;
 use std::path::PathBuf;
