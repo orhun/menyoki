@@ -79,20 +79,7 @@ where
 			);
 		} else if self.settings.args.is_present("analyze") {
 			debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
-			let analyzer = self.settings.analyze.get_analyzer();
-			if self.settings.save.file.format == FileFormat::Txt {
-				fs::write(
-					&self.settings.save.file.path,
-					analyzer.get_report() + "\n",
-				)?;
-				info!(
-					"Report saved to: {:?} ({})",
-					self.settings.save.file.path,
-					ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
-				);
-			} else {
-				info!("{}#", analyzer.get_colored_report());
-			}
+			self.analyze_image()?;
 		} else {
 			self.save_output(
 				self.get_app_output(),
@@ -250,6 +237,26 @@ where
 			.init(image.dimensions())
 			.process(image)
 			.get_image()
+	}
+
+	/**
+	 * Analyze the image and return/save the report.
+	 *
+	 * @return Result
+	 */
+	fn analyze_image(self) -> AppResult {
+		let analyzer = self.settings.analyze.get_analyzer();
+		if self.settings.save.file.format == FileFormat::Txt {
+			fs::write(&self.settings.save.file.path, analyzer.get_report() + "\n")?;
+			info!(
+				"Report saved to: {:?} ({})",
+				self.settings.save.file.path,
+				ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
+			);
+		} else {
+			info!("{}#", analyzer.get_colored_report());
+		}
+		Ok(())
 	}
 
 	/**
