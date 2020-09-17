@@ -4,8 +4,9 @@ use crate::edit::settings::EditSettings;
 use crate::file::settings::SaveSettings;
 use crate::file::FileFormat;
 use crate::gif::settings::{GifSettings, SplitSettings};
+use crate::image::geometry::Geometry;
 use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
-use crate::record::settings::RecordSettings;
+use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::keys::ActionKeys;
 use crate::util::state::InputState;
 use clap::ArgMatches;
@@ -158,8 +159,8 @@ impl<'a> AppSettings<'a> {
 		}
 	}
 
-	/* Check the settings and warn the user. */
-	pub fn check(&self) {
+	/* Check the settings and update it if necessary. */
+	pub fn check(&mut self) {
 		trace!("{:?}", self);
 		if self.jpg.quality <= 25 {
 			warn!("Image will be encoded in low quality.")
@@ -173,6 +174,31 @@ impl<'a> AppSettings<'a> {
 					"Using custom action keys: {}",
 					input_state.action_keys.to_string()
 				);
+			}
+		}
+		if self.save.file.format == FileFormat::Ico {
+			self.set_icon_size()
+		}
+	}
+
+	/* Set the area size to 256x256 for encoding ICO. */
+	fn set_icon_size(&mut self) {
+		let ico_geometry = Geometry::new(0, 0, 256, 256);
+		match self.record.window {
+			RecordWindow::Focus(None) => {
+				self.record.window = RecordWindow::Focus(Some(ico_geometry))
+			}
+			RecordWindow::Root(None) => {
+				self.record.window = RecordWindow::Root(Some(ico_geometry))
+			}
+			RecordWindow::Focus(Some(ref mut geometry))
+			| RecordWindow::Root(Some(ref mut geometry)) => {
+				if geometry.width == 0 || geometry.width > ico_geometry.width {
+					geometry.width = ico_geometry.width;
+				}
+				if geometry.height == 0 || geometry.height > ico_geometry.width {
+					geometry.height = ico_geometry.height;
+				}
 			}
 		}
 	}

@@ -23,7 +23,7 @@ use self::x11::WindowSystem;
 fn main() -> AppResult {
 	util::check_friday();
 	let args = Args::parse();
-	let settings = AppSettings::new(&args);
+	let mut settings = AppSettings::new(&args);
 	if !args.is_present("quiet") {
 		util::init_logger(
 			args.occurrences_of("verbose"),
