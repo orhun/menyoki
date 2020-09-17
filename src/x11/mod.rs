@@ -66,7 +66,9 @@ unsafe extern "C" fn handle_x11_errors(
 	error: *mut xlib::XErrorEvent,
 ) -> i32 {
 	let mut error_text = Vec::with_capacity(1024);
-	error!(
+	let opcode = (*error).request_code;
+	let serial = (*error).serial;
+	let error_message = format!(
 		"{}[Opcode: {}, Serial: {}]",
 		if xlib::XGetErrorText(
 			display,
@@ -75,19 +77,21 @@ unsafe extern "C" fn handle_x11_errors(
 			error_text.capacity().try_into().unwrap_or_default(),
 		) == 0
 		{
-			format!(
-				"{} ",
-				CStr::from_ptr(error_text.as_mut_ptr() as *mut c_char)
-					.to_string_lossy()
-					.into_owned()
-			)
+			CStr::from_ptr(error_text.as_mut_ptr() as *mut c_char)
+				.to_string_lossy()
+				.into_owned() + " "
 		} else {
-			String::from("Unknown X Error")
+			String::from("Unknown error ")
 		},
-		(*error).request_code,
-		(*error).serial
+		opcode,
+		serial
 	);
-	0
+	if opcode == 55 || opcode == 56 || opcode == 67 {
+		trace!("{}", error_message);
+	} else {
+		error!("{}", error_message);
+	}
+	xlib::False
 }
 
 #[cfg(test)]
