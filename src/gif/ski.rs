@@ -4,7 +4,7 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
 use gifski::{Collector, Writer};
-use std::io::{self, Error, Write};
+use std::io::{self, Write};
 use std::thread;
 
 /* GIF encoder and settings */
@@ -23,14 +23,14 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 	 * @param  output
 	 * @param  geometry
 	 * @param  settings
-	 * @return Result (Gif)
+	 * @return Gif
 	 */
 	fn new(
 		fps: u32,
 		geometry: Geometry,
 		output: Output,
 		settings: &'a GifSettings,
-	) -> Result<Self, Error> {
+	) -> Self {
 		let (collector, writer) = gifski::new(gifski::Settings {
 			width: Some(geometry.width),
 			height: Some(geometry.height),
@@ -39,26 +39,21 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 			fast: settings.fast,
 		})
 		.expect("Failed to initialize the gifski encoder");
-		Ok(Self {
+		Self {
 			fps,
 			collector,
 			writer,
 			output,
-		})
+		}
 	}
 
 	/**
 	 * Encode images as frame and write to the GIF file.
 	 *
-	 * @param  images
-	 * @param  input_state (Option)
-	 * @return Result
+	 * @param images
+	 * @param input_state (Option)
 	 */
-	fn save(
-		self,
-		images: Vec<Image>,
-		input_state: Option<&'static InputState>,
-	) -> Result<(), Error> {
+	fn save(self, images: Vec<Image>, input_state: Option<&'static InputState>) {
 		let fps = self.fps;
 		let mut collector = self.collector;
 		let collector_thread = thread::spawn(move || {
@@ -91,6 +86,5 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
 		collector_thread
 			.join()
 			.expect("Failed to collect the frames");
-		Ok(())
 	}
 }

@@ -10,10 +10,10 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util;
 use crate::util::state::InputState;
-use gif::{Encoder as GifEncoder, Frame, Repeat, SetParameter};
+use gif::{Encoder as GifEncoder, Frame, Repeat};
 use image::ExtendedColorType;
 use std::convert::TryInto;
-use std::io::{self, Error, Write};
+use std::io::{self, Write};
 
 /* GIF encoder and settings */
 pub struct Gif<'a, Output: Write> {
@@ -30,43 +30,41 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 	 * @param  geometry
 	 * @param  output
 	 * @param  settings
-	 * @return Result (Gif)
+	 * @return Gif
 	 */
 	fn new(
 		fps: u32,
 		geometry: Geometry,
 		output: Output,
 		settings: &'a GifSettings,
-	) -> Result<Self, Error> {
+	) -> Self {
 		let mut encoder = GifEncoder::new(
 			output,
 			geometry.width.try_into().unwrap_or_default(),
 			geometry.height.try_into().unwrap_or_default(),
 			&[],
-		)?;
-		encoder.set(match settings.repeat {
-			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
-			_ => Repeat::Infinite,
-		})?;
-		Ok(Self {
+		)
+		.expect("Failed to create a GIF encoder");
+		encoder
+			.set_repeat(match settings.repeat {
+				n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
+				_ => Repeat::Infinite,
+			})
+			.expect("Failed to set repeat count");
+		Self {
 			fps,
 			encoder,
 			settings,
-		})
+		}
 	}
 
 	/**
 	 * Encode images as frame and write to the GIF file.
 	 *
-	 * @param  images
-	 * @param  input_state (Option)
-	 * @return Result
+	 * @param images
+	 * @param input_state (Option)
 	 */
-	fn save(
-		mut self,
-		images: Vec<Image>,
-		input_state: Option<&'static InputState>,
-	) -> Result<(), Error> {
+	fn save(mut self, images: Vec<Image>, input_state: Option<&'static InputState>) {
 		let speed = 30
 			- util::map_range(self.settings.quality.into(), (1., 100.), (0., 29.))
 				as i32;
@@ -94,9 +92,10 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 				speed,
 			);
 			frame.delay = (1e2 / self.fps as f32) as u16;
-			self.encoder.write_frame(&frame)?;
+			self.encoder.write_frame(&frame).unwrap_or_else(|_| {
+				panic!("Failed to write frame: {}/{}", i + 1, images.len())
+			});
 		}
 		info!("\n");
-		Ok(())
 	}
 }

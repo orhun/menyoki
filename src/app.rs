@@ -311,7 +311,7 @@ where
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
 				debug!("{:?}", self.settings.gif);
-				self.save_gif(frames, output)?;
+				self.save_gif(frames, output);
 			}
 			FileFormat::Png => self.save_image(
 				image,
@@ -415,13 +415,8 @@ where
 	 *
 	 * @param  frames (Option)
 	 * @param  output
-	 * @return Result
 	 */
-	fn save_gif<Output: Write>(
-		self,
-		frames: Option<Frames>,
-		output: Output,
-	) -> AppResult {
+	fn save_gif<Output: Write>(self, frames: Option<Frames>, output: Output) {
 		let (images, fps) = frames.expect("Failed to get the frames");
 		debug!("FPS: {}", fps);
 		Gif::new(
@@ -429,7 +424,7 @@ where
 			images.first().expect("No frames found to save").geometry,
 			output,
 			&self.settings.gif,
-		)?
+		)
 		.save(images, self.settings.input_state)
 	}
 }
@@ -476,7 +471,7 @@ mod tests {
 		let window = TestWindow::default();
 		let app = App::new(Some(window), &settings);
 		let images = app.get_frames().0;
-		app.save_gif(Some((images.clone(), 10)), File::create("test.gif")?)?;
+		app.save_gif(Some((images.clone(), 10)), File::create("test.gif")?);
 		app.edit_gif(File::open("test.gif")?);
 		let dir = env::current_dir()?;
 		settings.split.dir = PathBuf::from(dir.to_str().unwrap_or_default());

@@ -2,7 +2,7 @@ use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
-use std::io::{Error, Write};
+use std::io::Write;
 
 /* Images to encode and FPS value */
 pub type Frames = (Vec<Image>, u32);
@@ -14,14 +14,10 @@ pub trait Encoder<'a, Output: Write> {
 		geometry: Geometry,
 		output: Output,
 		settings: &'a GifSettings,
-	) -> Result<Self, Error>
+	) -> Self
 	where
 		Self: Sized;
-	fn save(
-		self,
-		images: Vec<Image>,
-		input_state: Option<&'static InputState>,
-	) -> Result<(), Error>;
+	fn save(self, images: Vec<Image>, input_state: Option<&'static InputState>);
 }
 
 #[cfg(test)]
@@ -33,7 +29,7 @@ mod tests {
 	use crate::gif::Gif as GifEncoder;
 	use image::Bgra;
 	#[test]
-	fn test_gif_encoder() -> Result<(), Error> {
+	fn test_gif_encoder() {
 		let geometry = Geometry::new(0, 0, 1, 2);
 		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
 		let images = vec![
@@ -41,8 +37,9 @@ mod tests {
 			Image::new(data.into_iter().rev().collect(), false, geometry),
 		];
 		let settings = GifSettings::default();
-		let gif = GifEncoder::new(10, geometry, Vec::new(), &settings)?;
-		gif.save(images, None)?;
-		Ok(())
+		let mut output = Vec::new();
+		GifEncoder::new(10, geometry, &mut output, &settings).save(images, None);
+		output.truncate(6);
+		assert_eq!(vec![71, 73, 70, 56, 57, 97], output);
 	}
 }
