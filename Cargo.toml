@@ -9,14 +9,14 @@ ski = ["gifski", "imgref", "rgb"]
 
 [dependencies]
 x11 = { version = "2.18.2", features = ["xlib"] }
-gif = "0.10.3"
+gif = "0.11.1"
 chrono = "0.4.15"
 rprompt = "1.0.5"
 device_query = "0.2.5"
 ctrlc = { version = "3.1.6", features = ["termination"] }
 fern = { version = "0.6.0", features = ["colored"] }
 log = "0.4.11"
-image = "0.23.9"
+image = "0.23.10"
 enigo = "0.0.14"
 bytesize = "1.0.1"
 gifski = { version = "1.2.1", optional = true }
