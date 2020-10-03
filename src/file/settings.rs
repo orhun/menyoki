@@ -34,7 +34,11 @@ impl SaveSettings {
 					PathBuf::from(matches.value_of("output").unwrap_or_default());
 				if matches.is_present("prompt") {
 					if let Some(file_name) = util::read_input("Enter file name: ") {
-						path.set_file_name(file_name);
+						if path.is_dir() {
+							path.push(file_name);
+						} else {
+							path.set_file_name(file_name);
+						}
 					}
 				}
 				if let Some(info) = FileInfo::from_args(&matches) {
