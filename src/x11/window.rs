@@ -317,7 +317,7 @@ mod tests {
 	#[ignore]
 	fn test_window_mod() {
 		let mut settings = RecordSettings::default();
-		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
+		settings.time = RecordTime::new(Some(0.0), 1, 0, 10);
 		let display = Display::open(Some(settings)).unwrap();
 		let window = display.get_root_window();
 		unsafe {
