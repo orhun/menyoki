@@ -60,7 +60,7 @@ impl ActionKeys {
 				.split('/')
 				.map(|k| {
 					Keycode::from_str(k)
-						.unwrap_or_else(|_| panic!(format!("Invalid key ({})", k)))
+						.unwrap_or_else(|_| panic!("Invalid key ({})", k))
 				})
 				.collect(),
 		)
