@@ -183,7 +183,7 @@ mod tests {
 					"--filter",
 					value.1,
 				]);
-			let parser = ArgParser::new(Some(&args));
+			let parser = ArgParser::from_args(&args);
 			let png_settings = PngSettings::from_args(parser);
 			if value.0.is_empty() && value.1.is_empty() {
 				assert_eq!(
@@ -207,7 +207,7 @@ mod tests {
 			.get_matches_from(vec!["test", "--quality", "50"]);
 		assert_eq!(
 			50,
-			JpgSettings::from_args(ArgParser::new(Some(&args))).quality
+			JpgSettings::from_args(ArgParser::from_args(&args)).quality
 		);
 		assert_eq!(90, JpgSettings::from_args(ArgParser::new(None)).quality);
 	}
@@ -229,7 +229,7 @@ mod tests {
 			]);
 		assert_eq!(
 			PnmSubtype::Graymap(SampleEncoding::Ascii),
-			PnmSettings::from_args(ArgParser::new(Some(&args))).subtype
+			PnmSettings::from_args(ArgParser::from_args(&args)).subtype
 		);
 		assert_eq!(
 			PnmSubtype::Pixmap(SampleEncoding::Binary),

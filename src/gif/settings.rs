@@ -214,7 +214,7 @@ mod tests {
 				"--cut-end",
 				"0.8",
 			]);
-		let gif_settings = GifSettings::from_args(ArgParser::new(Some(&args)));
+		let gif_settings = GifSettings::from_args(ArgParser::from_args(&args));
 		assert_eq!(15, gif_settings.fps);
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
@@ -233,7 +233,7 @@ mod tests {
 		let args = App::new("test")
 			.arg(Arg::with_name("file").required(true))
 			.get_matches_from(vec!["test", "x"]);
-		let split_settings = SplitSettings::from_args(ArgParser::new(Some(&args)));
+		let split_settings = SplitSettings::from_args(ArgParser::from_args(&args));
 		assert_eq!(PathBuf::from("x"), split_settings.file);
 		assert_eq!(Some(OsStr::new("x_frames")), split_settings.dir.file_name());
 	}

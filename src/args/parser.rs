@@ -1,4 +1,5 @@
 use crate::args::matches::ArgMatches;
+use clap::ArgMatches as Args;
 use std::str::FromStr;
 
 /* Clap single argument parser */
@@ -16,6 +17,16 @@ impl<'a> ArgParser<'a> {
 	 */
 	pub fn new(args: Option<ArgMatches<'a>>) -> Self {
 		Self { args }
+	}
+
+	/**
+	 * Create a new ArgParser object from clap ArgMatches.
+	 *
+	 * @param  args
+	 * @return ArgParser
+	 */
+	pub fn from_args(args: &'a Args<'a>) -> Self {
+		Self::new(Some(ArgMatches::new(args)))
 	}
 
 	/**
@@ -70,8 +81,9 @@ mod tests {
 	#[test]
 	fn test_parser() {
 		let args = Args::parse();
-		let parser = ArgParser::new(Some(&args));
+		let matches = ArgMatches::new(&args);
+		let parser = ArgParser::from_args(&args);
 		assert_eq!(1, parser.parse("test", 1));
-		assert!(ArgParser::from_subcommand(&args, "test").args.is_none())
+		assert!(ArgParser::from_subcommand(&matches, "test").args.is_none())
 	}
 }

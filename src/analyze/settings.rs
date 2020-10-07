@@ -130,7 +130,7 @@ mod tests {
 			.arg(Arg::with_name("file").required(true))
 			.get_matches_from(vec!["test", "test.png"]);
 		let analyze_settings =
-			AnalyzeSettings::from_args(ArgParser::new(Some(&args)), "F16823");
+			AnalyzeSettings::from_args(ArgParser::from_args(&args), "F16823");
 		assert_eq!(Some("test.png"), analyze_settings.file.to_str());
 		assert_eq!(
 			Color::TrueColor {

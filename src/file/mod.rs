@@ -270,16 +270,19 @@ mod tests {
 				File::get_default_path(&format!("t.{}", format))
 					.to_str()
 					.unwrap(),
-				File::from_format(FileFormat::from_args(&args, None))
-					.path
-					.to_str()
-					.unwrap()
+				File::from_format(FileFormat::from_args(
+					&ArgMatches::new(&args),
+					None
+				))
+				.path
+				.to_str()
+				.unwrap()
 			);
 		}
 		assert_eq!(
 			"Gif",
 			FileFormat::from_args(
-				&App::new("test").get_matches_from(vec!["test"]),
+				&ArgMatches::new(&App::new("test").get_matches_from(vec!["test"])),
 				None
 			)
 			.to_string()
@@ -298,7 +301,7 @@ mod tests {
 					}
 					_ => None,
 				},
-				FileInfo::from_args(&args)
+				FileInfo::from_args(&ArgMatches::new(&args))
 			);
 		}
 	}

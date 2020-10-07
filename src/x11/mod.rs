@@ -97,6 +97,7 @@ unsafe extern "C" fn handle_x11_errors(
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::args::matches::ArgMatches;
 	use crate::args::Args;
 	use crate::image::geometry::Geometry;
 	use crate::record::Record;
@@ -107,7 +108,8 @@ mod tests {
 	#[ignore]
 	fn test_x11_mod() {
 		let args = Args::parse();
-		let mut settings = AppSettings::new(&args);
+		let matches = ArgMatches::new(&args);
+		let mut settings = AppSettings::new(&matches);
 		settings.record.time.timeout = 1;
 		settings.record.window = RecordWindow::Root(None);
 		assert!(WindowSystem::init(&settings)

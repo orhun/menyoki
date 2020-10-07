@@ -65,6 +65,7 @@ impl SaveSettings {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::args::matches::ArgMatches;
 	use clap::{App, Arg, SubCommand};
 	use pretty_assertions::assert_eq;
 	#[test]
@@ -86,9 +87,10 @@ mod tests {
 			.get_matches_from(vec![
 				"test", "capture", "jpg", "save", "--output", "test.jpg", "--date",
 			]);
+		let matches = ArgMatches::new(&args);
 		let save_settings = SaveSettings::from_args(
-			ArgParser::from_subcommand(&args, "save"),
-			FileFormat::from_args(&args, None),
+			ArgParser::from_subcommand(&matches, "save"),
+			FileFormat::from_args(&matches, None),
 		);
 		assert!(save_settings.file.path.to_str().unwrap().contains("test_"));
 		assert_eq!(FileFormat::Jpg, save_settings.file.format);

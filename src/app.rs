@@ -432,6 +432,7 @@ where
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::args::matches::ArgMatches;
 	use crate::args::Args;
 	use crate::record::window::TestWindow;
 	use std::env;
@@ -439,7 +440,8 @@ mod tests {
 	#[test]
 	fn test_app_image() -> AppResult {
 		let args = Args::parse();
-		let mut settings = AppSettings::new(&args);
+		let matches = ArgMatches::new(&args);
+		let mut settings = AppSettings::new(&matches);
 		let window = TestWindow::default();
 		for format in vec![
 			FileFormat::Png,
@@ -464,7 +466,8 @@ mod tests {
 	#[test]
 	fn test_app_gif() -> AppResult {
 		let args = Args::parse();
-		let mut settings = AppSettings::new(&args);
+		let matches = ArgMatches::new(&args);
+		let mut settings = AppSettings::new(&matches);
 		settings.save.file.format = FileFormat::Gif;
 		settings.record.command = Some("sleep 0.3");
 		settings.gif.cut = (0.1, 0.1);

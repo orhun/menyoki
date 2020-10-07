@@ -278,7 +278,7 @@ mod tests {
 				"--filter",
 				"triangle",
 			]);
-		let edit_settings = EditSettings::from_args(ArgParser::new(Some(&args)));
+		let edit_settings = EditSettings::from_args(ArgParser::from_args(&args));
 		assert_eq!(PathBuf::from("x"), edit_settings.path);
 		assert_eq!(true, edit_settings.convert);
 		assert_eq!(10, edit_settings.image.crop.top);

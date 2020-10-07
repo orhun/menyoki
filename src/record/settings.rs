@@ -300,7 +300,7 @@ mod tests {
 				"--with-alpha",
 			]);
 		let record_settings =
-			RecordSettings::from_args(ArgParser::new(Some(&args)), "000000");
+			RecordSettings::from_args(ArgParser::from_args(&args), "000000");
 		assert_eq!(0x0000_0000, record_settings.color);
 		assert_eq!(10, record_settings.border.unwrap());
 		assert!(record_settings.padding.is_zero());
