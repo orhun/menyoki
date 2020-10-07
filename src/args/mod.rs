@@ -1,3 +1,4 @@
+pub mod matches;
 pub mod parser;
 use crate::file::{File, FileFormat};
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
