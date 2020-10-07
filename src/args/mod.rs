@@ -87,8 +87,16 @@ where
 					.hidden(true),
 			)
 			.arg(
-				Arg::with_name("color")
+				Arg::with_name("config")
 					.short("c")
+					.long("config")
+					.value_name("FILE")
+					.help("Set the configuration file")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("color")
+					.short("x")
 					.long("color")
 					.value_name("HEX")
 					.default_value("FF00FF")
