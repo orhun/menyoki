@@ -16,6 +16,7 @@ mod settings;
 mod util;
 mod x11;
 use self::app::{App, AppResult, WindowAccess};
+use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
 use self::x11::WindowSystem;
@@ -23,10 +24,11 @@ use self::x11::WindowSystem;
 fn main() -> AppResult {
 	util::check_friday();
 	let args = Args::parse();
-	let mut settings = AppSettings::new(&args);
-	if !args.is_present("quiet") {
+	let matches = ArgMatches::new(&args);
+	let mut settings = AppSettings::new(&matches);
+	if !matches.is_present("quiet") {
 		util::init_logger(
-			args.occurrences_of("verbose"),
+			matches.occurrences_of("verbose"),
 			&settings.save.file.format,
 		)
 		.expect("Failed to initialize the logger");

@@ -1,8 +1,8 @@
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 use crate::util::cmd::Command;
-use clap::ArgMatches;
 
 /* Time related recording settings */
 #[derive(Clone, Copy, Debug)]
@@ -55,7 +55,7 @@ impl RecordTime {
 	 * @param  parser
 	 * @return RecordTime
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_args(parser: &ArgParser<'_>) -> Self {
 		RecordTime::new(
 			match parser.parse("duration", 0.0) {
 				duration if duration > 0.0 => Some(duration),
@@ -198,7 +198,7 @@ impl RecordSettings {
 	 */
 	pub fn from_args(parser: ArgParser<'_>, color: &str) -> Self {
 		match parser.args {
-			Some(matches) => {
+			Some(ref matches) => {
 				let padding =
 					Padding::parse(matches.value_of("padding").unwrap_or_default());
 				Self::new(
@@ -220,7 +220,7 @@ impl RecordSettings {
 						))
 					},
 					padding,
-					RecordTime::from_args(parser),
+					RecordTime::from_args(&parser),
 					RecordFlag::new(
 						matches.is_present("with-alpha"),
 						if matches.is_present("no-keys") {
@@ -235,7 +235,7 @@ impl RecordSettings {
 							))
 						},
 					),
-					RecordWindow::from_args(matches),
+					RecordWindow::from_args(&matches),
 				)
 			}
 			None => RecordSettings::default(),

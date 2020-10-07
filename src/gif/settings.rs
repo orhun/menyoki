@@ -1,6 +1,6 @@
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::file::File;
-use clap::ArgMatches;
 use std::fs;
 use std::path::PathBuf;
 
@@ -72,7 +72,7 @@ impl GifSettings {
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
-			Some(matches) => Self::new(
+			Some(ref matches) => Self::new(
 				match parser.parse("fps", Self::default().fps) {
 					fps if fps > 0 => fps,
 					_ => Self::default().fps,
@@ -85,7 +85,7 @@ impl GifSettings {
 					parser.parse("cut-beginning", Self::default().cut.0) * 1000.,
 					parser.parse("cut-end", Self::default().cut.1) * 1000.,
 				),
-				Self::get_frames(matches),
+				Self::get_frames(&matches),
 			),
 			None => Self::default(),
 		}

@@ -1,4 +1,5 @@
 use crate::analyze::settings::AnalyzeSettings;
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
 use crate::file::settings::SaveSettings;
@@ -9,7 +10,6 @@ use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::keys::ActionKeys;
 use crate::util::state::InputState;
-use clap::ArgMatches;
 use std::str::FromStr;
 
 /* General application settings */

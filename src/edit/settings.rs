@@ -176,7 +176,7 @@ impl EditSettings {
 	 */
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
-			Some(matches) => Self::new(
+			Some(ref matches) => Self::new(
 				PathBuf::from(matches.value_of("input").unwrap_or_default()),
 				matches.is_present("convert"),
 				ImageSettings::new(

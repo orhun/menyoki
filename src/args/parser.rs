@@ -1,10 +1,10 @@
-use clap::ArgMatches;
+use crate::args::matches::ArgMatches;
 use std::str::FromStr;
 
 /* Clap single argument parser */
 #[derive(Debug)]
 pub struct ArgParser<'a> {
-	pub args: Option<&'a ArgMatches<'a>>,
+	pub args: Option<ArgMatches<'a>>,
 }
 
 impl<'a> ArgParser<'a> {
@@ -14,25 +14,34 @@ impl<'a> ArgParser<'a> {
 	 * @param  args (Option)
 	 * @return ArgParser
 	 */
-	pub fn new(args: Option<&'a ArgMatches<'a>>) -> Self {
+	pub fn new(args: Option<ArgMatches<'a>>) -> Self {
 		Self { args }
 	}
 
 	/**
 	 * Create a new ArgParser object from a name of subcommand.
 	 *
+	 * @param  matches
 	 * @param  name
 	 * @return ArgParser
 	 */
-	pub fn from_subcommand(args: &'a ArgMatches<'a>, name: &str) -> Self {
-		let mut args = args.subcommand();
+	pub fn from_subcommand(matches: &'a ArgMatches<'a>, name: &'a str) -> Self {
+		let mut matches = matches.clone();
+		matches.section = name;
+		let mut args = matches.subcommand();
 		while args.0 != name {
 			args = match args.1 {
 				Some(subcommand) => subcommand.subcommand(),
 				None => break,
 			}
 		}
-		Self::new(args.1)
+		match args.1 {
+			Some(v) => {
+				matches.args = v;
+				Self::new(Some(matches))
+			}
+			None => Self::new(None),
+		}
 	}
 
 	/**
@@ -44,6 +53,7 @@ impl<'a> ArgParser<'a> {
 	 */
 	pub fn parse<T: FromStr>(&self, arg: &str, default_value: T) -> T {
 		self.args
+			.as_ref()
 			.expect("Invalid arguments")
 			.value_of(arg)
 			.unwrap_or_default()

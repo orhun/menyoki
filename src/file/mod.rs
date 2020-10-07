@@ -1,7 +1,7 @@
 pub mod settings;
 
+use crate::args::matches::ArgMatches;
 use chrono::Local;
-use clap::ArgMatches;
 use image::pnm::PnmSubtype;
 use std::ffi::OsStr;
 use std::fmt;
