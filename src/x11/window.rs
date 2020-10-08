@@ -315,7 +315,7 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	#[test]
 	#[ignore]
-	fn test_window_mod() {
+	fn test_x11_window() {
 		let mut settings = RecordSettings::default();
 		settings.time = RecordTime::new(Some(0.0), 1, 0, 10);
 		let display = Display::open(Some(settings)).unwrap();

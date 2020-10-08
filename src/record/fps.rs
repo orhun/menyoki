@@ -45,7 +45,7 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	use std::thread;
 	#[test]
-	fn test_fps_mod() {
+	fn test_fps() {
 		let mut fps_clock = FpsClock::new(100);
 		let fps = (1. / fps_clock.fps as f32) * 1e9;
 		assert_eq!(1e7, fps);

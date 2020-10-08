@@ -177,7 +177,7 @@ mod tests {
 	use std::time::Duration;
 	#[test]
 	#[ignore]
-	fn test_record_mod() {
+	fn test_record() {
 		let window = TestWindow::default();
 		let recorder = Recorder::new(window, 10, RecordSettings::default());
 		let record = recorder.record_async();

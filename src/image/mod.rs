@@ -117,7 +117,7 @@ mod tests {
 	use super::*;
 	use pretty_assertions::assert_eq;
 	#[test]
-	fn test_image_mod() {
+	fn test_image() {
 		let geometry = Geometry::new(0, 0, 200, 200);
 		let data: [Bgra<u8>; 2] = [
 			Bgra::from([128, 128, 128, 0]),

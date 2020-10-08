@@ -209,7 +209,7 @@ mod tests {
 	use image::{ExtendedColorType, Rgba, RgbaImage};
 	use pretty_assertions::assert_eq;
 	#[test]
-	fn test_edit_mod() {
+	fn test_edit() {
 		let mut image = RgbaImage::new(32, 32);
 		for x in 15..=17 {
 			for y in 8..24 {

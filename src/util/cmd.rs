@@ -53,7 +53,7 @@ mod tests {
 	use super::*;
 	use std::time::{Duration, Instant};
 	#[test]
-	fn test_cmd_mod() -> Result<(), Error> {
+	fn test_cmd() -> Result<(), Error> {
 		let sleep_time = Duration::from_millis(10);
 		let now = Instant::now();
 		Command::new("sleep", vec!["0.01"]).execute()?;

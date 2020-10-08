@@ -106,7 +106,7 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	#[test]
 	#[ignore]
-	fn test_x11_mod() {
+	fn test_x11_system() {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);

@@ -317,7 +317,7 @@ mod tests {
 	use x11::keysym;
 	#[test]
 	#[ignore]
-	fn test_display_mod() {
+	fn test_x11_display() {
 		let mut settings = RecordSettings::default();
 		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
 		let mut display = Display::open(Some(settings)).unwrap();

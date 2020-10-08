@@ -232,7 +232,7 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	use std::path::PathBuf;
 	#[test]
-	fn test_analyze_mod() {
+	fn test_analyze() {
 		let file_name = "test2.png";
 		ImageBuffer::<Rgba<u8>, Vec<u8>>::from_vec(
 			1,
