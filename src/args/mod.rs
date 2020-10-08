@@ -398,7 +398,7 @@ where
 			.about("Edit an image")
 			.help_message("Print help information")
 			.arg(
-				Arg::with_name("input")
+				Arg::with_name("file")
 					.value_name("FILE")
 					.help("Set the input file")
 					.required(true),

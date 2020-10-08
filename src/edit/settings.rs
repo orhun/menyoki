@@ -177,7 +177,7 @@ impl EditSettings {
 	pub fn from_args(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(ref matches) => Self::new(
-				PathBuf::from(matches.value_of("input").unwrap_or_default()),
+				PathBuf::from(matches.value_of("file").unwrap_or_default()),
 				matches.is_present("convert"),
 				ImageSettings::new(
 					Padding::parse(matches.value_of("crop").unwrap_or_default()),
@@ -228,7 +228,7 @@ mod tests {
 	#[test]
 	fn test_edit_settings() {
 		let args = App::new("test")
-			.arg(Arg::with_name("input"))
+			.arg(Arg::with_name("file"))
 			.arg(Arg::with_name("convert").long("convert"))
 			.arg(Arg::with_name("grayscale").long("grayscale"))
 			.arg(Arg::with_name("invert").long("invert"))
