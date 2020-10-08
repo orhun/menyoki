@@ -43,13 +43,3 @@ fn main() -> AppResult {
 	};
 	App::new(window, &settings).start()
 }
-
-#[cfg(test)]
-mod tests {
-	use super::*;
-	#[test]
-	#[should_panic]
-	fn test_main() {
-		main().unwrap();
-	}
-}
