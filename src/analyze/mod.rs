@@ -233,7 +233,7 @@ mod tests {
 	use std::path::PathBuf;
 	#[test]
 	fn test_analyze_mod() {
-		let file_name = "test.png";
+		let file_name = "test2.png";
 		ImageBuffer::<Rgba<u8>, Vec<u8>>::from_vec(
 			1,
 			2,
