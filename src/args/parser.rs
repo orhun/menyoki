@@ -25,6 +25,7 @@ impl<'a> ArgParser<'a> {
 	 * @param  args
 	 * @return ArgParser
 	 */
+	#[allow(dead_code)]
 	pub fn from_args(args: &'a Args<'a>) -> Self {
 		Self::new(Some(ArgMatches::new(args)))
 	}
