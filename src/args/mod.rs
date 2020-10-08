@@ -82,12 +82,6 @@ where
 					.display_order(1001),
 			)
 			.arg(
-				Arg::with_name("ignored")
-					.long("ignored")
-					.help("[Placeholder argument for ignored tests]")
-					.hidden(true),
-			)
-			.arg(
 				Arg::with_name("config")
 					.short("c")
 					.long("config")
