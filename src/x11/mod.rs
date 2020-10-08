@@ -98,16 +98,16 @@ unsafe extern "C" fn handle_x11_errors(
 mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
-	use crate::args::Args;
 	use crate::image::geometry::Geometry;
 	use crate::record::Record;
 	use crate::util::state::InputState;
+	use clap::ArgMatches as Args;
 	use image::ExtendedColorType;
 	use pretty_assertions::assert_eq;
 	#[test]
 	#[ignore]
 	fn test_x11_mod() {
-		let args = Args::parse();
+		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		settings.record.time.timeout = 1;

@@ -433,13 +433,13 @@ where
 mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
-	use crate::args::Args;
 	use crate::record::window::TestWindow;
+	use clap::ArgMatches as Args;
 	use std::env;
 	use std::path::PathBuf;
 	#[test]
 	fn test_app_image() -> AppResult {
-		let args = Args::parse();
+		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		let window = TestWindow::default();
@@ -465,7 +465,7 @@ mod tests {
 	}
 	#[test]
 	fn test_app_gif() -> AppResult {
-		let args = Args::parse();
+		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		settings.save.file.format = FileFormat::Gif;

@@ -77,11 +77,10 @@ impl<'a> ArgParser<'a> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::args::Args;
 	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_parser() {
-		let args = Args::parse();
+		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let parser = ArgParser::from_args(&args);
 		assert_eq!(1, parser.parse("test", 1));
