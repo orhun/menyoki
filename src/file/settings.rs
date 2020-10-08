@@ -31,7 +31,7 @@ impl SaveSettings {
 		match parser.args {
 			Some(matches) => {
 				let mut path =
-					PathBuf::from(matches.value_of("output").unwrap_or_default());
+					PathBuf::from(matches.value_of("file").unwrap_or_default());
 				if matches.is_present("prompt") {
 					if let Some(file_name) = util::read_input("Enter file name: ") {
 						if path.is_dir() {
@@ -76,8 +76,8 @@ mod tests {
 					SubCommand::with_name("jpg").subcommand(
 						SubCommand::with_name("save")
 							.arg(
-								Arg::with_name("output")
-									.long("output")
+								Arg::with_name("file")
+									.long("file")
 									.takes_value(true),
 							)
 							.arg(Arg::with_name("date").long("date")),
@@ -85,7 +85,7 @@ mod tests {
 				),
 			)
 			.get_matches_from(vec![
-				"test", "capture", "jpg", "save", "--output", "test.jpg", "--date",
+				"test", "capture", "jpg", "save", "--file", "test.jpg", "--date",
 			]);
 		let matches = ArgMatches::new(&args);
 		let save_settings = SaveSettings::from_args(

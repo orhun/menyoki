@@ -712,7 +712,7 @@ where
 			.about("Change the output settings")
 			.help_message("Print help information")
 			.arg(
-				Arg::with_name("output")
+				Arg::with_name("file")
 					.value_name("FILE")
 					.default_value(
 						Box::leak(
