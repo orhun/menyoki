@@ -171,12 +171,10 @@ mod tests {
 	use super::*;
 	use crate::record::settings::RecordSettings;
 	use crate::record::window::TestWindow;
-	use enigo::*;
-	use pretty_assertions::assert_eq;
+	use pretty_assertions::assert_ne;
 	use std::thread;
 	use std::time::Duration;
 	#[test]
-	#[ignore]
 	fn test_record() {
 		let window = TestWindow::default();
 		let recorder = Recorder::new(window, 10, RecordSettings::default());
@@ -184,11 +182,7 @@ mod tests {
 		thread::sleep(Duration::from_millis(200));
 		assert!(record.get().unwrap().unwrap().len() > 0);
 		let mut recorder = Recorder::new(window, 10, RecordSettings::default());
-		thread::spawn(|| {
-			thread::sleep(Duration::from_millis(200));
-			Enigo::new().key_down(Key::Escape);
-		});
-		assert_eq!(0, recorder.record_sync(Some(&InputState::default())).len());
-		Enigo::new().key_up(Key::Escape);
+		recorder.settings.time.duration = Some(0.2);
+		assert_ne!(0, recorder.record_sync(Some(&InputState::default())).len());
 	}
 }
