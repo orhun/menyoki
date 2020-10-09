@@ -95,6 +95,7 @@ unsafe extern "C" fn handle_x11_errors(
 }
 
 #[cfg(test)]
+#[cfg(feature = "window_system_test")]
 mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
@@ -105,7 +106,6 @@ mod tests {
 	use image::ExtendedColorType;
 	use pretty_assertions::assert_eq;
 	#[test]
-	#[ignore]
 	fn test_x11_system() {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);

@@ -75,10 +75,10 @@ impl InputState {
 }
 
 #[cfg(test)]
+#[cfg(feature = "window_system_test")]
 mod tests {
 	use super::*;
 	#[test]
-	#[ignore]
 	fn test_input_state() {
 		let input_state = InputState::default().into_boxed_state();
 		assert!(!input_state.check_action_keys());

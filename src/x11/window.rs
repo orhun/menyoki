@@ -307,6 +307,7 @@ impl Record for Window {
 }
 
 #[cfg(test)]
+#[cfg(feature = "window_system_test")]
 mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
@@ -314,7 +315,6 @@ mod tests {
 	use image::ExtendedColorType;
 	use pretty_assertions::assert_eq;
 	#[test]
-	#[ignore]
 	fn test_x11_window() {
 		let mut settings = RecordSettings::default();
 		settings.time = RecordTime::new(Some(0.0), 1, 0, 10);

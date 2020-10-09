@@ -5,7 +5,9 @@ authors = ["orhun <orhunparmaksiz@gmail.com>"]
 edition = "2018"
 
 [features]
+default = []
 ski = ["gifski", "imgref", "rgb"]
+window_system_test = []
 
 [dependencies]
 x11 = { version = "2.18.2", features = ["xlib"] }

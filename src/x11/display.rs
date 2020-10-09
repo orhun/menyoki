@@ -308,6 +308,7 @@ impl Display {
 }
 
 #[cfg(test)]
+#[cfg(feature = "window_system_test")]
 mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
@@ -316,7 +317,6 @@ mod tests {
 	use std::convert::TryFrom;
 	use x11::keysym;
 	#[test]
-	#[ignore]
 	fn test_x11_display() {
 		let mut settings = RecordSettings::default();
 		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
