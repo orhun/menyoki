@@ -71,7 +71,7 @@ impl<'a> ArgMatches<'a> {
 			match self.config {
 				Some(ref config) => config
 					.get_from(Some(self.section), name)
-					.map_or(self.args.value_of(name), |s| Some(s)),
+					.or_else(|| self.args.value_of(name)),
 				None => self.args.value_of(name),
 			},
 			|v| Some(Box::leak(v.into_boxed_str())),
