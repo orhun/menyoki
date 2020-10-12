@@ -1,5 +1,6 @@
 use clap::{ArgMatches as Args, Values};
 use ini::Ini as Config;
+use std::env::{self, VarError};
 use std::fmt;
 
 /* clap::ArgMatches wrapper with config file */
@@ -42,18 +43,39 @@ impl<'a> ArgMatches<'a> {
 	}
 
 	/**
+	 * Get argument value from an environment variable.
+	 *
+	 * @param  name
+	 * @return String (Result)
+	 */
+	fn get_env(&self, name: &'a str) -> Result<String, VarError> {
+		env::var(
+			format!(
+				"{}_{}_{}",
+				env!("CARGO_PKG_NAME"),
+				self.section,
+				name.replace("-", "_")
+			)
+			.to_uppercase(),
+		)
+	}
+
+	/**
 	 * Get the value of a specific option or positional argument.
 	 *
 	 * @param  name
 	 * @return str (Option)
 	 */
 	pub fn value_of(&self, name: &'a str) -> Option<&str> {
-		match self.config {
-			Some(ref config) => config
-				.get_from(Some(self.section), name)
-				.map_or(self.args.value_of(name), |s| Some(s)),
-			None => self.args.value_of(name),
-		}
+		self.get_env(name).map_or(
+			match self.config {
+				Some(ref config) => config
+					.get_from(Some(self.section), name)
+					.map_or(self.args.value_of(name), |s| Some(s)),
+				None => self.args.value_of(name),
+			},
+			|v| Some(Box::leak(v.into_boxed_str())),
+		)
 	}
 
 	/**
@@ -67,10 +89,30 @@ impl<'a> ArgMatches<'a> {
 			|| if let Some(config) = &self.config {
 				config
 					.get_from(Some(self.section), name)
-					.map_or(false, |s| s == "true")
+					.map_or(false, |s| s.to_lowercase() == "true")
 			} else {
 				false
-			}
+			} || self
+			.get_env(name)
+			.map_or(false, |s| s.to_lowercase() == "true")
+	}
+
+	/**
+	 * Get the number of times an argument was used at runtime.
+	 *
+	 * @param  name
+	 * @return u64
+	 */
+	pub fn occurrences_of(&self, name: &'a str) -> u64 {
+		self.get_env(name).map_or(
+			match self.config {
+				Some(ref config) => config
+					.get_from(Some(self.section), name)
+					.map_or(0, |s| s.parse().unwrap_or(1)),
+				None => self.args.occurrences_of(name),
+			},
+			|v| v.parse().unwrap_or(1),
+		)
 	}
 
 	/**
@@ -90,21 +132,6 @@ impl<'a> ArgMatches<'a> {
 	 */
 	pub fn subcommand_matches(&'a self, name: &'a str) -> Option<&'a Args<'a>> {
 		self.args.subcommand_matches(name)
-	}
-
-	/**
-	 * Get the number of times an argument was used at runtime.
-	 *
-	 * @param  name
-	 * @return u64
-	 */
-	pub fn occurrences_of(&self, name: &'a str) -> u64 {
-		match self.config {
-			Some(ref config) => config
-				.get_from(Some(self.section), name)
-				.map_or(0, |s| s.parse().unwrap_or(1)),
-			None => self.args.occurrences_of(name),
-		}
 	}
 
 	/**
