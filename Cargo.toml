@@ -6,8 +6,8 @@ edition = "2018"
 
 [features]
 default = []
-ski = ["gifski", "imgref", "rgb"]
-window_system_test = []
+ski = ["gifski", "imgref", "rgb"] # use gifski encoder
+test_ws = [] # test window system
 
 [dependencies]
 x11 = { version = "2.18.2", features = ["xlib"] }

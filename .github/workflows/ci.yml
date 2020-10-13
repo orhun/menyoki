@@ -50,7 +50,7 @@ jobs:
           parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
       - name: Run tests
         run: |
-          bash -c "$xvfb $test --features window_system_test"
+          bash -c "$xvfb $test --features test_ws"
           mv cobertura.xml main_coverage.xml
           bash -c "$xvfb $test --all-features"
           mv cobertura.xml feature_coverage.xml

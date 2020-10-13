@@ -308,7 +308,7 @@ impl Display {
 }
 
 #[cfg(test)]
-#[cfg(feature = "window_system_test")]
+#[cfg(feature = "test_ws")]
 mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
