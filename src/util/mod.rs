@@ -15,11 +15,19 @@ use log::{LevelFilter, SetLoggerError};
  * @return Result
  */
 pub fn init_logger(
+	color: &str,
 	verbosity: u64,
 	format: &FileFormat,
 ) -> Result<(), SetLoggerError> {
 	let colors = ColoredLevelConfig::new()
-		.info(Color::Magenta)
+		.info(match hex::decode(color) {
+			Ok(rgb) => Color::TrueColor {
+				r: rgb[0],
+				g: rgb[1],
+				b: rgb[2],
+			},
+			Err(_) => Color::Magenta,
+		})
 		.error(Color::Red)
 		.warn(Color::Yellow)
 		.debug(Color::Blue)
