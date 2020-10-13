@@ -250,6 +250,28 @@ impl File {
 				.expect("Failed to create directory");
 		}
 	}
+
+	/**
+	 * Get a possible configuration file path.
+	 *
+	 * @return PathBuf (Option)
+	 */
+	pub fn get_config_file() -> Option<PathBuf> {
+		if let Some(config_dir) = dirs::config_dir() {
+			let file_name = format!("{}.conf", env!("CARGO_PKG_NAME"));
+			for config_file in vec![
+				config_dir.join(&file_name),
+				config_dir.join(env!("CARGO_PKG_NAME")).join(&file_name),
+			] {
+				if config_file.exists() {
+					return Some(config_file);
+				}
+			}
+			None
+		} else {
+			None
+		}
+	}
 }
 
 #[cfg(test)]
