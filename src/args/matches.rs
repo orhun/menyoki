@@ -1,7 +1,9 @@
+use crate::file::File;
 use clap::{ArgMatches as Args, Values};
 use ini::Ini as Config;
 use std::env::{self, VarError};
 use std::fmt;
+use std::path::PathBuf;
 
 /* clap::ArgMatches wrapper with config file */
 #[derive(Clone)]
@@ -30,7 +32,10 @@ impl<'a> ArgMatches<'a> {
 	 * @return ArgMatches
 	 */
 	pub fn new(args: &'a Args<'a>) -> Self {
-		let config = if let Some(config_file) = args.value_of("config") {
+		let config = if let Some(config_file) = args
+			.value_of("config")
+			.map_or(File::get_config_file().take(), |v| Some(PathBuf::from(v)))
+		{
 			Config::load_from_file(config_file).ok()
 		} else {
 			None
