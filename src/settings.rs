@@ -86,13 +86,17 @@ impl<'a> AppSettings<'a> {
 	 * @return Color (Option)
 	 */
 	fn get_color(args: &'a ArgMatches<'a>) -> Option<Color> {
-		match hex::decode(args.value_of("color").unwrap_or_default()) {
-			Ok(rgb) => Some(Color::TrueColor {
-				r: rgb[0],
-				g: rgb[1],
-				b: rgb[2],
-			}),
-			Err(_) => None,
+		if let Some(color) = args.value_of("color") {
+			match hex::decode(color) {
+				Ok(rgb) => Some(Color::TrueColor {
+					r: rgb[0],
+					g: rgb[1],
+					b: rgb[2],
+				}),
+				Err(_) => None,
+			}
+		} else {
+			None
 		}
 	}
 
