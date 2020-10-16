@@ -3,7 +3,8 @@ pub mod keys;
 pub mod state;
 use crate::file::FileFormat;
 use chrono::{Datelike, Local, Utc, Weekday};
-use fern::colors::{Color, ColoredLevelConfig};
+use colored::Color;
+use fern::colors::ColoredLevelConfig;
 use fern::{Dispatch, Output};
 use log::{LevelFilter, SetLoggerError};
 
@@ -12,22 +13,16 @@ use log::{LevelFilter, SetLoggerError};
  *
  * @param  verbosity
  * @param  format
+ * @param  color (Option)
  * @return Result
  */
 pub fn init_logger(
-	color: &str,
 	verbosity: u64,
 	format: &FileFormat,
+	color: Option<Color>,
 ) -> Result<(), SetLoggerError> {
 	let colors = ColoredLevelConfig::new()
-		.info(match hex::decode(color) {
-			Ok(rgb) => Color::TrueColor {
-				r: rgb[0],
-				g: rgb[1],
-				b: rgb[2],
-			},
-			Err(_) => Color::Magenta,
-		})
+		.info(color.unwrap_or(Color::Magenta))
 		.error(Color::Red)
 		.warn(Color::Yellow)
 		.debug(Color::Blue)

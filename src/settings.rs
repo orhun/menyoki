@@ -10,6 +10,7 @@ use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::keys::ActionKeys;
 use crate::util::state::InputState;
+use colored::Color;
 use std::str::FromStr;
 
 /* General application settings */
@@ -49,7 +50,7 @@ impl<'a> AppSettings<'a> {
 		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
 		let analyze = AnalyzeSettings::from_args(
 			ArgParser::from_subcommand(args, "analyze"),
-			args.value_of("color").unwrap_or_default(),
+			Self::get_color(args),
 		);
 		let save = Self::get_save_settings(args, &edit, &pnm);
 		let input_state = Self::get_input_state(window_required, &record);
@@ -66,6 +67,32 @@ impl<'a> AppSettings<'a> {
 			save,
 			input_state,
 			window_required,
+		}
+	}
+
+	/**
+	 * Get the main color from parsed arguments. (exposed)
+	 *
+	 * @return Color (Option)
+	 */
+	pub fn get_main_color(&self) -> Option<Color> {
+		Self::get_color(self.args)
+	}
+
+	/**
+	 * Get the main color from parsed arguments.
+	 *
+	 * @param  args
+	 * @return Color (Option)
+	 */
+	fn get_color(args: &'a ArgMatches<'a>) -> Option<Color> {
+		match hex::decode(args.value_of("color").unwrap_or_default()) {
+			Ok(rgb) => Some(Color::TrueColor {
+				r: rgb[0],
+				g: rgb[1],
+				b: rgb[2],
+			}),
+			Err(_) => None,
 		}
 	}
 

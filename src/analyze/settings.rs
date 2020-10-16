@@ -83,22 +83,16 @@ impl AnalyzeSettings {
 	 * Create a AnalyzeSettings object from parsed arguments.
 	 *
 	 * @param  parser
+	 * @param  color (Option)
 	 * @return AnalyzeSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>, color: &str) -> Self {
+	pub fn from_args(parser: ArgParser<'_>, color: Option<Color>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let timestamp = matches.is_present("timestamp");
 				Self::new(
 					PathBuf::from(matches.value_of("file").unwrap_or_default()),
-					match hex::decode(color) {
-						Ok(rgb) => Color::TrueColor {
-							r: rgb[0],
-							g: rgb[1],
-							b: rgb[2],
-						},
-						Err(_) => Self::default().color,
-					},
+					color.unwrap_or(Self::default().color),
 					match matches.value_of("time-zone") {
 						Some("local") => TimeZone::Local(timestamp),
 						_ => TimeZone::Utc(timestamp),
