@@ -296,9 +296,8 @@ impl Display {
 			}
 		}
 		info!(
-			" Selected area -> [{}x{}] {}\r#",
-			window.area.width,
-			window.area.height,
+			" Selected area -> [{}] {}\r#",
+			window.area,
 			if window.settings.padding.is_zero() {
 				String::new()
 			} else {
