@@ -11,6 +11,7 @@ use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
+use textwidth::Context;
 use x11::xlib;
 
 /* X11 window id, geometric properties and its display */
@@ -205,16 +206,35 @@ impl Window {
 		}
 	}
 
-	/* Clear the area of the window and regenerate the Expose event. */
+	/**
+	 * Show a text on the center of the window.
+	 *
+	 * @param text (Option)
+	 * @param context
+	 */
+	pub fn show_text_centered(&self, text: Option<String>, context: &Context) {
+		let text_width = context.text_width(self.area.to_string());
+		if u64::from(self.area.width) > text_width + 10 && self.area.height > 30 {
+			self.draw_text(
+				text.as_deref().unwrap_or_default(),
+				self.area.x + i32::try_from(self.area.width / 2).unwrap_or_default()
+					- i32::try_from(text_width / 2).unwrap_or_default(),
+				self.area.y
+					+ i32::try_from(self.area.height / 2).unwrap_or_default(),
+			)
+		}
+	}
+
+	/* Clear the whole window and regenerate the Expose event. */
 	pub fn clear_area(&self) {
 		unsafe {
 			xlib::XClearArea(
 				self.display,
 				self.xid,
-				self.area.x,
-				self.area.y,
-				self.area.width,
-				self.area.height,
+				self.geometry.x,
+				self.geometry.y,
+				self.geometry.width,
+				self.geometry.height,
 				xlib::True,
 			);
 		}
