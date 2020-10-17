@@ -30,6 +30,7 @@ hex = "0.4.2"
 kamadak-exif = "0.5.2"
 colored = "2.0.0"
 rust-ini = "0.16.0"
+textwidth = { git = "https://github.com/orhun/textwidth-rs", version = "1.2.0"}
 
 [dev-dependencies]
 pretty_assertions = "0.6.1"
