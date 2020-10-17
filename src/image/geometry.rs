@@ -1,5 +1,6 @@
 use crate::image::padding::Padding;
 use std::convert::TryFrom;
+use std::fmt;
 use std::iter::FromIterator;
 
 /* Position and size in 2D */
@@ -21,6 +22,13 @@ impl FromIterator<u32> for Geometry {
 			iter.next().unwrap_or_default(),
 			iter.next().unwrap_or_default(),
 		)
+	}
+}
+
+/* Display implementation for user-facing output */
+impl fmt::Display for Geometry {
+	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		write!(f, "{}x{}", self.width, self.height)
 	}
 }
 
@@ -103,5 +111,8 @@ mod tests {
 		assert_eq!(10, geometry.y);
 		assert_eq!(140, geometry.width);
 		assert_eq!(160, geometry.height);
+		let values = "45x28";
+		let geometry = Geometry::parse(values);
+		assert_eq!(values, geometry.to_string());
 	}
 }
