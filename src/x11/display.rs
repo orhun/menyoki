@@ -165,12 +165,15 @@ impl Display {
 	pub fn select_window(&mut self, input_state: &InputState) -> Option<Window> {
 		let (mut window, size) = self.get_window();
 		let mut xid = None;
-		let start_time = Instant::now();
 		let window_padding = self.settings.padding;
 		let mut change_factor = 3;
+		let font_context =
+			textwidth::Context::with_misc().expect("Failed to create font context");
+		let start_time = Instant::now();
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
 			window.draw_borders();
+			window.show_text_centered(Some(window.area.to_string()), &font_context);
 			let reset_area =
 				self.update_area(window, input_state, &mut change_factor);
 			if input_state.check_cancel_keys() {
