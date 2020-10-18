@@ -60,6 +60,9 @@ impl<'a> WindowAccess<'a, Window> for WindowSystem<'a> {
 	}
 }
 
+/* X opcodes to trace */
+static TRACED_OPCODES: &'static [u8] = &[55, 56, 67, 74];
+
 /* Error handler implemention for X11 */
 unsafe extern "C" fn handle_x11_errors(
 	display: *mut xlib::Display,
@@ -86,7 +89,7 @@ unsafe extern "C" fn handle_x11_errors(
 		opcode,
 		serial
 	);
-	if opcode == 55 || opcode == 56 || opcode == 67 {
+	if TRACED_OPCODES.contains(&opcode) {
 		trace!("{}", error_message);
 	} else {
 		error!("{}", error_message);
