@@ -12,6 +12,13 @@ use std::thread;
 use std::time::{Duration, Instant};
 use x11::xlib;
 
+/* Constant for changing the area size */
+const AREA_CHANGE_FACTOR: u32 = 3;
+/* Maximum width of the selected area */
+const AREA_MAX_WIDTH: u32 = 10;
+/* Maximum height of the selected area */
+const AREA_MAX_HEIGHT: u32 = 10;
+
 /* X11 display */
 pub struct Display {
 	pub display: *mut xlib::Display,
@@ -166,7 +173,7 @@ impl Display {
 		let (mut window, size) = self.get_window();
 		let mut xid = None;
 		let window_padding = self.settings.padding;
-		let mut change_factor = 3;
+		let mut change_factor = AREA_CHANGE_FACTOR;
 		let font_context =
 			textwidth::Context::with_misc().expect("Failed to create font context");
 		let start_time = Instant::now();
@@ -256,7 +263,8 @@ impl Display {
 				[Keycode::R, Keycode::LAlt] => reset_area = true,
 				[Keycode::LAlt, key] | [key, Keycode::LAlt] => {
 					if (key == &increase[0] || key == &increase[1])
-						&& (window.area.height > 5 && window.area.width > 5)
+						&& (window.area.height > AREA_MAX_HEIGHT
+							&& window.area.width > AREA_MAX_WIDTH)
 					{
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
@@ -280,13 +288,15 @@ impl Display {
 				[Keycode::LShift, Keycode::LAlt, key]
 				| [key, Keycode::LShift, Keycode::LAlt] => {
 					if (key == &increase[0] || key == &increase[1])
-						&& (window.area.height > 10 && window.area.width > 10)
+						&& (window.area.height > AREA_MAX_HEIGHT
+							&& window.area.width > AREA_MAX_WIDTH)
 					{
 						*value = value.checked_add(*change).unwrap_or(*value);
 						window.clear_area();
 					}
 					if (key == &decrease[0] || key == &decrease[1])
-						&& (window.area.height > 10 && window.area.width > 10)
+						&& (window.area.height > AREA_MAX_HEIGHT
+							&& window.area.width > AREA_MAX_WIDTH)
 					{
 						*value = value.checked_sub(*change).unwrap_or(*value);
 						window.clear_area();
