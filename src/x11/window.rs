@@ -14,6 +14,11 @@ use std::slice;
 use textwidth::Context;
 use x11::xlib;
 
+/* Maximum height of the text to show on window */
+const MAX_TEXT_HEIGHT: u32 = 30;
+/* Offset for placing the text on the corner of window */
+const TEXT_CORNER_OFFSET: i32 = 20;
+
 /* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
@@ -199,8 +204,13 @@ impl Window {
 		for _ in 0..clock.fps {
 			self.draw_text(
 				text.as_str(),
-				self.area.x + (self.area.width - 25).try_into().unwrap_or(20),
-				self.area.y + 20,
+				self.area.x
+					+ (self.area.width
+						- (u32::try_from(TEXT_CORNER_OFFSET).unwrap_or_default()
+							+ 5))
+						.try_into()
+						.unwrap_or(TEXT_CORNER_OFFSET),
+				self.area.y + TEXT_CORNER_OFFSET,
 			);
 			clock.tick();
 		}
@@ -214,7 +224,9 @@ impl Window {
 	 */
 	pub fn show_text_centered(&self, text: Option<String>, context: &Context) {
 		let text_width = context.text_width(self.area.to_string());
-		if u64::from(self.area.width) > text_width + 10 && self.area.height > 30 {
+		if u64::from(self.area.width) > text_width + 10
+			&& self.area.height > MAX_TEXT_HEIGHT
+		{
 			self.draw_text(
 				text.as_deref().unwrap_or_default(),
 				self.area.x + i32::try_from(self.area.width / 2).unwrap_or_default()
