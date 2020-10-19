@@ -264,6 +264,7 @@ impl File {
 			for config_file in vec![
 				config_dir.join(&file_name),
 				config_dir.join(env!("CARGO_PKG_NAME")).join(&file_name),
+				config_dir.join(env!("CARGO_PKG_NAME")).join("config"),
 			] {
 				if config_file.exists() {
 					return Some(config_file);
