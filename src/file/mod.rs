@@ -10,6 +10,7 @@ use std::path::{Path, PathBuf};
 use std::str::FromStr;
 
 const DEFAULT_FILE_NAME: &str = "t";
+const CONFIG_FILE_EXTENSION: &str = "cfg";
 
 /* Information to include in file name */
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -258,7 +259,8 @@ impl File {
 	 */
 	pub fn get_config_file() -> Option<PathBuf> {
 		if let Some(config_dir) = dirs::config_dir() {
-			let file_name = format!("{}.conf", env!("CARGO_PKG_NAME"));
+			let file_name =
+				format!("{}.{}", env!("CARGO_PKG_NAME"), CONFIG_FILE_EXTENSION);
 			for config_file in vec![
 				config_dir.join(&file_name),
 				config_dir.join(env!("CARGO_PKG_NAME")).join(&file_name),
