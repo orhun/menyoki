@@ -270,10 +270,8 @@ impl File {
 					return Some(config_file);
 				}
 			}
-			None
-		} else {
-			None
 		}
+		None
 	}
 }
 
