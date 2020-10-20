@@ -61,7 +61,7 @@ impl<'a> WindowAccess<'a, Window> for WindowSystem<'a> {
 }
 
 /* X opcodes to trace */
-static TRACED_OPCODES: &'static [u8] = &[55, 56, 67, 74];
+static TRACED_OPCODES: &[u8] = &[55, 56, 67, 74];
 
 /* Error handler implemention for X11 */
 unsafe extern "C" fn handle_x11_errors(
