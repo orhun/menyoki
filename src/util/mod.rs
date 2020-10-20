@@ -29,7 +29,7 @@ pub fn init_logger(
 		.trace(Color::BrightBlack);
 	let logger = Dispatch::new()
 		.format(move |out, message, record| {
-			let time = Local::now().format("%Y-%m-%dT%H:%M:%S");
+			let time = Local::now().format("%FT%T");
 			let color = colors.color(record.level());
 			let target = record.target();
 			let message = message.to_string();
