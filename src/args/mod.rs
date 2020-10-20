@@ -285,7 +285,7 @@ where
 			.about(if mode == GifMode::Make {
 				"Make a GIF from frames"
 			} else {
-				"Change the GIF encoder settings"
+				"Use the GIF encoder"
 			})
 			.help_message("Print help information")
 			.arg(
@@ -365,7 +365,7 @@ where
 				Arg::with_name("no-sort")
 					.short("n")
 					.long("no-sort")
-					.help("Use frames in the given order")
+					.help("Use frames in the order given")
 					.hidden(mode != GifMode::Make),
 			)
 			.arg(
@@ -399,7 +399,7 @@ where
 			.arg(
 				Arg::with_name("convert")
 					.long("convert")
-					.help("Convert image to the given format"),
+					.help("Convert image using the encoder given"),
 			)
 			.arg(
 				Arg::with_name("grayscale")
@@ -415,7 +415,7 @@ where
 				Arg::with_name("crop")
 					.long("crop")
 					.value_name("T:R:B:L")
-					.help("Apply the given padding to crop the image")
+					.help("Apply padding to crop the image")
 					.takes_value(true),
 			)
 			.arg(
@@ -572,7 +572,7 @@ where
 		}
 		args.subcommand(
 			SubCommand::with_name("png")
-				.about("Change the PNG encoder settings")
+				.about("Use the PNG encoder")
 				.help_message("Print help information")
 				.arg(
 					Arg::with_name("compression")
@@ -602,7 +602,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("jpg")
-				.about("Change the JPG encoder settings")
+				.about("Use the JPG encoder")
 				.help_message("Print help information")
 				.arg(
 					Arg::with_name("quality")
@@ -619,7 +619,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("bmp")
-				.about("Change the BMP encoder settings")
+				.about("Use the BMP encoder")
 				.help_message("Print help information")
 				.subcommand(
 					Self::get_save_args(FileFormat::Bmp).settings(&save_settings),
@@ -627,7 +627,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("ico")
-				.about("Change the ICO encoder settings")
+				.about("Use the ICO encoder")
 				.help_message("Print help information")
 				.subcommand(
 					Self::get_save_args(FileFormat::Ico).settings(&save_settings),
@@ -635,7 +635,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("tiff")
-				.about("Change the TIFF encoder settings")
+				.about("Use the TIFF encoder")
 				.help_message("Print help information")
 				.subcommand(
 					Self::get_save_args(FileFormat::Tiff).settings(&save_settings),
@@ -643,7 +643,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("tga")
-				.about("Change the TGA encoder settings")
+				.about("Use the TGA encoder")
 				.help_message("Print help information")
 				.subcommand(
 					Self::get_save_args(FileFormat::Tga).settings(&save_settings),
@@ -651,7 +651,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("pnm")
-				.about("Change the PNM encoder settings")
+				.about("Use the PNM encoder")
 				.help_message("Print help information")
 				.arg(
 					Arg::with_name("format")
@@ -685,7 +685,7 @@ where
 		)
 		.subcommand(
 			SubCommand::with_name("ff")
-				.about("Change the farbfeld encoder settings")
+				.about("Use the farbfeld encoder")
 				.help_message("Print help information")
 				.subcommand(
 					Self::get_save_args(FileFormat::Ff).settings(&save_settings),
@@ -702,7 +702,7 @@ where
 	 */
 	fn get_save_args(file_format: FileFormat) -> App<'a, 'b> {
 		SubCommand::with_name("save")
-			.about("Change the output settings")
+			.about("Save the output file(s)")
 			.help_message("Print help information")
 			.arg(
 				Arg::with_name("file")
