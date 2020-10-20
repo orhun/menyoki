@@ -91,7 +91,6 @@ where
 			)
 			.arg(
 				Arg::with_name("color")
-					.short("x")
 					.long("color")
 					.value_name("HEX")
 					.default_value("FF00FF")
