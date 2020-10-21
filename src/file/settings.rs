@@ -1,6 +1,5 @@
 use crate::args::parser::ArgParser;
 use crate::file::{File, FileFormat, FileInfo};
-use crate::util;
 use std::path::PathBuf;
 
 /* Output file settings */
@@ -32,15 +31,6 @@ impl SaveSettings {
 			Some(matches) => {
 				let mut path =
 					PathBuf::from(matches.value_of("file").unwrap_or_default());
-				if matches.is_present("prompt") {
-					if let Some(file_name) = util::read_input("Enter file name: ") {
-						if path.is_dir() {
-							path.push(file_name);
-						} else {
-							path.set_file_name(file_name);
-						}
-					}
-				}
 				if let Some(info) = FileInfo::from_args(&matches) {
 					path.set_file_name(format!(
 						"{}_{}",

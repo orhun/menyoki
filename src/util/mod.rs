@@ -88,19 +88,6 @@ pub fn map_range(value: f64, from_range: (f64, f64), to_range: (f64, f64)) -> f6
 			/ (from_range.1 - from_range.0)
 }
 
-/**
- * Read input from stdin with prompt.
- *
- * @param  message
- * @return String (Option)
- */
-pub fn read_input(message: &str) -> Option<String> {
-	match rprompt::prompt_reply_stdout(message) {
-		Ok(v) if !v.is_empty() => Some(v),
-		_ => None,
-	}
-}
-
 /* Check if today is friday. */
 pub fn check_friday() {
 	if Utc::now().weekday() == Weekday::Fri {

@@ -729,12 +729,6 @@ where
 					.help("Add Unix timestamp to the file name"),
 			)
 			.arg(
-				Arg::with_name("prompt")
-					.short("p")
-					.long("prompt")
-					.help("Read file name from input prompt"),
-			)
-			.arg(
 				Arg::with_name("date")
 					.short("d")
 					.long("date")
