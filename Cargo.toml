@@ -11,13 +11,20 @@ ski = ["gifski", "imgref", "rgb"]
 # test window system
 test_ws = []
 
-[dependencies]
-# window system
+[target.'cfg(windows)'.dependencies]
+# place Windows dependencies here
+
+[target.'cfg(target_os = "macos")'.dependencies]
+# place macOS dependencies here
+
+[target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
 x11 = { version = "2.18.2", features = ["xlib"] }
 textwidth = { git = "https://github.com/orhun/textwidth-rs", version = "1.2.0"}
+
+[dependencies]
+# window system
 device_query = "0.2.5"
 ctrlc = { version = "3.1.7", features = ["termination"] }
-
 # image operations
 image = "0.23.10"
 gif = "0.11.1"
@@ -26,7 +33,6 @@ dominant_color = "0.3.0"
 gifski = { version = "1.2.1", optional = true }
 imgref = { version = "1.7.0", optional = true }
 rgb = { version = "0.8.25", optional = true }
-
 # utility
 dirs = "3.0.1"
 rust-ini = "0.16.0"
