@@ -6,39 +6,46 @@ edition = "2018"
 
 [features]
 default = []
-ski = ["gifski", "imgref", "rgb"] # use gifski encoder
-test_ws = [] # test window system
+ # use gifski encoder
+ski = ["gifski", "imgref", "rgb"]
+# test window system
+test_ws = []
 
 [dependencies]
+# window system
 x11 = { version = "2.18.2", features = ["xlib"] }
-gif = "0.11.1"
-chrono = "0.4.19"
-rprompt = "1.0.5"
+textwidth = { git = "https://github.com/orhun/textwidth-rs", version = "1.2.0"}
 device_query = "0.2.5"
 ctrlc = { version = "3.1.7", features = ["termination"] }
-fern = { git = "https://github.com/orhun/fern", version = "0.6.0", features = ["colored"] }
-log = "0.4.11"
+
+# image operations
 image = "0.23.10"
-bytesize = "1.0.1"
+gif = "0.11.1"
+kamadak-exif = "0.5.2"
+dominant_color = "0.3.0"
 gifski = { version = "1.2.1", optional = true }
 imgref = { version = "1.7.0", optional = true }
 rgb = { version = "0.8.25", optional = true }
-dirs = "3.0.1"
-natord = "1.0.9"
-dominant_color = "0.3.0"
-hex = "0.4.2"
-kamadak-exif = "0.5.2"
-colored = "2.0.0"
-rust-ini = "0.16.0"
-textwidth = { git = "https://github.com/orhun/textwidth-rs", version = "1.2.0"}
 
-[dev-dependencies]
-pretty_assertions = "0.6.1"
+# utility
+dirs = "3.0.1"
+rust-ini = "0.16.0"
+chrono = "0.4.19"
+rprompt = "1.0.5"
+hex = "0.4.2"
+bytesize = "1.0.1"
+natord = "1.0.9"
+colored = "2.0.0"
+log = "0.4.11"
+fern = { git = "https://github.com/orhun/fern", version = "0.6.0", features = ["colored"] }
 
 [dependencies.clap]
 version = "2.33.3"
 default-features = false
 features = ["suggestions", "color", "wrap_help"]
+
+[dev-dependencies]
+pretty_assertions = "0.6.1"
 
 [profile.dev]
 opt-level = 0
