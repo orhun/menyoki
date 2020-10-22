@@ -389,7 +389,6 @@ where
 		SubCommand::with_name("edit")
 			.help_message("Print help information")
 			.about("Edit an image")
-			.help_message("Print help information")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
