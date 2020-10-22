@@ -109,19 +109,21 @@ impl RecordWindow {
 	/**
 	 * Create a RecordWindow enum from parsed arguments.
 	 *
-	 * @param  args
+	 * @param  matches
 	 * @return RecordWindow
 	 */
-	fn from_args(args: &ArgMatches<'_>) -> Self {
-		let select = if args.occurrences_of("size") != 0 || args.is_present("select")
-		{
-			Some(Geometry::parse(args.value_of("size").unwrap_or_default()))
-		} else {
-			None
-		};
-		if args.is_present("focus") {
+	fn from_args(matches: &ArgMatches<'_>) -> Self {
+		let select =
+			if matches.occurrences_of("size") != 0 || matches.is_present("select") {
+				Some(Geometry::parse(
+					matches.value_of("size").unwrap_or_default(),
+				))
+			} else {
+				None
+			};
+		if matches.is_present("focus") {
 			Self::Focus(select)
-		} else if args.is_present("root") {
+		} else if matches.is_present("root") {
 			Self::Root(select)
 		} else {
 			Self::Focus(Some(select.unwrap_or_default()))
