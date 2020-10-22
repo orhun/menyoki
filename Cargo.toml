@@ -19,7 +19,7 @@ test_ws = []
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
 x11 = { version = "2.18.2", features = ["xlib"] }
-textwidth = { git = "https://github.com/orhun/textwidth-rs", version = "1.2.0"}
+textwidth = "2.1.0"
 
 [dependencies]
 # window system

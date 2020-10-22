@@ -223,7 +223,9 @@ impl Window {
 	 * @param context
 	 */
 	pub fn show_text_centered(&self, text: Option<String>, context: &Context) {
-		let text_width = context.text_width(self.area.to_string());
+		let text_width = context
+			.text_width(self.area.to_string())
+			.unwrap_or_default();
 		if u64::from(self.area.width) > text_width + 10
 			&& self.area.height > MAX_TEXT_HEIGHT
 		{
