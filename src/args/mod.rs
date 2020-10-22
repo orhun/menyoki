@@ -135,6 +135,7 @@ where
 			} else {
 				"Record a GIF"
 			})
+			.aliases(if capture { &["screenshot", "ss"] } else { &[] })
 			.help_message("Print help information")
 			.arg(
 				Arg::with_name("command")
@@ -288,6 +289,11 @@ where
 				"Use the GIF encoder"
 			})
 			.help_message("Print help information")
+			.aliases(if mode == GifMode::Make {
+				&["combine"]
+			} else {
+				&[]
+			})
 			.arg(
 				Arg::with_name("fps")
 					.short("f")
@@ -509,6 +515,7 @@ where
 		SubCommand::with_name("split")
 			.about("Split a GIF into frames")
 			.help_message("Print help information")
+			.alias("extract")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
@@ -534,6 +541,7 @@ where
 		SubCommand::with_name("analyze")
 			.about("Analyze an image")
 			.help_message("Print help information")
+			.alias("inspect")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
@@ -703,6 +711,7 @@ where
 		SubCommand::with_name("save")
 			.about("Save the output file(s)")
 			.help_message("Print help information")
+			.alias("out")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
