@@ -1,3 +1,4 @@
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use image::png::CompressionType;
 use image::png::FilterType;
@@ -36,12 +37,22 @@ impl PngSettings {
 	}
 
 	/**
+	 * Create a new PngSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return PngSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "png"))
+	}
+
+	/**
 	 * Create a PngSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return PngSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>) -> Self {
+	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
 				match matches.value_of("compression") {
@@ -91,12 +102,22 @@ impl JpgSettings {
 	}
 
 	/**
+	 * Create a new JpgSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return JpgSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "jpg"))
+	}
+
+	/**
 	 * Create a JpgSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return JpgSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>) -> Self {
+	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(_) => Self::new(parser.parse("quality", Self::default().quality)),
 			None => Self::default(),
@@ -131,12 +152,22 @@ impl PnmSettings {
 	}
 
 	/**
+	 * Create a new PnmSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return PnmSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "pnm"))
+	}
+
+	/**
 	 * Create a PnmSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return PnmSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>) -> Self {
+	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let encoding = match matches.value_of("encoding") {

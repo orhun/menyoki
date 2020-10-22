@@ -1,6 +1,10 @@
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
+use crate::edit::settings::EditSettings;
 use crate::file::{File, FileFormat, FileInfo};
+use crate::image::settings::PnmSettings;
 use std::path::PathBuf;
+use std::str::FromStr;
 
 /* Output file settings */
 #[derive(Debug)]
@@ -20,13 +24,43 @@ impl SaveSettings {
 	}
 
 	/**
+	 * Create a new SaveSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @param  edit
+	 * @return SaveSettings
+	 */
+	pub fn from_args(
+		matches: &ArgMatches<'_>,
+		edit: &EditSettings,
+		pnm: &PnmSettings,
+	) -> Self {
+		let format = FileFormat::from_args(matches, Some(pnm.subtype));
+		Self::from_parser(
+			ArgParser::from_subcommand(matches, "save"),
+			if edit.convert {
+				format
+			} else {
+				FileFormat::from_str(
+					edit.path
+						.extension()
+						.unwrap_or_default()
+						.to_str()
+						.unwrap_or_default(),
+				)
+				.unwrap_or(format)
+			},
+		)
+	}
+
+	/**
 	 * Create a SaveSettings object from from an argument parser.
 	 *
 	 * @param  parser
 	 * @param  file_format
 	 * @return SaveSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
+	fn from_parser(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let mut path =

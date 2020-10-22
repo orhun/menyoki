@@ -1,3 +1,4 @@
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
@@ -169,12 +170,22 @@ impl EditSettings {
 	}
 
 	/**
+	 * Create a new EditSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return EditSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "edit"))
+	}
+
+	/**
 	 * Create a EditSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return EditSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>) -> Self {
+	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(ref matches) => Self::new(
 				PathBuf::from(matches.value_of("file").unwrap_or_default()),

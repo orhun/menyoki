@@ -55,7 +55,7 @@ impl RecordTime {
 	 * @param  parser
 	 * @return RecordTime
 	 */
-	pub fn from_parser(parser: &ArgParser<'_>) -> Self {
+	fn from_parser(parser: &ArgParser<'_>) -> Self {
 		RecordTime::new(
 			match parser.parse("duration", 0.0) {
 				duration if duration > 0.0 => Some(duration),
@@ -192,13 +192,33 @@ impl RecordSettings {
 	}
 
 	/**
+	 * Create a new RecordSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return RecordSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(
+			ArgParser::from_subcommand(
+				matches,
+				if matches.is_present("capture") {
+					"capture"
+				} else {
+					"record"
+				},
+			),
+			matches.value_of("color").unwrap_or_default(),
+		)
+	}
+
+	/**
 	 * Create a RecordSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @param  color
 	 * @return RecordSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>, color: &str) -> Self {
+	fn from_parser(parser: ArgParser<'_>, color: &str) -> Self {
 		match parser.args {
 			Some(ref matches) => {
 				let padding =

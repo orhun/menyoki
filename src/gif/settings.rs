@@ -65,12 +65,29 @@ impl GifSettings {
 	}
 
 	/**
+	 * Create a new GifSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return GifSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(
+			matches,
+			if matches.is_present("make") {
+				"make"
+			} else {
+				"gif"
+			},
+		))
+	}
+
+	/**
 	 * Create a GifSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return GifSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>) -> Self {
+	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(ref matches) => Self::new(
 				match parser.parse("fps", Self::default().fps) {
@@ -151,12 +168,22 @@ impl SplitSettings {
 	}
 
 	/**
+	 * Create a new SplitSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return SplitSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "split"))
+	}
+
+	/**
 	 * Create a SplitSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return SplitSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>) -> Self {
+	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let file =

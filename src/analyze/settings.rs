@@ -1,4 +1,5 @@
 use crate::analyze::ImageAnalyzer;
+use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use chrono::{DateTime, Local, Utc};
 use colored::Color;
@@ -80,13 +81,24 @@ impl AnalyzeSettings {
 	}
 
 	/**
+	 * Create a new AnalyzeSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @param  color (Option)
+	 * @return AnalyzeSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>, color: Option<Color>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "analyze"), color)
+	}
+
+	/**
 	 * Create an AnalyzeSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @param  color (Option)
 	 * @return AnalyzeSettings
 	 */
-	pub fn from_parser(parser: ArgParser<'_>, color: Option<Color>) -> Self {
+	fn from_parser(parser: ArgParser<'_>, color: Option<Color>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let timestamp = matches.is_present("timestamp");
