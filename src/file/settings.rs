@@ -20,13 +20,13 @@ impl SaveSettings {
 	}
 
 	/**
-	 * Create a SaveSettings object from parsed arguments.
+	 * Create a SaveSettings object from from an argument parser.
 	 *
 	 * @param  parser
 	 * @param  file_format
 	 * @return SaveSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let mut path =
@@ -78,7 +78,7 @@ mod tests {
 				"test", "capture", "jpg", "save", "--file", "test.jpg", "--date",
 			]);
 		let matches = ArgMatches::new(&args);
-		let save_settings = SaveSettings::from_args(
+		let save_settings = SaveSettings::from_parser(
 			ArgParser::from_subcommand(&matches, "save"),
 			FileFormat::from_args(&matches, None),
 		);

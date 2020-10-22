@@ -36,12 +36,12 @@ impl PngSettings {
 	}
 
 	/**
-	 * Create a PngSettings object from parsed arguments.
+	 * Create a PngSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return PngSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => Self::new(
 				match matches.value_of("compression") {
@@ -91,12 +91,12 @@ impl JpgSettings {
 	}
 
 	/**
-	 * Create a JpgSettings object from parsed arguments.
+	 * Create a JpgSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return JpgSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(_) => Self::new(parser.parse("quality", Self::default().quality)),
 			None => Self::default(),
@@ -131,12 +131,12 @@ impl PnmSettings {
 	}
 
 	/**
-	 * Create a PnmSettings object from parsed arguments.
+	 * Create a PnmSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return PnmSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let encoding = match matches.value_of("encoding") {
@@ -183,8 +183,7 @@ mod tests {
 					"--filter",
 					value.1,
 				]);
-			let parser = ArgParser::from_args(&args);
-			let png_settings = PngSettings::from_args(parser);
+			let png_settings = PngSettings::from_parser(ArgParser::from_args(&args));
 			if value.0.is_empty() && value.1.is_empty() {
 				assert_eq!(
 					PngSettings::default().compression,
@@ -207,9 +206,9 @@ mod tests {
 			.get_matches_from(vec!["test", "--quality", "50"]);
 		assert_eq!(
 			50,
-			JpgSettings::from_args(ArgParser::from_args(&args)).quality
+			JpgSettings::from_parser(ArgParser::from_args(&args)).quality
 		);
-		assert_eq!(90, JpgSettings::from_args(ArgParser::new(None)).quality);
+		assert_eq!(90, JpgSettings::from_parser(ArgParser::new(None)).quality);
 	}
 	#[test]
 	fn test_pnm_settings() {
@@ -229,11 +228,11 @@ mod tests {
 			]);
 		assert_eq!(
 			PnmSubtype::Graymap(SampleEncoding::Ascii),
-			PnmSettings::from_args(ArgParser::from_args(&args)).subtype
+			PnmSettings::from_parser(ArgParser::from_args(&args)).subtype
 		);
 		assert_eq!(
 			PnmSubtype::Pixmap(SampleEncoding::Binary),
-			PnmSettings::from_args(ArgParser::new(None)).subtype
+			PnmSettings::from_parser(ArgParser::new(None)).subtype
 		)
 	}
 }

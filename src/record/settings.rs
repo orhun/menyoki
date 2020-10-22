@@ -50,12 +50,12 @@ impl RecordTime {
 	}
 
 	/**
-	 * Create a RecordTime object from parsed arguments.
+	 * Create a RecordTime object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return RecordTime
 	 */
-	pub fn from_args(parser: &ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: &ArgParser<'_>) -> Self {
 		RecordTime::new(
 			match parser.parse("duration", 0.0) {
 				duration if duration > 0.0 => Some(duration),
@@ -190,13 +190,13 @@ impl RecordSettings {
 	}
 
 	/**
-	 * Create a RecordSettings object from parsed arguments.
+	 * Create a RecordSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @param  color
 	 * @return RecordSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>, color: &str) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>, color: &str) -> Self {
 		match parser.args {
 			Some(ref matches) => {
 				let padding =
@@ -220,7 +220,7 @@ impl RecordSettings {
 						))
 					},
 					padding,
-					RecordTime::from_args(&parser),
+					RecordTime::from_parser(&parser),
 					RecordFlag::new(
 						matches.is_present("with-alpha"),
 						if matches.is_present("no-keys") {
@@ -300,7 +300,7 @@ mod tests {
 				"--with-alpha",
 			]);
 		let record_settings =
-			RecordSettings::from_args(ArgParser::from_args(&args), "000000");
+			RecordSettings::from_parser(ArgParser::from_args(&args), "000000");
 		assert_eq!(0x0000_0000, record_settings.color);
 		assert_eq!(10, record_settings.border.unwrap());
 		assert!(record_settings.padding.is_zero());

@@ -80,13 +80,13 @@ impl AnalyzeSettings {
 	}
 
 	/**
-	 * Create a AnalyzeSettings object from parsed arguments.
+	 * Create an AnalyzeSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @param  color (Option)
 	 * @return AnalyzeSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>, color: Option<Color>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>, color: Option<Color>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let timestamp = matches.is_present("timestamp");
@@ -124,7 +124,7 @@ mod tests {
 			.arg(Arg::with_name("file").required(true))
 			.get_matches_from(vec!["test", "test.png"]);
 		let analyze_settings =
-			AnalyzeSettings::from_args(ArgParser::from_args(&args), None);
+			AnalyzeSettings::from_parser(ArgParser::from_args(&args), None);
 		assert_eq!(Some("test.png"), analyze_settings.file.to_str());
 		let analyze_settings = AnalyzeSettings::default();
 		assert_eq!(Some(""), analyze_settings.file.to_str());

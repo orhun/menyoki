@@ -65,12 +65,12 @@ impl GifSettings {
 	}
 
 	/**
-	 * Create a GifSettings object from parsed arguments.
+	 * Create a GifSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return GifSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(ref matches) => Self::new(
 				match parser.parse("fps", Self::default().fps) {
@@ -151,12 +151,12 @@ impl SplitSettings {
 	}
 
 	/**
-	 * Create a SplitSettings object from parsed arguments.
+	 * Create a SplitSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return SplitSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
 				let file =
@@ -214,14 +214,14 @@ mod tests {
 				"--cut-end",
 				"0.8",
 			]);
-		let gif_settings = GifSettings::from_args(ArgParser::from_args(&args));
+		let gif_settings = GifSettings::from_parser(ArgParser::from_args(&args));
 		assert_eq!(15, gif_settings.fps);
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
 		assert_eq!(true, gif_settings.fast);
 		assert_eq!(1.1, gif_settings.speed);
 		assert_eq!((900., 800.), gif_settings.cut);
-		let gif_settings = GifSettings::from_args(ArgParser::new(None));
+		let gif_settings = GifSettings::from_parser(ArgParser::new(None));
 		assert_eq!(-1, gif_settings.repeat);
 		assert_eq!(75, gif_settings.quality);
 		assert_eq!(false, gif_settings.fast);
@@ -233,7 +233,7 @@ mod tests {
 		let args = App::new("test")
 			.arg(Arg::with_name("file").required(true))
 			.get_matches_from(vec!["test", "x"]);
-		let split_settings = SplitSettings::from_args(ArgParser::from_args(&args));
+		let split_settings = SplitSettings::from_parser(ArgParser::from_args(&args));
 		assert_eq!(PathBuf::from("x"), split_settings.file);
 		assert_eq!(Some(OsStr::new("x_frames")), split_settings.dir.file_name());
 	}

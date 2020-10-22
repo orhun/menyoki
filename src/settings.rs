@@ -43,12 +43,13 @@ impl<'a> AppSettings<'a> {
 		let record = Self::get_record_settings(args);
 		let gif = Self::get_gif_settings(args);
 		let split =
-			SplitSettings::from_args(ArgParser::from_subcommand(args, "split"));
-		let png = PngSettings::from_args(ArgParser::from_subcommand(args, "png"));
-		let jpg = JpgSettings::from_args(ArgParser::from_subcommand(args, "jpg"));
-		let pnm = PnmSettings::from_args(ArgParser::from_subcommand(args, "pnm"));
-		let edit = EditSettings::from_args(ArgParser::from_subcommand(args, "edit"));
-		let analyze = AnalyzeSettings::from_args(
+			SplitSettings::from_parser(ArgParser::from_subcommand(args, "split"));
+		let png = PngSettings::from_parser(ArgParser::from_subcommand(args, "png"));
+		let jpg = JpgSettings::from_parser(ArgParser::from_subcommand(args, "jpg"));
+		let pnm = PnmSettings::from_parser(ArgParser::from_subcommand(args, "pnm"));
+		let edit =
+			EditSettings::from_parser(ArgParser::from_subcommand(args, "edit"));
+		let analyze = AnalyzeSettings::from_parser(
 			ArgParser::from_subcommand(args, "analyze"),
 			Self::get_color(args),
 		);
@@ -107,7 +108,7 @@ impl<'a> AppSettings<'a> {
 	 * @return RecordSettings
 	 */
 	fn get_record_settings(args: &'a ArgMatches<'a>) -> RecordSettings {
-		RecordSettings::from_args(
+		RecordSettings::from_parser(
 			ArgParser::from_subcommand(
 				args,
 				if args.is_present("capture") {
@@ -127,7 +128,7 @@ impl<'a> AppSettings<'a> {
 	 * @return GifSettings
 	 */
 	fn get_gif_settings(args: &'a ArgMatches<'a>) -> GifSettings {
-		GifSettings::from_args(ArgParser::from_subcommand(
+		GifSettings::from_parser(ArgParser::from_subcommand(
 			args,
 			if args.is_present("make") {
 				"make"
@@ -150,7 +151,7 @@ impl<'a> AppSettings<'a> {
 		pnm: &PnmSettings,
 	) -> SaveSettings {
 		let format = FileFormat::from_args(args, Some(pnm.subtype));
-		SaveSettings::from_args(
+		SaveSettings::from_parser(
 			ArgParser::from_subcommand(args, "save"),
 			if edit.convert {
 				format

@@ -169,12 +169,12 @@ impl EditSettings {
 	}
 
 	/**
-	 * Create a EditSettings object from parsed arguments.
+	 * Create a EditSettings object from an argument parser.
 	 *
 	 * @param  parser
 	 * @return EditSettings
 	 */
-	pub fn from_args(parser: ArgParser<'_>) -> Self {
+	pub fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(ref matches) => Self::new(
 				PathBuf::from(matches.value_of("file").unwrap_or_default()),
@@ -278,7 +278,7 @@ mod tests {
 				"--filter",
 				"triangle",
 			]);
-		let edit_settings = EditSettings::from_args(ArgParser::from_args(&args));
+		let edit_settings = EditSettings::from_parser(ArgParser::from_args(&args));
 		assert_eq!(PathBuf::from("x"), edit_settings.path);
 		assert_eq!(true, edit_settings.convert);
 		assert_eq!(10, edit_settings.image.crop.top);
