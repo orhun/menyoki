@@ -34,6 +34,7 @@ impl<'a> ImageAnalyzer<'a> {
 	 * @return ImageAnalyzer
 	 */
 	pub fn new(settings: &'a AnalyzeSettings) -> Self {
+		debug!("{:?}", settings);
 		let reader = ImageReader::open(&settings.file)
 			.expect("File not found")
 			.with_guessed_format()
