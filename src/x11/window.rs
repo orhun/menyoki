@@ -1,8 +1,8 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::record::fps::FpsClock;
-use crate::record::settings::RecordSettings;
 use crate::record::Record;
+use crate::x11::display::Display;
 use image::Bgra;
 use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
@@ -23,10 +23,9 @@ const TEXT_CORNER_OFFSET: i32 = 20;
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
 	pub xid: u64,
-	pub display: *mut xlib::Display,
+	display: Display,
 	pub geometry: Geometry,
 	pub area: Geometry,
-	pub settings: RecordSettings,
 }
 
 /* Implementations for thread-safe usage */
@@ -52,21 +51,15 @@ impl Window {
 	 *
 	 * @param  xid
 	 * @param  display
-	 * @param  settings
 	 * @return Window
 	 */
-	pub fn new(
-		xid: u64,
-		display: *mut xlib::Display,
-		settings: RecordSettings,
-	) -> Self {
+	pub fn new(xid: u64, display: Display) -> Self {
 		unsafe {
 			Self {
 				xid,
 				display,
 				geometry: Geometry::default(),
 				area: Geometry::default(),
-				settings,
 			}
 			.set_geometry()
 		}
@@ -82,7 +75,7 @@ impl Window {
 		let (mut x, mut y, mut width, mut height, mut border_width, mut depth) =
 			(0, 0, 0, 0, 0, 0);
 		xlib::XGetGeometry(
-			self.display,
+			self.display.inner,
 			self.xid,
 			&mut root,
 			&mut x,
@@ -103,7 +96,7 @@ impl Window {
 	unsafe fn set_geometry(&mut self) -> Self {
 		let mut geometry = self.get_geometry();
 		self.geometry = geometry;
-		self.area = geometry.with_padding(self.settings.padding);
+		self.area = geometry.with_padding(self.display.settings.padding);
 		*self
 	}
 
@@ -115,8 +108,11 @@ impl Window {
 	pub fn get_name(&self) -> Option<String> {
 		unsafe {
 			let mut window_name = MaybeUninit::<*mut i8>::uninit();
-			if xlib::XFetchName(self.display, self.xid, window_name.as_mut_ptr())
-				!= 0
+			if xlib::XFetchName(
+				self.display.inner,
+				self.xid,
+				window_name.as_mut_ptr(),
+			) != 0
 			{
 				Some(
 					CString::from_raw(*window_name.as_ptr())
@@ -137,20 +133,21 @@ impl Window {
 	 */
 	fn get_gc(&self, fg_color: u64) -> xlib::GC {
 		unsafe {
-			let gc = xlib::XCreateGC(self.display, self.xid, 0, ptr::null_mut());
-			xlib::XSetForeground(self.display, gc, fg_color);
+			let gc =
+				xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
+			xlib::XSetForeground(self.display.inner, gc, fg_color);
 			gc
 		}
 	}
 
 	/* Draw a rectangle inside the window. */
 	pub fn draw_borders(&self) {
-		if let Some(border) = self.settings.border {
+		if let Some(border) = self.display.settings.border {
 			unsafe {
 				xlib::XDrawRectangle(
-					self.display,
+					self.display.inner,
 					self.xid,
-					self.get_gc(self.settings.color),
+					self.get_gc(self.display.settings.color),
 					self.area
 						.x
 						.checked_add(i32::try_from(border).unwrap_or_default())
@@ -182,9 +179,9 @@ impl Window {
 	fn draw_text(&self, text: &str, x: i32, y: i32) {
 		unsafe {
 			xlib::XDrawString(
-				self.display,
+				self.display.inner,
 				self.xid,
-				self.get_gc(self.settings.color),
+				self.get_gc(self.display.settings.color),
 				x,
 				y,
 				CString::new(text).unwrap_or_default().as_ptr(),
@@ -243,7 +240,7 @@ impl Window {
 	pub fn clear_area(&self) {
 		unsafe {
 			xlib::XClearArea(
-				self.display,
+				self.display.inner,
 				self.xid,
 				self.geometry.x,
 				self.geometry.y,
@@ -262,8 +259,8 @@ impl Window {
 	pub fn grab_key(&self, key: u64) {
 		unsafe {
 			xlib::XGrabKey(
-				self.display,
-				xlib::XKeysymToKeycode(self.display, key).into(),
+				self.display.inner,
+				xlib::XKeysymToKeycode(self.display.inner, key).into(),
 				xlib::AnyModifier,
 				self.xid,
 				xlib::False,
@@ -285,7 +282,7 @@ impl Record for Window {
 	fn get_image(&self) -> Option<Image> {
 		unsafe {
 			let window_image = xlib::XGetImage(
-				self.display,
+				self.display.inner,
 				self.xid,
 				self.area.x,
 				self.area.y,
@@ -302,7 +299,11 @@ impl Record for Window {
 				)
 				.to_vec();
 				xlib::XDestroyImage(window_image);
-				Some(Image::new(data, self.settings.flag.alpha, self.area))
+				Some(Image::new(
+					data,
+					self.display.settings.flag.alpha,
+					self.area,
+				))
 			} else {
 				None
 			}
@@ -311,15 +312,21 @@ impl Record for Window {
 
 	/* Show a countdown on the corner of window. */
 	fn show_countdown(&self) {
-		if self.settings.time.countdown != 0 {
+		if self.display.settings.time.countdown != 0 {
 			let clock = FpsClock::new(1000);
-			for i in 0..(self.settings.time.countdown + 1) {
+			for i in 0..(self.display.settings.time.countdown + 1) {
 				self.clear_area();
 				self.show_text(
-					if i != self.settings.time.countdown {
-						info!("Starting in {}\r", self.settings.time.countdown - i);
+					if i != self.display.settings.time.countdown {
+						info!(
+							"Starting in {}\r",
+							self.display.settings.time.countdown - i
+						);
 						io::stdout().flush().expect("Failed to flush stdout");
-						Some(format!("[{}]", self.settings.time.countdown - i))
+						Some(format!(
+							"[{}]",
+							self.display.settings.time.countdown - i
+						))
 					} else {
 						None
 					},
@@ -335,7 +342,7 @@ impl Record for Window {
 	fn release(&self) {
 		trace!("Display closed.");
 		unsafe {
-			xlib::XCloseDisplay(self.display);
+			xlib::XCloseDisplay(self.display.inner);
 		}
 	}
 }
@@ -344,6 +351,7 @@ impl Record for Window {
 #[cfg(feature = "test_ws")]
 mod tests {
 	use super::*;
+	use crate::record::settings::RecordSettings;
 	use crate::record::settings::RecordTime;
 	use crate::x11::display::Display;
 	use image::ExtendedColorType;
@@ -356,7 +364,7 @@ mod tests {
 		let window = display.get_root_window();
 		unsafe {
 			xlib::XStoreName(
-				window.display,
+				window.display.inner,
 				window.xid,
 				CString::new("root-window").unwrap_or_default().as_ptr(),
 			);

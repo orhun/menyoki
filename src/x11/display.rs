@@ -20,9 +20,10 @@ const AREA_MAX_WIDTH: u32 = 10;
 const AREA_MAX_HEIGHT: u32 = 10;
 
 /* X11 display */
+#[derive(Clone, Copy, Debug)]
 pub struct Display {
 	pub inner: *mut xlib::Display,
-	settings: RecordSettings,
+	pub settings: RecordSettings,
 }
 
 /* Implementation for thread-safe usage */
@@ -56,8 +57,7 @@ impl Display {
 		unsafe {
 			Window::new(
 				xlib::XRootWindowOfScreen(xlib::XDefaultScreenOfDisplay(self.inner)),
-				self.inner,
-				self.settings,
+				*self,
 			)
 		}
 	}
@@ -77,11 +77,7 @@ impl Display {
 				focus_state.as_mut_ptr(),
 			);
 			if focus_state.assume_init() != xlib::RevertToNone {
-				Some(Window::new(
-					*focus_window.as_ptr(),
-					self.inner,
-					self.settings,
-				))
+				Some(Window::new(*focus_window.as_ptr(), *self))
 			} else {
 				None
 			}
@@ -306,10 +302,10 @@ impl Display {
 		info!(
 			" Selected area -> [{}] {}\r#",
 			window.area,
-			if window.settings.padding.is_zero() {
+			if self.settings.padding.is_zero() {
 				String::new()
 			} else {
-				format!("p:[{}]{:<10}", window.settings.padding, " ")
+				format!("p:[{}]{:<10}", self.settings.padding, " ")
 			},
 		);
 		io::stdout().flush().expect("Failed to flush stdout");
