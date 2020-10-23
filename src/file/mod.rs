@@ -1,55 +1,15 @@
 pub mod format;
+pub mod info;
 pub mod settings;
 
-use crate::args::matches::ArgMatches;
 use crate::file::format::FileFormat;
-use chrono::Local;
+use crate::file::info::FileInfo;
 use std::ffi::OsStr;
-use std::fmt;
 use std::fs;
 use std::path::{Path, PathBuf};
 
 const DEFAULT_FILE_NAME: &str = "t";
 const CONFIG_FILE_EXTENSION: &str = "cfg";
-
-/* Information to include in file name */
-#[derive(Debug, Clone, Copy, PartialEq)]
-pub enum FileInfo<'a> {
-	Date(&'a str),
-	Timestamp,
-}
-
-impl<'a> FileInfo<'a> {
-	/**
-	 * Create a FileInfo enum from parsed arguments.
-	 *
-	 * @param  args
-	 * @return FileInfo (Option)
-	 */
-	pub fn from_args(args: &'a ArgMatches<'a>) -> Option<Self> {
-		if args.is_present("timestamp") {
-			Some(Self::Timestamp)
-		} else if args.is_present("date") && args.occurrences_of("date") != 0 {
-			Some(Self::Date(args.value_of("date").unwrap_or_default()))
-		} else {
-			None
-		}
-	}
-}
-
-/* Display implementation for user-facing output */
-impl fmt::Display for FileInfo<'_> {
-	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(
-			f,
-			"{}",
-			match self {
-				FileInfo::Date(format) => Local::now().format(format).to_string(),
-				FileInfo::Timestamp => Local::now().timestamp().to_string(),
-			}
-		)
-	}
-}
 
 /* Representation of the output file */
 #[derive(Debug)]
@@ -162,6 +122,7 @@ impl File {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::args::matches::ArgMatches;
 	use clap::{App, Arg, SubCommand};
 	use pretty_assertions::assert_eq;
 	#[test]
