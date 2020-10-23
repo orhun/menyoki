@@ -3,7 +3,6 @@ pub mod info;
 pub mod settings;
 
 use crate::file::format::FileFormat;
-use crate::file::info::FileInfo;
 use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -123,6 +122,7 @@ impl File {
 mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
+	use crate::file::info::FileInfo;
 	use clap::{App, Arg, SubCommand};
 	use pretty_assertions::assert_eq;
 	#[test]

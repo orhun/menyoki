@@ -1,7 +1,9 @@
 use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::edit::settings::EditSettings;
-use crate::file::{File, FileFormat, FileInfo};
+use crate::file::format::FileFormat;
+use crate::file::info::FileInfo;
+use crate::file::File;
 use crate::image::settings::PnmSettings;
 use std::path::PathBuf;
 use std::str::FromStr;
