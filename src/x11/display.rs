@@ -21,7 +21,7 @@ const AREA_MAX_HEIGHT: u32 = 10;
 
 /* X11 display */
 pub struct Display {
-	pub display: *mut xlib::Display,
+	pub inner: *mut xlib::Display,
 	settings: RecordSettings,
 }
 
@@ -39,7 +39,7 @@ impl Display {
 		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
 		if !display.is_null() {
 			Some(Self {
-				display,
+				inner: display,
 				settings: settings.unwrap_or_default(),
 			})
 		} else {
@@ -55,10 +55,8 @@ impl Display {
 	pub fn get_root_window(&self) -> Window {
 		unsafe {
 			Window::new(
-				xlib::XRootWindowOfScreen(xlib::XDefaultScreenOfDisplay(
-					self.display,
-				)),
-				self.display,
+				xlib::XRootWindowOfScreen(xlib::XDefaultScreenOfDisplay(self.inner)),
+				self.inner,
 				self.settings,
 			)
 		}
@@ -74,14 +72,14 @@ impl Display {
 			let mut focus_window = MaybeUninit::<u64>::uninit();
 			let mut focus_state = MaybeUninit::<i32>::uninit();
 			xlib::XGetInputFocus(
-				self.display,
+				self.inner,
 				focus_window.as_mut_ptr(),
 				focus_state.as_mut_ptr(),
 			);
 			if focus_state.assume_init() != xlib::RevertToNone {
 				Some(Window::new(
 					*focus_window.as_ptr(),
-					self.display,
+					self.inner,
 					self.settings,
 				))
 			} else {
@@ -99,7 +97,7 @@ impl Display {
 	#[allow(dead_code)]
 	pub fn set_focused_window(&self, xid: u64, focus_state: i32) {
 		unsafe {
-			xlib::XSetInputFocus(self.display, xid, focus_state, xlib::CurrentTime)
+			xlib::XSetInputFocus(self.inner, xid, focus_state, xlib::CurrentTime)
 		};
 	}
 
@@ -153,7 +151,7 @@ impl Display {
 		if let Some(window) = xid {
 			unsafe {
 				xlib::XUngrabKey(
-					self.display,
+					self.inner,
 					xlib::AnyKey,
 					xlib::AnyModifier,
 					window,

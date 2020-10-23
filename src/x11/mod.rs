@@ -150,10 +150,10 @@ mod tests {
 		);
 		unsafe {
 			handle_x11_errors(
-				window_system.display.display,
+				window_system.display.inner,
 				&mut xlib::XErrorEvent {
 					type_: 0,
-					display: window_system.display.display,
+					display: window_system.display.inner,
 					resourceid: 0,
 					serial: 0,
 					error_code: 0,
