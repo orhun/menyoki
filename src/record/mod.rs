@@ -150,14 +150,18 @@ where
 			self.channel.0.clone(),
 			thread::spawn(move || {
 				self.window.show_countdown();
-				info!("Recording {} FPS...", self.clock.fps);
+				let max_frames = self.get_max_frames();
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
-					frames.push(
-						self.window.get_image().expect("Failed to get the image"),
-					);
-					debug!("Frames: {}\r", frames.len());
-					io::stdout().flush().expect("Failed to flush stdout");
+					if frames.len() < max_frames {
+						frames.push(
+							self.window
+								.get_image()
+								.expect("Failed to get the image"),
+						);
+						debug!("Frames: {}\r", frames.len());
+						io::stdout().flush().expect("Failed to flush stdout");
+					}
 				}
 				debug!("\n");
 				frames
