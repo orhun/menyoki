@@ -1,6 +1,7 @@
 pub mod matches;
 pub mod parser;
-use crate::file::{File, FileFormat};
+use crate::file::format::FileFormat;
+use crate::file::File;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
 /* Gif related subcommands */

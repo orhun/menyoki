@@ -1,8 +1,8 @@
 use crate::analyze::settings::AnalyzeSettings;
 use crate::args::matches::ArgMatches;
 use crate::edit::settings::EditSettings;
+use crate::file::format::FileFormat;
 use crate::file::settings::SaveSettings;
-use crate::file::FileFormat;
 use crate::gif::settings::{GifSettings, SplitSettings};
 use crate::image::geometry::Geometry;
 use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};

@@ -1,7 +1,7 @@
 pub mod cmd;
 pub mod keys;
 pub mod state;
-use crate::file::FileFormat;
+use crate::file::format::FileFormat;
 use chrono::{Datelike, Local, Utc, Weekday};
 use colored::Color;
 use fern::colors::ColoredLevelConfig;

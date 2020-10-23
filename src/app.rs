@@ -1,4 +1,5 @@
-use crate::file::{File as FileUtil, FileFormat};
+use crate::file::format::FileFormat;
+use crate::file::File as FileUtil;
 use crate::gif::decoder::Decoder;
 use crate::gif::encoder::{Encoder, Frames};
 #[cfg(feature = "ski")]
