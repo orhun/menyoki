@@ -1,4 +1,4 @@
-pub mod cmd;
+pub mod command;
 pub mod keys;
 pub mod state;
 use crate::file::format::FileFormat;

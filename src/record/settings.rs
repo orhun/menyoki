@@ -2,7 +2,7 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
-use crate::util::cmd::Command;
+use crate::util::command::Command;
 
 /* Time related recording settings */
 #[derive(Clone, Copy, Debug)]
