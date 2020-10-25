@@ -2,6 +2,7 @@ pub mod command;
 pub mod keys;
 pub mod state;
 use crate::file::format::FileFormat;
+use crate::settings::AppSettings;
 use chrono::{Datelike, Local, Utc, Weekday};
 use colored::Color;
 use fern::colors::ColoredLevelConfig;
@@ -11,18 +12,12 @@ use log::{LevelFilter, SetLoggerError};
 /**
  * Initialize the logger.
  *
- * @param  verbosity
- * @param  format
- * @param  color (Option)
+ * @param  settings
  * @return Result
  */
-pub fn init_logger(
-	verbosity: u64,
-	format: &FileFormat,
-	color: Option<Color>,
-) -> Result<(), SetLoggerError> {
+pub fn init_logger(settings: &AppSettings<'_>) -> Result<(), SetLoggerError> {
 	let colors = ColoredLevelConfig::new()
-		.info(color.unwrap_or(Color::Magenta))
+		.info(settings.get_main_color().unwrap_or(Color::Magenta))
 		.error(Color::Red)
 		.warn(Color::Yellow)
 		.debug(Color::Blue)
@@ -55,14 +50,14 @@ pub fn init_logger(
 			}
 		})
 		.chain(Output::stdout(""))
-		.level(match verbosity {
+		.level(match settings.args.occurrences_of("verbose") {
 			0 => LevelFilter::Info,
 			1 => LevelFilter::Debug,
 			_ => LevelFilter::Trace,
 		});
 	if cfg!(test) {
 		Ok(())
-	} else if format == &FileFormat::Gif {
+	} else if settings.save.file.format == FileFormat::Gif {
 		logger
 			.level_for(
 				format!("{}::edit", env!("CARGO_PKG_NAME")),
