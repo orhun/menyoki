@@ -439,7 +439,7 @@ mod tests {
 	use std::env;
 	use std::path::PathBuf;
 	#[test]
-	fn test_app_capture() -> AppResult {
+	fn test_app_image() -> AppResult {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
@@ -465,7 +465,7 @@ mod tests {
 		App::new(Some(window), &settings).start()
 	}
 	#[test]
-	fn test_app_record() -> AppResult {
+	fn test_app_gif() -> AppResult {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
