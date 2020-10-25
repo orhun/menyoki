@@ -28,7 +28,7 @@ fn main() -> AppResult {
 	let mut settings = AppSettings::new(&matches);
 	if !matches.is_present("quiet") {
 		util::init_logger(
-			matches.occurrences_of("verbose"),
+			settings.args.occurrences_of("verbose"),
 			&settings.save.file.format,
 			settings.get_main_color(),
 		)
