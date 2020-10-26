@@ -24,6 +24,8 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: check
+      - name: Run cargo bloat
+        uses: orf/cargo-bloat-action@v1
 
   test:
     name: Test
