@@ -19,6 +19,7 @@ use self::app::{App, AppResult, WindowAccess};
 use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
+use self::util::logger::Logger;
 use self::x11::WindowSystem;
 
 fn main() -> AppResult {
@@ -26,7 +27,9 @@ fn main() -> AppResult {
 	let args = Args::parse();
 	let matches = ArgMatches::new(&args);
 	let mut settings = AppSettings::new(&matches);
-	util::logger::init_logger(&settings).expect("Failed to initialize the logger");
+	Logger::new(&settings)
+		.init()
+		.expect("Failed to initialize the logger");
 	settings.check();
 	let window = if settings.window_required {
 		WindowSystem::init(&settings)
