@@ -19,6 +19,15 @@ pub fn init_logger(settings: &AppSettings<'_>) -> Result<(), SetLoggerError> {
 		.warn(Color::Yellow)
 		.debug(Color::Blue)
 		.trace(Color::BrightBlack);
+	let level_filter = if settings.args.is_present("quiet") {
+		LevelFilter::Off
+	} else {
+		match settings.args.occurrences_of("verbose") {
+			0 => LevelFilter::Info,
+			1 => LevelFilter::Debug,
+			_ => LevelFilter::Trace,
+		}
+	};
 	let mut logger = Dispatch::new()
 		.format(move |out, message, record| {
 			let time = Local::now().format("%FT%T");
@@ -47,11 +56,7 @@ pub fn init_logger(settings: &AppSettings<'_>) -> Result<(), SetLoggerError> {
 			}
 		})
 		.chain(Output::stdout(""))
-		.level(match settings.args.occurrences_of("verbose") {
-			0 => LevelFilter::Info,
-			1 => LevelFilter::Debug,
-			_ => LevelFilter::Trace,
-		});
+		.level(level_filter);
 	if settings.save.file.format == FileFormat::Gif {
 		logger = logger.level_for(
 			format!("{}::edit", env!("CARGO_PKG_NAME")),
