@@ -8,7 +8,6 @@ use crate::gif::encoder::Encoder;
 use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
-use crate::util;
 use crate::util::state::InputState;
 use gif::{Encoder as GifEncoder, Frame, Repeat};
 use image::ExtendedColorType;
@@ -66,8 +65,11 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 	 */
 	fn save(mut self, images: Vec<Image>, input_state: Option<&'static InputState>) {
 		let speed = 30
-			- util::map_range(self.settings.quality.into(), (1., 100.), (0., 29.))
-				as i32;
+			- self.settings.map_range(
+				self.settings.quality.into(),
+				(1., 100.),
+				(0., 29.),
+			) as i32;
 		for (i, image) in images.iter().enumerate() {
 			let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
 			info!("Saving... ({:.1}%)\r", percentage);
