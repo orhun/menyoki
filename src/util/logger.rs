@@ -87,3 +87,22 @@ impl<'a> Logger<'a> {
 		logger.apply()
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::args::matches::ArgMatches;
+	use clap::ArgMatches as Args;
+	use std::env;
+	#[test]
+	fn test_logger() -> Result<(), SetLoggerError> {
+		let quiet_var =
+			format!("{}_GENERAL_QUIET", env!("CARGO_PKG_NAME").to_uppercase());
+		env::set_var(quiet_var, "true");
+		let args = Args::default();
+		let matches = ArgMatches::new(&args);
+		let settings = AppSettings::new(&matches);
+		assert!(matches.is_present("quiet"));
+		Logger::new(&settings).init()
+	}
+}
