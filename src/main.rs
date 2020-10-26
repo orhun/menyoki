@@ -28,7 +28,7 @@ fn main() -> AppResult {
 	let mut settings = AppSettings::new(&matches);
 	if !matches.is_present("quiet") {
 		util::logger::init_logger(&settings)
-		.expect("Failed to initialize the logger");
+			.expect("Failed to initialize the logger");
 	}
 	settings.check();
 	let window = if settings.window_required {
