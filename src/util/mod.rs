@@ -22,7 +22,7 @@ pub fn init_logger(settings: &AppSettings<'_>) -> Result<(), SetLoggerError> {
 		.warn(Color::Yellow)
 		.debug(Color::Blue)
 		.trace(Color::BrightBlack);
-	let logger = Dispatch::new()
+	let mut logger = Dispatch::new()
 		.format(move |out, message, record| {
 			let time = Local::now().format("%FT%T");
 			let color = colors.color(record.level());
@@ -55,18 +55,13 @@ pub fn init_logger(settings: &AppSettings<'_>) -> Result<(), SetLoggerError> {
 			1 => LevelFilter::Debug,
 			_ => LevelFilter::Trace,
 		});
-	if cfg!(test) {
-		Ok(())
-	} else if settings.save.file.format == FileFormat::Gif {
-		logger
-			.level_for(
-				format!("{}::edit", env!("CARGO_PKG_NAME")),
-				LevelFilter::Warn,
-			)
-			.apply()
-	} else {
-		logger.apply()
+	if settings.save.file.format == FileFormat::Gif {
+		logger = logger.level_for(
+			format!("{}::edit", env!("CARGO_PKG_NAME")),
+			LevelFilter::Warn,
+		)
 	}
+	logger.apply()
 }
 
 /**
