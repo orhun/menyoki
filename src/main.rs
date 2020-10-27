@@ -23,7 +23,6 @@ use self::util::logger::Logger;
 use self::x11::WindowSystem;
 
 fn main() -> AppResult {
-	util::check_friday();
 	let args = Args::parse();
 	let matches = ArgMatches::new(&args);
 	let mut settings = AppSettings::new(&matches);
