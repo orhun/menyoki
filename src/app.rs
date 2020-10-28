@@ -27,8 +27,8 @@ use std::io::{self, Error, Read, Seek, Write};
 use std::path::Path;
 use std::thread;
 
-/* Window system functions */
-pub trait WindowAccess<'a, Window: Capture + Send + Sync + Copy + Debug + 'static> {
+/* Window system functions for accessing a window */
+pub trait Access<'a, Window: Capture + Send + Sync + Copy + Debug + 'static> {
 	fn init(settings: &'a AppSettings<'a>) -> Option<Self>
 	where
 		Self: Sized;

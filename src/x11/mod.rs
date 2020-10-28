@@ -1,7 +1,7 @@
 pub mod display;
 pub mod window;
 
-use crate::app::WindowAccess;
+use crate::app::Access;
 use crate::record::settings::RecordWindow;
 use crate::settings::AppSettings;
 use crate::x11::display::Display;
@@ -17,7 +17,7 @@ pub struct WindowSystem<'a> {
 	settings: &'a AppSettings<'a>,
 }
 
-impl<'a> WindowAccess<'a, Window> for WindowSystem<'a> {
+impl<'a> Access<'a, Window> for WindowSystem<'a> {
 	/**
 	 * Initialize the X11 window system.
 	 *

@@ -15,7 +15,7 @@ mod record;
 mod settings;
 mod util;
 mod x11;
-use self::app::{App, AppResult, WindowAccess};
+use self::app::{App, AppResult, Access};
 use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
