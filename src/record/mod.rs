@@ -11,7 +11,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc};
 use std::thread;
 
-/* Methods for capturing a window */
+/* Window methods for capturing an image */
 pub trait Capture {
 	fn get_image(&self) -> Option<Image>;
 	fn show_countdown(&self);
