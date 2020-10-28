@@ -11,8 +11,8 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc};
 use std::thread;
 
-/* Required window methods for recording */
-pub trait Record {
+/* Methods for capturing a window */
+pub trait Capture {
 	fn get_image(&self) -> Option<Image>;
 	fn show_countdown(&self);
 	fn release(&self);
@@ -61,7 +61,7 @@ pub struct Recorder<Window> {
 
 impl<Window> Recorder<Window>
 where
-	Window: Record + Send + Sync + 'static,
+	Window: Capture + Send + Sync + 'static,
 {
 	/**
 	 * Create a new Recorder object.

@@ -1,6 +1,6 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
-use crate::record::Record;
+use crate::record::Capture;
 use image::Bgra;
 
 /* Testing window */
@@ -29,7 +29,7 @@ impl TestWindow {
 }
 
 /* Test recording implementation for TestWindow */
-impl Record for TestWindow {
+impl Capture for TestWindow {
 	/**
 	 * Get the test image.
 	 *

@@ -7,7 +7,7 @@ use crate::gif::ski::Gif;
 #[cfg(not(feature = "ski"))]
 use crate::gif::Gif;
 use crate::image::Image;
-use crate::record::{Record, Recorder};
+use crate::record::{Capture, Recorder};
 use crate::settings::AppSettings;
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
@@ -28,7 +28,7 @@ use std::path::Path;
 use std::thread;
 
 /* Window system functions */
-pub trait WindowAccess<'a, Window: Record + Send + Sync + Copy + Debug + 'static> {
+pub trait WindowAccess<'a, Window: Capture + Send + Sync + Copy + Debug + 'static> {
 	fn init(settings: &'a AppSettings<'a>) -> Option<Self>
 	where
 		Self: Sized;
@@ -48,7 +48,7 @@ pub struct App<'a, Window> {
 
 impl<'a, Window> App<'a, Window>
 where
-	Window: Record + Send + Sync + Copy + Debug + 'static,
+	Window: Capture + Send + Sync + Copy + Debug + 'static,
 {
 	/**
 	 * Create a new App object.

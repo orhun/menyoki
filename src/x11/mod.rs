@@ -103,7 +103,7 @@ mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
 	use crate::image::geometry::Geometry;
-	use crate::record::Record;
+	use crate::record::Capture;
 	use crate::util::state::InputState;
 	use clap::ArgMatches as Args;
 	use image::ExtendedColorType;

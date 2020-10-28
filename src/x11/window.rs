@@ -1,7 +1,7 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::record::fps::FpsClock;
-use crate::record::Record;
+use crate::record::Capture;
 use crate::x11::display::Display;
 use image::Bgra;
 use std::convert::{TryFrom, TryInto};
@@ -272,8 +272,8 @@ impl Window {
 	}
 }
 
-/* Record implementation for X11 Window */
-impl Record for Window {
+/* Capture implementation for X11 Window */
+impl Capture for Window {
 	/**
 	 * Get the image of the window.
 	 *
