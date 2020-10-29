@@ -1,7 +1,7 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::record::fps::FpsClock;
-use crate::record::Capture;
+use crate::window::Capture;
 use crate::x11::display::Display;
 use image::Bgra;
 use std::convert::{TryFrom, TryInto};

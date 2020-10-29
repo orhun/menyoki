@@ -7,8 +7,9 @@ use crate::gif::ski::Gif;
 #[cfg(not(feature = "ski"))]
 use crate::gif::Gif;
 use crate::image::Image;
-use crate::record::{Capture, Recorder};
+use crate::record::Recorder;
 use crate::settings::AppSettings;
+use crate::window::Capture;
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
 use image::farbfeld::FarbfeldEncoder;
@@ -26,14 +27,6 @@ use std::fs::{self, File};
 use std::io::{self, Error, Read, Seek, Write};
 use std::path::Path;
 use std::thread;
-
-/* Window system functions for accessing a window */
-pub trait Access<'a, Window: Capture + Send + Sync + Copy + Debug + 'static> {
-	fn init(settings: &'a AppSettings<'a>) -> Option<Self>
-	where
-		Self: Sized;
-	fn get_window(&mut self) -> Option<Window>;
-}
 
 /* Application output and result types */
 pub type AppOutput = (Option<Image>, Option<Frames>);

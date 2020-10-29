@@ -6,17 +6,11 @@ use crate::image::Image;
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
 use crate::util::state::InputState;
+use crate::window::Capture;
 use std::io::{self, Write};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{mpsc, Arc};
 use std::thread;
-
-/* Window methods for capturing an image */
-pub trait Capture {
-	fn get_image(&self) -> Option<Image>;
-	fn show_countdown(&self);
-	fn release(&self);
-}
 
 /* Asynchronous recording result */
 #[derive(Debug)]

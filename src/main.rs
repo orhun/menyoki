@@ -14,12 +14,14 @@ mod image;
 mod record;
 mod settings;
 mod util;
+mod window;
 mod x11;
-use self::app::{App, AppResult, Access};
+use self::app::{App, AppResult};
 use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
 use self::util::logger::Logger;
+use self::window::Access;
 use self::x11::WindowSystem;
 
 fn main() -> AppResult {

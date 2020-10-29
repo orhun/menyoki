@@ -1,6 +1,6 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
-use crate::record::Capture;
+use crate::window::Capture;
 use image::Bgra;
 
 /* Testing window */

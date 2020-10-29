@@ -318,7 +318,7 @@ impl Display {
 mod tests {
 	use super::*;
 	use crate::record::settings::RecordTime;
-	use crate::record::Capture;
+	use crate::window::Capture;
 	use pretty_assertions::assert_eq;
 	use std::convert::TryFrom;
 	use x11::keysym;

@@ -1,9 +1,9 @@
 pub mod display;
 pub mod window;
 
-use crate::app::Access;
 use crate::record::settings::RecordWindow;
 use crate::settings::AppSettings;
+use crate::window::Access;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
 use std::convert::TryInto;
@@ -103,8 +103,8 @@ mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
 	use crate::image::geometry::Geometry;
-	use crate::record::Capture;
 	use crate::util::state::InputState;
+	use crate::window::Capture;
 	use clap::ArgMatches as Args;
 	use image::ExtendedColorType;
 	use pretty_assertions::assert_eq;
