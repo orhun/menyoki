@@ -1,3 +1,5 @@
+pub mod test;
+
 use crate::image::Image;
 use crate::settings::AppSettings;
 use std::fmt::Debug;

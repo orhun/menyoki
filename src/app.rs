@@ -427,7 +427,7 @@ where
 mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
-	use crate::record::window::TestWindow;
+	use crate::window::test::TestWindow;
 	use clap::ArgMatches as Args;
 	use std::env;
 	use std::path::PathBuf;

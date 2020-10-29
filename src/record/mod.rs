@@ -1,6 +1,5 @@
 pub mod fps;
 pub mod settings;
-pub mod window;
 
 use crate::image::Image;
 use crate::record::fps::FpsClock;
@@ -168,7 +167,7 @@ where
 mod tests {
 	use super::*;
 	use crate::record::settings::RecordSettings;
-	use crate::record::window::TestWindow;
+	use crate::window::test::TestWindow;
 	use pretty_assertions::assert_ne;
 	use std::thread;
 	use std::time::Duration;
