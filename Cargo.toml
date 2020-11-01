@@ -6,16 +6,16 @@ edition = "2018"
 
 [features]
 default = []
- # use gifski encoder
+ # use the gifski encoder
 ski = ["gifski", "imgref", "rgb"]
-# test window system
+# run window system tests
 test_ws = []
 
 [target.'cfg(windows)'.dependencies]
-# place Windows dependencies here
+# Windows dependencies
 
 [target.'cfg(target_os = "macos")'.dependencies]
-# place macOS dependencies here
+# MacOS dependencies
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
 x11 = { version = "2.18.2", features = ["xlib"] }
