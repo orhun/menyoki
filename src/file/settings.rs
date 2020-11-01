@@ -83,7 +83,7 @@ impl SaveSettings {
 					matches.is_present("with-extension"),
 				))
 			}
-			None => Self::new(File::from_format(file_format)),
+			None => Self::new(file_format.into_file()),
 		}
 	}
 }

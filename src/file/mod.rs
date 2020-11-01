@@ -34,21 +34,29 @@ impl File {
 	}
 
 	/**
-	 * Create a new File object from file format.
+	 * Create the path if it does not exist.
 	 *
-	 * @param  format
-	 * @return File
+	 * @param path
 	 */
-	pub fn from_format(format: FileFormat) -> Self {
-		Self::new(
-			Self::get_default_path(&format!(
-				"{}.{}",
-				format.get_default_file_name(),
-				format.to_extension()
-			)),
-			format,
-			true,
-		)
+	fn create_path(path: &Path) {
+		if !path.exists() {
+			fs::create_dir_all(&path.parent().expect("Failed to get the directory"))
+				.expect("Failed to create directory");
+		}
+	}
+
+	/**
+	 * Get the path with extension using the given file format.
+	 *
+	 * @param  path
+	 * @param  format
+	 * @return PathBuf
+	 */
+	pub fn get_path_with_extension(path: PathBuf, format: &FileFormat) -> PathBuf {
+		match path.extension().and_then(OsStr::to_str) {
+			Some("*") | None => path.with_extension(format.as_extension()),
+			_ => path,
+		}
 	}
 
 	/**
@@ -66,32 +74,6 @@ impl File {
 					.join(env!("CARGO_PKG_NAME"))
 			})
 			.join(file_name)
-	}
-
-	/**
-	 * Get the path with extension using the given file format.
-	 *
-	 * @param  path
-	 * @param  format
-	 * @return PathBuf
-	 */
-	pub fn get_path_with_extension(path: PathBuf, format: &FileFormat) -> PathBuf {
-		match path.extension().and_then(OsStr::to_str) {
-			Some("*") | None => path.with_extension(format.to_extension()),
-			_ => path,
-		}
-	}
-
-	/**
-	 * Create the path if it does not exist.
-	 *
-	 * @param path
-	 */
-	fn create_path(path: &Path) {
-		if !path.exists() {
-			fs::create_dir_all(&path.parent().expect("Failed to get the directory"))
-				.expect("Failed to create directory");
-		}
 	}
 
 	/**
@@ -137,13 +119,11 @@ mod tests {
 				File::get_default_path(&format!("cap.{}", format))
 					.to_str()
 					.unwrap(),
-				File::from_format(FileFormat::from_args(
-					&ArgMatches::new(&args),
-					None
-				))
-				.path
-				.to_str()
-				.unwrap()
+				FileFormat::from_args(&ArgMatches::new(&args), None)
+					.into_file()
+					.path
+					.to_str()
+					.unwrap()
 			);
 		}
 		assert_eq!(

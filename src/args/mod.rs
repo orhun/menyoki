@@ -1,7 +1,6 @@
 pub mod matches;
 pub mod parser;
 use crate::file::format::FileFormat;
-use crate::file::File;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
 /* Gif related subcommands */
@@ -717,11 +716,9 @@ where
 				Arg::with_name("file")
 					.value_name("FILE")
 					.default_value(
-						Box::leak(
-							File::from_format(file_format).path.into_boxed_path(),
-						)
-						.to_str()
-						.unwrap_or_default(),
+						Box::leak(file_format.into_file().path.into_boxed_path())
+							.to_str()
+							.unwrap_or_default(),
 					)
 					.help("Set the output file"),
 			)

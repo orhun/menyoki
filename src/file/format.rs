@@ -1,4 +1,5 @@
 use crate::args::matches::ArgMatches;
+use crate::file::File;
 use image::pnm::PnmSubtype;
 use std::fmt;
 use std::str::FromStr;
@@ -105,11 +106,25 @@ impl FileFormat {
 	}
 
 	/**
+	 * Get the default file name from format.
+	 *
+	 * @return String
+	 */
+	pub fn get_default_file_name(&self) -> String {
+		String::from(match self {
+			Self::Any => "output",
+			Self::Txt => "report",
+			Self::Gif => "rec",
+			_ => "cap",
+		})
+	}
+
+	/**
 	 * Get extension from format.
 	 *
 	 * @return String
 	 */
-	pub fn to_extension(&self) -> String {
+	pub fn as_extension(&self) -> String {
 		match self {
 			Self::Any => String::from("*"),
 			Self::Pnm(v) => v.to_string(),
@@ -118,17 +133,15 @@ impl FileFormat {
 		.to_lowercase()
 	}
 
-	/**
-	 * Get the default file name from format.
-	 *
-	 * @return str
-	 */
-	pub fn get_default_file_name(&self) -> &str {
-		match self {
-			Self::Any => "output",
-			Self::Txt => "report",
-			Self::Gif => "rec",
-			_ => "cap",
-		}
+	pub fn into_file(self) -> File {
+		File::new(
+			File::get_default_path(&format!(
+				"{}.{}",
+				self.get_default_file_name(),
+				self.as_extension()
+			)),
+			self,
+			true,
+		)
 	}
 }

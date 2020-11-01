@@ -69,7 +69,7 @@ where
 			info!(
 				"Frames saved to {:?} in {} format.",
 				self.settings.split.dir,
-				self.settings.save.file.format.to_extension().to_uppercase(),
+				self.settings.save.file.format.as_extension().to_uppercase(),
 			);
 		} else if self.settings.args.is_present("analyze") {
 			debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
@@ -81,7 +81,7 @@ where
 			)?;
 			info!(
 				"{} saved to: {:?} ({})",
-				self.settings.save.file.format.to_extension().to_uppercase(),
+				self.settings.save.file.format.as_extension().to_uppercase(),
 				self.settings.save.file.path,
 				ByteSize(fs::metadata(&self.settings.save.file.path)?.len())
 			);
@@ -381,7 +381,7 @@ where
 		if !self.settings.args.is_present("split") {
 			info!(
 				"Saving the image as {}...",
-				self.settings.save.file.format.to_extension().to_uppercase()
+				self.settings.save.file.format.as_extension().to_uppercase()
 			);
 			debug!("{:?}", image);
 			debug!("{:?}", self.settings.png);
