@@ -39,7 +39,7 @@ impl File {
 	 * @param path
 	 */
 	fn create_path(path: &Path) {
-		if !path.exists() {
+		if !path.exists() && !cfg!(test) {
 			fs::create_dir_all(&path.parent().expect("Failed to get the directory"))
 				.expect("Failed to create directory");
 		}

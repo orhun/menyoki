@@ -455,7 +455,9 @@ mod tests {
 			app.edit_image(&path);
 			fs::remove_file(path)?;
 		}
-		App::new(Some(window), &settings).start()
+		settings.save.file.path = PathBuf::from("test");
+		App::new(Some(window), &settings).start()?;
+		fs::remove_file(settings.save.file.path)
 	}
 	#[test]
 	fn test_app_gif() -> AppResult {
