@@ -140,9 +140,9 @@ dependencies = [
 
 [[package]]
 name = "color_quant"
-version = "1.0.1"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "0dbbb57365263e881e805dc77d94697c9118fd94d8da011240555aa7b23445bd"
+checksum = "3d7b894f5411737b7867f4827955924d7c254fc9f4d91a6aad6b097804b1018b"
 
 [[package]]
 name = "colored"
@@ -360,16 +360,6 @@ dependencies = [
 
 [[package]]
 name = "gif"
-version = "0.10.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "471d90201b3b223f3451cd4ad53e34295f16a1df17b1edf3736d47761c3981af"
-dependencies = [
- "color_quant",
- "lzw",
-]
-
-[[package]]
-name = "gif"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "02efba560f227847cb41463a7395c514d127d4f74fff12ef0137fff1b84b96c4"
@@ -380,11 +370,11 @@ dependencies = [
 
 [[package]]
 name = "gif-dispose"
-version = "2.4.1"
+version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "859994eec21f53c14561cddb2c84e211d100732d1997f87e80b80ac956502ceb"
+checksum = "3415630fa303c4deecd014fa68a6cfbf1099e4df5b93e3e7a49b7e139278f469"
 dependencies = [
- "gif 0.10.3",
+ "gif",
  "imgref",
  "rgb",
 ]
@@ -401,14 +391,14 @@ dependencies = [
 
 [[package]]
 name = "gifski"
-version = "1.2.1"
+version = "1.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1a65d6ac26a56c70cc24582f5c47fe1a96234746afd1e76e484201ba12710bf6"
+checksum = "e8d32e84a7519b0fb998119f0ce2cfde97b8097d9917ccf4977382975525bde5"
 dependencies = [
  "clap",
  "crossbeam-channel",
  "dunce",
- "gif 0.10.3",
+ "gif",
  "gif-dispose",
  "gifsicle",
  "imagequant",
@@ -454,13 +444,14 @@ checksum = "644f9158b2f133fd50f5fb3242878846d9eb792e445c893805ff0e3824006e35"
 
 [[package]]
 name = "image"
-version = "0.23.10"
+version = "0.23.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "985fc06b1304d19c28d5c562ed78ef5316183f2b0053b46763a0b94862373c34"
+checksum = "b4f0a8345b33b082aedec2f4d7d4a926b845cee184cbe78b703413066564431b"
 dependencies = [
  "bytemuck",
  "byteorder",
- "gif 0.11.1",
+ "color_quant",
+ "gif",
  "jpeg-decoder",
  "num-iter",
  "num-rational",
@@ -552,12 +543,6 @@ checksum = "4fabed175da42fed1fa0746b0ea71f412aa9d35e76e95e59b192c64b9dc2bf8b"
 dependencies = [
  "cfg-if",
 ]
-
-[[package]]
-name = "lzw"
-version = "0.10.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d947cbb889ed21c2a84be6ffbaebf5b4e0f4340638cba0444907e38b56be084"
 
 [[package]]
 name = "maybe-uninit"
@@ -973,7 +958,7 @@ dependencies = [
  "dirs",
  "dominant_color",
  "fern",
- "gif 0.11.1",
+ "gif",
  "gifski",
  "hex",
  "image",
@@ -1010,13 +995,13 @@ dependencies = [
 
 [[package]]
 name = "tiff"
-version = "0.5.0"
+version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3f3b8a87c4da944c3f27e5943289171ac71a6150a79ff6bacfff06d159dfff2f"
+checksum = "abeb4e3f32a8973722c0254189e6890358e72b1bf11becb287ee0b23c595a41d"
 dependencies = [
- "byteorder",
- "lzw",
- "miniz_oxide 0.3.7",
+ "jpeg-decoder",
+ "miniz_oxide 0.4.2",
+ "weezl",
 ]
 
 [[package]]

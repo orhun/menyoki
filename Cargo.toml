@@ -26,11 +26,11 @@ textwidth = "2.1.0"
 device_query = "0.2.5"
 ctrlc = { version = "3.1.7", features = ["termination"] }
 # image operations
-image = "0.23.10"
+image = "0.23.11"
 gif = "0.11.1"
 kamadak-exif = "0.5.2"
 dominant_color = "0.3.0"
-gifski = { version = "1.2.1", optional = true }
+gifski = { version = "1.2.2", optional = true }
 imgref = { version = "1.7.0", optional = true }
 rgb = { version = "0.8.25", optional = true }
 # utility
