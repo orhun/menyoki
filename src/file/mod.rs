@@ -7,7 +7,6 @@ use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-const DEFAULT_FILE_NAME: &str = "t";
 const CONFIG_FILE_EXTENSION: &str = "cfg";
 
 /* Representation of the output file */
@@ -44,7 +43,7 @@ impl File {
 		Self::new(
 			Self::get_default_path(&format!(
 				"{}.{}",
-				DEFAULT_FILE_NAME,
+				format.get_default_file_name(),
 				format.to_extension()
 			)),
 			format,
@@ -135,7 +134,7 @@ mod tests {
 				)
 				.get_matches_from(vec!["test", "capture", format]);
 			assert_eq!(
-				File::get_default_path(&format!("t.{}", format))
+				File::get_default_path(&format!("cap.{}", format))
 					.to_str()
 					.unwrap(),
 				File::from_format(FileFormat::from_args(

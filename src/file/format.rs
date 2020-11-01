@@ -117,4 +117,18 @@ impl FileFormat {
 		}
 		.to_lowercase()
 	}
+
+	/**
+	 * Get the default file name from format.
+	 *
+	 * @return str
+	 */
+	pub fn get_default_file_name(&self) -> &str {
+		match self {
+			Self::Any => "output",
+			Self::Txt => "report",
+			Self::Gif => "rec",
+			_ => "cap",
+		}
+	}
 }
