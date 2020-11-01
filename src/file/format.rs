@@ -133,6 +133,11 @@ impl FileFormat {
 		.to_lowercase()
 	}
 
+	/**
+	 * Get default File from format.
+	 *
+	 * @return File
+	 */
 	pub fn into_file(self) -> File {
 		File::new(
 			File::get_default_path(&format!(
