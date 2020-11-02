@@ -1,9 +1,17 @@
-# https://EditorConfig.org
-
-# top-most EditorConfig file
+# https://editorconfig.org
 root = true
 
-# 4 space indentation
-[*.{c,rs}]
+[*]
+charset = utf-8
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.rs]
 indent_style = tab
 indent_size = 4
+
+[*.{md,txt}]
+indent_style = tab
+indent_size = 4
+trim_trailing_whitespace = false
