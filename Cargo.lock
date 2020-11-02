@@ -560,6 +560,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "menyoki"
+version = "0.1.0"
+dependencies = [
+ "bytesize",
+ "chrono",
+ "clap",
+ "colored",
+ "ctrlc",
+ "device_query",
+ "dirs",
+ "dominant_color",
+ "fern",
+ "gif",
+ "gifski",
+ "hex",
+ "image",
+ "imgref",
+ "kamadak-exif",
+ "log",
+ "natord",
+ "pretty_assertions",
+ "rgb",
+ "rust-ini",
+ "textwidth",
+ "x11",
+]
+
+[[package]]
 name = "miniz_oxide"
 version = "0.3.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -943,34 +971,6 @@ checksum = "d326610f408c7a4eb6f51c37c330e496b08506c9457c9d34287ecc38809fb060"
 dependencies = [
  "term_size",
  "unicode-width",
-]
-
-[[package]]
-name = "tgif"
-version = "0.1.0"
-dependencies = [
- "bytesize",
- "chrono",
- "clap",
- "colored",
- "ctrlc",
- "device_query",
- "dirs",
- "dominant_color",
- "fern",
- "gif",
- "gifski",
- "hex",
- "image",
- "imgref",
- "kamadak-exif",
- "log",
- "natord",
- "pretty_assertions",
- "rgb",
- "rust-ini",
- "textwidth",
- "x11",
 ]
 
 [[package]]
