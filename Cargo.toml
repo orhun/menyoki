@@ -1,12 +1,21 @@
 [package]
 name = "menyoki"
 version = "0.1.0"
+description = "Screen{shot,cast} and perform ImageOps on the command line"
 authors = ["orhun <orhunparmaksiz@gmail.com>"]
+license = "GPL-3.0"
+readme = "README.md"
+documentation = "https://github.com/orhun/menyoki/blob/master/README.md"
+homepage = "https://github.com/orhun/menyoki"
+repository = "https://github.com/orhun/menyoki"
+keywords = ["screenshot", "screencast", "gif", "recorder", "image"]
+categories = ["multimedia", "graphics", "command-line-utilities"]
+include = ["src/**/*", "Cargo.*", "README.md", "CHANGELOG.md"]
 edition = "2018"
 
 [features]
 default = []
- # use the gifski encoder
+# use the gifski encoder
 ski = ["gifski", "imgref", "rgb"]
 # run window system tests
 test_ws = []
@@ -65,8 +74,8 @@ debug = true
 opt-level = 3
 debug = false
 panic = "abort"
-# lto = true
-# codegen-units = 1
+lto = true
+codegen-units = 1
 
 [profile.bench]
 opt-level = 3
