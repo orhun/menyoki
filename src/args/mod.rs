@@ -3,6 +3,25 @@ pub mod parser;
 use crate::file::format::FileFormat;
 use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
+/* ASCII format of the projects logo */
+const ASCII_LOGO: &str = "
+  -/+o+:.  -- ./+oo+:`    {bin}-{version}
+`ossssssso-o+ossssssss`   {about}
+ .::::::-.-s`..-::::-.    {author}
+          .s`
+           :o`
+            o-
+       `:+osd+:`
+     :hMMMNNNMMMh:
+    yMMmhssyysydMMy`
+   sMMhshNMMMNdsyMMs
+   mMNssMMMMMMMhsdMN
+   hMMysmMMMMMNysNMd
+   .NMNhsydddhsymMN-
+    `yMMNmdhhdNMMy.
+      `/ydmmmdy/`
+";
+
 /* Gif related subcommands */
 #[derive(Debug, PartialEq)]
 enum GifMode {
@@ -52,6 +71,7 @@ where
 			.version(env!("CARGO_PKG_VERSION"))
 			.author(env!("CARGO_PKG_AUTHORS"))
 			.about(env!("CARGO_PKG_DESCRIPTION"))
+			.template(format!("{}\n{{usage}}\n\n{{all-args}}", ASCII_LOGO).as_str())
 			.help_message("Print help information")
 			.version_message("Print version information")
 			.global_settings(&[
