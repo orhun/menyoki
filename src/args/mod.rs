@@ -5,7 +5,7 @@ use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
 
 /* ASCII format of the projects logo */
 const ASCII_LOGO: &str = "
-  -/+o+:.  -- ./+oo+:`    {bin}-{version}
+  -/+o+:.  -- ./+oo+:`    {bin} {version}
 `ossssssso-o+ossssssss`   {about}
  .::::::-.-s`..-::::-.    {author}
           .s`
