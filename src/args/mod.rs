@@ -113,7 +113,7 @@ where
 				Arg::with_name("color")
 					.long("color")
 					.value_name("HEX")
-					.default_value("FF00FF")
+					.default_value("3AA431")
 					.help("Set the main color")
 					.takes_value(true),
 			)

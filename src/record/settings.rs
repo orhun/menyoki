@@ -148,7 +148,7 @@ impl Default for RecordSettings {
 	fn default() -> Self {
 		Self {
 			command: None,
-			color: 0x00ff_00ff,
+			color: 0x003A_A431,
 			border: Some(1),
 			padding: Padding::default(),
 			time: RecordTime::default(),

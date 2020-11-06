@@ -25,7 +25,7 @@ impl<'a> Logger<'a> {
 		Self {
 			settings,
 			colors: ColoredLevelConfig::new()
-				.info(settings.get_main_color().unwrap_or(Color::Magenta))
+				.info(settings.get_main_color().unwrap_or(Color::Green))
 				.error(Color::Red)
 				.warn(Color::Yellow)
 				.debug(Color::Blue)
