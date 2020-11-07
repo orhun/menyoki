@@ -1,7 +1,9 @@
 pub mod matches;
 pub mod parser;
 use crate::file::format::FileFormat;
-use clap::{App, AppSettings, Arg, ArgMatches, SubCommand};
+use clap::{App, AppSettings, Arg, ArgMatches, Shell, SubCommand};
+use std::io;
+use std::str::FromStr;
 
 /* Help template for the main arguments */
 const HELP_TEMPLATE: &str = "
@@ -39,12 +41,37 @@ pub struct Args<'a, 'b> {
 	capture: App<'a, 'b>,
 	edit: App<'a, 'b>,
 	analyze: App<'a, 'b>,
+	misc: App<'a, 'b>,
 }
 
 impl<'a, 'b> Args<'a, 'b>
 where
 	'a: 'b,
 {
+	/**
+	 * Parse command line arguments.
+	 *
+	 * @return ArgMatches
+	 */
+	pub fn parse() -> ArgMatches<'a> {
+		Self::get_app().get_matches()
+	}
+
+	/**
+	 * Generate completions for the specified shell.
+	 *
+	 * @param shell
+	 */
+	pub fn gen_completions(shell: &'a str) {
+		if let Ok(shell) = Shell::from_str(shell) {
+			Self::get_app().gen_completions_to(
+				env!("CARGO_PKG_NAME"),
+				shell,
+				&mut io::stdout(),
+			);
+		}
+	}
+
 	/**
 	 * Initialize the arguments for parsing.
 	 *
@@ -58,16 +85,8 @@ where
 			capture: Self::get_record_args(true),
 			edit: Self::get_edit_args(),
 			analyze: Self::get_analyze_args(),
+			misc: Self::get_misc_args(),
 		}
-	}
-
-	/**
-	 * Parse command line arguments.
-	 *
-	 * @return ArgMatches
-	 */
-	pub fn parse() -> ArgMatches<'a> {
-		Self::get_app().get_matches()
 	}
 
 	/**
@@ -149,6 +168,7 @@ where
 				args.analyze
 					.subcommand(Self::get_save_args(FileFormat::Txt)),
 			)
+			.subcommand(args.misc)
 	}
 
 	/**
@@ -770,6 +790,33 @@ where
 					.value_name("FORMAT")
 					.default_value("%Y%m%dT%H%M%S")
 					.help("Add formatted date/time to the file name")
+					.takes_value(true),
+			)
+	}
+
+	/**
+	 * Get misc subcommand arguments.
+	 *
+	 * @return App
+	 */
+	fn get_misc_args() -> App<'a, 'b> {
+		SubCommand::with_name("misc")
+			.about("Perfom miscellaneous operations")
+			.help_message("Print help information")
+			.setting(AppSettings::Hidden)
+			.arg(
+				Arg::with_name("gen-completions")
+					.short("g")
+					.long("gen-completions")
+					.value_name("SHELL")
+					.help("Generate completions for the specified shell")
+					.possible_values(&[
+						"bash",
+						"fish",
+						"zsh",
+						"powershell",
+						"elvish",
+					])
 					.takes_value(true),
 			)
 	}

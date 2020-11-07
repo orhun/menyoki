@@ -1,3 +1,4 @@
+use crate::args::Args;
 use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
 use crate::gif::decoder::Decoder;
@@ -63,7 +64,11 @@ where
 		trace!("Window: {:?}", self.window);
 		debug!("{:?}", self.settings.save.file);
 		debug!("Command: {:?}", self.settings.record.get_command());
-		if self.settings.args.is_present("split") {
+		if let Some(misc_args) = self.settings.args.subcommand_matches("misc") {
+			if let Some(shell) = misc_args.value_of("gen-completions") {
+				Args::gen_completions(shell);
+			}
+		} else if self.settings.args.is_present("split") {
 			info!("Reading frames from {:?}...", self.settings.split.file);
 			self.split_gif(File::open(&self.settings.split.file)?)?;
 			info!(
