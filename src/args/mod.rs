@@ -67,6 +67,15 @@ where
 	 * @return ArgMatches
 	 */
 	pub fn parse() -> ArgMatches<'a> {
+		Self::get_app().get_matches()
+	}
+
+	/**
+	 * Get the main clap application.
+	 *
+	 * @return App
+	 */
+	fn get_app() -> App<'a, 'b> {
 		let args = Self::init();
 		App::new(env!("CARGO_PKG_NAME"))
 			.version(env!("CARGO_PKG_VERSION"))
@@ -140,7 +149,6 @@ where
 				args.analyze
 					.subcommand(Self::get_save_args(FileFormat::Txt)),
 			)
-			.get_matches()
 	}
 
 	/**
