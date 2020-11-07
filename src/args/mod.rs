@@ -21,7 +21,7 @@ const HELP_TEMPLATE: &str = "
     `yMMNmdhhdNMMy.
       `/ydmmmdy/`\n
 {usage}\n
-{all-args}\n";
+{all-args}";
 
 /* Gif related subcommands */
 #[derive(Debug, PartialEq)]
