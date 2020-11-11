@@ -229,7 +229,7 @@ where
 			.arg(
 				Arg::with_name("no-borders")
 					.long("no-borders")
-					.help("Do not show borders on the focused window"),
+					.help("Do not show borders for window selection"),
 			)
 			.arg(
 				Arg::with_name("no-keys")
