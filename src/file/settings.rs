@@ -69,12 +69,16 @@ impl SaveSettings {
 					PathBuf::from(matches.value_of("file").unwrap_or_default());
 				if let Some(info) = FileInfo::from_args(&matches) {
 					path.set_file_name(format!(
-						"{}_{}",
+						"{}_{}{}",
 						path.file_stem()
 							.unwrap_or_default()
 							.to_str()
 							.unwrap_or_default(),
-						info
+						info,
+						path.extension().map_or(String::new(), |extension| format!(
+							".{}",
+							extension.to_str().unwrap_or_default()
+						))
 					));
 				}
 				Self::new(File::new(
