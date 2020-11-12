@@ -3036,7 +3036,7 @@ esac
 _arguments "${_arguments_options[@]}" \
 '--crop=[Apply padding to crop the image]' \
 '--resize=[Resize the image without keeping the aspect ratio]' \
-'--ratio=[Resize the image by changing the aspect ratio]' \
+'--ratio=[Resize the image proportionally by aspect ratio]' \
 '--rotate=[Rotate the image (clockwise)]: :(90 180 270)' \
 '--flip=[Flip the image]: :(horizontal vertical)' \
 '--blur=[Blur the image]' \
@@ -3046,7 +3046,7 @@ _arguments "${_arguments_options[@]}" \
 '--filter=[Set the sampling filter for scaling]: :(nearest triangle catmull-rom gaussian lanczos3)' \
 '--convert[Convert image using the encoder given]' \
 '--grayscale[Convert image to grayscale]' \
-'--invert[Invert the image colors]' \
+'--invert[Invert the colors of the image]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Prints version information]' \

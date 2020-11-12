@@ -319,7 +319,7 @@ complete -c menyoki -n "__fish_seen_subcommand_from help" -s h -l help -d 'Print
 complete -c menyoki -n "__fish_seen_subcommand_from help" -s V -l version -d 'Prints version information'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l crop -d 'Apply padding to crop the image'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l resize -d 'Resize the image without keeping the aspect ratio'
-complete -c menyoki -n "__fish_seen_subcommand_from edit" -l ratio -d 'Resize the image by changing the aspect ratio'
+complete -c menyoki -n "__fish_seen_subcommand_from edit" -l ratio -d 'Resize the image proportionally by aspect ratio'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l rotate -d 'Rotate the image (clockwise)' -r -f -a "90 180 270"
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l flip -d 'Flip the image' -r -f -a "horizontal vertical"
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l blur -d 'Blur the image'
@@ -329,7 +329,7 @@ complete -c menyoki -n "__fish_seen_subcommand_from edit" -l brightness -d 'Adju
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l filter -d 'Set the sampling filter for scaling' -r -f -a "nearest triangle catmull-rom gaussian lanczos3"
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l convert -d 'Convert image using the encoder given'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l grayscale -d 'Convert image to grayscale'
-complete -c menyoki -n "__fish_seen_subcommand_from edit" -l invert -d 'Invert the image colors'
+complete -c menyoki -n "__fish_seen_subcommand_from edit" -l invert -d 'Invert the colors of the image'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -s h -l help -d 'Print help information'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -s V -l version -d 'Prints version information'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -f -a "gif" -d 'Use the GIF encoder'

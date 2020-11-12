@@ -463,7 +463,7 @@ where
 			.arg(
 				Arg::with_name("invert")
 					.long("invert")
-					.help("Invert the image colors"),
+					.help("Invert the colors of the image"),
 			)
 			.arg(
 				Arg::with_name("crop")
@@ -484,7 +484,7 @@ where
 					.long("ratio")
 					.value_name("RATIO")
 					.default_value("1.0")
-					.help("Resize the image by changing the aspect ratio")
+					.help("Resize the image proportionally by aspect ratio")
 					.takes_value(true),
 			)
 			.arg(
