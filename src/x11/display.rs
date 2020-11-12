@@ -302,7 +302,7 @@ impl Display {
 		info!(
 			" Selected area -> [{}] {}\r#",
 			window.area,
-			if self.settings.padding.is_zero() {
+			if self.settings.padding.is_zero() && !reset_area {
 				String::new()
 			} else {
 				format!("p:[{}]{:<10}", self.settings.padding, " ")
