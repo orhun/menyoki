@@ -106,11 +106,28 @@ impl FileFormat {
 	}
 
 	/**
+	 * Get default File from format.
+	 *
+	 * @return File
+	 */
+	pub fn into_file(self) -> File {
+		File::new(
+			File::get_default_path(&format!(
+				"{}.{}",
+				self.get_default_file_name(),
+				self.as_extension()
+			)),
+			self,
+			true,
+		)
+	}
+
+	/**
 	 * Get the default file name from format.
 	 *
 	 * @return String
 	 */
-	pub fn get_default_file_name(&self) -> String {
+	fn get_default_file_name(&self) -> String {
 		String::from(match self {
 			Self::Any => "output",
 			Self::Txt => "report",
@@ -131,22 +148,5 @@ impl FileFormat {
 			_ => self.to_string(),
 		}
 		.to_lowercase()
-	}
-
-	/**
-	 * Get default File from format.
-	 *
-	 * @return File
-	 */
-	pub fn into_file(self) -> File {
-		File::new(
-			File::get_default_path(&format!(
-				"{}.{}",
-				self.get_default_file_name(),
-				self.as_extension()
-			)),
-			self,
-			true,
-		)
 	}
 }
