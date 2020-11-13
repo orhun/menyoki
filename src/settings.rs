@@ -102,9 +102,11 @@ impl<'a> AppSettings<'a> {
 	) -> Option<&'static InputState> {
 		if window_required {
 			Some(Box::leak(
-				InputState::new(ActionKeys::parse(
-					record.flag.keys.unwrap_or_default(),
-				))
+				InputState::new(if let Some(keys) = record.flag.keys {
+					ActionKeys::parse(keys)
+				} else {
+					ActionKeys::default()
+				})
 				.into_boxed_state(),
 			))
 		} else {
