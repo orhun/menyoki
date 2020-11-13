@@ -453,7 +453,7 @@ where
 			.arg(
 				Arg::with_name("convert")
 					.long("convert")
-					.help("Convert image using the encoder given"),
+					.help("Convert image using the given encoder"),
 			)
 			.arg(
 				Arg::with_name("grayscale")

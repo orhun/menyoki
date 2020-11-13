@@ -3044,7 +3044,7 @@ _arguments "${_arguments_options[@]}" \
 '--contrast=[Adjust the contrast of the image]' \
 '--brightness=[Adjust the brightness of the image]' \
 '--filter=[Set the sampling filter for scaling]: :(nearest triangle catmull-rom gaussian lanczos3)' \
-'--convert[Convert image using the encoder given]' \
+'--convert[Convert image using the given encoder]' \
 '--grayscale[Convert image to grayscale]' \
 '--invert[Invert the colors of the image]' \
 '-h[Print help information]' \

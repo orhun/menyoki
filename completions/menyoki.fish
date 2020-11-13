@@ -327,7 +327,7 @@ complete -c menyoki -n "__fish_seen_subcommand_from edit" -l hue -d 'Adjust the 
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l contrast -d 'Adjust the contrast of the image'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l brightness -d 'Adjust the brightness of the image'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l filter -d 'Set the sampling filter for scaling' -r -f -a "nearest triangle catmull-rom gaussian lanczos3"
-complete -c menyoki -n "__fish_seen_subcommand_from edit" -l convert -d 'Convert image using the encoder given'
+complete -c menyoki -n "__fish_seen_subcommand_from edit" -l convert -d 'Convert image using the given encoder'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l grayscale -d 'Convert image to grayscale'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -l invert -d 'Invert the colors of the image'
 complete -c menyoki -n "__fish_seen_subcommand_from edit" -s h -l help -d 'Print help information'
