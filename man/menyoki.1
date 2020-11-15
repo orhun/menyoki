@@ -1,0 +1,881 @@
+.\" Manpage of menyoki.
+.TH MENYOKI "1" "November 2020" "menyoki 0.1.0" "User Commands"
+.SH NAME
+menyoki \- screenshot/screencast and perform image operations on the command line
+.SH SYNOPSIS
+.B menyoki
+[FLAGS] [OPTIONS] <SUBCOMMAND>
+.SH DESCRIPTION
+.PP
+\f[B]menyoki\f[R] is a screencast and screenshot utility that can also
+perform various image related operations such as making/splitting GIFs
+and modifying/analyzing image files.
+It aims to be a lightweight command line tool for either helping out on
+day-to-day life operations or complicated detail-centric issues.
+Originally it was designed to record/screenshot terminal windows but it
+can be tweaked easily for other purposes with command line arguments,
+environment variables, or a configuration file.
+.PP
+.SH USAGE
+.PP
+Command line arguments of \f[B]menyoki\f[R] are designed to be as
+intuitive as possible.
+As a result of that, an action can be performed with a chain of
+subcommands along with the flags and options.
+The general prototype for the usage of command line arguments is the
+following:
+.PP
+\f[C]menyoki (ACTION) (FORMAT) (OUTPUT)\f[R]
+.PP
+The subcommand that will indicate the \f[C]action\f[R] is mandatory
+whereas \f[C]format\f[R] and \f[C]output\f[R] subcommands might be
+optional (or they might not exist at all).
+The \f[C]format\f[R] subcommand can be one of the supported formats and
+\f[C]output\f[R] basically corresponds to the \f[B]save\f[R] subcommand.
+.PP
+The default \f[C]format\f[R] is the first listed subcommand if there is
+not any subcommand given for specifying a \f[C]format\f[R].
+On the other hand, \f[B]save\f[R] subcommand uses the \[lq]menyoki\[rq]
+directory in the \f[I]home\f[R] (or \f[I]images\f[R] if it exists) as
+the default output directory.
+.SH GENERAL ARGUMENTS
+.PP
+Flags and options that will generally affect the execution of
+\f[B]menyoki\f[R] can be set before specifying the main action to
+perform.
+Then the main subcommand (action) must be specified.
+.PP
+\f[C]menyoki [FLAGS] [OPTIONS] <SUBCOMMAND>\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+    -h, --help       Print help information
+    -V, --version    Print version information
+    -v, --verbose    Increase logging verbosity
+    -q, --quiet      Do not show output
+
+OPTIONS:
+    -c, --config <FILE>    Set the configuration file
+        --color <HEX>      Set the main color [default: 3AA431]
+
+SUBCOMMANDS:
+    record     Record a GIF
+    split      Split a GIF into frames
+    make       Make a GIF from frames
+    capture    Capture an image
+    edit       Edit an image
+    analyze    Analyze an image
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(24.4n) lw(45.6n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki -V\f[R]
+T}@T{
+Print the version information
+T}
+T{
+\f[C]menyoki -vv --color FF00FF <action>\f[R]
+T}@T{
+Set log verbosity level to 2 (trace) and use \[lq]FF00FF\[rq] as the
+main color
+T}
+T{
+\f[C]menyoki -q -c menyoki.cfg <action>\f[R]
+T}@T{
+Run in quiet mode and read the configuration from \[lq]menyoki.cfg\[rq]
+T}
+.TE
+.SH RECORD SUBCOMMAND
+.PP
+\f[B]menyoki\f[R] can record an area of a window or the whole screen and
+encode it as a supported format (only GIF for now).
+Area selection and resize is performed with the key bindings.
+.PP
+A few scenarios that \f[B]record\f[R] action might be helpful would be:
+.IP \[bu] 2
+Record a specific area of a window
+.IP \[bu] 2
+Record for a given duration
+.IP \[bu] 2
+Record the output of a command (especially for TUI applications)
+.PP
+Encoding options can be changed using the arguments of the provided
+format.
+(See the output of \f[C]menyoki record gif --help\f[R])
+.PP
+\f[C]menyoki record [FLAGS] [OPTIONS] [COMMAND] [SUBCOMMAND]\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+    -r, --root          Record the root window
+    -f, --focus         Record the focused window
+        --select        Select the window to record
+        --with-alpha    Record with the alpha channel
+        --no-borders    Do not show borders for window selection
+        --no-keys       Disable the action keys while recording
+    -h, --help          Print help information
+
+OPTIONS:
+    -k, --keys <KEYS>          Set the action keys [default: LAlt-S/Enter]
+    -b, --border <BORDER>      Set the border padding [default: 1]
+    -p, --padding <T:R:B:L>    Set the record area padding
+    -s, --size <WxH>           Set the record area size
+    -d, --duration <S>         Set the duration for recording [default: \[if]]
+    -c, --countdown <S>        Set the countdown before recording [default: 3]
+    -t, --timeout <S>          Set the timeout for window selection [default: 60]
+    -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
+
+ARGS:
+    <COMMAND>    Set the command to run
+
+SUBCOMMANDS:
+    gif     Use the GIF encoder
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(27.3n) lw(42.7n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki record\f[R]
+T}@T{
+Select a window and start recording with default settings
+T}
+T{
+\f[C]menyoki record --root --countdown 5\f[R]
+T}@T{
+Record the root window after 5 seconds of countdown
+T}
+T{
+\f[C]menyoki record --focus --with-alpha\f[R]
+T}@T{
+Record the focused window with the alpha channel (for transparency)
+T}
+T{
+\f[C]menyoki record --size 200x300 --duration 10\f[R]
+T}@T{
+Record an area of size 200x300 for 10 seconds
+T}
+T{
+\f[C]menyoki record --padding 20:10:0:10 --timeout 120\f[R]
+T}@T{
+Record an area with given padding and set window selection timeout to
+120 seconds
+T}
+T{
+\f[C]menyoki record --keys LControl-Q/W\f[R]
+T}@T{
+Record with the default settings using custom key bindings
+T}
+T{
+\f[C]menyoki record gif --fps 15 --quality 90\f[R]
+T}@T{
+Record 15 frames per second with 90% quality
+T}
+T{
+\f[C]menyoki record gif save \[dq]test.gif\[dq] --timestamp\f[R]
+T}@T{
+Record and save as \[lq]test.gif\[rq] with timestamp in the file name
+T}
+T{
+\f[C]menyoki -q record \[dq]kmon -t 2000\[dq]\f[R]
+T}@T{
+Execute the command and record its output in quiet mode
+T}
+.TE
+.SH SPLIT SUBCOMMAND
+.PP
+\f[B]menyoki\f[R] can split a GIF into frames (extract images) if the
+\f[B]split\f[R] subcommand is provided and it can save frames as one of
+the supported formats with the use of trailing \f[I]format\f[R]
+subcommand.
+.PP
+\f[C]menyoki split [OPTIONS] <FILE> [SUBCOMMAND]\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+    -h, --help    Print help information
+
+OPTIONS:
+    -d, --dir <DIRECTORY>    Set the output directory
+
+ARGS:
+    <FILE>    Set the GIF file
+
+SUBCOMMANDS:
+    png     Use the PNG encoder
+    jpg     Use the JPG encoder
+    bmp     Use the BMP encoder
+    ico     Use the ICO encoder
+    tiff    Use the TIFF encoder
+    tga     Use the TGA encoder
+    pnm     Use the PNM encoder
+    ff      Use the farbfeld encoder
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(30.1n) lw(39.9n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki split rec.gif\f[R]
+T}@T{
+Extract frames from the \[lq]rec.gif\[rq] file
+T}
+T{
+\f[C]menyoki split rec.gif jpg --quality 100\f[R]
+T}@T{
+Extract frames as JPEG in maximum quality
+T}
+T{
+\f[C]menyoki split rec.gif --dir frames/\f[R]
+T}@T{
+Extract frames and save them to the specified directory
+T}
+.TE
+.SH MAKE SUBCOMMAND
+.PP
+\f[B]make\f[R] subcommand serves the purpose of creating GIF files from
+a set of images.
+It can be used for making GIFs from given images either via the command
+line or the specified directory.
+.PP
+\f[C]menyoki make [FLAGS] [OPTIONS] <FRAMES>... [SUBCOMMAND]\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+    -n, --no-sort    Use frames in the order given
+    -h, --help       Print help information
+
+OPTIONS:
+    -f, --fps <FPS>            Set the FPS [default: 20]
+    -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
+    -r, --repeat <REPEAT>      Set the number of repetitions [default: \[if]]
+    -d, --dir <DIRECTORY>      Set the directory to read frames
+
+ARGS:
+    <FRAMES>...    Set the GIF frames
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(30.2n) lw(39.8n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki make 1.png 2.png\f[R]
+T}@T{
+Make a GIF that consists of two frames as \[lq]1.png\[rq] and
+\[lq]2.png\[rq]
+T}
+T{
+\f[C]menyoki make 1.png 2.png --fps 5 --quality 100\f[R]
+T}@T{
+Make a GIF with the specified properties from given frames
+T}
+T{
+\f[C]menyoki make 1.png 2.png save 3.gif --date\f[R]
+T}@T{
+Make a GIF and save the file (\[lq]3.gif\[rq]) with the date information
+T}
+T{
+\f[C]menyoki make --dir frames/\f[R]
+T}@T{
+Make a GIF from the frames in the specified directory
+T}
+.TE
+.SH CAPTURE SUBCOMMAND
+.PP
+\f[B]menyoki\f[R] can capture (screenshot) an area of a window or the
+whole screen and encode it as a supported format.
+Formats like \f[B]png\f[R], \f[B]jpg\f[R], and \f[B]pnm\f[R] have their
+own flags and options that might be used for changing the default
+encoding settings.
+Similar to the \f[B]record\f[R] subcommand, area selection and resize is
+performed with the key bindings.
+The same flags and options might apply for both \f[B]record\f[R] and
+\f[B]capture\f[R] subcommands since the actions are abstractly alike.
+.PP
+\f[C]menyoki capture [FLAGS] [OPTIONS] [COMMAND] [SUBCOMMAND]\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+    -r, --root          Capture the root window
+    -f, --focus         Capture the focused window
+        --select        Select the window to capture
+        --with-alpha    Capture with the alpha channel
+        --no-borders    Do not show borders on the focused window
+    -h, --help          Print help information
+
+OPTIONS:
+    -k, --keys <KEYS>          Set the action keys [default: LAlt-S/Enter]
+    -b, --border <BORDER>      Set the border padding [default: 1]
+    -p, --padding <T:R:B:L>    Set the capture area padding
+    -s, --size <WxH>           Set the capture area size
+    -c, --countdown <S>        Set the countdown before capturing [default: 0]
+    -t, --timeout <S>          Set the timeout for window selection [default: 60]
+    -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
+
+ARGS:
+    <COMMAND>    Set the command to run
+
+SUBCOMMANDS:
+    png     Use the PNG encoder
+    jpg     Use the JPG encoder
+    bmp     Use the BMP encoder
+    ico     Use the ICO encoder
+    tiff    Use the TIFF encoder
+    tga     Use the TGA encoder
+    pnm     Use the PNM encoder
+    ff      Use the farbfeld encoder
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(26.1n) lw(43.9n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki capture\f[R]
+T}@T{
+Select a window and screenshot with default settings
+T}
+T{
+\f[C]menyoki capture --root --countdown 5\f[R]
+T}@T{
+Screenshot the root window after 5 seconds of countdown
+T}
+T{
+\f[C]menyoki capture --focus --with-alpha\f[R]
+T}@T{
+Screenshot the focused window with the alpha channel (for transparency)
+T}
+T{
+\f[C]menyoki capture --size 200x300 --duration 10\f[R]
+T}@T{
+Screenshot an area of size 200x300 for 10 seconds
+T}
+T{
+\f[C]menyoki capture --padding 20:10:0:10 --timeout 120\f[R]
+T}@T{
+Screenshot an area with given padding and set window selection timeout
+to 120 seconds
+T}
+T{
+\f[C]menyoki capture png --filter avg --compression fast\f[R]
+T}@T{
+Screenshot and encode with the specified PNG options
+T}
+T{
+\f[C]menyoki capture jpg --quality 100\f[R]
+T}@T{
+Screenshot and encode with the specified JPEG options
+T}
+T{
+\f[C]menyoki capture pnm --format pixmap --encoding ascii\f[R]
+T}@T{
+Screenshot and encode with the specified PNM options
+T}
+T{
+\f[C]menyoki capture ff save \[dq]test.ff\[dq] --timestamp\f[R]
+T}@T{
+Screenshot and save as \[lq]test.ff\[rq] in farbfeld format with
+timestamp in the file name
+T}
+T{
+\f[C]menyoki -q capture \[dq]kmon -t 2000\[dq]\f[R]
+T}@T{
+Execute the command and screenshot its output in quiet mode (sets
+countdown to 3 implicitly)
+T}
+.TE
+.SH EDIT SUBCOMMAND
+.PP
+\f[B]edit\f[R] subcommand can be used to
+edit (https://github.com/image-rs/image#image-processing-functions)
+(manipulate/filter/convert) files in one of the supported formats.
+Apart from the flags and options that \f[B]edit\f[R] provides, other
+encoding options can be specified via \f[I]format\f[R] subcommand.
+.PP
+\f[C]menyoki edit [FLAGS] [OPTIONS] <FILE> [SUBCOMMAND]\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+        --convert      Convert image using the given encoder
+        --grayscale    Convert image to grayscale
+        --invert       Invert the colors of the image
+    -h, --help         Print help information
+
+OPTIONS:
+        --crop <T:R:B:L>             Apply padding to crop the image
+        --resize <WxH>               Resize the image without keeping the aspect ratio
+        --ratio <RATIO>              Resize the image proportionally by aspect ratio [default: 1.0]
+        --rotate <ROTATE>            Rotate the image (clockwise) [possible values: 90, 180, 270]
+        --flip <FLIP>                Flip the image [possible values: horizontal, vertical]
+        --blur <SIGMA>               Blur the image [default: 0.0]
+        --hue <HUE>                  Adjust the hue of the image [default: \[t+-]0]
+        --contrast <CONTRAST>        Adjust the contrast of the image [default: \[t+-]0.0]
+        --brightness <BRIGHTNESS>    Adjust the brightness of the image [default: \[t+-]0]
+        --filter <FILTER>            Set the sampling filter for scaling [default: lanczos3]  [possible values: nearest, triangle, catmull-rom, gaussian,
+                                     lanczos3]
+
+ARGS:
+    <FILE>    Set the input file
+
+SUBCOMMANDS:
+    gif     Use the GIF encoder
+    png     Use the PNG encoder
+    jpg     Use the JPG encoder
+    bmp     Use the BMP encoder
+    ico     Use the ICO encoder
+    tiff    Use the TIFF encoder
+    tga     Use the TGA encoder
+    pnm     Use the PNM encoder
+    ff      Use the farbfeld encoder
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(45.1n) lw(24.9n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki edit test.png\f[R]
+T}@T{
+Re-encode the \[lq]test.png\[rq] file without editing
+T}
+T{
+\f[C]menyoki edit test.png --grayscale\f[R]
+T}@T{
+Convert image to grayscale
+T}
+T{
+\f[C]menyoki edit test.png --invert\f[R]
+T}@T{
+Invert the colors of the image
+T}
+T{
+\f[C]menyoki edit test.png --crop 20:20:20:20\f[R]
+T}@T{
+Apply the given padding to image for cropping
+T}
+T{
+\f[C]menyoki edit test.png --resize 300x300\f[R]
+T}@T{
+Resize the image to 300x300 (without keeping the aspect ratio)
+T}
+T{
+\f[C]menyoki edit test.png --ratio 0.5\f[R]
+T}@T{
+Resize the image to half the size (using the aspect ratio)
+T}
+T{
+\f[C]menyoki edit test.png --ratio 2.0 --filter gaussian\f[R]
+T}@T{
+Resize the image using the specified sampling filter
+T}
+T{
+\f[C]menyoki edit test.png --rotate 90\f[R]
+T}@T{
+Rotate the image 90 degrees (clockwise)
+T}
+T{
+\f[C]menyoki edit test.png --flip horizontal\f[R]
+T}@T{
+Flip the image horizontally
+T}
+T{
+\f[C]menyoki edit test.png --blur 2.0\f[R]
+T}@T{
+Blur the image
+T}
+T{
+\f[C]menyoki edit test.png --hue 100\f[R]
+T}@T{
+Adjust the hue of the image
+T}
+T{
+\f[C]menyoki edit test.png --contrast -10.5\f[R]
+T}@T{
+Adjust the contrast of the image
+T}
+T{
+\f[C]menyoki edit test.png --brightness 50\f[R]
+T}@T{
+Adjust the brightness of the image
+T}
+T{
+\f[C]menyoki edit test.png --convert tga\f[R]
+T}@T{
+Convert image to TGA format
+T}
+T{
+\f[C]menyoki edit test.png --convert jpg --quality 80\f[R]
+T}@T{
+Convert image to JPEG in 80% quality
+T}
+T{
+\f[C]menyoki edit test.gif --ratio 0.25 gif --quality 80\f[R]
+T}@T{
+Resize and re-encode \[lq]test.gif\[rq]
+T}
+T{
+\f[C]menyoki edit test.gif gif --speed 0.5\f[R]
+T}@T{
+Slow down the GIF (half the speed)
+T}
+T{
+\f[C]menyoki edit test.gif gif --cut-beginning 1.0 --cut-end 0.5\f[R]
+T}@T{
+Cut the duration of GIF by seconds
+T}
+T{
+\f[C]menyoki edit test.ff --grayscale --convert pnm --format arbitrary save \[dq]output\[dq] --with-extension --date \[dq]%H%M%S\[dq]\f[R]
+T}@T{
+test.ff (farbfeld) -> grayscale -> output_020035.pam (PNM)
+T}
+.TE
+.SH ANALYZE SUBCOMMAND
+.PP
+\f[B]analyze\f[R] subcommand serves the purpose of inspecting an image
+file which is in a supported format and creating a report based on the
+image details.
+The report consists of 2 to 3 sections that are file, image, and EXIF
+information.
+.PP
+\f[C]menyoki analyze [FLAGS] [OPTIONS] <FILE> [SUBCOMMAND]\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+        --timestamp    Use Unix timestamp for report dates
+    -h, --help         Print help information
+
+OPTIONS:
+    -t, --time-zone <TIMEZONE>    Set the time zone of the report [default: utc]  [possible values: utc, local]
+
+ARGS:
+    <FILE>    Set the image file
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(33.2n) lw(36.8n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki analyze test.jpg\f[R]
+T}@T{
+Inspect \[lq]test.jpg\[rq] and print the report
+T}
+T{
+\f[C]menyoki analyze test.jpg save test_report.txt\f[R]
+T}@T{
+Inspect \[lq]test.jpg\[rq] and save the report as
+\[lq]test_report.txt\[rq]
+T}
+T{
+\f[C]menyoki analyze test.jpg --timestamp\f[R]
+T}@T{
+Inspect the file and create a report based on timestamps
+T}
+T{
+\f[C]menyoki analyze test.jpg --time-zone local\f[R]
+T}@T{
+Inspect the file and create a report based on local time zone
+T}
+T{
+\f[C]menyoki analyze test.jpg --timestamp save --timestamp\f[R]
+T}@T{
+Use timestamps for both analysis report and file name
+T}
+.TE
+.SH OTHER SUBCOMMANDS
+.PP
+It\[cq]s possible to change the GIF, PNG, JPG, and PNM encoding options
+with specifying flags/options to the corresponding subcommands.
+Also, \f[B]save\f[R] subcommand can be used for changing the default
+output settings.
+.SS GIF Subcommand
+.IP
+.nf
+\f[C]
+FLAGS:
+        --fast    Encode 3 times faster (only in gifski)
+    -h, --help    Print help information
+
+OPTIONS:
+    -f, --fps <FPS>            Set the FPS [default: 20]
+    -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
+    -r, --repeat <REPEAT>      Set the number of repetitions [default: \[if]]
+    -s, --speed <SPEED>        Set the GIF speed [default: 1.0]
+        --cut-beginning <S>    Cut the beginning of the GIF [default: 0.0]
+        --cut-end <S>          Cut the end of the GIF [default: 0.0]
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.PP
+(Some options might be only usable with a particular action)
+.SS PNG Subcommand
+.IP
+.nf
+\f[C]
+FLAGS:
+    -h, --help    Print help information
+
+OPTIONS:
+    -c, --compression <COMPRESSION>    Set the compression level [default: fast]  [possible values: default, fast, best, huffman, rle]
+    -f, --filter <FILTER>              Set the filter algorithm [default: sub]  [possible values: none, sub, up, avg, paeth]
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS JPG Subcommand
+.IP
+.nf
+\f[C]
+FLAGS:
+    -h, --help    Print help information
+
+OPTIONS:
+    -q, --quality <QUALITY>    Set the image quality (1-100) [default: 90]
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS PNM Subcommand
+.IP
+.nf
+\f[C]
+FLAGS:
+    -h, --help    Print help information
+
+OPTIONS:
+    -f, --format <FORMAT>        Set the PNM format [default: pixmap]  [possible values: bitmap, graymap, pixmap, arbitrary]
+    -e, --encoding <ENCODING>    Set the encoding for storing the samples [default: binary]  [possible values: binary, ascii]
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS Save Subcommand
+.IP
+.nf
+\f[C]
+FLAGS:
+    -e, --with-extension    Always save the file with an extension
+    -t, --timestamp         Add Unix timestamp to the file name
+    -h, --help              Print help information
+
+OPTIONS:
+    -d, --date <FORMAT>    Add formatted date/time to the file name [default: %Y%m%dT%H%M%S]
+
+ARGS:
+    <FILE>    Set the output file
+\f[R]
+.fi
+.SH KEY BINDINGS
+.PP
+Key bindings are only used and present while \f[B]capture\f[R] or
+\f[B]record\f[R] actions are performed.
+Essentially key bindings are for selecting capture/record areas and
+resizing them without any mouse interaction.
+.PP
+There are 3 types of key bindings in terms of performed action:
+.IP \[bu] 2
+Action keys (main action keys such as \f[C]LAlt-S\f[R], can be
+customized (https://docs.rs/device_query/latest/device_query/keymap/enum.Keycode.html)
+via \f[C]--keys\f[R] option)
+.IP \[bu] 2
+Cancel keys (the keys that will cancel the operation,
+e.g.\ \f[C]LControl-D\f[R])
+.IP \[bu] 2
+Miscellaneous keys (the keys that can be used for resizing the selected
+area such as \f[C]LAlt-[up]\f[R])
+.PP
+.TS
+tab(@);
+lw(25.5n) lw(44.5n).
+T{
+Key
+T}@T{
+Action
+T}
+_
+T{
+\f[C]LAlt-[S/Enter]\f[R]
+T}@T{
+Start/stop recording or screenshot the selected area
+T}
+T{
+\f[C]LControl-D, Escape\f[R]
+T}@T{
+Cancel the current operation
+T}
+T{
+\f[C]LControl-C\f[R]
+T}@T{
+Cancel the current operation or stop recording
+T}
+T{
+\f[C]LAlt-[arrow keys/hjkl]\f[R]
+T}@T{
+Increase the area padding (decrease the size of the area)
+T}
+T{
+\f[C]LControl-LAlt-[arrow keys/hjkl]\f[R]
+T}@T{
+Decrease the area padding (increase the size of the area)
+T}
+T{
+\f[C]LShift-LAlt-[arrow keys/hjkl]\f[R]
+T}@T{
+Reposition the selected area (move around)
+T}
+T{
+\f[C]LAlt-[1-9]\f[R]
+T}@T{
+Set the speed factor of changing the area size (default: 3)
+T}
+T{
+\f[C]LAlt-R\f[R]
+T}@T{
+Reset the area padding to default
+T}
+.TE
+.SH ENVIRONMENT
+.PP
+Corresponding environment variables can be set for overriding the
+command line flags and options.
+The general prototype of the variables that \f[B]menyoki\f[R] checks are
+the following:
+.PP
+\f[C]MENYOKI_{SECTION}_{ARGUMENT}=value\f[R]
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(35.6n) lw(34.4n).
+T{
+Command
+T}@T{
+Environment Variables
+T}
+_
+T{
+\f[C]menyoki --quiet\f[R]
+T}@T{
+\f[C]MENYOKI_GENERAL_QUIET=true\f[R]
+T}
+T{
+\f[C]menyoki record gif --fps 10 save --timestamp\f[R]
+T}@T{
+\f[C]MENYOKI_GIF_FPS=10 MENYOKI_SAVE_TIMESTAMP=true\f[R]
+T}
+T{
+\f[C]menyoki capture --size 200x300 jpg --quality 100\f[R]
+T}@T{
+\f[C]MENYOKI_CAPTURE_SIZE=200x300 MENYOKI_JPG_QUALITY=100\f[R]
+T}
+T{
+\f[C]menyoki edit test.png --ratio 2.0 --filter triangle\f[R]
+T}@T{
+\f[C]MENYOKI_EDIT_RATIO=2.0 MENYOKI_EDIT_FILTER=triangle\f[R]
+T}
+T{
+\f[C]menyoki split test.gif --dir frames/ pnm --format graymap\f[R]
+T}@T{
+\f[C]MENYOKI_SPLIT_DIR=frames/ MENYOKI_PNM_FORMAT=graymap\f[R]
+T}
+T{
+\f[C]menyoki analyze test.png --timestamp save --date %H%M%S\f[R]
+T}@T{
+\f[C]MENYOKI_ANALYZE_TIMESTAMP=true MENYOKI_SAVE_DATE=%H%M%S\f[R]
+T}
+.TE
+.SH AUTHOR
+Written by Orhun Parmaksız <orhunparmaksiz@gmail.com>
+.SH REPORTING BUGS
+Contact the author via email or use GitHub Issues for reporting bugs: <https://github.com/orhun/menyoki/issues/>
+.SH COPYRIGHT
+Copyright © 2020 Orhun Parmaksız
+.RS 0
+Licensed under GPLv3: <https://gnu.org/licenses/gpl.html>.
+.SH "SEE ALSO"
+The
+.B menyoki
+project is maintained at GitHub. Visit <https://github.com/orhun/menyoki> for full documentation.
