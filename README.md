@@ -29,9 +29,9 @@
     </a>
 </p>
 
-**menyoki** is a screencast and screenshot utility that can also perform various image related operations such as making/splitting GIFs and modifying/analyzing image files. It aims to be a lightweight command line tool for either helping out on day-to-day life operations or complicated detail-centric issues. Originally it was designed to record/screenshot terminal windows but it can be tweaked easily for other purposes with command line arguments, environment variables, or a configuration file.
+![menyoki on action](https://user-images.githubusercontent.com/24392180/99543947-cdeb2280-29c4-11eb-87a9-ad559f9522ad.gif)
 
-[TODO GIF]
+**menyoki** is a screencast and screenshot utility that can also perform various image related operations such as making/splitting GIFs and modifying/analyzing image files. It aims to be a lightweight command line tool for either helping out on day-to-day life operations or complicated detail-centric issues. Originally it was designed to record/screenshot terminal windows but it can be tweaked easily for other purposes with command line arguments, environment variables, or a configuration file.
 
 <details>
   <summary>Table of Contents</summary>
@@ -674,7 +674,7 @@ There are 3 types of key bindings in terms of performed action:
 | `LAlt-[1-9]`                      	| Set the speed factor of changing the area size (default: 3) 	|
 | `LAlt-R`                          	| Reset the area padding to default                           	|
 
-[TODO GIF]
+![key bindings](https://user-images.githubusercontent.com/24392180/99595786-5807ab00-2a06-11eb-912f-5c2765e86d41.gif)
 
 ## Configuration
 
