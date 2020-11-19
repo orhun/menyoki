@@ -182,8 +182,8 @@ impl<'a> ImageOps<'a> {
 			info!("Updating the colors...");
 		}
 		if self.settings.color.grayscale {
-			self.image =
-				DynamicImage::ImageLuma8(colorops::grayscale(&self.image)).to_rgba8();
+			self.image = DynamicImage::ImageLuma8(colorops::grayscale(&self.image))
+				.to_rgba8();
 		}
 		if self.settings.color.invert {
 			colorops::invert(&mut self.image);
