@@ -846,7 +846,7 @@ Encoding/decoding of some formats like GIF might be optimized for speed and effi
 
 It's a reference to the [author](https://orhun.dev)'s favorite character from the game [Patapon 2](https://en.wikipedia.org/wiki/Patapon_2).
 
-![https://patapon.fandom.com/wiki/Menyokki?file=Moriussoo_evo.jpg](https://static.wikia.nocookie.net/patapon/images/d/dd/Moriussoo_evo.jpg/revision/latest?cb=20090313040146)
+![https://patapon.fandom.com/wiki/Menyokki?file=Moriussoo_evo.jpg](https://user-images.githubusercontent.com/24392180/99723231-f48f8300-2ac2-11eb-8118-84b873f10cce.jpg)
 
 >[**Menyokki**](https://patapon.fandom.com/wiki/Menyokki) (aka **Tree-Pon** due to his resembling a tree) is a type of [Rarepon](https://patapon.fandom.com/wiki/Rarepon) introduced in [Patapon 2](https://patapon.fandom.com/wiki/Patapon_2). Its evolved form is **Kisuk**, and its ultimate form is **Moriussoo**. These Rarepons are green and resemble plants in various stages of development: Menyokki is a seedling, Kisuk is a sapling and Moriussoo is a full-grown tree.
 
