@@ -1,3 +1,5 @@
+**Work in progress... (documentation is not complete)**
+
 <p align="center">
     <a href="https://github.com/orhun/menyoki">
         <img src="https://user-images.githubusercontent.com/24392180/98470768-09356680-21f9-11eb-81de-94a622b32db4.png" width="500"></a>
@@ -26,9 +28,6 @@
     </a>
     <a href="https://github.com/orhun/menyoki/blob/master/LICENSE">
         <img src="https://img.shields.io/crates/l/menyoki?style=flat&labelColor=000000&color=25691f">
-    </a>
-    <a href="https://github.com/orhun/menyoki">
-        <img src="https://user-images.githubusercontent.com/24392180/99543947-cdeb2280-29c4-11eb-87a9-ad559f9522ad.gif">
     </a>
 </p>
 
@@ -150,10 +149,11 @@ makepkg -si
 
 ### Docker
 
+TODO
+
 ### Manual
 
-* gifski
-* no mouse interaction
+TODO
 
 ## Features
 
@@ -165,6 +165,8 @@ makepkg -si
 * [Analyze an image](#analyze)
 
 ## Usage
+
+![menyoki on action](https://user-images.githubusercontent.com/24392180/99543947-cdeb2280-29c4-11eb-87a9-ad559f9522ad.gif)
 
 Command line arguments of **menyoki** are designed to be as intuitive as possible. As a result of that, an action can be performed with a chain of subcommands along with the flags and options. The general prototype for the usage of command line arguments is the following: 
 
