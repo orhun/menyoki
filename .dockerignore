@@ -1,0 +1,19 @@
+# Directories
+/.git/
+/.github/
+/completions/
+/config/
+/etc/
+/man/
+/target/
+
+# Files
+_config.yml
+.editorconfig
+.gitattributes
+.gitignore
+*.md
+CNAME
+Dockerfile
+LICENSE
+rustfmt.toml
