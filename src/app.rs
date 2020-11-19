@@ -229,7 +229,7 @@ where
 			.expect("File format not supported")
 			.decode()
 			.expect("Failed to decode the image")
-			.to_rgba();
+			.to_rgba8();
 		self.settings
 			.edit
 			.get_imageops()

@@ -86,7 +86,7 @@ impl<'a> ImageAnalyzer<'a> {
 	 * @return dimensions
 	 */
 	fn get_image_dimensions(&self) -> String {
-		let (width, height) = self.image.clone().into_rgba().dimensions();
+		let (width, height) = self.image.clone().into_rgba8().dimensions();
 		format!("{}x{}", width, height)
 	}
 
@@ -96,7 +96,7 @@ impl<'a> ImageAnalyzer<'a> {
 	 * @return Vector of String
 	 */
 	fn get_dominant_colors(&self) -> Vec<String> {
-		dominant_color::get_colors(&self.image.clone().into_rgba().into_vec(), true)
+		dominant_color::get_colors(&self.image.clone().into_rgba8().into_vec(), true)
 			.chunks(4)
 			.map(|rgba| format!("#{}", rgba.encode_hex::<String>()).to_uppercase())
 			.collect()
