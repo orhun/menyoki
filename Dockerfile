@@ -33,4 +33,4 @@ RUN apt-get update && apt-get install -y \
     --no-install-recommends --allow-unauthenticated libx11-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/release/menyoki /usr/local/bin
-CMD ["/usr/local/bin/menyoki"]
+CMD ["menyoki"]
