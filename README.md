@@ -200,7 +200,9 @@ TODO
 
 ## Usage
 
-![menyoki on action](https://user-images.githubusercontent.com/24392180/99543947-cdeb2280-29c4-11eb-87a9-ad559f9522ad.gif)
+| Action                                                                                                                     	| Result                                                                                                          	|
+|----------------------------------------------------------------------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------	|
+| ![menyoki on action](https://user-images.githubusercontent.com/24392180/99543947-cdeb2280-29c4-11eb-87a9-ad559f9522ad.gif) 	| ![record result](https://user-images.githubusercontent.com/24392180/99814600-3cadb480-2b5a-11eb-84ce-1a693d5ddc2c.gif) 	|
 
 Command line arguments of **menyoki** are designed to be as intuitive as possible. As a result of that, an action can be performed with a chain of subcommands along with the flags and options. The general prototype for the usage of command line arguments is the following: 
 
