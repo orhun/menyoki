@@ -49,28 +49,28 @@
     - [Releases](#releases)
 - [Features](#features)
 - [Usage](#usage)
-  - [General](#general)
+  - [General](#general-)
     - [Arguments](#arguments)
     - [Examples](#examples)
-  - [Record](#record)
+  - [Record](#record-)
     - [Arguments](#arguments-1)
     - [Examples](#examples-1)
-  - [Split](#split)
+  - [Split](#split-)
     - [Arguments](#arguments-2)
     - [Examples](#examples-2)
-  - [Make](#make)
+  - [Make](#make-)
     - [Arguments](#arguments-3)
     - [Examples](#examples-3)
-  - [Capture](#capture)
+  - [Capture](#capture-)
     - [Arguments](#arguments-4)
     - [Examples](#examples-4)
-  - [Edit](#edit)
+  - [Edit](#edit-)
     - [Arguments](#arguments-5)
     - [Examples](#examples-5)
-  - [Analyze](#analyze)
+  - [Analyze](#analyze-)
     - [Arguments](#arguments-6)
     - [Examples](#examples-6)
-  - [Other](#other)
+  - [Other](#other-)
     - [GIF](#gif)
     - [PNG](#png)
     - [JPG](#jpg)
@@ -212,12 +212,12 @@ Build with `ski` feature for using [gifski](https://gif.ski/) encoder instead of
 
 ## Features
 
-* [Record a GIF](#record)
-* [Split a GIF into frames](#split)
-* [Make a GIF from frames](#make)
-* [Capture an image](#capture)
-* [Edit an image](#edit)
-* [Analyze an image](#analyze)
+* [Record a GIF](#record-)
+* [Split a GIF into frames](#split-)
+* [Make a GIF from frames](#make-)
+* [Capture an image](#capture-)
+* [Edit an image](#edit-)
+* [Analyze an image](#analyze-)
 
 ## Usage
 
@@ -233,7 +233,7 @@ The subcommand that will indicate the `action` is mandatory whereas `format` and
 
 The default `format` is the first listed subcommand if there is not any subcommand given for specifying a `format`. On the other hand, **save** subcommand uses the "menyoki" directory in the _home_ (or _images_ if it exists) as the default output directory.
 
-### General
+### General <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 Flags and options that will generally affect the execution of **menyoki** can be set before specifying the main action to perform. Then the main subcommand (action) must be specified.
 
@@ -269,7 +269,7 @@ SUBCOMMANDS:
 | `menyoki -vv --color FF00FF <action>` 	| Set log verbosity level to 2 (trace) and use "FF00FF" as the main color 	|
 | `menyoki -q -c menyoki.cfg <action>`  	| Run in quiet mode and read the configuration from "menyoki.cfg"         	|
 
-### Record
+### Record <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **menyoki** can record an area of a window or the whole screen and encode it as a supported format (only GIF for now). Area selection and resize is performed with the key bindings.
 
@@ -327,7 +327,7 @@ SUBCOMMANDS:
 | `menyoki record gif save "test.gif" --timestamp`    	| Record and save as "test.gif" with timestamp in the file name                     	|
 | `menyoki -q record "kmon -t 2000"`                  	| Execute the command and record its output in quiet mode                           	|
 
-### Split
+### Split <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **menyoki** can split a GIF into frames (extract images) if the **split** subcommand is provided and it can save frames as one of the supported formats with the use of trailing _format_ subcommand.
 
@@ -364,7 +364,7 @@ SUBCOMMANDS:
 | `menyoki split rec.gif jpg --quality 100` 	| Extract frames as JPEG in maximum quality               	|
 | `menyoki split rec.gif --dir frames/`     	| Extract frames and save them to the specified directory 	|
 
-### Make
+### Make <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **make** subcommand serves the purpose of creating GIF files from a set of images. It can be used for making GIFs from given images either via the command line or the specified directory.
 
@@ -399,7 +399,7 @@ SUBCOMMANDS:
 | `menyoki make 1.png 2.png save 3.gif --date`     	| Make a GIF and save the file ("3.gif") with the date information 	|
 | `menyoki make --dir frames/`                     	| Make a GIF from the frames in the specified directory            	|
 
-### Capture
+### Capture <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **menyoki** can capture (screenshot) an area of a window or the whole screen and encode it as a supported format. Formats like **png**, **jpg**, and **pnm** have their own flags and options that might be used for changing the default encoding settings. Similar to the **record** subcommand, area selection and resize is performed with the key bindings. The same flags and options might apply for both **record** and **capture** subcommands since the actions are abstractly alike.
 
@@ -455,7 +455,7 @@ SUBCOMMANDS:
 | `menyoki capture ff save "test.ff" --timestamp`        	| Screenshot and save as "test.ff" in farbfeld format with timestamp in the file name          	|
 | `menyoki -q capture "kmon -t 2000"`                    	| Execute the command and screenshot its output in quiet mode (sets countdown to 3 implicitly) 	|
 
-### Edit
+### Edit <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **edit** subcommand can be used to [edit](https://github.com/image-rs/image#image-processing-functions) (manipulate/filter/convert) files in one of the supported formats. Apart from the flags and options that **edit** provides, other encoding options can be specified via _format_ subcommand.
 
@@ -523,7 +523,7 @@ SUBCOMMANDS:
 | `menyoki edit test.gif gif --cut-beginning 1.0 --cut-end 0.5`                                                      	| Cut the duration of GIF by seconds                             	|
 | `menyoki edit test.ff --grayscale --convert pnm --format arbitrary save "output" --with-extension --date "%H%M%S"` 	| test.ff (farbfeld) -> grayscale -> output_020035.pam (PNM)     	|
 
-### Analyze
+### Analyze <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **analyze** subcommand serves the purpose of inspecting an image file which is in a supported format and creating a report based on the image details. The report consists of 2 to 3 sections that are file, image, and EXIF information.
 
@@ -632,7 +632,7 @@ generated on 2020-11-11 23:14:04.652826438 UTC
 
 </details>
 
-### Other
+### Other <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 It's possible to change the GIF, PNG, JPG, and PNM encoding options with specifying flags/options to the corresponding subcommands. Also, **save** subcommand can be used for changing the default output settings.
 
