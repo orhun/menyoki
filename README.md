@@ -45,6 +45,8 @@
     - [Docker Hub](#docker-hub)
     - [Building an image](#building-an-image)
   - [Manual](#manual)
+    - [From source](#from-source)
+    - [Releases](#releases)
 - [Features](#features)
 - [Usage](#usage)
   - [General](#general)
@@ -187,7 +189,26 @@ docker run -it menyoki /bin/bash
 
 ### Manual
 
-TODO
+#### From source
+
+1. Clone the repository.
+
+```sh
+git clone https://github.com/orhun/menyoki.git && cd menyoki/
+```
+
+2. Build the project and install binary.
+
+```sh
+cargo install --path .
+```
+
+Build with `ski` feature for using [gifski](https://gif.ski/) encoder instead of default encoder. (e.g. `cargo install --features ski --path .`)
+
+#### Releases
+
+1. Download the latest archive from [releases](https://github.com/orhun/menyoki/releases) page and extract it.
+2. Move `menyoki` binary to `/usr/local/bin/`.
 
 ## Features
 
