@@ -23,11 +23,11 @@
     <a href="https://github.com/orhun/menyoki/actions?query=workflow%3A%22Continuous+Deployment%22">
         <img src="https://img.shields.io/github/workflow/status/orhun/menyoki/Continuous%20Deployment/master?style=flat&labelColor=000000&color=25691f&label=CD&logo=GitHub%20Actions&logoColor=white">
     </a>
+    <a href="https://hub.docker.com/r/orhunp/menyoki">
+        <img src="https://img.shields.io/docker/cloud/build/orhunp/menyoki?style=flat&labelColor=000000&color=25691f&label=Docker&logo=Docker&logoColor=white">
+    </a>
     <a href="https://codecov.io/gh/orhun/menyoki">
         <img src="https://img.shields.io/codecov/c/gh/orhun/menyoki?style=flat&labelColor=000000&color=25691f&logo=Codecov&logoColor=white">
-    </a>
-    <a href="https://github.com/orhun/menyoki/blob/master/LICENSE">
-        <img src="https://img.shields.io/crates/l/menyoki?style=flat&labelColor=000000&color=25691f">
     </a>
 </p>
 
@@ -42,6 +42,8 @@
   - [Cargo](#cargo)
   - [AUR](#aur)
   - [Docker](#docker)
+    - [Docker Hub](#docker-hub)
+    - [Building an image](#building-an-image)
   - [Manual](#manual)
 - [Features](#features)
 - [Usage](#usage)
@@ -149,7 +151,39 @@ makepkg -si
 
 ### Docker
 
-TODO
+#### Docker Hub
+
+Download the [orhunp/menyoki](https://hub.docker.com/r/orhunp/menyoki) image from Docker Hub (see available [tags](https://hub.docker.com/r/orhunp/menyoki/tags)):
+
+```sh
+docker pull orhunp/menyoki:<tag>
+```
+
+Run a container:
+
+```sh
+docker run orhunp/menyoki:<tag>
+```
+
+#### Building an image
+
+After cloning the repository, you can build an image from [Dockerfile](https://github.com/orhun/menyoki/blob/master/Dockerfile):
+
+```sh
+docker build -t menyoki .
+```
+
+Then you can either run a container:
+
+```sh
+docker run menyoki
+```
+
+or spawn a shell inside the container with running _it_ interactively:
+
+```sh
+docker run -it menyoki /bin/bash
+```
 
 ### Manual
 
