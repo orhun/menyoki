@@ -24,7 +24,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: check
-          args: --locked --all-features
+          args: --locked
       - name: Run cargo bloat
         uses: orf/cargo-bloat-action@v1
 
