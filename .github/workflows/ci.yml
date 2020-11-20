@@ -23,7 +23,7 @@ jobs:
       - name: Analyze the project files
         uses: actions-rs/cargo@v1
         with:
-          command: check
+          command: check --locked --all-features
       - name: Run cargo bloat
         uses: orf/cargo-bloat-action@v1
 
