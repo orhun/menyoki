@@ -723,7 +723,7 @@ In Linux:
 
 * `$HOME/.config/menyoki.cfg`
 * `$HOME/.config/menyoki/menyoki.cfg`
-* `$HOME/.config/menyoki/config"`
+* `$HOME/.config/menyoki/config`
 
 <details>
   <summary>Default configuration file<a href="https://github.com/orhun/menyoki/blob/master/config/menyoki.cfg">*</a></summary>
