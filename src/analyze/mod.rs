@@ -194,7 +194,7 @@ impl<'a> ImageAnalyzer<'a> {
 					values.next().unwrap_or_default().color(color),
 					values.collect::<String>()
 				)
-			} else if line.starts_with("  ") && line.contains("\u{2022}") {
+			} else if line.starts_with("  ") && line.contains('\u{2022}') {
 				match hex::decode(
 					line.split('#')
 						.collect::<Vec<&str>>()

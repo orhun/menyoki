@@ -66,11 +66,10 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_cancel_keys(&self) -> bool {
-		match self.state.get_keys().as_slice() {
-			[Keycode::Escape] => true,
-			[Keycode::LControl, Keycode::D] => true,
-			_ => false,
-		}
+		matches!(
+			self.state.get_keys().as_slice(),
+			[Keycode::Escape] | [Keycode::LControl, Keycode::D]
+		)
 	}
 }
 
