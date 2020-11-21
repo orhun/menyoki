@@ -31,13 +31,8 @@ jobs:
           toolchain: stable
           target: ${{matrix.TARGET}}
           override: true
-      - uses: actions-rs/cargo@v1
-        with:
-          use-cross: true
-          command: build
-          args: --release --locked --target ${{matrix.TARGET}}
-        env:
-          PKG_CONFIG_ALLOW_CROSS: 1
+      - name: Build
+        run: PKG_CONFIG_ALLOW_CROSS=1 cargo build --release --locked --target ${{matrix.TARGET}}
       - name: Prepare assets
         run: |
           mkdir assets
