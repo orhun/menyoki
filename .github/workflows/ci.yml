@@ -63,7 +63,7 @@ jobs:
       - name: Upload reports to Codecov
         uses: codecov/codecov-action@v1.0.7
         with:
-          token: ${{secrets.CODECOV_TOKEN}}
+          token: ${{ secrets.CODECOV_TOKEN }}
           file: ./*_coverage.xml
           flags: unittests
           name: code-coverage-report
