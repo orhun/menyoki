@@ -8,15 +8,10 @@ on:
 jobs:
   publish-assets:
     name: Publish Assets
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-latest]
-        include:
-          - os: ubuntu-latest
-            TARGET: x86_64-unknown-linux-gnu
-          - os: ubuntu-latest
-            TARGET: x86_64-unknown-linux-musl
+        TARGET: [x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl]
     steps:
       - uses: actions/checkout@master
       - name: Set the release version
