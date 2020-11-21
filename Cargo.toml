@@ -10,7 +10,7 @@ homepage = "https://github.com/orhun/menyoki"
 repository = "https://github.com/orhun/menyoki"
 keywords = ["screenshot", "screencast", "gif", "recorder", "image"]
 categories = ["multimedia", "graphics", "command-line-utilities"]
-include = ["src/**/*", "Cargo.*", "README.md", "CHANGELOG.md"]
+include = ["src/**/*", "Cargo.*", "LICENSE", "README.md", "CHANGELOG.md"]
 edition = "2018"
 
 [features]
