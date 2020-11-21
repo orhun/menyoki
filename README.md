@@ -1,5 +1,3 @@
-**Work in progress... (documentation is not complete)**
-
 <p align="center">
     <a href="https://github.com/orhun/menyoki">
         <img src="https://user-images.githubusercontent.com/24392180/98470768-09356680-21f9-11eb-81de-94a622b32db4.png" width="500"></a>
