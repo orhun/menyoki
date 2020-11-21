@@ -1,0 +1,67 @@
+name: Continuous Deployment
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  publish-assets:
+    name: Publish Assets
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-latest]
+        include:
+          - os: ubuntu-latest
+            TARGET: x86_64-unknown-linux-gnu
+          - os: ubuntu-latest
+            TARGET: x86_64-unknown-linux-musl
+    steps:
+      - uses: actions/checkout@master
+      - name: Set the release version
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:11}
+      - name: Install packages
+        if: matrix.os == 'ubuntu-latest'
+        #sudo
+        run: |
+          apt-get update
+          apt-get install -y --no-install-recommends --allow-unauthenticated pkg-config libx11-dev
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{matrix.TARGET}}
+          override: true
+      - uses: actions-rs/cargo@v1
+        with:
+          use-cross: true
+          command: build
+          args: --release --locked --target ${{matrix.TARGET}}
+      - name: Prepare assets
+        run: |
+          mkdir assets
+          cp -t assets/ target/${{matrix.TARGET}}/release/menyoki && strip -s assets/menyoki
+          cp -t assets/ LICENSE README.md CHANGELOG.md
+          cp -t assets/ --parents man/menyoki.1
+          cp -t assets/ --parents completions/* && rm -f assets/completions/generate.sh
+          cp -t assets/ --parents config/menyoki.cfg
+          mv assets/ menyoki-${{env.RELEASE_VERSION}}/
+          tar -czvf menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz menyoki-${{env.RELEASE_VERSION}}
+          sha512sum menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz > menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sha512
+          echo "${{ secrets.GPG_RELEASE_KEY }}" | base64 --decode > release.key
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --import release.key
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --detach-sign menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz
+      - uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz
+            menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sig
+            menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sha512
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+#      - name: "Publish on crates.io"
+#        uses: actions-rs/cargo@v1
+#        with:
+#          command: publish
+#          args: --token ${{ secrets.CARGO_TOKEN }}
