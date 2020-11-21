@@ -25,31 +25,31 @@ jobs:
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
-          target: ${{matrix.TARGET}}
+          target: ${{ matrix.TARGET }}
           override: true
       - name: Build the project
-        run: PKG_CONFIG_ALLOW_CROSS=1 cargo build --release --locked --target ${{matrix.TARGET}}
+        run: PKG_CONFIG_ALLOW_CROSS=1 cargo build --release --locked --target ${{ matrix.TARGET }}
       - name: Prepare assets
         run: |
           mkdir assets
-          cp -t assets/ target/${{matrix.TARGET}}/release/menyoki && strip -s assets/menyoki
+          cp -t assets/ target/${{ matrix.TARGET }}/release/menyoki && strip -s assets/menyoki
           cp -t assets/ LICENSE README.md CHANGELOG.md
           cp -t assets/ --parents man/menyoki.1
           cp -t assets/ --parents completions/* && rm -f assets/completions/generate.sh
           cp -t assets/ --parents config/menyoki.cfg
-          mv assets/ menyoki-${{env.RELEASE_VERSION}}/
-          tar -czvf menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz menyoki-${{env.RELEASE_VERSION}}
-          sha512sum menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz > menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sha512
+          mv assets/ menyoki-${{ env.RELEASE_VERSION }}/
+          tar -czvf menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz menyoki-${{ env.RELEASE_VERSION }}
+          sha512sum menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz > menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz.sha512
           echo "${{ secrets.GPG_RELEASE_KEY }}" | base64 --decode > release.key
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --import release.key
-          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --detach-sign menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz
+          echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --detach-sign menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz
       - name: Upload assets
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz
-            menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sig
-            menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sha512
+            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz
+            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz.sig
+            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish-crates-io:
