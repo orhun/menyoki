@@ -52,9 +52,12 @@ jobs:
             menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-#      - name: "Publish on crates.io"
-#        uses: actions-rs/cargo@v1
-#        with:
-#          command: publish
-#          args: --token ${{ secrets.CARGO_TOKEN }}
+  publish-crates-io:
+    name: Publish on crates.io
+    runs-on: ubuntu-latest
+    steps:
+    - name: Publish
+      uses: actions-rs/cargo@v1
+      with:
+        command: publish
+        args: --locked --token ${{ secrets.CARGO_TOKEN }}
