@@ -18,10 +18,9 @@ jobs:
       - name: Set release version
         run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Install packages
-        if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends --allow-unauthenticated pkg-config libx11-dev
+          sudo apt-get install -y --no-install-recommends --allow-unauthenticated libx11-dev
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
