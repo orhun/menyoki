@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Set the release version
-        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF:11}
+        run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Install packages
         if: matrix.os == 'ubuntu-latest'
         #sudo
