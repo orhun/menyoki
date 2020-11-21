@@ -6,27 +6,29 @@ on:
       - "v*.*.*"
 
 jobs:
-  publish-assets:
-    name: Publish Assets
+  publish-github:
+    name: Publish on GitHub
     runs-on: ubuntu-latest
     strategy:
       matrix:
         TARGET: [x86_64-unknown-linux-gnu, x86_64-unknown-linux-musl]
     steps:
-      - uses: actions/checkout@master
-      - name: Set the release version
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Set release version
         run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Install packages
         if: matrix.os == 'ubuntu-latest'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends --allow-unauthenticated pkg-config libx11-dev
-      - uses: actions-rs/toolchain@v1
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
           target: ${{matrix.TARGET}}
           override: true
-      - name: Build
+      - name: Build the project
         run: PKG_CONFIG_ALLOW_CROSS=1 cargo build --release --locked --target ${{matrix.TARGET}}
       - name: Prepare assets
         run: |
@@ -42,7 +44,8 @@ jobs:
           echo "${{ secrets.GPG_RELEASE_KEY }}" | base64 --decode > release.key
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --import release.key
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --detach-sign menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz
-      - uses: softprops/action-gh-release@v1
+      - name: Upload assets
+        uses: softprops/action-gh-release@v1
         with:
           files: |
             menyoki-${{env.RELEASE_VERSION}}-${{matrix.TARGET}}.tar.gz
