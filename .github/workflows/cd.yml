@@ -56,6 +56,8 @@ jobs:
     name: Publish on crates.io
     runs-on: ubuntu-latest
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@master
     - name: Publish
       uses: actions-rs/cargo@v1
       with:
