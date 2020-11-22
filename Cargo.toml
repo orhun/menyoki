@@ -51,7 +51,7 @@ bytesize = "1.0.1"
 natord = "1.0.9"
 colored = "2.0.0"
 log = "0.4.11"
-fern = { git = "https://github.com/orhun/fern", version = "0.6.0", features = ["colored"] }
+fern_colored = { version = "0.6.1", features = ["colored"] }
 
 [dependencies.clap]
 version = "2.33.3"

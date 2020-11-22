@@ -2,8 +2,8 @@ use crate::file::format::FileFormat;
 use crate::settings::AppSettings;
 use chrono::Local;
 use colored::Color;
-use fern::colors::ColoredLevelConfig;
-use fern::{Dispatch, Output};
+use fern_colored::colors::ColoredLevelConfig;
+use fern_colored::{Dispatch, Output};
 use log::{LevelFilter, SetLoggerError};
 
 /* Logger with settings */

@@ -349,9 +349,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e78d4f1cc4ae33bbfc157ed5d5a5ef3bc29227303d595861deb238fcec4e9457"
 
 [[package]]
-name = "fern"
-version = "0.6.0"
-source = "git+https://github.com/orhun/fern#e419505cb499a0698fc557124d177355050d40f9"
+name = "fern_colored"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7d6c72db190248990d9921bcaa1ba78a8f2f5732f4dc821e5bd0b77b2c06a78a"
 dependencies = [
  "colored",
  "log",
@@ -495,9 +496,9 @@ dependencies = [
 
 [[package]]
 name = "imagequant-sys"
-version = "2.13.0"
+version = "2.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b689fca169e3d72d737a058ac1b9ab608b336cb01f8e582af15fc8a06cae4d9f"
+checksum = "fe496775eb341b68cbb07cfb1692e97360f28cc07d7ded535fb048db8e37a9ba"
 dependencies = [
  "cc",
  "rgb",
@@ -593,7 +594,7 @@ dependencies = [
  "device_query",
  "dirs",
  "dominant_color",
- "fern",
+ "fern_colored",
  "gif",
  "gifski",
  "hex",
@@ -955,9 +956,9 @@ checksum = "8ea5119cdb4c55b55d432abb513a0429384878c15dde60cc77b1c99de1a95a6a"
 
 [[package]]
 name = "syn"
-version = "1.0.48"
+version = "1.0.50"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc371affeffc477f42a221a1e4297aedcea33d47d19b61455588bd9d8f6b19ac"
+checksum = "443b4178719c5a851e1bde36ce12da21d74a0e60b4d982ec3385a933c812f0f6"
 dependencies = [
  "proc-macro2",
  "quote",
