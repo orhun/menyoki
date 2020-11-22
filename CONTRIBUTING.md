@@ -32,9 +32,9 @@ cargo build
 ```sh
 cargo test
 # Include the window system tests (default GIF encoder)
-cargo test --features test_ws
+cargo test --features test-ws
 # Include the window system tests (gifski encoder)
-cargo test --all-features # same as `--features test_ws,ski`
+cargo test --all-features # same as `--features test-ws,ski`
 ```
 
 7. Make sure [rustfmt](https://github.com/rust-lang/rustfmt) and [clippy](https://github.com/rust-lang/rust-clippy) don't complain.

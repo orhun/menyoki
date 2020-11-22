@@ -18,7 +18,7 @@ default = []
 # use the gifski encoder
 ski = ["gifski", "imgref", "rgb"]
 # run window system tests
-test_ws = []
+test-ws = []
 
 [target.'cfg(windows)'.dependencies]
 # Windows dependencies
