@@ -25,15 +25,15 @@ cargo build
 
 4. See if the project is built without errors. If not, check if the system dependencies are installed and then go back to step 3.
 
-5. Start committing your changes. Use `cargo run --release` in the development phase for avoiding issues related to performance. 
+5. Start committing your changes. Use `--release` mode in the development phase for avoiding issues related to performance.
 
 6. Add your tests (if you haven't already) or update the existing tests according to the changes. And check if the tests are passed.
 
 ```sh
 cargo test
-# Include the window system tests (default GIF encoder)
+# Include the window system tests (with default GIF encoder)
 cargo test --features test-ws
-# Include the window system tests (gifski encoder)
+# Include the window system tests (with gifski encoder)
 cargo test --all-features # same as `--features test-ws,ski`
 ```
 
@@ -42,6 +42,12 @@ cargo test --all-features # same as `--features test-ws,ski`
 ```sh
 cargo fmt --all -- --check --verbose
 cargo clippy --verbose -- -D warnings
+```
+
+8. [Regenerate](https://github.com/orhun/menyoki/blob/master/completions/generate.sh) the shell completions if you've committed a change about command line arguments.
+
+```sh
+./completions/generate.sh
 ```
 
 ## Create a Pull Request
