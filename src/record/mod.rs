@@ -180,6 +180,6 @@ mod tests {
 		assert!(record.get().unwrap().unwrap().len() > 0);
 		let mut recorder = Recorder::new(window, 10, RecordSettings::default());
 		recorder.settings.time.duration = Some(0.2);
-		assert_ne!(0, recorder.record_sync(Some(&InputState::default())).len());
+		assert_ne!(0, recorder.record_sync(None).len());
 	}
 }
