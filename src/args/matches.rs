@@ -149,3 +149,30 @@ impl<'a> ArgMatches<'a> {
 		self.args.values_of(name)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use pretty_assertions::assert_eq;
+	#[test]
+	fn test_matches() {
+		let args = Args::default();
+		let matches = ArgMatches::new(&args);
+		let key = format!("{}_general_test", env!("CARGO_PKG_NAME")).to_uppercase();
+		env::set_var(&key, "...");
+		assert_eq!("...", matches.get_env("test").unwrap_or_default());
+		assert_eq!(Some("..."), matches.value_of("test"));
+		assert_eq!(None, matches.value_of("test_"));
+		env::set_var(&key, "true");
+		assert_eq!(true, matches.is_present("test"));
+		assert_eq!(false, matches.is_present("test_"));
+		env::set_var(&key, "5");
+		assert_eq!(5, matches.occurrences_of("test"));
+		assert_eq!(0, matches.occurrences_of("test_"));
+		assert_eq!(
+			format!("{:?}", matches),
+			"ArgMatches { args: ArgMatches { args: {}, \
+			subcommand: None, usage: None }, config: false, section: \"general\" }"
+		);
+	}
+}

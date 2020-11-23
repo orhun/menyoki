@@ -83,7 +83,7 @@ mod tests {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let parser = ArgParser::from_args(&args);
-		assert_eq!(1, parser.parse("test", 1));
-		assert!(ArgParser::from_subcommand(&matches, "test").args.is_none())
+		assert_eq!(1, parser.parse("arg", 1));
+		assert!(ArgParser::from_subcommand(&matches, "arg").args.is_none())
 	}
 }
