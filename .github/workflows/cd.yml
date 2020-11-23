@@ -43,15 +43,9 @@ jobs:
           echo "${{ secrets.GPG_RELEASE_KEY }}" | base64 --decode > release.key
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --import release.key
           echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --detach-sign menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz
-      - name: Prepare release notes
-        run: echo -e "$img\n$text" > RELEASE.txt
-        env:
-          img: '<a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/98470768-09356680-21f9-11eb-81de-94a622b32db4.png" width="300"></a>'
-          text: 'See [changelog](https://github.com/orhun/menyoki/blob/master/CHANGELOG.md) for release notes.'
       - name: Upload assets
         uses: softprops/action-gh-release@v1
         with:
-          body_path: RELEASE.txt
           files: |
             menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz
             menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz.sig
