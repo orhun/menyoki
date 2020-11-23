@@ -98,7 +98,7 @@ unsafe extern "C" fn handle_x11_errors(
 }
 
 #[cfg(test)]
-#[cfg(feature = "test_ws")]
+#[cfg(feature = "test-ws")]
 mod tests {
 	use super::*;
 	use crate::args::matches::ArgMatches;
