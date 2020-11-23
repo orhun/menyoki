@@ -158,3 +158,30 @@ impl<'a> AppSettings<'a> {
 		}
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use clap::ArgMatches as Args;
+	use pretty_assertions::assert_eq;
+	use std::env;
+	#[test]
+	fn test_app_settings() {
+		let args = Args::default();
+		let matches = ArgMatches::new(&args);
+		let mut settings = AppSettings::new(&matches);
+		env::set_var(
+			&format!("{}_general_color", env!("CARGO_PKG_NAME")).to_uppercase(),
+			"d473d4",
+		);
+		assert_eq!(
+			format!("{:?}", settings.get_main_color()),
+			"Some(TrueColor { r: 212, g: 115, b: 212 })"
+		);
+		settings.jpg.quality = 0;
+		settings.gif.quality = 0;
+		settings.save.file.format = FileFormat::Ico;
+		settings.record.window = RecordWindow::Focus(Some(Geometry::default()));
+		settings.check();
+	}
+}
