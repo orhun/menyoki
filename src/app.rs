@@ -452,12 +452,14 @@ mod tests {
 			FileFormat::Pnm(String::from("ppm")),
 			FileFormat::Ff,
 		] {
-			settings.save.file.format = format.clone();
-			let app = App::new(Some(window), &settings);
 			let path =
 				FileUtil::get_path_with_extension(PathBuf::from("test.*"), &format);
+			settings.save.file.format = format.clone();
+			settings.analyze.file = path.clone();
+			let app = App::new(Some(window), &settings);
 			app.save_output((app.get_image(), None), File::create(&path)?)?;
 			app.edit_image(&path);
+			app.analyze_image()?;
 			fs::remove_file(path)?;
 		}
 		settings.save.file.path = PathBuf::from("test");
