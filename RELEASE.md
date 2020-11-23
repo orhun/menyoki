@@ -1,0 +1,19 @@
+# Creating a Release <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" width="25"></a>
+
+[GitHub](https://github.com/orhun/menyoki/releases) and [crates.io](https://crates.io/crates/menyoki/) releases are automated via [GitHub actions](https://github.com/orhun/menyoki/blob/master/.github/workflows/cd.yml) and triggered by pushing a tag.
+
+1. Bump the version in [Cargo.toml](https://github.com/orhun/menyoki/blob/master/Cargo.toml) according to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+2. Update [Cargo.lock](https://github.com/orhun/menyoki/blob/master/Cargo.lock) by building the project via `cargo build`.
+3. Ensure [CHANGELOG.md](https://github.com/orhun/menyoki/blob/master/CHANGELOG.md) is updated according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
+4. Commit and push the changes.
+5. Create a new tag: `git tag -s -a v[x.y.z]` ([signed](http://keys.gnupg.net/pks/lookup?search=0x53F218C35C1DC8B1&fingerprint=on&op=index))
+6. Push the tag: `git push --tags`
+7. Wait for [Continous Deployment](https://github.com/orhun/menyoki/actions) workflow to finish.
+
+### Docker
+
+Automated builds for new tags are enabled in [Docker Hub](https://hub.docker.com/r/orhunp/menyoki) so no action is required.
+
+### AUR
+
+Flag [packages](https://aur.archlinux.org/packages/?O=0&SeB=b&K=menyoki&outdated=&SB=n&SO=a&PP=50&do_Search=Go) out-of-date on AUR. If they are not updated within 3 days, contact and ask for the [current maintainer](https://aur.archlinux.org/account/orhun) to update them.
