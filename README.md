@@ -265,7 +265,7 @@ SUBCOMMANDS:
 |---------------------------------------	|-------------------------------------------------------------------------	|
 | `menyoki -V`                          	| Print the version information                                           	|
 | `menyoki -vv --color FF00FF <action>` 	| Set log verbosity level to 2 (trace) and use "FF00FF" as the main color 	|
-| `menyoki -q -c menyoki.cfg <action>`  	| Run in quiet mode and read the configuration from "menyoki.cfg"         	|
+| `menyoki -q -c menyoki.conf <action>`  	| Run in quiet mode and read the configuration from "menyoki.conf"         	|
 
 ### Record <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
@@ -740,12 +740,12 @@ It's possible to override the default command line arguments with a configuratio
 
 In Linux:
 
-* `$HOME/.config/menyoki.cfg`
-* `$HOME/.config/menyoki/menyoki.cfg`
+* `$HOME/.config/menyoki.conf`
+* `$HOME/.config/menyoki/menyoki.conf`
 * `$HOME/.config/menyoki/config`
 
 <details>
-  <summary>Default configuration file<a href="https://github.com/orhun/menyoki/blob/master/config/menyoki.cfg">*</a></summary>
+  <summary>Default configuration file<a href="https://github.com/orhun/menyoki/blob/master/config/menyoki.conf">*</a></summary>
 
 ```ini
 [general]

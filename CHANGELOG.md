@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Update badges in README.md
 * Update AUR installation section in README.md
+* Change default configuration file extension to `.conf`
 
 ### Removed
 * Remove release notes from CD workflow due to [softprops/action-gh-release#57](https://github.com/softprops/action-gh-release/issues/57)

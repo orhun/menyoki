@@ -8,7 +8,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 /* Extension of the configuration file */
-const CONFIG_FILE_EXTENSION: &str = "cfg";
+const CONFIG_FILE_EXTENSION: &str = "conf";
 
 /* Representation of the output file */
 #[derive(Debug)]

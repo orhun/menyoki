@@ -36,7 +36,7 @@ jobs:
           cp -t assets/ LICENSE README.md CHANGELOG.md
           cp -t assets/ --parents man/menyoki.1
           cp -t assets/ --parents completions/* && rm -f assets/completions/generate.sh
-          cp -t assets/ --parents config/menyoki.cfg
+          cp -t assets/ --parents config/menyoki.conf
           mv assets/ menyoki-${{ env.RELEASE_VERSION }}/
           tar -czvf menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz menyoki-${{ env.RELEASE_VERSION }}
           sha512sum menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz > menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz.sha512
