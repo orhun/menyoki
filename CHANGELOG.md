@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 * Add release instructions
+* Extend tests cases and add new tests
 
 ### Changed
 * Update badges in README.md
