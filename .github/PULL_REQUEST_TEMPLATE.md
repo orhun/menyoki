@@ -30,7 +30,7 @@
   - [ ] I have updated the [README.md](https://github.com/orhun/menyoki/blob/master/README.md)
   - [ ] I have updated the [CHANGELOG.md](https://github.com/orhun/menyoki/blob/master/CHANGELOG.md)
   - [ ] I have updated the [IMPLEMENTATION.md](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md)
-  - [ ] I have updated the [man page](https://github.com/orhun/menyoki/blob/master/man/menyoki.1).
+  - [ ] I have updated the [man pages](https://github.com/orhun/menyoki/tree/master/man).
 - [ ] 📐 I have formatted the code with [rustfmt](https://github.com/rust-lang/rustfmt).
 - [ ] 📊 I have added tests to cover my changes.
 - [ ] 📈 All new and existing tests passed.

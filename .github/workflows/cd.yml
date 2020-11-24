@@ -34,7 +34,7 @@ jobs:
           mkdir assets
           cp -t assets/ target/${{ matrix.TARGET }}/release/menyoki && strip -s assets/menyoki
           cp -t assets/ LICENSE README.md CHANGELOG.md
-          cp -t assets/ --parents man/menyoki.1
+          cp -t assets/ --parents man/*
           cp -t assets/ --parents completions/* && rm -f assets/completions/generate.sh
           cp -t assets/ --parents config/menyoki.conf
           mv assets/ menyoki-${{ env.RELEASE_VERSION }}/

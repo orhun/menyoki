@@ -1,0 +1,322 @@
+.\" Manpage of menyoki.conf
+.TH MENYOKI.CONF "5" "November 2020" "menyoki 0.1.2" "menyoki manual"
+.SH NAME
+menyoki.conf \- menyoki configuration file
+.SH SYNOPSIS
+$HOME/.config/menyoki.conf, $HOME/.config/menyoki/menyoki.conf, $HOME/.config/menyoki/config
+.SH DESCRIPTION
+.PP
+It\[cq]s possible to override the default command line arguments with a
+configuration file.
+It can be specified via \f[C]--config\f[R] option in general settings or
+it can be placed to a location that \f[B]menyoki\f[R] looks for as
+default.
+.PP
+.SH GENERAL
+Options that belong to the [general] section.
+.TP
+.B verbose
+Increase logging verbosity
+.TP
+.B quiet
+Do not show output
+.TP
+.B color <HEX>
+Set the main color [default: 3AA431]
+.SH RECORD
+Options that belong to the [record] section.
+.TP
+.B root
+Record the root window
+.TP
+.B focus
+Record the focused window
+.TP
+.B select
+Select the window to record
+.TP
+.B with-alpha
+Record with the alpha channel
+.TP
+.B no-borders
+Do not show borders for window selection
+.TP
+.B no-keys
+Disable the action keys while recording
+.TP
+.B keys <KEYS>
+Set the action keys [default: LAlt\-S/Enter]
+.TP
+.B border <BORDER>
+Set the border padding [default: 1]
+.TP
+.B padding <T:R:B:L>
+Set the record area padding
+.TP
+.B size <WxH>
+Set the record area size
+.TP
+.B duration <S>
+Set the duration for recording [default: ∞]
+.TP
+.B countdown <S>
+Set the countdown before recording [default: 3]
+.TP
+.B timeout <S>
+Set the timeout for window selection [default: 60]
+.TP
+.B interval <MS>
+Set the refresh interval for window selection [default: 10]
+.TP
+.B command
+Set the command to run
+.SH SPLIT
+Options that belong to the [split] section.
+.TP
+.B dir <DIRECTORY>
+Set the output directory
+.TP
+.B file
+Set the GIF file
+.SH MAKE
+Options that belong to the [make] section.
+.TP
+.B no-sort
+Use frames in the order given
+.TP
+.B fps <FPS>
+Set the FPS [default: 20]
+.TP
+.B quality <QUALITY>
+Set the frame quality (1-100) [default: 75]
+.TP
+.B repeat <REPEAT>
+Set the number of repetitions [default: ∞]
+.TP
+.B dir <DIRECTORY>
+Set the directory to read frames
+.SH CAPTURE
+Options that belong to the [capture] section.
+.TP
+.B root
+Capture the root window
+.TP
+.B focus
+Capture the focused window
+.TP
+.B select
+Select the window to capture
+.TP
+.B with-alpha
+Capture with the alpha channel
+.TP
+.B no-borders
+Do not show borders for window selection
+.TP
+.B keys <KEYS>
+Set the action keys [default: LAlt-S/Enter]
+.TP
+.B border <BORDER>
+Set the border padding [default: 1]
+.TP
+.B padding <T:R:B:L>
+Set the capture area padding
+.TP
+.B size <WxH>
+Set the capture area size
+.TP
+.B countdown <S>
+Set the countdown before capturing [default: 0]
+.TP
+.B timeout <S>
+Set the timeout for window selection [default: 60]
+.TP
+.B interval <MS>
+Set the refresh interval for window selection [default: 10]
+.TP
+.B command
+Set the command to run
+.SH EDIT
+Options that belong to the [edit] section.
+.TP
+.B convert
+Convert image using the given encoder
+.TP
+.B grayscale
+Convert image to grayscale
+.TP
+.B invert
+Invert the colors of the image
+.TP
+.B crop <T:R:B:L>
+Apply padding to crop the image
+.TP
+.B resize <WxH>
+Resize the image without keeping the aspect ratio
+.TP
+.B ratio <RATIO>
+Resize the image proportionally by aspect ratio [default:
+1.0]
+.TP
+.B rotate <ROTATE>
+Rotate the image (clockwise) [possible values: 90, 180,
+270]
+.TP
+.B flip <FLIP>
+Flip the image [possible values: horizontal, vertical]
+.TP
+.B blur <SIGMA>
+Blur the image [default: 0.0]
+.TP
+.B hue <HUE>
+Adjust the hue of the image [default: ±0]
+.TP
+.B contrast <CONTRAST>
+Adjust the contrast of the image [default: ±0.0]
+.TP
+.B brightness <BRIGHTNESS>
+Adjust the brightness of the image [default: ±0]
+.TP
+.B filter <FILTER>
+Set the sampling filter for scaling [default: lanczos3]
+[possible values: nearest, triangle, catmull\-rom,
+gaussian, lanczos3]
+.TP
+.B file
+Set the input file
+.SH ANALYZE
+Options that belong to the [analyze] section.
+.TP
+.B timestamp
+Use Unix timestamp for report dates
+.TP
+.B time-zone <TIMEZONE>
+Set the time zone of the report [default: utc]  [possible
+values: utc, local]
+.TP
+.B file
+Set the image file
+.SH SAVE
+Options that belong to the [save] section.
+.TP
+.B with-extension
+Always save the file with an extension
+.TP
+.B timestamp
+Add Unix timestamp to the file name
+.TP
+.B date <FORMAT>
+Add formatted date/time to the file name [default: %Y%m%dT%H%M%S]
+.TP
+.B file
+Set the output file
+.SH GIF
+Options that belong to the [gif] section.
+.TP
+.B fast
+Encode 3 times faster (gifski)
+.TP
+.B fps <FPS>
+Set the FPS [default: 20]
+.TP
+.B quality <QUALITY>
+Set the frame quality (1-100) [default: 75]
+.TP
+.B repeat <REPEAT>
+Set the number of repetitions [default: ∞]
+.TP
+.B speed <SPEED>
+Set the GIF speed [default: 1.0]
+.TP
+.B cut-beginning <S>
+Cut the beginning of the GIF [default: 0.0]
+.TP
+.B cut-end <S>
+Cut the end of the GIF [default: 0.0]
+.SH PNG
+Options that belong to the [png] section.
+.TP
+.B compression <COMPRESSION>
+Set the compression level [default: fast]
+[possible values: default, fast, best, huffman, rle]
+.TP
+.B filter <FILTER>
+Set the filter algorithm [default: sub]
+[possible values: none, sub, up, avg, paeth]
+.SH JPG
+Options that belong to the [jpg] section.
+.TP
+.B quality <QUALITY>
+Set the image quality (1-100) [default: 90]
+.SH PNM
+Options that belong to the [pnm] section.
+.TP
+.B format <FORMAT>
+Set the PNM format [default: pixmap]  [possible values:
+bitmap, graymap, pixmap, arbitrary]
+.TP
+.B encoding <ENCODING>
+Set the encoding for storing the samples [default: binary]
+[possible values: binary, ascii]
+.SH ENVIRONMENT
+.PP
+Corresponding environment variables can be set for overriding the
+command line flags and options.
+The general prototype of the variables that \f[B]menyoki\f[R] checks are
+the following:
+.PP
+\f[C]MENYOKI_{SECTION}_{ARGUMENT}=value\f[R]
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(35.6n) lw(34.4n).
+T{
+Command
+T}@T{
+Environment Variables
+T}
+_
+T{
+\f[C]menyoki --quiet\f[R]
+T}@T{
+\f[C]MENYOKI_GENERAL_QUIET=true\f[R]
+T}
+T{
+\f[C]menyoki record gif --fps 10 save --timestamp\f[R]
+T}@T{
+\f[C]MENYOKI_GIF_FPS=10 MENYOKI_SAVE_TIMESTAMP=true\f[R]
+T}
+T{
+\f[C]menyoki capture --size 200x300 jpg --quality 100\f[R]
+T}@T{
+\f[C]MENYOKI_CAPTURE_SIZE=200x300 MENYOKI_JPG_QUALITY=100\f[R]
+T}
+T{
+\f[C]menyoki edit test.png --ratio 2.0 --filter triangle\f[R]
+T}@T{
+\f[C]MENYOKI_EDIT_RATIO=2.0 MENYOKI_EDIT_FILTER=triangle\f[R]
+T}
+T{
+\f[C]menyoki split test.gif --dir frames/ pnm --format graymap\f[R]
+T}@T{
+\f[C]MENYOKI_SPLIT_DIR=frames/ MENYOKI_PNM_FORMAT=graymap\f[R]
+T}
+T{
+\f[C]menyoki analyze test.png --timestamp save --date %H%M%S\f[R]
+T}@T{
+\f[C]MENYOKI_ANALYZE_TIMESTAMP=true MENYOKI_SAVE_DATE=%H%M%S\f[R]
+T}
+.TE
+.SH AUTHOR
+Written by Orhun Parmaksız <orhunparmaksiz@gmail.com>
+.SH REPORTING BUGS
+Contact the author via email or use GitHub Issues for reporting bugs: <https://github.com/orhun/menyoki/issues/>
+.SH COPYRIGHT
+Copyright © 2020 Orhun Parmaksız
+.RS 0
+Licensed under GPLv3: <https://gnu.org/licenses/gpl.html>
+.SH "SEE ALSO"
+.BR menyoki (1)
+
+See the project homepage at <https://github.com/orhun/menyoki> for full documentation.

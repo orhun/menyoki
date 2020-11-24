@@ -1,5 +1,5 @@
-.\" Manpage of menyoki.
-.TH MENYOKI "1" "November 2020" "menyoki 0.1.0" "User Commands"
+.\" Manpage of menyoki
+.TH MENYOKI "1" "November 2020" "menyoki 0.1.2" "User Commands"
 .SH NAME
 menyoki \- screenshot/screencast and perform image operations on the command line
 .SH SYNOPSIS
@@ -817,56 +817,6 @@ T}@T{
 Reset the area padding to default
 T}
 .TE
-.SH ENVIRONMENT
-.PP
-Corresponding environment variables can be set for overriding the
-command line flags and options.
-The general prototype of the variables that \f[B]menyoki\f[R] checks are
-the following:
-.PP
-\f[C]MENYOKI_{SECTION}_{ARGUMENT}=value\f[R]
-.SS Examples
-.PP
-.TS
-tab(@);
-lw(35.6n) lw(34.4n).
-T{
-Command
-T}@T{
-Environment Variables
-T}
-_
-T{
-\f[C]menyoki --quiet\f[R]
-T}@T{
-\f[C]MENYOKI_GENERAL_QUIET=true\f[R]
-T}
-T{
-\f[C]menyoki record gif --fps 10 save --timestamp\f[R]
-T}@T{
-\f[C]MENYOKI_GIF_FPS=10 MENYOKI_SAVE_TIMESTAMP=true\f[R]
-T}
-T{
-\f[C]menyoki capture --size 200x300 jpg --quality 100\f[R]
-T}@T{
-\f[C]MENYOKI_CAPTURE_SIZE=200x300 MENYOKI_JPG_QUALITY=100\f[R]
-T}
-T{
-\f[C]menyoki edit test.png --ratio 2.0 --filter triangle\f[R]
-T}@T{
-\f[C]MENYOKI_EDIT_RATIO=2.0 MENYOKI_EDIT_FILTER=triangle\f[R]
-T}
-T{
-\f[C]menyoki split test.gif --dir frames/ pnm --format graymap\f[R]
-T}@T{
-\f[C]MENYOKI_SPLIT_DIR=frames/ MENYOKI_PNM_FORMAT=graymap\f[R]
-T}
-T{
-\f[C]menyoki analyze test.png --timestamp save --date %H%M%S\f[R]
-T}@T{
-\f[C]MENYOKI_ANALYZE_TIMESTAMP=true MENYOKI_SAVE_DATE=%H%M%S\f[R]
-T}
-.TE
 .SH AUTHOR
 Written by Orhun Parmaksız <orhunparmaksiz@gmail.com>
 .SH REPORTING BUGS
@@ -874,8 +824,8 @@ Contact the author via email or use GitHub Issues for reporting bugs: <https://g
 .SH COPYRIGHT
 Copyright © 2020 Orhun Parmaksız
 .RS 0
-Licensed under GPLv3: <https://gnu.org/licenses/gpl.html>.
+Licensed under GPLv3: <https://gnu.org/licenses/gpl.html>
 .SH "SEE ALSO"
-The
-.B menyoki
-project is maintained at GitHub. Visit <https://github.com/orhun/menyoki> for full documentation.
+.BR menyoki.conf (5)
+
+See the project homepage at <https://github.com/orhun/menyoki> for full documentation.
