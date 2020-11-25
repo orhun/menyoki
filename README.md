@@ -737,10 +737,11 @@ There are 3 types of key bindings in terms of performed action:
 
 ## Configuration
 
-It's possible to override the default command line arguments with a configuration file. It can be specified via `--config` option in general settings or it can be placed to a location that **menyoki** looks for as default.
+It's possible to override the default command line arguments with a configuration file. It can be specified via `--config` option or `$MENYOKI_CONFIG` environment variable. Also, it can be placed to a location where **menyoki** looks for as default.
 
 In Linux:
 
+* `$MENYOKI_CONFIG`
 * `$HOME/.config/menyoki.conf`
 * `$HOME/.config/menyoki/menyoki.conf`
 * `$HOME/.config/menyoki/config`

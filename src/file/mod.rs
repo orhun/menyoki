@@ -3,6 +3,7 @@ pub mod info;
 pub mod settings;
 
 use crate::file::format::FileFormat;
+use std::env;
 use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -85,6 +86,11 @@ impl File {
 	 * @return PathBuf (Option)
 	 */
 	pub fn get_config_file() -> Option<PathBuf> {
+		if let Ok(config_file) =
+			env::var(format!("{}_CONFIG", env!("CARGO_PKG_NAME")).to_uppercase())
+		{
+			return Some(PathBuf::from(config_file));
+		}
 		if let Some(config_dir) = dirs::config_dir() {
 			let file_name =
 				format!("{}.{}", env!("CARGO_PKG_NAME"), CONFIG_FILE_EXTENSION);

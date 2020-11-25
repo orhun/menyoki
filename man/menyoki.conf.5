@@ -3,14 +3,15 @@
 .SH NAME
 menyoki.conf \- menyoki configuration file
 .SH SYNOPSIS
-$HOME/.config/menyoki.conf, $HOME/.config/menyoki/menyoki.conf, $HOME/.config/menyoki/config
+$MENYOKI_CONFIG, $HOME/.config/menyoki.conf, $HOME/.config/menyoki/menyoki.conf, $HOME/.config/menyoki/config
 .SH DESCRIPTION
 .PP
 It\[cq]s possible to override the default command line arguments with a
 configuration file.
-It can be specified via \f[C]--config\f[R] option in general settings or
-it can be placed to a location that \f[B]menyoki\f[R] looks for as
-default.
+It can be specified via \f[C]--config\f[R] option or
+\f[C]$MENYOKI_CONFIG\f[R] environment variable.
+Also, it can be placed to a location where \f[B]menyoki\f[R] looks for
+as default.
 .PP
 .SH GENERAL
 Options that belong to the [general] section.
