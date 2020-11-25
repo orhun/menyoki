@@ -52,18 +52,6 @@ jobs:
             menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.TARGET }}.tar.gz.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare release notes
-        run: echo -e "$img\n$text" > RELEASE.txt
-        env:
-          img: '<a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/98470768-09356680-21f9-11eb-81de-94a622b32db4.png" width="300"></a>'
-          text: 'See [**changelog**](https://github.com/orhun/menyoki/blob/master/CHANGELOG.md) for release notes.'
-      - name: Set release details
-        uses: tubone24/update_release@v1.0
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        with:
-          body_path: RELEASE.txt
-          is_append_body: false
 
   publish-crates-io:
     name: Publish on crates.io
