@@ -113,6 +113,7 @@
 - [x] [PNM](https://en.wikipedia.org/wiki/Netpbm)
 - [x] [TGA](https://en.wikipedia.org/wiki/Truevision_TGA)
 - [x] [farbfeld](https://tools.suckless.org/farbfeld/)
+- [ ] [APNG](https://en.wikipedia.org/wiki/APNG)
 - [ ] [WebP](https://en.wikipedia.org/wiki/WebP)
 - [ ] [AVIF](https://en.wikipedia.org/wiki/AV1)
 - [ ] [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14)

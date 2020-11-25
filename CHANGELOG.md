@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add release instructions
 * Extend tests cases and add new tests
 * Add manpage for configuration file
+* Add APNG to supported formats as TODO
 
 ### Changed
 * Update badges in README.md
