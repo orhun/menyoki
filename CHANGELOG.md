@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add manpage for configuration file
 * Add APNG to supported formats as TODO
 * Support using `$MENYOKI_CONFIG` for configuration file
+* Update the release details after upload in CD workflow
 
 ### Changed
 * Update badges in README.md
