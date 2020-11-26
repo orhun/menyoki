@@ -49,6 +49,7 @@ pub struct Recorder<Window> {
 	window: Window,
 	clock: FpsClock,
 	channel: (mpsc::Sender<()>, mpsc::Receiver<()>),
+	gifski: bool,
 	settings: RecordSettings,
 }
 
@@ -61,14 +62,21 @@ where
 	 *
 	 * @param  window
 	 * @param  fps
+	 * @param  gifski
 	 * @param  settings
 	 * @return Recorder
 	 */
-	pub fn new(window: Window, fps: u32, settings: RecordSettings) -> Self {
+	pub fn new(
+		window: Window,
+		fps: u32,
+		gifski: bool,
+		settings: RecordSettings,
+	) -> Self {
 		Self {
 			window,
 			clock: FpsClock::new(fps),
 			channel: mpsc::channel(),
+			gifski,
 			settings,
 		}
 	}
@@ -84,7 +92,7 @@ where
 				"Recording {} FPS for {} seconds...",
 				self.clock.fps, duration
 			);
-			if cfg!(features = "ski") {
+			if self.gifski {
 				(duration * (self.clock.fps as f64)) as usize
 			} else {
 				(((duration * 100.) as u16) / (1e2 / self.clock.fps as f32) as u16)
@@ -174,11 +182,12 @@ mod tests {
 	#[test]
 	fn test_record() {
 		let window = TestWindow::default();
-		let recorder = Recorder::new(window, 10, RecordSettings::default());
+		let recorder = Recorder::new(window, 10, false, RecordSettings::default());
 		let record = recorder.record_async();
 		thread::sleep(Duration::from_millis(200));
 		assert!(record.get().unwrap().unwrap().len() > 0);
-		let mut recorder = Recorder::new(window, 10, RecordSettings::default());
+		let mut recorder =
+			Recorder::new(window, 10, false, RecordSettings::default());
 		recorder.settings.time.duration = Some(0.2);
 		assert_ne!(0, recorder.record_sync(None).len());
 	}

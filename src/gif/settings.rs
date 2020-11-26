@@ -10,10 +10,10 @@ pub struct GifSettings {
 	pub fps: u32,
 	pub repeat: i32,
 	pub quality: u8,
-	pub fast: bool,
 	pub speed: f32,
 	pub cut: (f32, f32),
 	pub frames: Vec<PathBuf>,
+	pub gifski: (bool, bool),
 }
 
 /* Default initialization values for GifSettings */
@@ -23,10 +23,10 @@ impl Default for GifSettings {
 			fps: 20,
 			repeat: -1,
 			quality: 75,
-			fast: false,
 			speed: 1.,
 			cut: (0., 0.),
 			frames: Vec::new(),
+			gifski: (false, false),
 		}
 	}
 }
@@ -38,29 +38,29 @@ impl GifSettings {
 	 * @param  fps
 	 * @param  repeat
 	 * @param  quality
-	 * @param  fast
 	 * @param  speed
 	 * @param  cut
 	 * @param  frames
+	 * @param  gifski
 	 * @return GifSettings
 	 */
 	pub fn new(
 		fps: u32,
 		repeat: i32,
 		quality: u8,
-		fast: bool,
 		speed: f32,
 		cut: (f32, f32),
 		frames: Vec<PathBuf>,
+		gifski: (bool, bool),
 	) -> Self {
 		Self {
 			fps,
 			repeat,
 			quality,
-			fast,
 			speed,
 			cut,
 			frames,
+			gifski,
 		}
 	}
 
@@ -96,13 +96,13 @@ impl GifSettings {
 				},
 				parser.parse("repeat", Self::default().repeat) - 1,
 				parser.parse("quality", Self::default().quality),
-				matches.is_present("fast"),
 				parser.parse("speed", Self::default().speed),
 				(
 					parser.parse("cut-beginning", Self::default().cut.0) * 1000.,
 					parser.parse("cut-end", Self::default().cut.1) * 1000.,
 				),
 				Self::get_frames(&matches),
+				(matches.is_present("gifski"), matches.is_present("fast")),
 			),
 			None => Self::default(),
 		}
@@ -236,6 +236,7 @@ mod tests {
 			.arg(Arg::with_name("fps").long("fps").takes_value(true))
 			.arg(Arg::with_name("repeat").long("repeat").takes_value(true))
 			.arg(Arg::with_name("quality").long("quality").takes_value(true))
+			.arg(Arg::with_name("gifski").long("gifski"))
 			.arg(Arg::with_name("fast").long("fast"))
 			.arg(Arg::with_name("speed").long("speed").takes_value(true))
 			.arg(
@@ -252,6 +253,7 @@ mod tests {
 				"5",
 				"--quality",
 				"10",
+				"--gifski",
 				"--fast",
 				"--speed",
 				"1.1",
@@ -264,13 +266,15 @@ mod tests {
 		assert_eq!(15, gif_settings.fps);
 		assert_eq!(4, gif_settings.repeat);
 		assert_eq!(10, gif_settings.quality);
-		assert_eq!(true, gif_settings.fast);
+		assert_eq!(true, gif_settings.gifski.0);
+		assert_eq!(true, gif_settings.gifski.1);
 		assert_eq!(1.1, gif_settings.speed);
 		assert_eq!((900., 800.), gif_settings.cut);
 		let gif_settings = GifSettings::from_parser(ArgParser::new(None));
 		assert_eq!(-1, gif_settings.repeat);
 		assert_eq!(75, gif_settings.quality);
-		assert_eq!(false, gif_settings.fast);
+		assert_eq!(false, gif_settings.gifski.0);
+		assert_eq!(false, gif_settings.gifski.1);
 		assert_eq!(1.0, gif_settings.speed);
 		assert_eq!((0., 0.), gif_settings.cut);
 	}

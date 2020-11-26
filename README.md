@@ -202,8 +202,6 @@ git clone https://github.com/orhun/menyoki.git && cd menyoki/
 cargo install --path .
 ```
 
-Build with `ski` feature for using [gifski](https://gif.ski/) encoder instead of default encoder. (e.g. `cargo install --features ski --path .`)
-
 #### Releases
 
 1. Download the latest archive from [releases](https://github.com/orhun/menyoki/releases) page and extract it.
@@ -323,6 +321,7 @@ SUBCOMMANDS:
 | `menyoki record --padding 20:10:0:10 --timeout 120` 	| Record an area with given padding and set window selection timeout to 120 seconds 	|
 | `menyoki record --keys LControl-Q/W`                	| Record with the default settings using custom key bindings                        	|
 | `menyoki record gif --fps 15 --quality 90`          	| Record 15 frames per second with 90% quality                                      	|
+| `menyoki record gif --gifski`                       	| Record and encode using the gifski encoder                                        	|
 | `menyoki record gif save "test.gif" --timestamp`    	| Record and save as "test.gif" with timestamp in the file name                     	|
 | `menyoki -q record "kmon -t 2000"`                  	| Execute the command and record its output in quiet mode                           	|
 
@@ -639,7 +638,8 @@ It's possible to change the GIF, PNG, JPG, and PNM encoding options with specify
 
 ```
 FLAGS:
-        --fast    Encode 3 times faster (only in gifski)
+        --gifski    Use the gifski encoder
+        --fast      Encode 3 times faster (gifski)
     -h, --help    Print help information
 
 OPTIONS:
@@ -826,6 +826,7 @@ date = %Y%m%dT%H%M%S
 #file = 
 
 [gif]
+gifski = false
 fast = false
 fps = 20
 quality = 75

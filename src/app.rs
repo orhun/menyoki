@@ -3,9 +3,7 @@ use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
 use crate::gif::decoder::Decoder;
 use crate::gif::encoder::{Encoder, EncoderConfig, Frames};
-#[cfg(feature = "ski")]
-use crate::gif::ski::GifskiEncoder as GifEncoder;
-#[cfg(not(feature = "ski"))]
+use crate::gif::ski::GifskiEncoder;
 use crate::gif::GifEncoder;
 use crate::image::Image;
 use crate::record::Recorder;
@@ -193,6 +191,7 @@ where
 		let mut recorder = Recorder::new(
 			self.window.expect("Failed to get the window"),
 			self.settings.gif.fps,
+			self.settings.gif.gifski.0,
 			self.settings.record,
 		);
 		if self.settings.record.command.is_some() {
@@ -424,7 +423,11 @@ where
 			output,
 			&self.settings.gif,
 		);
-		GifEncoder::new(config).save(images, self.settings.input_state)
+		if self.settings.gif.gifski.0 {
+			GifskiEncoder::new(config).save(images, self.settings.input_state)
+		} else {
+			GifEncoder::new(config).save(images, self.settings.input_state)
+		}
 	}
 }
 

@@ -26,7 +26,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 			height: Some(config.geometry.height),
 			quality: config.settings.quality,
 			once: config.settings.repeat == 0,
-			fast: config.settings.fast,
+			fast: config.settings.gifski.1,
 		})
 		.expect("Failed to initialize the gifski encoder");
 		Self {

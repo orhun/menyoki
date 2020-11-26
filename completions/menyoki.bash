@@ -992,7 +992,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__combine)
-            opts=" -n -h -V -f -q -r -s -d  --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1262,7 +1262,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__edit__gif)
-            opts=" -n -h -V -f -q -r -s -d  --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2004,7 +2004,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__make)
-            opts=" -n -h -V -f -q -r -s -d  --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2230,7 +2230,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__record__gif)
-            opts=" -n -h -V -f -q -r -s -d  --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0

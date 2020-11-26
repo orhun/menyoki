@@ -372,10 +372,14 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("gifski")
+					.long("gifski")
+					.help("Use the gifski encoder"),
+			)
+			.arg(
 				Arg::with_name("fast")
 					.long("fast")
-					.help("Encode 3 times faster")
-					.hidden(!cfg!(feature = "ski")),
+					.help("Encode 3 times faster (gifski)"),
 			)
 			.arg(
 				Arg::with_name("speed")

@@ -5,12 +5,9 @@ use std::fmt;
 
 use crate::image::geometry::Geometry;
 use image::{Bgra, ExtendedColorType};
-#[cfg(feature = "ski")]
-use {
-	imgref::{Img, ImgVec},
-	rgb::RGBA8,
-	std::convert::TryInto,
-};
+use imgref::{Img, ImgVec};
+use rgb::RGBA8;
+use std::convert::TryInto;
 
 /* Coefficients for transforming sRGB to CIE Y (luminance value) */
 const SRGB_LUMA: [f32; 3] = [0.2126, 0.7152, 0.0722];
@@ -91,7 +88,6 @@ impl Image {
 	 *
 	 * @return ImgVec
 	 */
-	#[cfg(feature = "ski")]
 	pub fn get_img_vec(&self) -> ImgVec<RGBA8> {
 		Img::new(
 			self.data

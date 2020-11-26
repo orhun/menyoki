@@ -89,7 +89,8 @@ _arguments "${_arguments_options[@]}" \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'--fast[Encode 3 times faster]' \
+'--gifski[Use the gifski encoder]' \
+'--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
 '--no-sort[Use frames in the order given]' \
 '-h[Print help information]' \
@@ -1256,7 +1257,8 @@ _arguments "${_arguments_options[@]}" \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'--fast[Encode 3 times faster]' \
+'--gifski[Use the gifski encoder]' \
+'--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
 '--no-sort[Use frames in the order given]' \
 '-h[Print help information]' \
@@ -1329,7 +1331,8 @@ _arguments "${_arguments_options[@]}" \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'--fast[Encode 3 times faster]' \
+'--gifski[Use the gifski encoder]' \
+'--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
 '--no-sort[Use frames in the order given]' \
 '-h[Print help information]' \
@@ -3075,7 +3078,8 @@ _arguments "${_arguments_options[@]}" \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'--fast[Encode 3 times faster]' \
+'--gifski[Use the gifski encoder]' \
+'--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
 '--no-sort[Use frames in the order given]' \
 '-h[Print help information]' \

@@ -5,6 +5,7 @@ use crate::util::state::InputState;
 use std::io::Write;
 
 /* GIF encoder configuration */
+#[derive(Debug, Clone, Copy)]
 pub struct EncoderConfig<'a, Output: Write> {
 	pub fps: u32,
 	pub geometry: Geometry,
@@ -51,9 +52,7 @@ pub trait Encoder<'a, Output: Write> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	#[cfg(feature = "ski")]
-	use crate::gif::ski::GifskiEncoder as GifEncoder;
-	#[cfg(not(feature = "ski"))]
+	use crate::gif::ski::GifskiEncoder;
 	use crate::gif::GifEncoder;
 	use image::Bgra;
 	#[test]
@@ -67,7 +66,12 @@ mod tests {
 		let settings = GifSettings::default();
 		let mut output = Vec::new();
 		let config = EncoderConfig::new(10, geometry, &mut output, &settings);
-		GifEncoder::new(config).save(images, None);
+		GifEncoder::new(config).save(images.clone(), None);
+		output.truncate(6);
+		assert_eq!(vec![71, 73, 70, 56, 57, 97], output);
+		output.clear();
+		let config = EncoderConfig::new(20, geometry, &mut output, &settings);
+		GifskiEncoder::new(config).save(images, None);
 		output.truncate(6);
 		assert_eq!(vec![71, 73, 70, 56, 57, 97], output);
 	}
