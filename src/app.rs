@@ -2,7 +2,7 @@ use crate::args::Args;
 use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
 use crate::gif::decoder::Decoder;
-use crate::gif::encoder::{Encoder, Frames};
+use crate::gif::encoder::{Encoder, EncoderConfig, Frames};
 #[cfg(feature = "ski")]
 use crate::gif::ski::GifskiEncoder as GifEncoder;
 #[cfg(not(feature = "ski"))]
@@ -418,13 +418,13 @@ where
 	fn save_gif<Output: Write>(self, frames: Option<Frames>, output: Output) {
 		let (images, fps) = frames.expect("Failed to get the frames");
 		debug!("FPS: {}", fps);
-		GifEncoder::new(
+		let config = EncoderConfig::new(
 			fps,
 			images.first().expect("No frames found to save").geometry,
 			output,
 			&self.settings.gif,
-		)
-		.save(images, self.settings.input_state)
+		);
+		GifEncoder::new(config).save(images, self.settings.input_state)
 	}
 }
 

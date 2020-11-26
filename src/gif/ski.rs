@@ -1,6 +1,4 @@
-use crate::gif::encoder::Encoder;
-use crate::gif::settings::GifSettings;
-use crate::image::geometry::Geometry;
+use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::image::Image;
 use crate::util::state::InputState;
 use gifski::{Collector, Writer};
@@ -19,31 +17,23 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 	/**
 	 * Create a new GifskiEncoder object.
 	 *
-	 * @param  fps
-	 * @param  output
-	 * @param  geometry
-	 * @param  settings
+	 * @param  config
 	 * @return GifskiEncoder
 	 */
-	fn new(
-		fps: u32,
-		geometry: Geometry,
-		output: Output,
-		settings: &'a GifSettings,
-	) -> Self {
+	fn new(config: EncoderConfig<'a, Output>) -> Self {
 		let (collector, writer) = gifski::new(gifski::Settings {
-			width: Some(geometry.width),
-			height: Some(geometry.height),
-			quality: settings.quality,
-			once: settings.repeat == 0,
-			fast: settings.fast,
+			width: Some(config.geometry.width),
+			height: Some(config.geometry.height),
+			quality: config.settings.quality,
+			once: config.settings.repeat == 0,
+			fast: config.settings.fast,
 		})
 		.expect("Failed to initialize the gifski encoder");
 		Self {
-			fps,
+			fps: config.fps,
 			collector,
 			writer,
-			output,
+			output: config.output,
 		}
 	}
 

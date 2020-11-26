@@ -4,9 +4,8 @@ pub mod settings;
 #[cfg(feature = "ski")]
 pub mod ski;
 
-use crate::gif::encoder::Encoder;
+use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::gif::settings::GifSettings;
-use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
 use gif::{Encoder as BaseEncoder, Frame, Repeat};
@@ -25,35 +24,27 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 	/**
 	 * Create a new GifEncoder object.
 	 *
-	 * @param  fps
-	 * @param  geometry
-	 * @param  output
-	 * @param  settings
+	 * @param  config
 	 * @return GifEncoder
 	 */
-	fn new(
-		fps: u32,
-		geometry: Geometry,
-		output: Output,
-		settings: &'a GifSettings,
-	) -> Self {
+	fn new(config: EncoderConfig<'a, Output>) -> Self {
 		let mut encoder = BaseEncoder::new(
-			output,
-			geometry.width.try_into().unwrap_or_default(),
-			geometry.height.try_into().unwrap_or_default(),
+			config.output,
+			config.geometry.width.try_into().unwrap_or_default(),
+			config.geometry.height.try_into().unwrap_or_default(),
 			&[],
 		)
 		.expect("Failed to create a GIF encoder");
 		encoder
-			.set_repeat(match settings.repeat {
+			.set_repeat(match config.settings.repeat {
 				n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
 				_ => Repeat::Infinite,
 			})
 			.expect("Failed to set repeat count");
 		Self {
-			fps,
+			fps: config.fps,
 			encoder,
-			settings,
+			settings: config.settings,
 		}
 	}
 

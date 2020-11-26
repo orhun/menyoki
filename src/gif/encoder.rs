@@ -4,17 +4,45 @@ use crate::image::Image;
 use crate::util::state::InputState;
 use std::io::Write;
 
-/* Images to encode and FPS value */
-pub type Frames = (Vec<Image>, u32);
+/* GIF encoder configuration */
+pub struct EncoderConfig<'a, Output: Write> {
+	pub fps: u32,
+	pub geometry: Geometry,
+	pub output: Output,
+	pub settings: &'a GifSettings,
+}
 
-/* Required encoding methods for Gif */
-pub trait Encoder<'a, Output: Write> {
-	fn new(
+impl<'a, Output: Write> EncoderConfig<'a, Output> {
+	/**
+	 * Create a new EncoderConfig object.
+	 *
+	 * @param  fps
+	 * @param  geometry
+	 * @param  output
+	 * @param  settings
+	 * @return EncoderConfig
+	 */
+	pub fn new(
 		fps: u32,
 		geometry: Geometry,
 		output: Output,
 		settings: &'a GifSettings,
-	) -> Self
+	) -> Self {
+		Self {
+			fps,
+			geometry,
+			output,
+			settings,
+		}
+	}
+}
+
+/* Images to encode and FPS value */
+pub type Frames = (Vec<Image>, u32);
+
+/* Required GIF encoding methods */
+pub trait Encoder<'a, Output: Write> {
+	fn new(config: EncoderConfig<'a, Output>) -> Self
 	where
 		Self: Sized;
 	fn save(self, images: Vec<Image>, input_state: Option<&'static InputState>);
@@ -38,7 +66,8 @@ mod tests {
 		];
 		let settings = GifSettings::default();
 		let mut output = Vec::new();
-		GifEncoder::new(10, geometry, &mut output, &settings).save(images, None);
+		let config = EncoderConfig::new(10, geometry, &mut output, &settings);
+		GifEncoder::new(config).save(images, None);
 		output.truncate(6);
 		assert_eq!(vec![71, 73, 70, 56, 57, 97], output);
 	}
