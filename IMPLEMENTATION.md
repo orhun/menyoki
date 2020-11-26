@@ -29,9 +29,9 @@ Details of the implementation of **menyoki**.
 * gif
   * [decoder.rs](https://github.com/orhun/menyoki/blob/master/src/gif/decoder.rs) -> `Decoder` (GIF decoder)
   * [encoder.rs](https://github.com/orhun/menyoki/blob/master/src/gif/encoder.rs) -> `Encoder` (trait that GIF encoders implement)
-  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/gif/mod.rs) -> `Gif` (default GIF encoder)
+  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/gif/mod.rs) -> `GifEncoder` (default GIF encoder)
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/gif/settings.rs) -> `GifSettings`
-  * [ski.rs](https://github.com/orhun/menyoki/blob/master/src/gif/ski.rs) -> `Gif` (gifski encoder, enabled with `ski` feature)
+  * [ski.rs](https://github.com/orhun/menyoki/blob/master/src/gif/ski.rs) -> `GifskiEncoder` (gifski encoder, enabled with `ski` feature)
 * image
   * [geometry.rs](https://github.com/orhun/menyoki/blob/master/src/image/geometry.rs) -> `Geometry` (x + y + width + height)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/image/mod.rs) -> `Image` (main image type)

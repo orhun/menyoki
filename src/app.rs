@@ -4,9 +4,9 @@ use crate::file::File as FileUtil;
 use crate::gif::decoder::Decoder;
 use crate::gif::encoder::{Encoder, Frames};
 #[cfg(feature = "ski")]
-use crate::gif::ski::Gif;
+use crate::gif::ski::GifskiEncoder as GifEncoder;
 #[cfg(not(feature = "ski"))]
-use crate::gif::Gif;
+use crate::gif::GifEncoder;
 use crate::image::Image;
 use crate::record::Recorder;
 use crate::settings::AppSettings;
@@ -418,7 +418,7 @@ where
 	fn save_gif<Output: Write>(self, frames: Option<Frames>, output: Output) {
 		let (images, fps) = frames.expect("Failed to get the frames");
 		debug!("FPS: {}", fps);
-		Gif::new(
+		GifEncoder::new(
 			fps,
 			images.first().expect("No frames found to save").geometry,
 			output,

@@ -9,27 +9,27 @@ use crate::gif::settings::GifSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
-use gif::{Encoder as GifEncoder, Frame, Repeat};
+use gif::{Encoder as BaseEncoder, Frame, Repeat};
 use image::ExtendedColorType;
 use std::convert::TryInto;
 use std::io::{self, Write};
 
 /* GIF encoder and settings */
-pub struct Gif<'a, Output: Write> {
+pub struct GifEncoder<'a, Output: Write> {
 	fps: u32,
-	encoder: GifEncoder<Output>,
+	encoder: BaseEncoder<Output>,
 	settings: &'a GifSettings,
 }
 
-impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
+impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 	/**
-	 * Create a new Gif object.
+	 * Create a new GifEncoder object.
 	 *
 	 * @param  fps
 	 * @param  geometry
 	 * @param  output
 	 * @param  settings
-	 * @return Gif
+	 * @return GifEncoder
 	 */
 	fn new(
 		fps: u32,
@@ -37,7 +37,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for Gif<'a, Output> {
 		output: Output,
 		settings: &'a GifSettings,
 	) -> Self {
-		let mut encoder = GifEncoder::new(
+		let mut encoder = BaseEncoder::new(
 			output,
 			geometry.width.try_into().unwrap_or_default(),
 			geometry.height.try_into().unwrap_or_default(),

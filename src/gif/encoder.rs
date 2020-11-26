@@ -24,9 +24,9 @@ pub trait Encoder<'a, Output: Write> {
 mod tests {
 	use super::*;
 	#[cfg(feature = "ski")]
-	use crate::gif::ski::Gif as GifEncoder;
+	use crate::gif::ski::GifskiEncoder as GifEncoder;
 	#[cfg(not(feature = "ski"))]
-	use crate::gif::Gif as GifEncoder;
+	use crate::gif::GifEncoder;
 	use image::Bgra;
 	#[test]
 	fn test_gif_encoder() {

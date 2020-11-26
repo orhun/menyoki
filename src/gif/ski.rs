@@ -8,22 +8,22 @@ use std::io::{self, Write};
 use std::thread;
 
 /* GIF encoder and settings */
-pub struct Gif<Output: Write> {
+pub struct GifskiEncoder<Output: Write> {
 	fps: u32,
 	collector: Collector,
 	writer: Writer,
 	output: Output,
 }
 
-impl<'a, Output: Write> Encoder<'a, Output> for Gif<Output> {
+impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 	/**
-	 * Create a new Gif object.
+	 * Create a new GifskiEncoder object.
 	 *
 	 * @param  fps
 	 * @param  output
 	 * @param  geometry
 	 * @param  settings
-	 * @return Gif
+	 * @return GifskiEncoder
 	 */
 	fn new(
 		fps: u32,
