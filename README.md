@@ -376,9 +376,9 @@ FLAGS:
     -h, --help       Print help information
 
 OPTIONS:
-    -f, --fps <FPS>            Set the FPS [default: 20]
     -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
     -r, --repeat <REPEAT>      Set the number of repetitions [default: ∞]
+    -f, --fps <FPS>            Set the FPS [default: 20]
     -d, --dir <DIRECTORY>      Set the directory to read frames
 
 ARGS:
@@ -643,9 +643,9 @@ FLAGS:
     -h, --help    Print help information
 
 OPTIONS:
-    -f, --fps <FPS>            Set the FPS [default: 20]
     -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
     -r, --repeat <REPEAT>      Set the number of repetitions [default: ∞]
+    -f, --fps <FPS>            Set the FPS [default: 20]
     -s, --speed <SPEED>        Set the GIF speed [default: 1.0]
         --cut-beginning <S>    Cut the beginning of the GIF [default: 0.0]
         --cut-end <S>          Cut the end of the GIF [default: 0.0]
@@ -778,9 +778,9 @@ interval = 10
 
 [make]
 #no-sort = false
-fps = 20
 quality = 75
 repeat = ∞
+fps = 20
 #dir = 
 
 [capture]
@@ -828,9 +828,9 @@ date = %Y%m%dT%H%M%S
 [gif]
 gifski = false
 fast = false
-fps = 20
 quality = 75
 repeat = ∞
+fps = 20
 speed = 1.0
 cut-beginning = 0.0
 cut-end = 0.0
