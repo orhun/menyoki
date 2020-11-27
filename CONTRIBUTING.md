@@ -42,11 +42,9 @@ cargo fmt --all -- --check --verbose
 cargo clippy --verbose -- -D warnings
 ```
 
-8. [Regenerate](https://github.com/orhun/menyoki/blob/master/completions/generate.sh) the shell completions if you've committed a change about command line arguments.
-
-```sh
-./completions/generate.sh
-```
+8. If you've committed a change about command line arguments[*](https://github.com/orhun/menyoki/blob/master/src/args/mod.rs):
+   * [Regenerate](https://github.com/orhun/menyoki/blob/master/completions/generate.sh) the shell completions. (run `./completions/generate.sh`)
+   *  Update the [man pages](https://github.com/orhun/menyoki/tree/master/man), [configuration file](https://github.com/orhun/menyoki/blob/master/config/menyoki.conf) and [README.md](https://github.com/orhun/menyoki/blob/master/README.md) about these changes if necessary.
 
 ## Create a Pull Request
 
