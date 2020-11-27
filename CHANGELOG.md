@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - Update contribution guidelines about changes in command line arguments
+- Update the optimization level of the development profile
 
 ### Removed
 - Remove update_release action from CD workflow

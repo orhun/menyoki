@@ -60,7 +60,7 @@ features = ["suggestions", "color", "wrap_help"]
 pretty_assertions = "0.6.1"
 
 [profile.dev]
-opt-level = 0
+opt-level = 2
 debug = true
 panic = "abort"
 
