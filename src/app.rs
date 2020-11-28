@@ -1,7 +1,7 @@
 use crate::args::Args;
 use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
-use crate::gif::decoder::Decoder;
+use crate::gif::decoder::GifDecoder;
 use crate::gif::encoder::{Encoder, EncoderConfig, Frames};
 use crate::gif::ski::GifskiEncoder;
 use crate::gif::GifEncoder;
@@ -264,7 +264,7 @@ where
 	 * @return Frames
 	 */
 	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
-		Decoder::new(input, self.settings.edit.get_imageops(), &self.settings.gif)
+		GifDecoder::new(input, self.settings.edit.get_imageops(), &self.settings.gif)
 			.expect("Failed to decode the GIF")
 			.update_frames()
 			.expect("Failed to edit the GIF")

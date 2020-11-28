@@ -2,22 +2,22 @@ use crate::edit::ImageOps;
 use crate::gif::encoder::Frames;
 use crate::gif::settings::GifSettings;
 use image::error::ImageError;
-use image::gif::GifDecoder;
+use image::gif::GifDecoder as BaseDecoder;
 use image::AnimationDecoder;
 use image::Frame;
 use std::convert::TryInto;
 use std::io::{self, Read, Write};
 
 /* GIF decoder and settings */
-pub struct Decoder<'a, Input: Read> {
-	decoder: GifDecoder<Input>,
+pub struct GifDecoder<'a, Input: Read> {
+	decoder: BaseDecoder<Input>,
 	imageops: ImageOps<'a>,
 	settings: &'a GifSettings,
 }
 
-impl<'a, Input: Read> Decoder<'a, Input> {
+impl<'a, Input: Read> GifDecoder<'a, Input> {
 	/**
-	 * Create a new Decoder object.
+	 * Create a new GifDecoder object.
 	 *
 	 * @param  input
 	 * @param  imageops
@@ -30,7 +30,7 @@ impl<'a, Input: Read> Decoder<'a, Input> {
 		settings: &'a GifSettings,
 	) -> Result<Self, ImageError> {
 		Ok(Self {
-			decoder: GifDecoder::new(input)?,
+			decoder: BaseDecoder::new(input)?,
 			imageops,
 			settings,
 		})
