@@ -6,3 +6,6 @@
 
 # Miscellaneous project files
 /etc/
+
+# Coverage report
+cobertura.xml
