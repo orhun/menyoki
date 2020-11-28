@@ -4,9 +4,9 @@ use crate::file::File;
 use std::fs;
 use std::path::PathBuf;
 
-/* GIF and frame settings */
+/* Animation and frame settings */
 #[derive(Debug)]
-pub struct GifSettings {
+pub struct AnimSettings {
 	pub fps: u32,
 	pub repeat: i32,
 	pub quality: u8,
@@ -16,8 +16,8 @@ pub struct GifSettings {
 	pub gifski: (bool, bool),
 }
 
-/* Default initialization values for GifSettings */
-impl Default for GifSettings {
+/* Default initialization values for AnimSettings */
+impl Default for AnimSettings {
 	fn default() -> Self {
 		Self {
 			fps: 20,
@@ -31,9 +31,9 @@ impl Default for GifSettings {
 	}
 }
 
-impl GifSettings {
+impl AnimSettings {
 	/**
-	 * Create a new GifSettings object.
+	 * Create a new AnimSettings object.
 	 *
 	 * @param  fps
 	 * @param  repeat
@@ -42,7 +42,7 @@ impl GifSettings {
 	 * @param  cut
 	 * @param  frames
 	 * @param  gifski
-	 * @return GifSettings
+	 * @return AnimSettings
 	 */
 	pub fn new(
 		fps: u32,
@@ -65,10 +65,10 @@ impl GifSettings {
 	}
 
 	/**
-	 * Create a new GifSettings object from arguments.
+	 * Create a new AnimSettings object from arguments.
 	 *
 	 * @param  matches
-	 * @return GifSettings
+	 * @return AnimSettings
 	 */
 	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
 		Self::from_parser(ArgParser::from_subcommand(
@@ -82,10 +82,10 @@ impl GifSettings {
 	}
 
 	/**
-	 * Create a GifSettings object from an argument parser.
+	 * Create a AnimSettings object from an argument parser.
 	 *
 	 * @param  parser
-	 * @return GifSettings
+	 * @return AnimSettings
 	 */
 	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
@@ -164,7 +164,7 @@ pub struct SplitSettings {
 	pub dir: PathBuf,
 }
 
-/* Default initialization values for GifSettings */
+/* Default initialization values for AnimSettings */
 impl Default for SplitSettings {
 	fn default() -> Self {
 		Self {
@@ -231,7 +231,7 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	use std::ffi::OsStr;
 	#[test]
-	fn test_gif_settings() {
+	fn test_anim_settings() {
 		let args = App::new("test")
 			.arg(Arg::with_name("fps").long("fps").takes_value(true))
 			.arg(Arg::with_name("repeat").long("repeat").takes_value(true))
@@ -262,21 +262,21 @@ mod tests {
 				"--cut-end",
 				"0.8",
 			]);
-		let gif_settings = GifSettings::from_parser(ArgParser::from_args(&args));
-		assert_eq!(15, gif_settings.fps);
-		assert_eq!(4, gif_settings.repeat);
-		assert_eq!(10, gif_settings.quality);
-		assert_eq!(true, gif_settings.gifski.0);
-		assert_eq!(true, gif_settings.gifski.1);
-		assert_eq!(1.1, gif_settings.speed);
-		assert_eq!((900., 800.), gif_settings.cut);
-		let gif_settings = GifSettings::from_parser(ArgParser::new(None));
-		assert_eq!(-1, gif_settings.repeat);
-		assert_eq!(75, gif_settings.quality);
-		assert_eq!(false, gif_settings.gifski.0);
-		assert_eq!(false, gif_settings.gifski.1);
-		assert_eq!(1.0, gif_settings.speed);
-		assert_eq!((0., 0.), gif_settings.cut);
+		let anim_settings = AnimSettings::from_parser(ArgParser::from_args(&args));
+		assert_eq!(15, anim_settings.fps);
+		assert_eq!(4, anim_settings.repeat);
+		assert_eq!(10, anim_settings.quality);
+		assert_eq!(true, anim_settings.gifski.0);
+		assert_eq!(true, anim_settings.gifski.1);
+		assert_eq!(1.1, anim_settings.speed);
+		assert_eq!((900., 800.), anim_settings.cut);
+		let anim_settings = AnimSettings::from_parser(ArgParser::new(None));
+		assert_eq!(-1, anim_settings.repeat);
+		assert_eq!(75, anim_settings.quality);
+		assert_eq!(false, anim_settings.gifski.0);
+		assert_eq!(false, anim_settings.gifski.1);
+		assert_eq!(1.0, anim_settings.speed);
+		assert_eq!((0., 0.), anim_settings.cut);
 	}
 	#[test]
 	fn test_split_settings() {

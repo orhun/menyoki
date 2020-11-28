@@ -1,6 +1,6 @@
+use crate::anim::settings::AnimSettings;
 use crate::edit::ImageOps;
 use crate::gif::encoder::Frames;
-use crate::gif::settings::GifSettings;
 use image::error::ImageError;
 use image::gif::GifDecoder as BaseDecoder;
 use image::AnimationDecoder;
@@ -12,7 +12,7 @@ use std::io::{self, Read, Write};
 pub struct GifDecoder<'a, Input: Read> {
 	decoder: BaseDecoder<Input>,
 	imageops: ImageOps<'a>,
-	settings: &'a GifSettings,
+	settings: &'a AnimSettings,
 }
 
 impl<'a, Input: Read> GifDecoder<'a, Input> {
@@ -27,7 +27,7 @@ impl<'a, Input: Read> GifDecoder<'a, Input> {
 	pub fn new(
 		input: Input,
 		imageops: ImageOps<'a>,
-		settings: &'a GifSettings,
+		settings: &'a AnimSettings,
 	) -> Result<Self, ImageError> {
 		Ok(Self {
 			decoder: BaseDecoder::new(input)?,

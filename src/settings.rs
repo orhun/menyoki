@@ -1,9 +1,9 @@
 use crate::analyze::settings::AnalyzeSettings;
+use crate::anim::settings::{AnimSettings, SplitSettings};
 use crate::args::matches::ArgMatches;
 use crate::edit::settings::EditSettings;
 use crate::file::format::FileFormat;
 use crate::file::settings::SaveSettings;
-use crate::gif::settings::{GifSettings, SplitSettings};
 use crate::image::geometry::Geometry;
 use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::{RecordSettings, RecordWindow};
@@ -16,7 +16,7 @@ use colored::Color;
 pub struct AppSettings<'a> {
 	pub args: &'a ArgMatches<'a>,
 	pub record: RecordSettings,
-	pub gif: GifSettings,
+	pub gif: AnimSettings,
 	pub split: SplitSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
@@ -46,7 +46,7 @@ impl<'a> AppSettings<'a> {
 		Self {
 			args,
 			record,
-			gif: GifSettings::from_args(args),
+			gif: AnimSettings::from_args(args),
 			split: SplitSettings::from_args(args),
 			png: PngSettings::from_args(args),
 			jpg: JpgSettings::from_args(args),

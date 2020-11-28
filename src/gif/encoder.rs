@@ -1,4 +1,4 @@
-use crate::gif::settings::GifSettings;
+use crate::anim::settings::AnimSettings;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
@@ -10,7 +10,7 @@ pub struct EncoderConfig<'a, Output: Write> {
 	pub fps: u32,
 	pub geometry: Geometry,
 	pub output: Output,
-	pub settings: &'a GifSettings,
+	pub settings: &'a AnimSettings,
 }
 
 impl<'a, Output: Write> EncoderConfig<'a, Output> {
@@ -27,7 +27,7 @@ impl<'a, Output: Write> EncoderConfig<'a, Output> {
 		fps: u32,
 		geometry: Geometry,
 		output: Output,
-		settings: &'a GifSettings,
+		settings: &'a AnimSettings,
 	) -> Self {
 		Self {
 			fps,
@@ -63,7 +63,7 @@ mod tests {
 			Image::new(data.clone(), false, geometry),
 			Image::new(data.into_iter().rev().collect(), false, geometry),
 		];
-		let settings = GifSettings::default();
+		let settings = AnimSettings::default();
 		let mut output = Vec::new();
 		let config = EncoderConfig::new(10, geometry, &mut output, &settings);
 		GifEncoder::new(config).save(images.clone(), None);

@@ -5,6 +5,7 @@
 extern crate log;
 
 mod analyze;
+mod anim;
 mod app;
 mod args;
 mod edit;

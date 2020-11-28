@@ -14,6 +14,9 @@ Details of the implementation of **menyoki**.
 * analyze
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/analyze/mod.rs) -> `ImageAnalyzer`
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/analyze/settings.rs) -> `AnalyzeSettings`
+* anim
+  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/anim/mod.rs) -> module declarations
+  * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/anim/settings.rs) -> `AnimSettings`
 * args
   * [matches.rs](https://github.com/orhun/menyoki/blob/master/src/args/matches.rs) -> `ArgMatches` (`clap::ArgMatches` wrapper for using configuration file and environment variables)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/args/mod.rs) -> `Args` (command line arguments)
@@ -30,7 +33,6 @@ Details of the implementation of **menyoki**.
   * [decoder.rs](https://github.com/orhun/menyoki/blob/master/src/gif/decoder.rs) -> `Decoder` (GIF decoder)
   * [encoder.rs](https://github.com/orhun/menyoki/blob/master/src/gif/encoder.rs) -> `Encoder` (trait that GIF encoders implement)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/gif/mod.rs) -> `GifEncoder` (default GIF encoder)
-  * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/gif/settings.rs) -> `GifSettings`
   * [ski.rs](https://github.com/orhun/menyoki/blob/master/src/gif/ski.rs) -> `GifskiEncoder` ([gifski](https://gif.ski/) encoder, enabled with `--gifski` flag)
 * image
   * [geometry.rs](https://github.com/orhun/menyoki/blob/master/src/image/geometry.rs) -> `Geometry` (x + y + width + height)
@@ -45,7 +47,7 @@ Details of the implementation of **menyoki**.
   * [command.rs](https://github.com/orhun/menyoki/blob/master/src/util/command.rs) -> `Command` (for executing OS commands)
   * [keys.rs](https://github.com/orhun/menyoki/blob/master/src/util/keys.rs) -> `ActionKeys` (parser and checker)
   * [logger.rs](https://github.com/orhun/menyoki/blob/master/src/util/logger.rs) -> `Logger` (for initializing the logger)
-  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/util/mod.rs) -> only contains the module declarations
+  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/util/mod.rs) -> module declarations
   * [state.rs](https://github.com/orhun/menyoki/blob/master/src/util/state.rs) -> `InputState` (checks the pressed keys)
 * window
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/window/mod.rs) -> `Access`, `Capture` (crucial traits)

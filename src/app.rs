@@ -81,7 +81,7 @@ where
 			self.save_output(
 				self.get_app_output(),
 				File::create(&self.settings.save.file.path)?,
-			)?;
+			);
 			info!(
 				"{} saved to: {:?} ({})",
 				self.settings.save.file.format.as_extension().to_uppercase(),
@@ -287,7 +287,7 @@ where
 			);
 			debug!("Saving to {:?}\r", path);
 			io::stdout().flush().expect("Failed to flush stdout");
-			self.save_output((frames.get(i).cloned(), None), File::create(path)?)?;
+			self.save_output((frames.get(i).cloned(), None), File::create(path)?);
 		}
 		debug!("\n");
 		Ok(())
@@ -298,13 +298,12 @@ where
 	 *
 	 * @param  app_output
 	 * @param  output
-	 * @return Result
 	 */
 	fn save_output<Output: Write + Seek>(
 		&self,
 		app_output: AppOutput,
 		mut output: Output,
-	) -> AppResult {
+	) {
 		let (image, frames) = app_output;
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
@@ -365,7 +364,6 @@ where
 			),
 			_ => {}
 		}
-		Ok(())
 	}
 
 	/**
@@ -460,7 +458,7 @@ mod tests {
 			settings.save.file.format = format.clone();
 			settings.analyze.file = path.clone();
 			let app = App::new(Some(window), &settings);
-			app.save_output((app.get_image(), None), File::create(&path)?)?;
+			app.save_output((app.get_image(), None), File::create(&path)?);
 			app.edit_image(&path);
 			app.analyze_image()?;
 			fs::remove_file(path)?;

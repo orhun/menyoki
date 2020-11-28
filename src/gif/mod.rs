@@ -1,10 +1,9 @@
 pub mod decoder;
 pub mod encoder;
-pub mod settings;
 pub mod ski;
 
+use crate::anim::settings::AnimSettings;
 use crate::gif::encoder::{Encoder, EncoderConfig};
-use crate::gif::settings::GifSettings;
 use crate::image::Image;
 use crate::util::state::InputState;
 use gif::{Encoder as BaseEncoder, Frame, Repeat};
@@ -16,7 +15,7 @@ use std::io::{self, Write};
 pub struct GifEncoder<'a, Output: Write> {
 	fps: u32,
 	encoder: BaseEncoder<Output>,
-	settings: &'a GifSettings,
+	settings: &'a AnimSettings,
 }
 
 impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
