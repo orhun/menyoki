@@ -15,6 +15,7 @@ Details of the implementation of **menyoki**.
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/analyze/mod.rs) -> `ImageAnalyzer`
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/analyze/settings.rs) -> `AnalyzeSettings`
 * anim
+  * [decoder.rs](https://github.com/orhun/menyoki/blob/master/src/anim/decoder.rs) -> `AnimDecoder`
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/anim/mod.rs) -> module declarations
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/anim/settings.rs) -> `AnimSettings`
 * args
@@ -30,7 +31,6 @@ Details of the implementation of **menyoki**.
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/file/mod.rs) -> `File` (path + format)
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/file/settings.rs) -> `SaveSettings`
 * gif
-  * [decoder.rs](https://github.com/orhun/menyoki/blob/master/src/gif/decoder.rs) -> `Decoder` (GIF decoder)
   * [encoder.rs](https://github.com/orhun/menyoki/blob/master/src/gif/encoder.rs) -> `Encoder` (trait that GIF encoders implement)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/gif/mod.rs) -> `GifEncoder` (default GIF encoder)
   * [ski.rs](https://github.com/orhun/menyoki/blob/master/src/gif/ski.rs) -> `GifskiEncoder` ([gifski](https://gif.ski/) encoder, enabled with `--gifski` flag)

@@ -38,9 +38,6 @@ impl<'a, Output: Write> EncoderConfig<'a, Output> {
 	}
 }
 
-/* Images to encode and FPS value */
-pub type Frames = (Vec<Image>, u32);
-
 /* Required GIF encoding methods */
 pub trait Encoder<'a, Output: Write> {
 	fn new(config: EncoderConfig<'a, Output>) -> Self

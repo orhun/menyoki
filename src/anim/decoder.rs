@@ -1,39 +1,26 @@
 use crate::anim::settings::AnimSettings;
+use crate::anim::Frames;
 use crate::edit::ImageOps;
-use crate::gif::encoder::Frames;
-use image::error::ImageError;
-use image::gif::GifDecoder as BaseDecoder;
-use image::AnimationDecoder;
 use image::Frame;
 use std::convert::TryInto;
-use std::io::{self, Read, Write};
+use std::io::{self, Write};
 
-/* GIF decoder and settings */
-pub struct GifDecoder<'a, Input: Read> {
-	decoder: BaseDecoder<Input>,
+/* Animation decoder and settings */
+pub struct AnimDecoder<'a> {
 	imageops: ImageOps<'a>,
 	settings: &'a AnimSettings,
 }
 
-impl<'a, Input: Read> GifDecoder<'a, Input> {
+impl<'a> AnimDecoder<'a> {
 	/**
-	 * Create a new GifDecoder object.
+	 * Create a new AnimDecoder object.
 	 *
-	 * @param  input
 	 * @param  imageops
 	 * @param  settings
-	 * @return Result
+	 * @return AnimDecoder
 	 */
-	pub fn new(
-		input: Input,
-		imageops: ImageOps<'a>,
-		settings: &'a AnimSettings,
-	) -> Result<Self, ImageError> {
-		Ok(Self {
-			decoder: BaseDecoder::new(input)?,
-			imageops,
-			settings,
-		})
+	pub fn new(imageops: ImageOps<'a>, settings: &'a AnimSettings) -> Self {
+		Self { imageops, settings }
 	}
 
 	/**
@@ -68,22 +55,23 @@ impl<'a, Input: Read> GifDecoder<'a, Input> {
 	/**
 	 * Update and return the frames.
 	 *
-	 * @return Result
+	 * @param  frames
+	 * @return Frames
 	 */
-	pub fn update_frames(mut self) -> Result<Frames, ImageError> {
-		let mut frames = self.decoder.into_frames().collect_frames()?;
+	pub fn update_frames(mut self, mut frames: Vec<Frame>) -> Frames {
 		let first_frame = frames.first().expect("No frames found to process");
 		self.imageops
 			.init(first_frame.clone().into_buffer().dimensions());
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
 			* self.settings.speed) as u32;
+		debug!("FPS: {:?}", fps);
 		let frames = Self::cut_duration(&mut frames, self.settings.cut, fps);
 		let mut images = Vec::new();
 		for (i, frame) in frames.iter().enumerate() {
 			let percentage = ((i + 1) as f64 / frames.len() as f64) * 100.;
-			info!("Processing the GIF frames... ({:.1}%)\r", percentage);
+			info!("Processing the frames... ({:.1}%)\r", percentage);
 			debug!(
-				"Processing the GIF frames... ({:.1}%) [{}/{}]\r",
+				"Processing the frames... ({:.1}%) [{}/{}]\r",
 				percentage,
 				i + 1,
 				frames.len()
@@ -96,6 +84,41 @@ impl<'a, Input: Read> GifDecoder<'a, Input> {
 			);
 		}
 		info!("\n");
-		Ok((images, fps))
+		(images, fps)
+	}
+}
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use crate::edit::settings::EditSettings;
+	use crate::image::geometry::Geometry;
+	use image::{Delay, Frame, RgbaImage};
+	use pretty_assertions::assert_eq;
+	#[test]
+	fn test_anim_decoder() {
+		let mut anim_settings = AnimSettings::default();
+		anim_settings.cut = (500., 0.);
+		anim_settings.speed = 2.0;
+		let mut edit_settings = EditSettings::default();
+		edit_settings.image.ratio = 2.0;
+		let frames = AnimDecoder::new(edit_settings.get_imageops(), &anim_settings)
+			.update_frames(vec![
+				Frame::from_parts(
+					RgbaImage::new(1, 1),
+					0,
+					0,
+					Delay::from_numer_denom_ms(1000, 1),
+				),
+				Frame::from_parts(
+					RgbaImage::new(1, 1),
+					0,
+					0,
+					Delay::from_numer_denom_ms(10, 1),
+				),
+			]);
+		assert_eq!(2, frames.1);
+		assert_eq!(1, frames.0.len());
+		assert_eq!(Geometry::new(0, 0, 2, 2), frames.0[0].geometry);
 	}
 }

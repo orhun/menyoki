@@ -1,8 +1,9 @@
+use crate::anim::decoder::AnimDecoder;
+use crate::anim::Frames;
 use crate::args::Args;
 use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
-use crate::gif::decoder::GifDecoder;
-use crate::gif::encoder::{Encoder, EncoderConfig, Frames};
+use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::gif::ski::GifskiEncoder;
 use crate::gif::GifEncoder;
 use crate::image::Image;
@@ -12,6 +13,7 @@ use crate::window::Capture;
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
 use image::farbfeld::FarbfeldEncoder;
+use image::gif::GifDecoder;
 use image::ico::IcoEncoder;
 use image::io::Reader;
 use image::jpeg::JpegEncoder;
@@ -19,6 +21,7 @@ use image::png::PngEncoder;
 use image::pnm::{PnmEncoder, PnmSubtype};
 use image::tga::TgaEncoder;
 use image::tiff::TiffEncoder;
+use image::AnimationDecoder;
 use image::ImageEncoder;
 use image::{ColorType, ExtendedColorType};
 use std::fmt::Debug;
@@ -264,10 +267,14 @@ where
 	 * @return Frames
 	 */
 	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
-		GifDecoder::new(input, self.settings.edit.get_imageops(), &self.settings.gif)
-			.expect("Failed to decode the GIF")
-			.update_frames()
-			.expect("Failed to edit the GIF")
+		AnimDecoder::new(self.settings.edit.get_imageops(), &self.settings.gif)
+			.update_frames(
+				GifDecoder::new(input)
+					.expect("Failed to create GIF decoder")
+					.into_frames()
+					.collect_frames()
+					.expect("Failed to collect GIF frames"),
+			)
 	}
 
 	/**
