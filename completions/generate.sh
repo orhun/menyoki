@@ -9,6 +9,6 @@ echo "==> Building the project..."
 cargo build
 echo "==> Generating shell completions..."
 for sh in "bash" "fish" "zsh"; do
-    "$target/release/$bin" misc -g $sh > "$workspace/completions/$bin.$sh"
+    "$target/debug/$bin" misc -g $sh > "$workspace/completions/$bin.$sh"
 done
 echo "==> Done."
