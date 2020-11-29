@@ -5,7 +5,7 @@ use crate::util::state::InputState;
 use std::io::Write;
 
 /* GIF encoder configuration */
-#[derive(Debug, Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct EncoderConfig<'a, Output: Write> {
 	pub fps: u32,
 	pub geometry: Geometry,
@@ -62,14 +62,15 @@ mod tests {
 		];
 		let settings = AnimSettings::default();
 		let mut output = Vec::new();
+		let header = vec![0x47, 0x49, 0x46, 0x38, 0x39, 0x61];
 		let config = EncoderConfig::new(10, geometry, &mut output, &settings);
 		GifEncoder::new(config).save(images.clone(), None);
 		output.truncate(6);
-		assert_eq!(vec![71, 73, 70, 56, 57, 97], output);
+		assert_eq!(header, output);
 		output.clear();
 		let config = EncoderConfig::new(20, geometry, &mut output, &settings);
 		GifskiEncoder::new(config).save(images, None);
 		output.truncate(6);
-		assert_eq!(vec![71, 73, 70, 56, 57, 97], output);
+		assert_eq!(header, output);
 	}
 }
