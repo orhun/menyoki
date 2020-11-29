@@ -331,12 +331,7 @@ where
 	 * @return App
 	 */
 	fn get_gif_args(mode: GifMode) -> App<'a, 'b> {
-		Self::get_anim_args(
-			SubCommand::with_name(if mode == GifMode::Make {
-				"make"
-			} else {
-				"gif"
-			})
+		SubCommand::with_name(if mode == GifMode::Make { "make" } else { "gif" })
 			.about(if mode == GifMode::Make {
 				"Make a GIF from frames"
 			} else {
@@ -349,12 +344,31 @@ where
 				&[]
 			})
 			.arg(
+				Arg::with_name("fps")
+					.short("f")
+					.long("fps")
+					.value_name("FPS")
+					.default_value("20")
+					.help("Set the FPS")
+					.hidden(mode == GifMode::Edit)
+					.takes_value(true),
+			)
+			.arg(
 				Arg::with_name("quality")
 					.short("q")
 					.long("quality")
 					.value_name("QUALITY")
 					.default_value("75")
 					.help("Set the frame quality (1-100)")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("repeat")
+					.short("r")
+					.long("repeat")
+					.value_name("REPEAT")
+					.default_value("\u{221E}")
+					.help("Set the number of repetitions")
 					.takes_value(true),
 			)
 			.arg(
@@ -422,38 +436,7 @@ where
 					.help("Set the directory to read frames")
 					.hidden(mode != GifMode::Make)
 					.takes_value(true),
-			),
-			mode,
-		)
-	}
-
-	/**
-	 * Add animation related subcommands to the given arguments.
-	 *
-	 * @param  app
-	 * @param  gif_mode
-	 * @return App
-	 */
-	fn get_anim_args(app: App<'a, 'b>, gif_mode: GifMode) -> App<'a, 'b> {
-		app.arg(
-			Arg::with_name("repeat")
-				.short("r")
-				.long("repeat")
-				.value_name("REPEAT")
-				.default_value("\u{221E}")
-				.help("Set the number of repetitions")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("fps")
-				.short("f")
-				.long("fps")
-				.value_name("FPS")
-				.default_value("20")
-				.help("Set the FPS")
-				.hidden(gif_mode == GifMode::Edit)
-				.takes_value(true),
-		)
+			)
 	}
 
 	/**

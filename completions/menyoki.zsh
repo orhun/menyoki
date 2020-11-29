@@ -77,18 +77,18 @@ case $state in
         case $line[2] in
             (gif)
 _arguments "${_arguments_options[@]}" \
+'-f+[Set the FPS]' \
+'--fps=[Set the FPS]' \
 '-q+[Set the frame quality (1-100)]' \
 '--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
 '-s+[Set the GIF speed]' \
 '--speed=[Set the GIF speed]' \
 '--cut-beginning=[Cut the beginning of the GIF]' \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
-'-f+[Set the FPS]' \
-'--fps=[Set the FPS]' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -1245,18 +1245,18 @@ esac
 ;;
 (combine)
 _arguments "${_arguments_options[@]}" \
+'-f+[Set the FPS]' \
+'--fps=[Set the FPS]' \
 '-q+[Set the frame quality (1-100)]' \
 '--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
 '-s+[Set the GIF speed]' \
 '--speed=[Set the GIF speed]' \
 '--cut-beginning=[Cut the beginning of the GIF]' \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
-'-f+[Set the FPS]' \
-'--fps=[Set the FPS]' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -1319,18 +1319,18 @@ esac
 ;;
 (make)
 _arguments "${_arguments_options[@]}" \
+'-f+[Set the FPS]' \
+'--fps=[Set the FPS]' \
 '-q+[Set the frame quality (1-100)]' \
 '--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
 '-s+[Set the GIF speed]' \
 '--speed=[Set the GIF speed]' \
 '--cut-beginning=[Cut the beginning of the GIF]' \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
-'-f+[Set the FPS]' \
-'--fps=[Set the FPS]' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -3066,18 +3066,18 @@ case $state in
         case $line[2] in
             (gif)
 _arguments "${_arguments_options[@]}" \
+'-f+[Set the FPS]' \
+'--fps=[Set the FPS]' \
 '-q+[Set the frame quality (1-100)]' \
 '--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
 '-s+[Set the GIF speed]' \
 '--speed=[Set the GIF speed]' \
 '--cut-beginning=[Cut the beginning of the GIF]' \
 '--cut-end=[Cut the end of the GIF]' \
 '-d+[Set the directory to read frames]' \
 '--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
-'-f+[Set the FPS]' \
-'--fps=[Set the FPS]' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
