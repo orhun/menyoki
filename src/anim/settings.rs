@@ -1,5 +1,6 @@
 use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
+use crate::file::format::FileFormat;
 use crate::file::File;
 use std::fs;
 use std::path::PathBuf;
@@ -68,15 +69,17 @@ impl AnimSettings {
 	 * Create a new AnimSettings object from arguments.
 	 *
 	 * @param  matches
+	 * @param  file_format
 	 * @return AnimSettings
 	 */
-	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+	pub fn from_args(matches: &ArgMatches<'_>, file_format: &FileFormat) -> Self {
+		let format = &file_format.to_string().to_lowercase();
 		Self::from_parser(ArgParser::from_subcommand(
 			matches,
 			if matches.is_present("make") {
 				"make"
 			} else {
-				"gif"
+				format
 			},
 		))
 	}
@@ -158,13 +161,14 @@ impl AnimSettings {
 	}
 }
 
+/* Animation split settings */
 #[derive(Debug)]
 pub struct SplitSettings {
 	pub file: PathBuf,
 	pub dir: PathBuf,
 }
 
-/* Default initialization values for AnimSettings */
+/* Default initialization values for SplitSettings */
 impl Default for SplitSettings {
 	fn default() -> Self {
 		Self {
