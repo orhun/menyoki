@@ -102,7 +102,7 @@
 - [ ] Windows
 - [ ] macOS
 
-**menyoki** requires the window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit** and **analyze** if it's compiled on macOS.
+**menyoki** requires a window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit** and **analyze** if it's compiled on macOS.
 
 ## Supported Formats
 
