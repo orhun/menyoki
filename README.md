@@ -69,7 +69,7 @@
     - [Arguments](#arguments-6)
     - [Examples](#examples-6)
   - [Other](#other-)
-    - [GIF](#gif)
+    - [GIF/APNG](#gifapng)
     - [PNG](#png)
     - [JPG](#jpg)
     - [PNM](#pnm)
@@ -102,6 +102,8 @@
 - [ ] Windows
 - [ ] macOS
 
+**menyoki** requires the window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit** and **analyze** if it's compiled on macOS.
+
 ## Supported Formats
 
 - [x] [GIF](https://en.wikipedia.org/wiki/GIF)
@@ -119,6 +121,8 @@
 - [ ] [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14)
 
 ## Installation
+
+[Xlib](https://en.wikipedia.org/wiki/Xlib) (libX11) should be installed to build **menyoki** on Linux.
 
 ### Cargo
 
