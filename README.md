@@ -370,7 +370,7 @@ SUBCOMMANDS:
 
 ### Make <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
-**make** subcommand serves the purpose of creating GIF files from a set of images. It can be used for making GIFs from given images either via the command line or the specified directory.
+**make** subcommand serves the purpose of creating an animation from a set of images. For example, it can be used for making GIFs from given images either via the command line or the specified directory.
 
 `menyoki make [FLAGS] [OPTIONS] <FRAMES>... [SUBCOMMAND]`
 
