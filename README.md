@@ -105,6 +105,7 @@
 ## Supported Formats
 
 - [x] [GIF](https://en.wikipedia.org/wiki/GIF)
+- [x] [APNG](https://en.wikipedia.org/wiki/APNG)
 - [x] [PNG](https://en.wikipedia.org/wiki/Portable_Network_Graphics)
 - [x] [JPEG](https://en.wikipedia.org/wiki/JPEG)
 - [x] [BMP](https://en.wikipedia.org/wiki/BMP_file_format)
@@ -113,7 +114,6 @@
 - [x] [PNM](https://en.wikipedia.org/wiki/Netpbm)
 - [x] [TGA](https://en.wikipedia.org/wiki/Truevision_TGA)
 - [x] [farbfeld](https://tools.suckless.org/farbfeld/)
-- [ ] [APNG](https://en.wikipedia.org/wiki/APNG)
 - [ ] [WebP](https://en.wikipedia.org/wiki/WebP)
 - [ ] [AVIF](https://en.wikipedia.org/wiki/AV1)
 - [ ] [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14)
