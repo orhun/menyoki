@@ -61,9 +61,9 @@ OPTIONS:
         --color <HEX>      Set the main color [default: 3AA431]
 
 SUBCOMMANDS:
-    record     Record a GIF
-    split      Split a GIF into frames
-    make       Make a GIF from frames
+    record     Record an animation
+    split      Split an animation into frames
+    make       Make an animation from frames
     capture    Capture an image
     edit       Edit an image
     analyze    Analyze an image
@@ -100,7 +100,7 @@ T}
 .SH RECORD SUBCOMMAND
 .PP
 \f[B]menyoki\f[R] can record an area of a window or the whole screen and
-encode it as a supported format (only GIF for now).
+encode it as a supported format.
 Area selection and resize is performed with the key bindings.
 .PP
 A few scenarios that \f[B]record\f[R] action might be helpful would be:
@@ -144,6 +144,7 @@ ARGS:
 
 SUBCOMMANDS:
     gif     Use the GIF encoder
+    apng    Use the APNG encoder
     save    Save the output file(s)
 \f[R]
 .fi
@@ -195,9 +196,19 @@ T}@T{
 Record 15 frames per second with 90% quality
 T}
 T{
+\f[C]menyoki record gif --gifski\f[R]
+T}@T{
+Record and encode using the gifski encoder
+T}
+T{
 \f[C]menyoki record gif save \[dq]test.gif\[dq] --timestamp\f[R]
 T}@T{
 Record and save as \[lq]test.gif\[rq] with timestamp in the file name
+T}
+T{
+\f[C]menyoki record apng --fps 30\f[R]
+T}@T{
+Record 30 frames per second and encode as APNG
 T}
 T{
 \f[C]menyoki -q record \[dq]kmon -t 2000\[dq]\f[R]
@@ -207,7 +218,7 @@ T}
 .TE
 .SH SPLIT SUBCOMMAND
 .PP
-\f[B]menyoki\f[R] can split a GIF into frames (extract images) if the
+\f[B]menyoki\f[R] can split an animation into frames (extract images) if the
 \f[B]split\f[R] subcommand is provided and it can save frames as one of
 the supported formats with the use of trailing \f[I]format\f[R]
 subcommand.
@@ -224,7 +235,7 @@ OPTIONS:
     -d, --dir <DIRECTORY>    Set the output directory
 
 ARGS:
-    <FILE>    Set the GIF file
+    <FILE>    Set the animation file
 
 SUBCOMMANDS:
     png     Use the PNG encoder
@@ -277,6 +288,8 @@ line or the specified directory.
 .nf
 \f[C]
 FLAGS:
+        --gifski     Use the gifski encoder
+        --fast       Encode 3 times faster (gifski)
     -n, --no-sort    Use frames in the order given
     -h, --help       Print help information
 
@@ -285,9 +298,10 @@ OPTIONS:
     -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
     -r, --repeat <REPEAT>      Set the number of repetitions [default: \[if]]
     -d, --dir <DIRECTORY>      Set the directory to read frames
+        --format <FORMAT>      Set the animation format [default: gif]  [possible values: gif, apng]
 
 ARGS:
-    <FRAMES>...    Set the GIF frames
+    <FRAMES>...    Set the animation frames
 
 SUBCOMMANDS:
     save    Save the output file(s)
@@ -321,6 +335,11 @@ T}@T{
 Make a GIF and save the file (\[lq]3.gif\[rq]) with the date information
 T}
 T{
+\f[C]menyoki make 1.png 2.png --format apng\f[R]
+T}@T{
+Make an APNG from the given frames
+T}
+T{
 \f[C]menyoki make --dir frames/\f[R]
 T}@T{
 Make a GIF from the frames in the specified directory
@@ -348,7 +367,7 @@ FLAGS:
     -f, --focus         Capture the focused window
         --select        Select the window to capture
         --with-alpha    Capture with the alpha channel
-        --no-borders    Do not show borders on the focused window
+        --no-borders    Do not show borders for window selection
     -h, --help          Print help information
 
 OPTIONS:
@@ -477,6 +496,7 @@ ARGS:
 
 SUBCOMMANDS:
     gif     Use the GIF encoder
+    apng    Use the APNG encoder
     png     Use the PNG encoder
     jpg     Use the JPG encoder
     bmp     Use the BMP encoder
@@ -590,6 +610,11 @@ T}@T{
 Cut the duration of GIF by seconds
 T}
 T{
+\f[C]menyoki edit test.apng --convert gif\f[R]
+T}@T{
+Convert APNG to GIF
+T}
+T{
 \f[C]menyoki edit test.ff --grayscale --convert pnm --format arbitrary save \[dq]output\[dq] --with-extension --date \[dq]%H%M%S\[dq]\f[R]
 T}@T{
 test.ff (farbfeld) -> grayscale -> output_020035.pam (PNM)
@@ -662,22 +687,22 @@ T}
 .TE
 .SH OTHER SUBCOMMANDS
 .PP
-It\[cq]s possible to change the GIF, PNG, JPG, and PNM encoding options
-with specifying flags/options to the corresponding subcommands.
+It\[cq]s possible to change the GIF, APNG, PNG, JPG, and PNM encoding
+options with specifying flags/options to the corresponding subcommands.
 Also, \f[B]save\f[R] subcommand can be used for changing the default
 output settings.
-.SS GIF Subcommand
+.SS GIF/APNG Subcommand
 .IP
 .nf
 \f[C]
 FLAGS:
-        --gifski  Use the gifski encoder
-        --fast    Encode 3 times faster (gifski)
+        --gifski    Use the gifski encoder         <only in GIF>
+        --fast      Encode 3 times faster (gifski) <only in GIF>
     -h, --help    Print help information
 
 OPTIONS:
     -f, --fps <FPS>            Set the FPS [default: 20]
-    -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
+    -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75] <only in GIF>
     -r, --repeat <REPEAT>      Set the number of repetitions [default: \[if]]
     -s, --speed <SPEED>        Set the GIF speed [default: 1.0]
         --cut-beginning <S>    Cut the beginning of the GIF [default: 0.0]

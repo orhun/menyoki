@@ -1,4 +1,3 @@
-use crate::file::format::FileFormat;
 use crate::settings::AppSettings;
 use chrono::Local;
 use colored::Color;
@@ -78,7 +77,7 @@ impl<'a> Logger<'a> {
 			})
 			.chain(Output::stdout(""))
 			.level(self.level_filter);
-		if self.settings.save.file.format == FileFormat::Gif {
+		if self.settings.save.file.format.is_animation() {
 			logger = logger.level_for(
 				format!("{}::edit", env!("CARGO_PKG_NAME")),
 				LevelFilter::Warn,

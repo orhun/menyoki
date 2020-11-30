@@ -78,7 +78,7 @@ Options that belong to the [split] section.
 Set the output directory
 .TP
 .B file
-Set the GIF file
+Set the animation file
 .SH MAKE
 Options that belong to the [make] section.
 .TP
@@ -96,6 +96,9 @@ Set the number of repetitions [default: ∞]
 .TP
 .B dir <DIRECTORY>
 Set the directory to read frames
+.TP
+.B format <FORMAT>
+Set the animation format [default: gif]  [possible values: gif, apng]
 .SH CAPTURE
 Options that belong to the [capture] section.
 .TP
@@ -230,13 +233,30 @@ Set the frame quality (1-100) [default: 75]
 Set the number of repetitions [default: ∞]
 .TP
 .B speed <SPEED>
-Set the GIF speed [default: 1.0]
+Set the animation speed [default: 1.0]
 .TP
 .B cut-beginning <S>
-Cut the beginning of the GIF [default: 0.0]
+Cut the beginning of the animation [default: 0.0]
 .TP
 .B cut-end <S>
-Cut the end of the GIF [default: 0.0]
+Cut the end of the anim [default: 0.0]
+.SH APNG
+Options that belong to the [apng] section.
+.TP
+.B fps <FPS>
+Set the FPS [default: 20]
+.TP
+.B repeat <REPEAT>
+Set the number of repetitions [default: ∞]
+.TP
+.B speed <SPEED>
+Set the animation speed [default: 1.0]
+.TP
+.B cut-beginning <S>
+Cut the beginning of the animation [default: 0.0]
+.TP
+.B cut-end <S>
+Cut the end of the anim [default: 0.0]
 .SH PNG
 Options that belong to the [png] section.
 .TP

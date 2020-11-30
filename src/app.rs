@@ -1,5 +1,6 @@
 use crate::anim::decoder::AnimDecoder;
 use crate::anim::Frames;
+use crate::apng::ApngEncoder;
 use crate::args::Args;
 use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
@@ -12,6 +13,7 @@ use crate::settings::AppSettings;
 use crate::window::Capture;
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
+use image::codecs::png::PngDecoder;
 use image::farbfeld::FarbfeldEncoder;
 use image::gif::GifDecoder;
 use image::ico::IcoEncoder;
@@ -21,9 +23,10 @@ use image::png::PngEncoder;
 use image::pnm::{PnmEncoder, PnmSubtype};
 use image::tga::TgaEncoder;
 use image::tiff::TiffEncoder;
-use image::AnimationDecoder;
-use image::ImageEncoder;
-use image::{ColorType, ExtendedColorType};
+use image::{
+	AnimationDecoder, ColorType, ExtendedColorType, ImageEncoder, ImageFormat,
+};
+use std::convert::TryInto;
 use std::fmt::Debug;
 use std::fs::{self, File};
 use std::io::{self, Error, Read, Seek, Write};
@@ -71,7 +74,7 @@ where
 			}
 		} else if self.settings.args.is_present("split") {
 			info!("Reading frames from {:?}...", self.settings.split.file);
-			self.split_gif(File::open(&self.settings.split.file)?)?;
+			self.split_anim(File::open(&self.settings.split.file)?)?;
 			info!(
 				"Frames saved to {:?} in {} format.",
 				self.settings.split.dir,
@@ -101,7 +104,7 @@ where
 	 * @return AppOutput
 	 */
 	fn get_app_output(self) -> AppOutput {
-		let output = if self.settings.save.file.format == FileFormat::Gif {
+		let output = if self.settings.save.file.format.is_animation() {
 			(None, Some(self.get_frames()))
 		} else {
 			(self.get_image(), None)
@@ -135,24 +138,25 @@ where
 	fn get_frames(self) -> Frames {
 		if self.settings.args.is_present("edit") {
 			info!("Reading frames from {:?}...", self.settings.edit.path);
-			self.edit_gif(
+			self.edit_anim(
 				File::open(&self.settings.edit.path).expect("File not found"),
+				&self.settings.edit.path,
 			)
 		} else if self.settings.args.is_present("make") {
 			info!(
-				"Making a GIF from {} frames...",
-				self.settings.gif.frames.len()
+				"Making an animation from {} frames...",
+				self.settings.anim.frames.len()
 			);
 			let mut images = Vec::new();
-			for path in &self.settings.gif.frames {
+			for path in &self.settings.anim.frames {
 				debug!("Reading a frame from {:?}   \r", path);
 				io::stdout().flush().expect("Failed to flush stdout");
 				images.push(self.edit_image(path));
 			}
 			debug!("\n");
-			(images, self.settings.gif.fps)
+			(images, self.settings.anim.fps)
 		} else {
-			(self.record(), self.settings.gif.fps)
+			(self.record(), self.settings.anim.fps)
 		}
 	}
 
@@ -193,8 +197,8 @@ where
 	fn record(self) -> Vec<Image> {
 		let mut recorder = Recorder::new(
 			self.window.expect("Failed to get the window"),
-			self.settings.gif.fps,
-			self.settings.gif.gifski.0,
+			self.settings.anim.fps,
+			self.settings.anim.gifski.0,
 			self.settings.record,
 		);
 		if self.settings.record.command.is_some() {
@@ -261,30 +265,46 @@ where
 	}
 
 	/**
-	 * Return the updated frames after decoding the GIF.
+	 * Return the updated frames after decoding the animation.
 	 *
 	 * @param  input
+	 * @param  path
 	 * @return Frames
 	 */
-	fn edit_gif<Input: Read>(self, input: Input) -> Frames {
-		AnimDecoder::new(self.settings.edit.get_imageops(), &self.settings.gif)
+	fn edit_anim<Input: Read>(self, input: Input, path: &Path) -> Frames {
+		let format = Reader::open(path)
+			.expect("File not found")
+			.with_guessed_format()
+			.expect("File format not supported")
+			.format();
+		AnimDecoder::new(self.settings.edit.get_imageops(), &self.settings.anim)
 			.update_frames(
-				GifDecoder::new(input)
-					.expect("Failed to create GIF decoder")
-					.into_frames()
-					.collect_frames()
-					.expect("Failed to collect GIF frames"),
+				match format {
+					Some(ImageFormat::Gif) => GifDecoder::new(input)
+						.expect("Failed to create GIF decoder")
+						.into_frames()
+						.collect_frames()
+						.ok(),
+					Some(ImageFormat::Png) => PngDecoder::new(input)
+						.expect("Failed to create PNG decoder")
+						.apng()
+						.into_frames()
+						.collect_frames()
+						.ok(),
+					_ => None,
+				}
+				.expect("Failed to collect animation frames"),
 			)
 	}
 
 	/**
-	 * Split GIF into frames and save.
+	 * Split animation into frames.
 	 *
 	 * @param  input
 	 * @return Frames
 	 */
-	fn split_gif<Input: Read>(self, input: Input) -> AppResult {
-		let (frames, fps) = self.edit_gif(input);
+	fn split_anim<Input: Read>(self, input: Input) -> AppResult {
+		let (frames, fps) = self.edit_anim(input, &self.settings.split.file);
 		debug!("FPS: {}", fps);
 		fs::create_dir_all(&self.settings.split.dir)?;
 		for i in 0..frames.len() {
@@ -314,8 +334,12 @@ where
 		let (image, frames) = app_output;
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
-				debug!("{:?}", self.settings.gif);
+				debug!("{:?}", self.settings.anim);
 				self.save_gif(frames, output);
+			}
+			FileFormat::Apng => {
+				debug!("{:?}", self.settings.anim);
+				self.save_apng(frames, output);
 			}
 			FileFormat::Png => self.save_image(
 				image,
@@ -426,13 +450,29 @@ where
 			fps,
 			images.first().expect("No frames found to save").geometry,
 			output,
-			&self.settings.gif,
+			&self.settings.anim,
 		);
-		if self.settings.gif.gifski.0 {
+		if self.settings.anim.gifski.0 {
 			GifskiEncoder::new(config).save(images, self.settings.input_state)
 		} else {
 			GifEncoder::new(config).save(images, self.settings.input_state)
 		}
+	}
+
+	/**
+	 * Save frames to a APNG file.
+	 *
+	 * @param  frames (Option)
+	 * @param  output
+	 */
+	fn save_apng<Output: Write>(self, frames: Option<Frames>, output: Output) {
+		let images = frames.expect("Failed to get the frames").0;
+		ApngEncoder::new(
+			images.len().try_into().unwrap_or_default(),
+			images.first().expect("No frames found to save").geometry,
+			&self.settings.anim,
+		)
+		.save(images, self.settings.input_state, output);
 	}
 }
 
@@ -475,24 +515,27 @@ mod tests {
 		fs::remove_file(settings.save.file.path)
 	}
 	#[test]
-	fn test_app_gif() -> AppResult {
+	fn test_app_anim() -> AppResult {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		settings.save.file.format = FileFormat::Gif;
 		settings.record.command = Some("sleep 0.3");
-		settings.gif.cut = (0.1, 0.1);
+		settings.anim.cut = (0.1, 0.1);
 		let window = TestWindow::default();
 		let app = App::new(Some(window), &settings);
 		let images = app.get_frames().0;
 		app.save_gif(Some((images.clone(), 10)), File::create("test.gif")?);
-		app.edit_gif(File::open("test.gif")?);
+		app.edit_anim(File::open("test.gif")?, Path::new("test.gif"));
 		let dir = env::current_dir()?;
 		settings.split.dir = PathBuf::from(dir.to_str().unwrap_or_default());
+		settings.split.file = PathBuf::from("test.gif");
 		settings.save.file.format = FileFormat::Png;
 		let app = App::new(Some(window), &settings);
-		app.split_gif(File::open("test.gif")?)?;
+		app.split_anim(File::open("test.gif")?)?;
 		fs::remove_file("test.gif")?;
+		app.save_apng(Some((images.clone(), 20)), File::create("test.apng")?);
+		fs::remove_file("test.apng")?;
 		for i in 0..images.len() {
 			let path = PathBuf::from(format!("frame_{}.png", i));
 			if path.exists() {

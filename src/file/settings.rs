@@ -37,7 +37,14 @@ impl SaveSettings {
 		edit: &EditSettings,
 		pnm: &PnmSettings,
 	) -> Self {
-		let format = FileFormat::from_args(matches, Some(pnm.subtype));
+		let format =
+			if let Some(args) = ArgParser::from_subcommand(matches, "make").args {
+				args.value_of("format").map_or(FileFormat::Gif, |f| {
+					FileFormat::from_str(f).unwrap_or(FileFormat::Gif)
+				})
+			} else {
+				FileFormat::from_args(matches, Some(pnm.subtype))
+			};
 		Self::from_parser(
 			ArgParser::from_subcommand(matches, "save"),
 			if edit.convert {

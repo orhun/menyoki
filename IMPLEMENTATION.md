@@ -18,6 +18,8 @@ Details of the implementation of **menyoki**.
   * [decoder.rs](https://github.com/orhun/menyoki/blob/master/src/anim/decoder.rs) -> `AnimDecoder`
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/anim/mod.rs) -> module declarations
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/anim/settings.rs) -> `AnimSettings`
+* apng
+  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/apng/mod.rs) -> `ApngEncoder`
 * args
   * [matches.rs](https://github.com/orhun/menyoki/blob/master/src/args/matches.rs) -> `ArgMatches` (`clap::ArgMatches` wrapper for using configuration file and environment variables)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/args/mod.rs) -> `Args` (command line arguments)

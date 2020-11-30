@@ -9,6 +9,7 @@ use std::str::FromStr;
 pub enum FileFormat {
 	Any,
 	Gif,
+	Apng,
 	Png,
 	Jpg,
 	Bmp,
@@ -33,6 +34,7 @@ impl FromStr for FileFormat {
 	fn from_str(s: &str) -> Result<Self, Self::Err> {
 		match s {
 			"gif" => Ok(Self::Gif),
+			"apng" => Ok(Self::Apng),
 			"png" => Ok(Self::Png),
 			"jpg" => Ok(Self::Jpg),
 			"bmp" => Ok(Self::Bmp),
@@ -101,7 +103,17 @@ impl FileFormat {
 					Self::Png
 				}
 			}
-			None => Self::Gif,
+			None => {
+				if let Some(matches) = args.subcommand_matches("record") {
+					if matches.is_present("apng") {
+						Self::Apng
+					} else {
+						Self::Gif
+					}
+				} else {
+					Self::Gif
+				}
+			}
 		}
 	}
 
@@ -131,9 +143,18 @@ impl FileFormat {
 		String::from(match self {
 			Self::Any => "output",
 			Self::Txt => "report",
-			Self::Gif => "rec",
+			Self::Gif | Self::Apng => "rec",
 			_ => "cap",
 		})
+	}
+
+	/**
+	 * Check if the file is an animation.
+	 *
+	 * @return bool
+	 */
+	pub fn is_animation(&self) -> bool {
+		self == &Self::Gif || self == &Self::Apng
 	}
 
 	/**

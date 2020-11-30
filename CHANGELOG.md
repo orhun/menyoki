@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Enable gifski encoder with --gifski flag
+- Support APNG format
 
 ### Changed
 - Update contribution guidelines about changes in command line arguments

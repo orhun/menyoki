@@ -16,6 +16,9 @@ _menyoki() {
             analyze)
                 cmd+="__analyze"
                 ;;
+            apng)
+                cmd+="__apng"
+                ;;
             bmp)
                 cmd+="__bmp"
                 ;;
@@ -992,18 +995,34 @@ _menyoki() {
             return 0
             ;;
         menyoki__combine)
-            opts=" -n -h -V -q -s -d -r -f  --gifski --fast --no-sort --help --version --quality --speed --cut-beginning --cut-end --dir --repeat --fps  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir --format  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
                 
+                --fps)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -f)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 --quality)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
                     -q)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --repeat)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -r)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -1031,20 +1050,8 @@ _menyoki() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --repeat)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                    -r)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                --fps)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                    -f)
-                    COMPREPLY=($(compgen -f "${cur}"))
+                --format)
+                    COMPREPLY=($(compgen -W "gif apng" -- "${cur}"))
                     return 0
                     ;;
                 *)
@@ -1055,7 +1062,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__edit)
-            opts=" -h -V  --convert --grayscale --invert --help --version --crop --resize --ratio --rotate --flip --blur --hue --contrast --brightness --filter  <FILE>  gif png jpg bmp ico tiff tga pnm ff save help   out"
+            opts=" -h -V  --convert --grayscale --invert --help --version --crop --resize --ratio --rotate --flip --blur --hue --contrast --brightness --filter  <FILE>  gif apng png jpg bmp ico tiff tga pnm ff save help    out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1100,6 +1107,134 @@ _menyoki() {
                     ;;
                 --filter)
                     COMPREPLY=($(compgen -W "nearest triangle catmull-rom gaussian lanczos3" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__apng)
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir --format  <FRAMES>...  save help  out"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --fps)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -f)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --quality)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -q)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --repeat)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -r)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --speed)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -s)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cut-beginning)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cut-end)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --dir)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --format)
+                    COMPREPLY=($(compgen -W "gif apng" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__apng__help)
+            opts=" -h -V  --help --version  "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__apng__out)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__apng__save)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
                 *)
@@ -1262,18 +1397,34 @@ _menyoki() {
             return 0
             ;;
         menyoki__edit__gif)
-            opts=" -n -h -V -q -s -d -r -f  --gifski --fast --no-sort --help --version --quality --speed --cut-beginning --cut-end --dir --repeat --fps  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir --format  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
                 
+                --fps)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -f)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 --quality)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
                     -q)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --repeat)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -r)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -1301,20 +1452,8 @@ _menyoki() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --repeat)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                    -r)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                --fps)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                    -f)
-                    COMPREPLY=($(compgen -f "${cur}"))
+                --format)
+                    COMPREPLY=($(compgen -W "gif apng" -- "${cur}"))
                     return 0
                     ;;
                 *)
@@ -2004,18 +2143,34 @@ _menyoki() {
             return 0
             ;;
         menyoki__make)
-            opts=" -n -h -V -q -s -d -r -f  --gifski --fast --no-sort --help --version --quality --speed --cut-beginning --cut-end --dir --repeat --fps  <FRAMES>...  save help  out"
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir --format  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
                 
+                --fps)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -f)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 --quality)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
                     -q)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --repeat)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -r)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -2043,20 +2198,8 @@ _menyoki() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --repeat)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                    -r)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                --fps)
-                    COMPREPLY=($(compgen -f "${cur}"))
-                    return 0
-                    ;;
-                    -f)
-                    COMPREPLY=($(compgen -f "${cur}"))
+                --format)
+                    COMPREPLY=($(compgen -W "gif apng" -- "${cur}"))
                     return 0
                     ;;
                 *)
@@ -2151,7 +2294,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__record)
-            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --with-alpha --no-borders --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval  <COMMAND>  gif save help   out"
+            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --with-alpha --no-borders --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval  <COMMAND>  gif apng save help    out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2229,19 +2372,35 @@ _menyoki() {
             COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
             return 0
             ;;
-        menyoki__record__gif)
-            opts=" -n -h -V -q -s -d -r -f  --gifski --fast --no-sort --help --version --quality --speed --cut-beginning --cut-end --dir --repeat --fps  <FRAMES>...  save help  out"
+        menyoki__record__apng)
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir --format  <FRAMES>...  save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
             fi
             case "${prev}" in
                 
+                --fps)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -f)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 --quality)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
                     -q)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --repeat)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -r)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -2269,6 +2428,102 @@ _menyoki() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
+                --format)
+                    COMPREPLY=($(compgen -W "gif apng" -- "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__record__apng__help)
+            opts=" -h -V  --help --version  "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__record__apng__out)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__record__apng__save)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__record__gif)
+            opts=" -n -h -V -f -q -r -s -d  --gifski --fast --no-sort --help --version --fps --quality --repeat --speed --cut-beginning --cut-end --dir --format  <FRAMES>...  save help  out"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --fps)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -f)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --quality)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -q)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
                 --repeat)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
@@ -2277,12 +2532,32 @@ _menyoki() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                --fps)
+                --speed)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
-                    -f)
+                    -s)
                     COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cut-beginning)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cut-end)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --dir)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --format)
+                    COMPREPLY=($(compgen -W "gif apng" -- "${cur}"))
                     return 0
                     ;;
                 *)

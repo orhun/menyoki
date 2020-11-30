@@ -209,9 +209,9 @@ cargo install --path .
 
 ## Features
 
-* [Record a GIF](#record-)
-* [Split a GIF into frames](#split-)
-* [Make a GIF from frames](#make-)
+* [Record an animation](#record-)
+* [Split an animation into frames](#split-)
+* [Make an animation from frames](#make-)
 * [Capture an image](#capture-)
 * [Edit an image](#edit-)
 * [Analyze an image](#analyze-)
@@ -250,9 +250,9 @@ OPTIONS:
         --color <HEX>      Set the main color [default: 3AA431]
 
 SUBCOMMANDS:
-    record     Record a GIF
-    split      Split a GIF into frames
-    make       Make a GIF from frames
+    record     Record an animation
+    split      Split an animation into frames
+    make       Make an animation from frames
     capture    Capture an image
     edit       Edit an image
     analyze    Analyze an image
@@ -268,7 +268,7 @@ SUBCOMMANDS:
 
 ### Record <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
-**menyoki** can record an area of a window or the whole screen and encode it as a supported format (only GIF for now). Area selection and resize is performed with the key bindings.
+**menyoki** can record an area of a window or the whole screen and encode it as a supported format. Area selection and resize is performed with the key bindings.
 
 A few scenarios that **record** action might be helpful would be:
 
@@ -307,6 +307,7 @@ ARGS:
 
 SUBCOMMANDS:
     gif     Use the GIF encoder
+    apng    Use the APNG encoder
     save    Save the output file(s)
 ```
 
@@ -323,11 +324,12 @@ SUBCOMMANDS:
 | `menyoki record gif --fps 15 --quality 90`          	| Record 15 frames per second with 90% quality                                      	|
 | `menyoki record gif --gifski`                       	| Record and encode using the gifski encoder                                        	|
 | `menyoki record gif save "test.gif" --timestamp`    	| Record and save as "test.gif" with timestamp in the file name                     	|
+| `menyoki record apng --fps 30`                      	| Record 30 frames per second and encode as APNG                                    	|
 | `menyoki -q record "kmon -t 2000"`                  	| Execute the command and record its output in quiet mode                           	|
 
 ### Split <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
-**menyoki** can split a GIF into frames (extract images) if the **split** subcommand is provided and it can save frames as one of the supported formats with the use of trailing _format_ subcommand.
+**menyoki** can split an animation into frames (extract images) if the **split** subcommand is provided and it can save frames as one of the supported formats with the use of trailing _format_ subcommand.
 
 `menyoki split [OPTIONS] <FILE> [SUBCOMMAND]`
 
@@ -341,7 +343,7 @@ OPTIONS:
     -d, --dir <DIRECTORY>    Set the output directory
 
 ARGS:
-    <FILE>    Set the GIF file
+    <FILE>    Set the animation file
 
 SUBCOMMANDS:
     png     Use the PNG encoder
@@ -372,6 +374,8 @@ SUBCOMMANDS:
 
 ```
 FLAGS:
+        --gifski     Use the gifski encoder
+        --fast       Encode 3 times faster (gifski)
     -n, --no-sort    Use frames in the order given
     -h, --help       Print help information
 
@@ -380,9 +384,10 @@ OPTIONS:
     -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
     -r, --repeat <REPEAT>      Set the number of repetitions [default: ∞]
     -d, --dir <DIRECTORY>      Set the directory to read frames
+        --format <FORMAT>      Set the animation format [default: gif]  [possible values: gif, apng]
 
 ARGS:
-    <FRAMES>...    Set the GIF frames
+    <FRAMES>...    Set the animation frames
 
 SUBCOMMANDS:
     save    Save the output file(s)
@@ -395,6 +400,7 @@ SUBCOMMANDS:
 | `menyoki make 1.png 2.png`                       	| Make a GIF that consists of two frames as "1.png" and "2.png"    	|
 | `menyoki make 1.png 2.png --fps 5 --quality 100` 	| Make a GIF with the specified properties from given frames       	|
 | `menyoki make 1.png 2.png save 3.gif --date`     	| Make a GIF and save the file ("3.gif") with the date information 	|
+| `menyoki make 1.png 2.png --format apng`         	| Make an APNG from the given frames                               	|
 | `menyoki make --dir frames/`                     	| Make a GIF from the frames in the specified directory            	|
 
 ### Capture <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
@@ -411,7 +417,7 @@ FLAGS:
     -f, --focus         Capture the focused window
         --select        Select the window to capture
         --with-alpha    Capture with the alpha channel
-        --no-borders    Do not show borders on the focused window
+        --no-borders    Do not show borders for window selection
     -h, --help          Print help information
 
 OPTIONS:
@@ -486,6 +492,7 @@ ARGS:
 
 SUBCOMMANDS:
     gif     Use the GIF encoder
+    apng    Use the APNG encoder
     png     Use the PNG encoder
     jpg     Use the JPG encoder
     bmp     Use the BMP encoder
@@ -519,6 +526,7 @@ SUBCOMMANDS:
 | `menyoki edit test.gif --ratio 0.25 gif --quality 80`                                                              	| Resize and re-encode "test.gif"                                	|
 | `menyoki edit test.gif gif --speed 0.5`                                                                            	| Slow down the GIF (half the speed)                             	|
 | `menyoki edit test.gif gif --cut-beginning 1.0 --cut-end 0.5`                                                      	| Cut the duration of GIF by seconds                             	|
+| `menyoki edit test.apng --convert gif`                                                                             	| Convert APNG to GIF                                            	|
 | `menyoki edit test.ff --grayscale --convert pnm --format arbitrary save "output" --with-extension --date "%H%M%S"` 	| test.ff (farbfeld) -> grayscale -> output_020035.pam (PNM)     	|
 
 ### Analyze <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
@@ -632,19 +640,19 @@ generated on 2020-11-11 23:14:04.652826438 UTC
 
 ### Other <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
-It's possible to change the GIF, PNG, JPG, and PNM encoding options with specifying flags/options to the corresponding subcommands. Also, **save** subcommand can be used for changing the default output settings.
+It's possible to change the GIF, APNG, PNG, JPG, and PNM encoding options with specifying flags/options to the corresponding subcommands. Also, **save** subcommand can be used for changing the default output settings.
 
-#### GIF
+#### GIF/APNG
 
 ```
 FLAGS:
-        --gifski    Use the gifski encoder
-        --fast      Encode 3 times faster (gifski)
+        --gifski    Use the gifski encoder         <only in GIF>
+        --fast      Encode 3 times faster (gifski) <only in GIF>
     -h, --help    Print help information
 
 OPTIONS:
     -f, --fps <FPS>            Set the FPS [default: 20]
-    -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75]
+    -q, --quality <QUALITY>    Set the frame quality (1-100) [default: 75] <only in GIF>
     -r, --repeat <REPEAT>      Set the number of repetitions [default: ∞]
     -s, --speed <SPEED>        Set the GIF speed [default: 1.0]
         --cut-beginning <S>    Cut the beginning of the GIF [default: 0.0]
@@ -782,6 +790,7 @@ fps = 20
 quality = 75
 repeat = ∞
 #dir = 
+format = gif
 
 [capture]
 root = false
@@ -830,6 +839,13 @@ gifski = false
 fast = false
 fps = 20
 quality = 75
+repeat = ∞
+speed = 1.0
+cut-beginning = 0.0
+cut-end = 0.0
+
+[apng]
+fps = 20
 repeat = ∞
 speed = 1.0
 cut-beginning = 0.0

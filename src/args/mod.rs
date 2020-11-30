@@ -1,5 +1,6 @@
 pub mod matches;
 pub mod parser;
+use crate::anim::{AnimFormat, AnimMode};
 use crate::file::format::FileFormat;
 use clap::{App, AppSettings, Arg, ArgMatches, Shell, SubCommand};
 use std::io;
@@ -24,14 +25,6 @@ const HELP_TEMPLATE: &str = "
       `/ydmmmdy/`\n
 {usage}\n
 {all-args}";
-
-/* Animation related subcommands */
-#[derive(Debug, PartialEq)]
-enum AnimMode {
-	RecordGif,
-	Edit,
-	Make,
-}
 
 /* Command line arguments */
 pub struct Args<'a, 'b> {
@@ -149,8 +142,12 @@ where
 			.subcommand(
 				args.record
 					.subcommand(
-						Self::get_anim_args(AnimMode::RecordGif)
+						Self::get_anim_args(AnimMode::Record(AnimFormat::Gif))
 							.subcommand(Self::get_save_args(FileFormat::Gif)),
+					)
+					.subcommand(
+						Self::get_anim_args(AnimMode::Record(AnimFormat::Apng))
+							.subcommand(Self::get_save_args(FileFormat::Apng)),
 					)
 					.subcommand(Self::get_save_args(FileFormat::Gif)),
 			)
@@ -158,10 +155,15 @@ where
 			.subcommand(args.make.subcommand(Self::get_save_args(FileFormat::Gif)))
 			.subcommand(Self::get_image_args(args.capture, true))
 			.subcommand(Self::get_image_args(
-				args.edit.subcommand(
-					Self::get_anim_args(AnimMode::Edit)
-						.subcommand(Self::get_save_args(FileFormat::Gif)),
-				),
+				args.edit
+					.subcommand(
+						Self::get_anim_args(AnimMode::Edit(AnimFormat::Gif))
+							.subcommand(Self::get_save_args(FileFormat::Gif)),
+					)
+					.subcommand(
+						Self::get_anim_args(AnimMode::Edit(AnimFormat::Apng))
+							.subcommand(Self::get_save_args(FileFormat::Apng)),
+					),
 				true,
 			))
 			.subcommand(
@@ -182,7 +184,7 @@ where
 			.about(if capture {
 				"Capture an image"
 			} else {
-				"Record a GIF"
+				"Record an animation"
 			})
 			.aliases(if capture { &["screenshot", "ss"] } else { &[] })
 			.help_message("Print help information")
@@ -331,116 +333,121 @@ where
 	 * @return App
 	 */
 	fn get_anim_args(mode: AnimMode) -> App<'a, 'b> {
-		SubCommand::with_name(if mode == AnimMode::Make {
-			"make"
-		} else {
-			"gif"
-		})
-		.about(if mode == AnimMode::Make {
-			"Make a GIF from frames"
-		} else {
-			"Use the GIF encoder"
-		})
-		.help_message("Print help information")
-		.aliases(if mode == AnimMode::Make {
-			&["combine"]
-		} else {
-			&[]
-		})
-		.arg(
-			Arg::with_name("fps")
-				.short("f")
-				.long("fps")
-				.value_name("FPS")
-				.default_value("20")
-				.help("Set the FPS")
-				.hidden(mode == AnimMode::Edit)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("quality")
-				.short("q")
-				.long("quality")
-				.value_name("QUALITY")
-				.default_value("75")
-				.help("Set the frame quality (1-100)")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("repeat")
-				.short("r")
-				.long("repeat")
-				.value_name("REPEAT")
-				.default_value("\u{221E}")
-				.help("Set the number of repetitions")
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("gifski")
-				.long("gifski")
-				.help("Use the gifski encoder"),
-		)
-		.arg(
-			Arg::with_name("fast")
-				.long("fast")
-				.help("Encode 3 times faster (gifski)"),
-		)
-		.arg(
-			Arg::with_name("speed")
-				.short("s")
-				.long("speed")
-				.value_name("SPEED")
-				.default_value("1.0")
-				.help("Set the GIF speed")
-				.hidden(mode != AnimMode::Edit)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("cut-beginning")
-				.long("cut-beginning")
-				.value_name("S")
-				.default_value("0.0")
-				.help("Cut the beginning of the GIF")
-				.hidden(mode != AnimMode::Edit)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("cut-end")
-				.long("cut-end")
-				.value_name("S")
-				.default_value("0.0")
-				.help("Cut the end of the GIF")
-				.hidden(mode != AnimMode::Edit)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("frames")
-				.value_name("FRAMES")
-				.help("Set the GIF frames")
-				.min_values(1)
-				.hidden(mode != AnimMode::Make)
-				.default_value_if("dir", None, "-")
-				.required(mode == AnimMode::Make)
-				.empty_values(false)
-				.takes_value(true),
-		)
-		.arg(
-			Arg::with_name("no-sort")
-				.short("n")
-				.long("no-sort")
-				.help("Use frames in the order given")
-				.hidden(mode != AnimMode::Make),
-		)
-		.arg(
-			Arg::with_name("dir")
-				.short("d")
-				.long("dir")
-				.conflicts_with("frames")
-				.value_name("DIRECTORY")
-				.help("Set the directory to read frames")
-				.hidden(mode != AnimMode::Make)
-				.takes_value(true),
-		)
+		SubCommand::with_name(&mode.to_string().to_lowercase())
+			.about(mode.get_description())
+			.help_message("Print help information")
+			.aliases(if mode == AnimMode::Make {
+				&["combine"]
+			} else {
+				&[]
+			})
+			.arg(
+				Arg::with_name("fps")
+					.short("f")
+					.long("fps")
+					.value_name("FPS")
+					.default_value("20")
+					.help("Set the FPS")
+					.hidden(mode.is_edit())
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("quality")
+					.short("q")
+					.long("quality")
+					.value_name("QUALITY")
+					.default_value("75")
+					.help("Set the frame quality (1-100)")
+					.takes_value(true)
+					.hidden(mode.has_format(AnimFormat::Apng)),
+			)
+			.arg(
+				Arg::with_name("repeat")
+					.short("r")
+					.long("repeat")
+					.value_name("REPEAT")
+					.default_value("\u{221E}")
+					.help("Set the number of repetitions")
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("gifski")
+					.long("gifski")
+					.help("Use the gifski encoder")
+					.hidden(mode.has_format(AnimFormat::Apng)),
+			)
+			.arg(
+				Arg::with_name("fast")
+					.long("fast")
+					.help("Encode 3 times faster (gifski)")
+					.hidden(mode.has_format(AnimFormat::Apng)),
+			)
+			.arg(
+				Arg::with_name("speed")
+					.short("s")
+					.long("speed")
+					.value_name("SPEED")
+					.default_value("1.0")
+					.help("Set the animation speed")
+					.hidden(!mode.is_edit())
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("cut-beginning")
+					.long("cut-beginning")
+					.value_name("S")
+					.default_value("0.0")
+					.help("Cut the beginning of the animation")
+					.hidden(!mode.is_edit())
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("cut-end")
+					.long("cut-end")
+					.value_name("S")
+					.default_value("0.0")
+					.help("Cut the end of the animation")
+					.hidden(!mode.is_edit())
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("frames")
+					.value_name("FRAMES")
+					.help("Set the animation frames")
+					.min_values(1)
+					.hidden(mode != AnimMode::Make)
+					.default_value_if("dir", None, "-")
+					.required(mode == AnimMode::Make)
+					.empty_values(false)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("no-sort")
+					.short("n")
+					.long("no-sort")
+					.help("Use frames in the order given")
+					.hidden(mode != AnimMode::Make),
+			)
+			.arg(
+				Arg::with_name("dir")
+					.short("d")
+					.long("dir")
+					.conflicts_with("frames")
+					.value_name("DIRECTORY")
+					.help("Set the directory to read frames")
+					.hidden(mode != AnimMode::Make)
+					.takes_value(true),
+			)
+			.arg(
+				Arg::with_name("format")
+					.long("format")
+					.value_name("FORMAT")
+					.help("Set the animation format")
+					.possible_values(&["gif", "apng"])
+					.default_value("gif")
+					.hidden(mode != AnimMode::Make)
+					.takes_value(true),
+			)
 	}
 
 	/**
@@ -564,19 +571,19 @@ where
 	}
 
 	/**
-	 * Get the gif split arguments.
+	 * Get the animation split arguments.
 	 *
 	 * @return App
 	 */
 	fn get_split_args() -> App<'a, 'b> {
 		SubCommand::with_name("split")
-			.about("Split a GIF into frames")
+			.about("Split an animation into frames")
 			.help_message("Print help information")
 			.alias("extract")
 			.arg(
 				Arg::with_name("file")
 					.value_name("FILE")
-					.help("Set the GIF file")
+					.help("Set the animation file")
 					.required(true),
 			)
 			.arg(

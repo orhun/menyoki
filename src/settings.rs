@@ -16,7 +16,7 @@ use colored::Color;
 pub struct AppSettings<'a> {
 	pub args: &'a ArgMatches<'a>,
 	pub record: RecordSettings,
-	pub gif: AnimSettings,
+	pub anim: AnimSettings,
 	pub split: SplitSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
@@ -46,7 +46,7 @@ impl<'a> AppSettings<'a> {
 		Self {
 			args,
 			record,
-			gif: AnimSettings::from_args(args),
+			anim: AnimSettings::from_args(args, &save.file.format),
 			split: SplitSettings::from_args(args),
 			png: PngSettings::from_args(args),
 			jpg: JpgSettings::from_args(args),
@@ -120,8 +120,8 @@ impl<'a> AppSettings<'a> {
 		if self.jpg.quality <= 25 {
 			warn!("Image will be encoded in low quality.")
 		}
-		if self.gif.quality <= 20 {
-			warn!("GIF will be encoded in low quality.")
+		if self.anim.quality <= 20 {
+			warn!("Animation will be encoded in low quality.")
 		}
 		if let Some(input_state) = self.input_state {
 			if self.record.flag.keys != Some(&ActionKeys::default().to_string()) {
@@ -179,7 +179,7 @@ mod tests {
 			"Some(TrueColor { r: 212, g: 115, b: 212 })"
 		);
 		settings.jpg.quality = 0;
-		settings.gif.quality = 0;
+		settings.anim.quality = 0;
 		settings.save.file.format = FileFormat::Ico;
 		settings.record.window = RecordWindow::Focus(Some(Geometry::default()));
 		settings.check();

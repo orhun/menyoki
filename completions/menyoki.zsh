@@ -77,18 +77,19 @@ case $state in
         case $line[2] in
             (gif)
 _arguments "${_arguments_options[@]}" \
-'-q+[Set the frame quality (1-100)]' \
-'--quality=[Set the frame quality (1-100)]' \
-'-s+[Set the GIF speed]' \
-'--speed=[Set the GIF speed]' \
-'--cut-beginning=[Cut the beginning of the GIF]' \
-'--cut-end=[Cut the end of the GIF]' \
-'-d+[Set the directory to read frames]' \
-'--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
 '-f+[Set the FPS]' \
 '--fps=[Set the FPS]' \
+'-q+[Set the frame quality (1-100)]' \
+'--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
+'-s+[Set the animation speed]' \
+'--speed=[Set the animation speed]' \
+'--cut-beginning=[Cut the beginning of the animation]' \
+'--cut-end=[Cut the end of the animation]' \
+'-d+[Set the directory to read frames]' \
+'--dir=[Set the directory to read frames]' \
+'--format=[Set the animation format]: :(gif apng)' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -97,7 +98,7 @@ _arguments "${_arguments_options[@]}" \
 '--help[Print help information]' \
 '-V[Prints version information]' \
 '--version[Prints version information]' \
-'::frames -- Set the GIF frames:_files' \
+'::frames -- Set the animation frames:_files' \
 ":: :_menyoki__record__gif_commands" \
 "*::: :->gif" \
 && ret=0
@@ -106,6 +107,81 @@ case $state in
         words=($line[2] "${words[@]}")
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:menyoki-record-gif-command-$line[2]:"
+        case $line[2] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(apng)
+_arguments "${_arguments_options[@]}" \
+'-f+[Set the FPS]' \
+'--fps=[Set the FPS]' \
+'-q+[Set the frame quality (1-100)]' \
+'--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
+'-s+[Set the animation speed]' \
+'--speed=[Set the animation speed]' \
+'--cut-beginning=[Cut the beginning of the animation]' \
+'--cut-end=[Cut the end of the animation]' \
+'-d+[Set the directory to read frames]' \
+'--dir=[Set the directory to read frames]' \
+'--format=[Set the animation format]: :(gif apng)' \
+'--gifski[Use the gifski encoder]' \
+'--fast[Encode 3 times faster (gifski)]' \
+'-n[Use frames in the order given]' \
+'--no-sort[Use frames in the order given]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::frames -- Set the animation frames:_files' \
+":: :_menyoki__record__apng_commands" \
+"*::: :->apng" \
+&& ret=0
+case $state in
+    (apng)
+        words=($line[2] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-record-apng-command-$line[2]:"
         case $line[2] in
             (out)
 _arguments "${_arguments_options[@]}" \
@@ -199,7 +275,7 @@ _arguments "${_arguments_options[@]}" \
 '--help[Print help information]' \
 '-V[Prints version information]' \
 '--version[Prints version information]' \
-':file -- Set the GIF file:_files' \
+':file -- Set the animation file:_files' \
 ":: :_menyoki__split_commands" \
 "*::: :->split" \
 && ret=0
@@ -725,7 +801,7 @@ _arguments "${_arguments_options[@]}" \
 '--help[Print help information]' \
 '-V[Prints version information]' \
 '--version[Prints version information]' \
-':file -- Set the GIF file:_files' \
+':file -- Set the animation file:_files' \
 ":: :_menyoki__split_commands" \
 "*::: :->split" \
 && ret=0
@@ -1245,18 +1321,19 @@ esac
 ;;
 (combine)
 _arguments "${_arguments_options[@]}" \
-'-q+[Set the frame quality (1-100)]' \
-'--quality=[Set the frame quality (1-100)]' \
-'-s+[Set the GIF speed]' \
-'--speed=[Set the GIF speed]' \
-'--cut-beginning=[Cut the beginning of the GIF]' \
-'--cut-end=[Cut the end of the GIF]' \
-'-d+[Set the directory to read frames]' \
-'--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
 '-f+[Set the FPS]' \
 '--fps=[Set the FPS]' \
+'-q+[Set the frame quality (1-100)]' \
+'--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
+'-s+[Set the animation speed]' \
+'--speed=[Set the animation speed]' \
+'--cut-beginning=[Cut the beginning of the animation]' \
+'--cut-end=[Cut the end of the animation]' \
+'-d+[Set the directory to read frames]' \
+'--dir=[Set the directory to read frames]' \
+'--format=[Set the animation format]: :(gif apng)' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -1265,7 +1342,7 @@ _arguments "${_arguments_options[@]}" \
 '--help[Print help information]' \
 '-V[Prints version information]' \
 '--version[Prints version information]' \
-':frames -- Set the GIF frames:_files' \
+':frames -- Set the animation frames:_files' \
 ":: :_menyoki__make_commands" \
 "*::: :->make" \
 && ret=0
@@ -1319,18 +1396,19 @@ esac
 ;;
 (make)
 _arguments "${_arguments_options[@]}" \
-'-q+[Set the frame quality (1-100)]' \
-'--quality=[Set the frame quality (1-100)]' \
-'-s+[Set the GIF speed]' \
-'--speed=[Set the GIF speed]' \
-'--cut-beginning=[Cut the beginning of the GIF]' \
-'--cut-end=[Cut the end of the GIF]' \
-'-d+[Set the directory to read frames]' \
-'--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
 '-f+[Set the FPS]' \
 '--fps=[Set the FPS]' \
+'-q+[Set the frame quality (1-100)]' \
+'--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
+'-s+[Set the animation speed]' \
+'--speed=[Set the animation speed]' \
+'--cut-beginning=[Cut the beginning of the animation]' \
+'--cut-end=[Cut the end of the animation]' \
+'-d+[Set the directory to read frames]' \
+'--dir=[Set the directory to read frames]' \
+'--format=[Set the animation format]: :(gif apng)' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -1339,7 +1417,7 @@ _arguments "${_arguments_options[@]}" \
 '--help[Print help information]' \
 '-V[Prints version information]' \
 '--version[Prints version information]' \
-':frames -- Set the GIF frames:_files' \
+':frames -- Set the animation frames:_files' \
 ":: :_menyoki__make_commands" \
 "*::: :->make" \
 && ret=0
@@ -3066,18 +3144,19 @@ case $state in
         case $line[2] in
             (gif)
 _arguments "${_arguments_options[@]}" \
-'-q+[Set the frame quality (1-100)]' \
-'--quality=[Set the frame quality (1-100)]' \
-'-s+[Set the GIF speed]' \
-'--speed=[Set the GIF speed]' \
-'--cut-beginning=[Cut the beginning of the GIF]' \
-'--cut-end=[Cut the end of the GIF]' \
-'-d+[Set the directory to read frames]' \
-'--dir=[Set the directory to read frames]' \
-'-r+[Set the number of repetitions]' \
-'--repeat=[Set the number of repetitions]' \
 '-f+[Set the FPS]' \
 '--fps=[Set the FPS]' \
+'-q+[Set the frame quality (1-100)]' \
+'--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
+'-s+[Set the animation speed]' \
+'--speed=[Set the animation speed]' \
+'--cut-beginning=[Cut the beginning of the animation]' \
+'--cut-end=[Cut the end of the animation]' \
+'-d+[Set the directory to read frames]' \
+'--dir=[Set the directory to read frames]' \
+'--format=[Set the animation format]: :(gif apng)' \
 '--gifski[Use the gifski encoder]' \
 '--fast[Encode 3 times faster (gifski)]' \
 '-n[Use frames in the order given]' \
@@ -3086,7 +3165,7 @@ _arguments "${_arguments_options[@]}" \
 '--help[Print help information]' \
 '-V[Prints version information]' \
 '--version[Prints version information]' \
-'::frames -- Set the GIF frames:_files' \
+'::frames -- Set the animation frames:_files' \
 ":: :_menyoki__edit__gif_commands" \
 "*::: :->gif" \
 && ret=0
@@ -3095,6 +3174,81 @@ case $state in
         words=($line[2] "${words[@]}")
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:menyoki-edit-gif-command-$line[2]:"
+        case $line[2] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(apng)
+_arguments "${_arguments_options[@]}" \
+'-f+[Set the FPS]' \
+'--fps=[Set the FPS]' \
+'-q+[Set the frame quality (1-100)]' \
+'--quality=[Set the frame quality (1-100)]' \
+'-r+[Set the number of repetitions]' \
+'--repeat=[Set the number of repetitions]' \
+'-s+[Set the animation speed]' \
+'--speed=[Set the animation speed]' \
+'--cut-beginning=[Cut the beginning of the animation]' \
+'--cut-end=[Cut the end of the animation]' \
+'-d+[Set the directory to read frames]' \
+'--dir=[Set the directory to read frames]' \
+'--format=[Set the animation format]: :(gif apng)' \
+'--gifski[Use the gifski encoder]' \
+'--fast[Encode 3 times faster (gifski)]' \
+'-n[Use frames in the order given]' \
+'--no-sort[Use frames in the order given]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::frames -- Set the animation frames:_files' \
+":: :_menyoki__edit__apng_commands" \
+"*::: :->apng" \
+&& ret=0
+case $state in
+    (apng)
+        words=($line[2] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-edit-apng-command-$line[2]:"
         case $line[2] in
             (out)
 _arguments "${_arguments_options[@]}" \
@@ -3794,9 +3948,9 @@ esac
 (( $+functions[_menyoki_commands] )) ||
 _menyoki_commands() {
     local commands; commands=(
-        "record:Record a GIF" \
-"split:Split a GIF into frames" \
-"make:Make a GIF from frames" \
+        "record:Record an animation" \
+"split:Split an animation into frames" \
+"make:Make an animation from frames" \
 "capture:Capture an image" \
 "edit:Edit an image" \
 "analyze:Analyze an image" \
@@ -3812,6 +3966,22 @@ _menyoki__analyze_commands() {
 "help:Prints this message or the help of the given subcommand(s)" \
     )
     _describe -t commands 'menyoki analyze commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__apng_commands] )) ||
+_menyoki__edit__apng_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki edit apng commands' commands "$@"
+}
+(( $+functions[_menyoki__record__apng_commands] )) ||
+_menyoki__record__apng_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki record apng commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__bmp_commands] )) ||
 _menyoki__capture__bmp_commands() {
@@ -3865,6 +4035,7 @@ _combine_commands() {
 _menyoki__edit_commands() {
     local commands; commands=(
         "gif:Use the GIF encoder" \
+"apng:Use the APNG encoder" \
 "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
 "bmp:Use the BMP encoder" \
@@ -4004,6 +4175,13 @@ _menyoki__capture__tiff__help_commands() {
     )
     _describe -t commands 'menyoki capture tiff help commands' commands "$@"
 }
+(( $+functions[_menyoki__edit__apng__help_commands] )) ||
+_menyoki__edit__apng__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit apng help commands' commands "$@"
+}
 (( $+functions[_menyoki__edit__bmp__help_commands] )) ||
 _menyoki__edit__bmp__help_commands() {
     local commands; commands=(
@@ -4087,6 +4265,13 @@ _menyoki__make__help_commands() {
         
     )
     _describe -t commands 'menyoki make help commands' commands "$@"
+}
+(( $+functions[_menyoki__record__apng__help_commands] )) ||
+_menyoki__record__apng__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki record apng help commands' commands "$@"
 }
 (( $+functions[_menyoki__record__gif__help_commands] )) ||
 _menyoki__record__gif__help_commands() {
@@ -4306,6 +4491,13 @@ _menyoki__capture__tiff__out_commands() {
     )
     _describe -t commands 'menyoki capture tiff out commands' commands "$@"
 }
+(( $+functions[_menyoki__edit__apng__out_commands] )) ||
+_menyoki__edit__apng__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit apng out commands' commands "$@"
+}
 (( $+functions[_menyoki__edit__bmp__out_commands] )) ||
 _menyoki__edit__bmp__out_commands() {
     local commands; commands=(
@@ -4389,6 +4581,13 @@ _menyoki__out_commands() {
         
     )
     _describe -t commands 'menyoki out commands' commands "$@"
+}
+(( $+functions[_menyoki__record__apng__out_commands] )) ||
+_menyoki__record__apng__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki record apng out commands' commands "$@"
 }
 (( $+functions[_menyoki__record__gif__out_commands] )) ||
 _menyoki__record__gif__out_commands() {
@@ -4519,6 +4718,7 @@ _menyoki__split__pnm_commands() {
 _menyoki__record_commands() {
     local commands; commands=(
         "gif:Use the GIF encoder" \
+"apng:Use the APNG encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -4593,6 +4793,13 @@ _menyoki__capture__tiff__save_commands() {
         
     )
     _describe -t commands 'menyoki capture tiff save commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__apng__save_commands] )) ||
+_menyoki__edit__apng__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit apng save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__bmp__save_commands] )) ||
 _menyoki__edit__bmp__save_commands() {
@@ -4670,6 +4877,13 @@ _menyoki__make__save_commands() {
         
     )
     _describe -t commands 'menyoki make save commands' commands "$@"
+}
+(( $+functions[_menyoki__record__apng__save_commands] )) ||
+_menyoki__record__apng__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki record apng save commands' commands "$@"
 }
 (( $+functions[_menyoki__record__gif__save_commands] )) ||
 _menyoki__record__gif__save_commands() {
