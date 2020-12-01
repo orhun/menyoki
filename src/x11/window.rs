@@ -17,6 +17,8 @@ use x11::xlib;
 const MAX_TEXT_HEIGHT: u32 = 40;
 /* Offset for placing the text on the corner of window */
 const TEXT_CORNER_OFFSET: i32 = 20;
+/* Padding value to apply to window borders */
+const BORDER_PADDING: u32 = 1;
 
 /* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
@@ -110,6 +112,14 @@ impl Window {
 	unsafe fn set_gc(&mut self) -> Self {
 		let gc = xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
 		xlib::XSetForeground(self.display.inner, gc, self.display.settings.color);
+		xlib::XSetLineAttributes(
+			self.display.inner,
+			gc,
+			self.display.settings.border.unwrap_or(1),
+			xlib::LineSolid,
+			xlib::CapNotLast,
+			xlib::JoinMiter,
+		);
 		if let Some(xfont) = self.display.font {
 			xlib::XSetFont(self.display.inner, gc, (*xfont).fid);
 		}
@@ -144,7 +154,7 @@ impl Window {
 
 	/* Draw a rectangle inside the window. */
 	pub fn draw_borders(&self) {
-		if let Some(border) = self.display.settings.border {
+		if self.display.settings.border.is_some() {
 			unsafe {
 				xlib::XDrawRectangle(
 					self.display.inner,
@@ -152,19 +162,23 @@ impl Window {
 					self.gc,
 					self.area
 						.x
-						.checked_add(i32::try_from(border).unwrap_or_default())
+						.checked_add(
+							i32::try_from(BORDER_PADDING).unwrap_or_default(),
+						)
 						.unwrap_or(self.area.x),
 					self.area
 						.y
-						.checked_add(i32::try_from(border).unwrap_or_default())
+						.checked_add(
+							i32::try_from(BORDER_PADDING).unwrap_or_default(),
+						)
 						.unwrap_or(self.area.y),
 					self.area
 						.width
-						.checked_sub(border * 2)
+						.checked_sub(BORDER_PADDING * 2)
 						.unwrap_or(self.area.width),
 					self.area
 						.height
-						.checked_sub(border * 2)
+						.checked_sub(BORDER_PADDING * 2)
 						.unwrap_or(self.area.height),
 				);
 			}

@@ -292,13 +292,12 @@ FLAGS:
     -f, --focus         Record the focused window
         --select        Select the window to record
         --with-alpha    Record with the alpha channel
-        --no-borders    Do not show borders for window selection
         --no-keys       Disable the action keys while recording
     -h, --help          Print help information
 
 OPTIONS:
     -k, --keys <KEYS>          Set the action keys [default: LAlt-S/Enter]
-    -b, --border <BORDER>      Set the border padding [default: 1]
+    -b, --border <BORDER>      Set the border width [default: 1]
     -p, --padding <T:R:B:L>    Set the record area padding
     -s, --size <WxH>           Set the record area size
     -d, --duration <S>         Set the duration for recording [default: ∞]
@@ -423,12 +422,11 @@ FLAGS:
     -f, --focus         Capture the focused window
         --select        Select the window to capture
         --with-alpha    Capture with the alpha channel
-        --no-borders    Do not show borders for window selection
     -h, --help          Print help information
 
 OPTIONS:
     -k, --keys <KEYS>          Set the action keys [default: LAlt-S/Enter]
-    -b, --border <BORDER>      Set the border padding [default: 1]
+    -b, --border <BORDER>      Set the border width [default: 1]
     -p, --padding <T:R:B:L>    Set the capture area padding
     -s, --size <WxH>           Set the capture area size
     -c, --countdown <S>        Set the countdown before capturing [default: 0]
@@ -775,7 +773,6 @@ root = false
 focus = true
 select = true
 with-alpha = false
-no-borders = false
 no-keys = false
 keys = LAlt-S/Enter
 border = 1
@@ -804,7 +801,6 @@ root = false
 focus = true
 select = true
 with-alpha = false
-no-borders = false
 keys = LAlt-S/Enter
 border = 1
 #padding = T:R:B:L

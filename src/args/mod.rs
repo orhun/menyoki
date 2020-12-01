@@ -229,11 +229,6 @@ where
 					}),
 			)
 			.arg(
-				Arg::with_name("no-borders")
-					.long("no-borders")
-					.help("Do not show borders for window selection"),
-			)
-			.arg(
 				Arg::with_name("no-keys")
 					.long("no-keys")
 					.help("Disable the action keys while recording")
@@ -254,7 +249,7 @@ where
 					.long("border")
 					.value_name("BORDER")
 					.default_value("1")
-					.help("Set the border padding")
+					.help("Set the border width")
 					.takes_value(true),
 			)
 			.arg(

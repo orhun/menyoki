@@ -235,7 +235,7 @@ impl Display {
 		self.ungrab_keys(xid);
 		if self.settings.border.is_some() {
 			window.clear_area();
-			window.show_text(Some(String::from(" ")), FpsClock::new(500));
+			window.show_text(Some(String::from(" ")), FpsClock::new(1000));
 		}
 		if xid.is_some() {
 			Some(window)

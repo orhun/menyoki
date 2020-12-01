@@ -39,8 +39,8 @@ _menyoki() {
 _arguments "${_arguments_options[@]}" \
 '-k+[Set the action keys]' \
 '--keys=[Set the action keys]' \
-'-b+[Set the border padding]' \
-'--border=[Set the border padding]' \
+'-b+[Set the border width]' \
+'--border=[Set the border width]' \
 '-p+[Set the record area padding]' \
 '--padding=[Set the record area padding]' \
 '-s+[Set the record area size]' \
@@ -60,7 +60,6 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)--focus[Record the focused window]' \
 '--select[Select the window to record]' \
 '--with-alpha[Record with the alpha channel]' \
-'--no-borders[Do not show borders for window selection]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
@@ -1474,8 +1473,8 @@ esac
 _arguments "${_arguments_options[@]}" \
 '-k+[Set the action keys]' \
 '--keys=[Set the action keys]' \
-'-b+[Set the border padding]' \
-'--border=[Set the border padding]' \
+'-b+[Set the border width]' \
+'--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
 '--padding=[Set the capture area padding]' \
 '-s+[Set the capture area size]' \
@@ -1495,7 +1494,6 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)--focus[Capture the focused window]' \
 '--select[Select the window to capture]' \
 '--with-alpha[Capture with the alpha channel]' \
-'--no-borders[Do not show borders for window selection]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
@@ -2023,8 +2021,8 @@ esac
 _arguments "${_arguments_options[@]}" \
 '-k+[Set the action keys]' \
 '--keys=[Set the action keys]' \
-'-b+[Set the border padding]' \
-'--border=[Set the border padding]' \
+'-b+[Set the border width]' \
+'--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
 '--padding=[Set the capture area padding]' \
 '-s+[Set the capture area size]' \
@@ -2044,7 +2042,6 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)--focus[Capture the focused window]' \
 '--select[Select the window to capture]' \
 '--with-alpha[Capture with the alpha channel]' \
-'--no-borders[Do not show borders for window selection]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
@@ -2572,8 +2569,8 @@ esac
 _arguments "${_arguments_options[@]}" \
 '-k+[Set the action keys]' \
 '--keys=[Set the action keys]' \
-'-b+[Set the border padding]' \
-'--border=[Set the border padding]' \
+'-b+[Set the border width]' \
+'--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
 '--padding=[Set the capture area padding]' \
 '-s+[Set the capture area size]' \
@@ -2593,7 +2590,6 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)--focus[Capture the focused window]' \
 '--select[Select the window to capture]' \
 '--with-alpha[Capture with the alpha channel]' \
-'--no-borders[Do not show borders for window selection]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
