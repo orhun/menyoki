@@ -23,6 +23,7 @@ const TEXT_CORNER_OFFSET: i32 = 20;
 pub struct Window {
 	pub xid: u64,
 	display: Display,
+	gc: xlib::GC,
 	pub geometry: Geometry,
 	pub area: Geometry,
 }
@@ -57,10 +58,12 @@ impl Window {
 			Self {
 				xid,
 				display,
+				gc: ptr::null::<xlib::GC>() as xlib::GC,
 				geometry: Geometry::default(),
 				area: Geometry::default(),
 			}
 			.set_geometry()
+			.set_gc()
 		}
 	}
 
@@ -100,6 +103,21 @@ impl Window {
 	}
 
 	/**
+	 * Get the graphics context from window.
+	 *
+	 * @return GC
+	 */
+	unsafe fn set_gc(&mut self) -> Self {
+		let gc = xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
+		xlib::XSetForeground(self.display.inner, gc, self.display.settings.color);
+		if let Some(xfont) = self.display.font {
+			xlib::XSetFont(self.display.inner, gc, (*xfont).fid);
+		}
+		self.gc = gc;
+		*self
+	}
+
+	/**
 	 * Get the name of the window.
 	 *
 	 * @return String (Option)
@@ -124,24 +142,6 @@ impl Window {
 		}
 	}
 
-	/**
-	 * Get the graphics context from window.
-	 *
-	 * @param  fg_color
-	 * @return GC
-	 */
-	fn get_gc(&self, fg_color: u64) -> xlib::GC {
-		unsafe {
-			let gc =
-				xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
-			xlib::XSetForeground(self.display.inner, gc, fg_color);
-			if let Some(xfont) = self.display.font {
-				xlib::XSetFont(self.display.inner, gc, (*xfont).fid);
-			}
-			gc
-		}
-	}
-
 	/* Draw a rectangle inside the window. */
 	pub fn draw_borders(&self) {
 		if let Some(border) = self.display.settings.border {
@@ -149,7 +149,7 @@ impl Window {
 				xlib::XDrawRectangle(
 					self.display.inner,
 					self.xid,
-					self.get_gc(self.display.settings.color),
+					self.gc,
 					self.area
 						.x
 						.checked_add(i32::try_from(border).unwrap_or_default())
@@ -183,7 +183,7 @@ impl Window {
 			xlib::XDrawString(
 				self.display.inner,
 				self.xid,
-				self.get_gc(self.display.settings.color),
+				self.gc,
 				x,
 				y,
 				CString::new(text).unwrap_or_default().as_ptr(),
