@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update the optimization level of the development profile
 - Build with debug profile while generating shell completions
 - Use `--border` argument for setting the border width
+- Update release instructions about continuous integration workflow
 
 ### Removed
 - Remove update_release action from CD workflow

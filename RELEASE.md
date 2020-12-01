@@ -6,9 +6,10 @@
 2. Update [Cargo.lock](https://github.com/orhun/menyoki/blob/master/Cargo.lock) by building the project via `cargo build`.
 3. Ensure [CHANGELOG.md](https://github.com/orhun/menyoki/blob/master/CHANGELOG.md) is updated according to [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format.
 4. Commit and push the changes.
-5. Create a new tag: `git tag -s -a v[x.y.z]` ([signed](http://keys.gnupg.net/pks/lookup?search=0x53F218C35C1DC8B1&fingerprint=on&op=index))
-6. Push the tag: `git push --tags`
-7. Wait for [Continous Deployment](https://github.com/orhun/menyoki/actions) workflow to finish.
+5. Check if [Continuous Integration](https://github.com/orhun/menyoki/actions) workflow is completed successfully.
+6. Create a new tag: `git tag -s -a v[x.y.z]` ([signed](http://keys.gnupg.net/pks/lookup?search=0x53F218C35C1DC8B1&fingerprint=on&op=index))
+7. Push the tag: `git push --tags`
+8. Wait for [Continuous Deployment](https://github.com/orhun/menyoki/actions) workflow to finish.
 
 ### Docker
 
