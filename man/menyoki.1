@@ -138,6 +138,7 @@ OPTIONS:
     -c, --countdown <S>        Set the countdown before recording [default: 3]
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
+        --font <FONT>          Set the font to use for window selection
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -152,7 +153,7 @@ SUBCOMMANDS:
 .PP
 .TS
 tab(@);
-lw(27.3n) lw(42.7n).
+lw(31.3n) lw(38.7n).
 T{
 Command
 T}@T{
@@ -214,6 +215,11 @@ T{
 \f[C]menyoki -q record \[dq]kmon -t 2000\[dq]\f[R]
 T}@T{
 Execute the command and record its output in quiet mode
+T}
+T{
+\f[C]menyoki record --font \[dq]-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*\[dq]\f[R]
+T}@T{
+Use custom font for showing the area size (see \f[C]xfontsel\f[R])
 T}
 .TE
 .SH SPLIT SUBCOMMAND
@@ -378,6 +384,7 @@ OPTIONS:
     -c, --countdown <S>        Set the countdown before capturing [default: 0]
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
+        --font <FONT>          Set the font to use for window selection
 
 ARGS:
     <COMMAND>    Set the command to run

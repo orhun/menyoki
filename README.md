@@ -305,6 +305,7 @@ OPTIONS:
     -c, --countdown <S>        Set the countdown before recording [default: 3]
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
+        --font <FONT>          Set the font to use for window selection
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -317,19 +318,20 @@ SUBCOMMANDS:
 
 #### Examples
 
-| Command                                             	| Action                                                                            	|
-|-----------------------------------------------------	|-----------------------------------------------------------------------------------	|
-| `menyoki record`                                    	| Select a window and start recording with default settings                         	|
-| `menyoki record --root --countdown 5`               	| Record the root window after 5 seconds of countdown                               	|
-| `menyoki record --focus --with-alpha`               	| Record the focused window with the alpha channel (for transparency)               	|
-| `menyoki record --size 200x300 --duration 10`       	| Record an area of size 200x300 for 10 seconds                                     	|
-| `menyoki record --padding 20:10:0:10 --timeout 120` 	| Record an area with given padding and set window selection timeout to 120 seconds 	|
-| `menyoki record --keys LControl-Q/W`                	| Record with the default settings using custom key bindings                        	|
-| `menyoki record gif --fps 15 --quality 90`          	| Record 15 frames per second with 90% quality                                      	|
-| `menyoki record gif --gifski`                       	| Record and encode using the gifski encoder                                        	|
-| `menyoki record gif save "test.gif" --timestamp`    	| Record and save as "test.gif" with timestamp in the file name                     	|
-| `menyoki record apng --fps 30`                      	| Record 30 frames per second and encode as APNG                                    	|
-| `menyoki -q record "kmon -t 2000"`                  	| Execute the command and record its output in quiet mode                           	|
+| Command                                                           	| Action                                                                            	|
+|-------------------------------------------------------------------	|-----------------------------------------------------------------------------------	|
+| `menyoki record`                                                  	| Select a window and start recording with default settings                         	|
+| `menyoki record --root --countdown 5`                             	| Record the root window after 5 seconds of countdown                               	|
+| `menyoki record --focus --with-alpha`                             	| Record the focused window with the alpha channel (for transparency)               	|
+| `menyoki record --size 200x300 --duration 10`                     	| Record an area of size 200x300 for 10 seconds                                     	|
+| `menyoki record --padding 20:10:0:10 --timeout 120`               	| Record an area with given padding and set window selection timeout to 120 seconds 	|
+| `menyoki record --keys LControl-Q/W`                              	| Record with the default settings using custom key bindings                        	|
+| `menyoki record gif --fps 15 --quality 90`                        	| Record 15 frames per second with 90% quality                                      	|
+| `menyoki record gif --gifski`                                     	| Record and encode using the gifski encoder                                        	|
+| `menyoki record gif save "test.gif" --timestamp`                  	| Record and save as "test.gif" with timestamp in the file name                     	|
+| `menyoki record apng --fps 30`                                    	| Record 30 frames per second and encode as APNG                                    	|
+| `menyoki -q record "kmon -t 2000"`                                	| Execute the command and record its output in quiet mode                           	|
+| `menyoki record --font "-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*"` 	| Use custom font for showing the area size (see `xfontsel`)                        	|
 
 ### Split <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
@@ -432,6 +434,7 @@ OPTIONS:
     -c, --countdown <S>        Set the countdown before capturing [default: 0]
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
+        --font <FONT>          Set the font to use for window selection
 
 ARGS:
     <COMMAND>    Set the command to run

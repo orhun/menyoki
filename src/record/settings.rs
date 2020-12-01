@@ -73,6 +73,7 @@ impl RecordTime {
 pub struct RecordFlag {
 	pub alpha: bool,
 	pub keys: Option<&'static str>,
+	pub font: Option<&'static str>,
 }
 
 /* Default initialization values for RecordFlag */
@@ -81,6 +82,7 @@ impl Default for RecordFlag {
 		Self {
 			alpha: false,
 			keys: Some(""),
+			font: None,
 		}
 	}
 }
@@ -91,10 +93,19 @@ impl RecordFlag {
 	 *
 	 * @param  alpha
 	 * @param  keys (Option)
+	 * @param  font (Option)
 	 * @return RecordFlag
 	 */
-	pub fn new(alpha: bool, keys: Option<&'static str>) -> Self {
-		Self { alpha, keys }
+	pub fn new(alpha: bool, keys: Option<&'static str>, font: &str) -> Self {
+		Self {
+			alpha,
+			keys,
+			font: if font.is_empty() {
+				None
+			} else {
+				Some(Box::leak(font.to_string().into_boxed_str()))
+			},
+		}
 	}
 }
 
@@ -256,6 +267,7 @@ impl RecordSettings {
 									.into_boxed_str(),
 							))
 						},
+						matches.value_of("font").unwrap_or_default(),
 					),
 					RecordWindow::from_args(&matches),
 				)

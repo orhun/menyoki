@@ -18,11 +18,14 @@ const AREA_CHANGE_FACTOR: u32 = 3;
 const AREA_MAX_WIDTH: u32 = 10;
 /* Maximum height of the selected area */
 const AREA_MAX_HEIGHT: u32 = 10;
+/* Default miscellaneous font */
+const DEFAULT_FONT: &str = "-misc-fixed-*-*-*-*-*-*-*-*-*-*-*-*";
 
 /* X11 display */
 #[derive(Clone, Copy, Debug)]
 pub struct Display {
 	pub inner: *mut xlib::Display,
+	pub font: Option<*mut xlib::XFontStruct>,
 	pub settings: RecordSettings,
 }
 
@@ -39,13 +42,35 @@ impl Display {
 	pub fn open(settings: Option<RecordSettings>) -> Option<Self> {
 		let display = unsafe { xlib::XOpenDisplay(ptr::null()) };
 		if !display.is_null() {
-			Some(Self {
-				inner: display,
-				settings: settings.unwrap_or_default(),
-			})
+			Some(
+				Self {
+					inner: display,
+					font: None,
+					settings: settings.unwrap_or_default(),
+				}
+				.set_font(),
+			)
 		} else {
 			None
 		}
+	}
+
+	/**
+	 * Set the font using font description.
+	 *
+	 * @return Display
+	 */
+	fn set_font(&mut self) -> Self {
+		if let Some(description) = self.settings.flag.font {
+			let desc = CString::new(description).expect("Failed to create CString");
+			let font = unsafe { xlib::XLoadQueryFont(self.inner, desc.as_ptr()) };
+			if !font.is_null() {
+				self.font = Some(font);
+			} else {
+				warn!("Invalid font description: {}", description);
+			}
+		}
+		*self
 	}
 
 	/**
@@ -168,13 +193,17 @@ impl Display {
 		let mut xid = None;
 		let window_padding = self.settings.padding;
 		let mut change_factor = AREA_CHANGE_FACTOR;
-		let font_context =
-			textwidth::Context::with_misc().expect("Failed to create font context");
+		let font = self.font.unwrap_or_else(|| unsafe {
+			xlib::XLoadQueryFont(
+				self.inner,
+				CString::new(DEFAULT_FONT).unwrap_or_default().as_ptr(),
+			)
+		});
 		let start_time = Instant::now();
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
 			window.draw_borders();
-			window.show_text_centered(Some(window.area.to_string()), &font_context);
+			window.show_text_centered(Some(window.area.to_string()), font);
 			let reset_area =
 				self.update_area(window, input_state, &mut change_factor);
 			if input_state.check_cancel_keys() {

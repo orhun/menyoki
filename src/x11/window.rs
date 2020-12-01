@@ -11,11 +11,10 @@ use std::io::{self, Write};
 use std::mem::MaybeUninit;
 use std::ptr;
 use std::slice;
-use textwidth::Context;
 use x11::xlib;
 
 /* Maximum height of the text to show on window */
-const MAX_TEXT_HEIGHT: u32 = 30;
+const MAX_TEXT_HEIGHT: u32 = 40;
 /* Offset for placing the text on the corner of window */
 const TEXT_CORNER_OFFSET: i32 = 20;
 
@@ -136,6 +135,9 @@ impl Window {
 			let gc =
 				xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
 			xlib::XSetForeground(self.display.inner, gc, fg_color);
+			if let Some(xfont) = self.display.font {
+				xlib::XSetFont(self.display.inner, gc, (*xfont).fid);
+			}
 			gc
 		}
 	}
@@ -217,12 +219,21 @@ impl Window {
 	 * Show a text on the center of the window.
 	 *
 	 * @param text (Option)
-	 * @param context
+	 * @param font
 	 */
-	pub fn show_text_centered(&self, text: Option<String>, context: &Context) {
-		let text_width = context
-			.text_width(self.area.to_string())
-			.unwrap_or_default();
+	pub fn show_text_centered(
+		&self,
+		text: Option<String>,
+		font: *mut xlib::XFontStruct,
+	) {
+		let area_text = CString::new(self.area.to_string()).unwrap_or_default();
+		let text_width = unsafe {
+			xlib::XTextWidth(
+				font,
+				area_text.as_ptr(),
+				area_text.as_bytes().len().try_into().unwrap_or_default(),
+			) as u64
+		};
 		if u64::from(self.area.width) > text_width + 10
 			&& self.area.height > MAX_TEXT_HEIGHT
 		{

@@ -324,6 +324,14 @@ where
 					.help("Set the refresh interval for window selection")
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("font")
+					.long("font")
+					.value_name("FONT")
+					.help("Set the font to use for window selection")
+					.allow_hyphen_values(true)
+					.takes_value(true),
+			)
 	}
 
 	/**
