@@ -233,7 +233,9 @@ impl Display {
 		trace!("{:?}", input_state);
 		debug!("Selected window: {:?}", xid);
 		self.ungrab_keys(xid);
-		if self.settings.border.is_some() {
+		if self.settings.border.is_some()
+			|| (self.settings.border.is_none() && self.settings.time.countdown == 0)
+		{
 			window.clear_area();
 			window.show_text(Some(String::from(" ")), FpsClock::new(1000));
 		}
