@@ -324,6 +324,7 @@ SUBCOMMANDS:
 | `menyoki record --focus --with-alpha`                             	| Record the focused window with the alpha channel (for transparency)               	|
 | `menyoki record --size 200x300 --duration 10`                     	| Record an area of size 200x300 for 10 seconds                                     	|
 | `menyoki record --padding 20:10:0:10 --timeout 120`               	| Record an area with given padding and set window selection timeout to 120 seconds 	|
+| `menyoki record --border 5`                                       	| Record the area selected by a border with 5 width                                 	|
 | `menyoki record --keys LControl-Q/W`                              	| Record with the default settings using custom key bindings                        	|
 | `menyoki record gif --fps 15 --quality 90`                        	| Record 15 frames per second with 90% quality                                      	|
 | `menyoki record gif --gifski`                                     	| Record and encode using the gifski encoder                                        	|
