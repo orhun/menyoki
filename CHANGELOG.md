@@ -24,6 +24,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 - Remove update_release action from CD workflow
 
+### Fixed
+- Install musl-tools for musl build in CD workflow
+
 ## [0.1.3] - 2020-11-26
 ### Added
 * Add release instructions
