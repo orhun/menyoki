@@ -35,9 +35,14 @@ fn main() -> AppResult {
 		.expect("Failed to initialize the logger");
 	settings.check();
 	let window = if settings.window_required {
-		WindowSystem::init(&settings)
+		if let Some(window) = WindowSystem::init(&settings)
 			.expect("Failed to access the window system")
 			.get_window()
+		{
+			Some(window)
+		} else {
+			return Ok(());
+		}
 	} else {
 		None
 	};
