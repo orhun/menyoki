@@ -3,7 +3,7 @@ use std::fmt;
 use std::iter::FromIterator;
 
 /* Padding properties */
-#[derive(Clone, Copy, Debug, Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Padding {
 	pub top: u32,
 	pub right: u32,

@@ -328,6 +328,12 @@ mod tests {
 			.arg(Arg::with_name("keys").long("keys").takes_value(true))
 			.arg(Arg::with_name("border").long("border").takes_value(true))
 			.arg(Arg::with_name("padding").long("padding").takes_value(true))
+			.arg(Arg::with_name("size").long("size").takes_value(true))
+			.arg(
+				Arg::with_name("duration")
+					.long("duration")
+					.takes_value(true),
+			)
 			.arg(
 				Arg::with_name("countdown")
 					.long("countdown")
@@ -351,6 +357,10 @@ mod tests {
 				"10",
 				"--padding",
 				"0:0:0:0",
+				"--size",
+				"10x10+10+10",
+				"--duration",
+				"1",
 				"--countdown",
 				"2",
 				"--timeout",
@@ -364,11 +374,14 @@ mod tests {
 			RecordSettings::from_parser(ArgParser::from_args(&args), "000000");
 		assert_eq!(0x0000_0000, record_settings.color);
 		assert_eq!(10, record_settings.border.unwrap());
-		assert!(record_settings.padding.is_zero());
+		assert_eq!(Padding::new(10, 0, 0, 10), record_settings.padding);
 		assert_eq!(2, record_settings.time.countdown);
 		assert_eq!(60, record_settings.time.timeout);
 		assert_eq!(12, record_settings.time.interval);
-		assert_eq!(RecordWindow::Root(None), record_settings.window);
+		assert_eq!(
+			RecordWindow::Root(Some(Geometry::new(0, 0, 10, 10))),
+			record_settings.window
+		);
 		assert!(record_settings.flag.alpha);
 		assert_eq!("LControl-Q/S", record_settings.flag.keys.unwrap());
 	}
