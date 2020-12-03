@@ -208,7 +208,7 @@ impl<'a> ImageAnalyzer<'a> {
 						} else {
 							line.to_string()
 						}
-					},
+					}
 					Err(_) => line.to_string(),
 				}
 			} else {
