@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Prevent abort on cancelling record/capture ([#3](https://github.com/orhun/menyoki/issues/3))
+- Check if RGBA color is valid while colorizing the report
 
 ## [0.1.4] - 2020-12-02
 ### Added
