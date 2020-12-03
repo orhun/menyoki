@@ -32,7 +32,7 @@ x11 = { version = "2.18.2", features = ["xlib"] }
 device_query = "0.2.6"
 ctrlc = { version = "3.1.7", features = ["termination"] }
 # image operations
-image = "0.23.11"
+image = "0.23.12"
 imgref = "1.7.0"
 rgb = "0.8.25"
 png = "0.16.7"
