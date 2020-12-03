@@ -202,7 +202,13 @@ impl<'a> ImageAnalyzer<'a> {
 						.cloned()
 						.unwrap_or_default(),
 				) {
-					Ok(rgb) => line.truecolor(rgb[0], rgb[1], rgb[2]).to_string(),
+					Ok(rgb) => {
+						if rgb.len() >= 3 {
+							line.truecolor(rgb[0], rgb[1], rgb[2]).to_string()
+						} else {
+							line.to_string()
+						}
+					},
 					Err(_) => line.to_string(),
 				}
 			} else {
