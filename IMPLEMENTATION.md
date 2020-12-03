@@ -54,6 +54,9 @@ Details of the implementation of **menyoki**.
 * window
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/window/mod.rs) -> `Access`, `Capture` (crucial traits)
   * [test.rs](https://github.com/orhun/menyoki/blob/master/src/window/test.rs) -> `TestWindow` (implements `Capture` trait for testing purposes)
+* ws
+    * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/ws/mod.rs) -> `WindowSystem` (blank implementation of `Access` trait)
+    * [window.rs](https://github.com/orhun/menyoki/blob/master/src/ws/window.rs) -> `Window` (blank implementation of `Capture` trait)
 * x11
     * [display.rs](https://github.com/orhun/menyoki/blob/master/src/x11/display.rs) -> `Display` (X11 display wrapper with methods like `get_window` and `select_window`)
     * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/x11/mod.rs) -> `WindowSystem` (implements `Access` trait for X11)
@@ -88,7 +91,7 @@ pub trait Capture {
 }
 ```
 
-As a reference, see [src/x11/mod.rs](https://github.com/orhun/menyoki/blob/master/src/x11/mod.rs) (for `Access` implementation) and [src/x11/window.rs](https://github.com/orhun/menyoki/blob/master/src/x11/window.rs) (for `Capture` implementation).
+As a reference: see [src/x11/mod.rs](https://github.com/orhun/menyoki/blob/master/src/x11/mod.rs) (for `Access` implementation), [src/x11/window.rs](https://github.com/orhun/menyoki/blob/master/src/x11/window.rs) (for `Capture` implementation), and [src/ws/*](https://github.com/orhun/menyoki/tree/master/src/ws) (for implementation templates).
 
 The rest of the modules/functions are not platform-dependent (abstracted) so they are expected to work properly.
 

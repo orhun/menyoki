@@ -81,6 +81,7 @@ impl Padding {
 	 *
 	 * @return Vector of Tuple
 	 */
+	#[allow(dead_code)]
 	pub fn get_modifiers<'a>(
 		&mut self,
 	) -> Vec<(&mut u32, &'a [Keycode; 2], &'a [Keycode; 2])> {

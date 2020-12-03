@@ -17,6 +17,9 @@ mod record;
 mod settings;
 mod util;
 mod window;
+#[cfg(not(all(unix, not(target_os = "macos"))))]
+mod ws;
+#[cfg(all(unix, not(target_os = "macos")))]
 mod x11;
 use self::app::{App, AppResult};
 use self::args::matches::ArgMatches;
@@ -24,6 +27,9 @@ use self::args::Args;
 use self::settings::AppSettings;
 use self::util::logger::Logger;
 use self::window::Access;
+#[cfg(not(all(unix, not(target_os = "macos"))))]
+use self::ws::WindowSystem;
+#[cfg(all(unix, not(target_os = "macos")))]
 use self::x11::WindowSystem;
 
 fn main() -> AppResult {
