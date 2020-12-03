@@ -53,6 +53,7 @@
   - [Record](#record-)
     - [Arguments](#arguments-1)
     - [Examples](#examples-1)
+    - [Pro Tip](#pro-tip)
   - [Split](#split-)
     - [Arguments](#arguments-2)
     - [Examples](#examples-2)
@@ -333,6 +334,14 @@ SUBCOMMANDS:
 | `menyoki -q record "kmon -t 2000"`                                	| Execute the command and record its output in quiet mode                           	|
 | `menyoki record --font "-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*"` 	| Use custom font for showing the area size (see `xfontsel`)                        	|
 
+#### Pro Tip
+
+Use [slop](https://github.com/naelstrof/slop) for selecting an area of the root window (fullscreen) with mouse interaction.
+
+```sh
+menyoki record --root --size $(slop)
+```
+
 ### Split <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 **menyoki** can split an animation into frames (extract images) if the **split** subcommand is provided and it can save frames as one of the supported formats with the use of trailing _format_ subcommand.
@@ -464,6 +473,8 @@ SUBCOMMANDS:
 | `menyoki capture pnm --format pixmap --encoding ascii` 	| Screenshot and encode with the specified PNM options                                         	|
 | `menyoki capture ff save "test.ff" --timestamp`        	| Screenshot and save as "test.ff" in farbfeld format with timestamp in the file name          	|
 | `menyoki -q capture "kmon -t 2000"`                    	| Execute the command and screenshot its output in quiet mode (sets countdown to 3 implicitly) 	|
+
+Also, see the [pro tip](#pro-tip) about `--size` argument.
 
 ### Edit <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 

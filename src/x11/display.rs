@@ -233,9 +233,8 @@ impl Display {
 		trace!("{:?}", input_state);
 		debug!("Selected window: {:?}", xid);
 		self.ungrab_keys(xid);
-		if (self.settings.border.is_some()
-			|| (self.settings.border.is_none() && self.settings.time.countdown == 0))
-			&& xid.is_some()
+		if self.settings.border.is_some()
+			|| (self.settings.border.is_none() && self.settings.time.countdown == 0)
 		{
 			window.clear_area();
 			window.show_text(Some(String::from(" ")), FpsClock::new(1000));
@@ -255,16 +254,14 @@ impl Display {
 	 */
 	fn update_padding(&mut self, size: Geometry, window_geometry: Geometry) {
 		if !size.is_zero() {
-			self.settings.padding.top = 0;
 			self.settings.padding.right = window_geometry
 				.width
-				.checked_sub(size.width)
+				.checked_sub(size.width + self.settings.padding.left)
 				.unwrap_or_default();
 			self.settings.padding.bottom = window_geometry
 				.height
-				.checked_sub(size.height)
+				.checked_sub(size.height + self.settings.padding.top)
 				.unwrap_or_default();
-			self.settings.padding.left = 0;
 		}
 	}
 

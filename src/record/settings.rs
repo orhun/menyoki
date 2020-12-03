@@ -124,20 +124,24 @@ impl RecordWindow {
 	 * @return RecordWindow
 	 */
 	fn from_args(matches: &ArgMatches<'_>) -> Self {
-		let select =
+		let size =
 			if matches.occurrences_of("size") != 0 || matches.is_present("select") {
 				Some(Geometry::parse(
-					matches.value_of("size").unwrap_or_default(),
+					matches
+						.value_of("size")
+						.unwrap_or_default()
+						.split('+')
+						.collect::<Vec<&str>>()[0],
 				))
 			} else {
 				None
 			};
 		if matches.is_present("focus") {
-			Self::Focus(select)
+			Self::Focus(size)
 		} else if matches.is_present("root") {
-			Self::Root(select)
+			Self::Root(size)
 		} else {
-			Self::Focus(Some(select.unwrap_or_default()))
+			Self::Focus(Some(size.unwrap_or_default()))
 		}
 	}
 }
@@ -231,43 +235,73 @@ impl RecordSettings {
 	 */
 	fn from_parser(parser: ArgParser<'_>, color: &str) -> Self {
 		match parser.args {
-			Some(ref matches) => {
-				let padding =
-					Padding::parse(matches.value_of("padding").unwrap_or_default());
-				Self::new(
-					match matches.value_of("command") {
-						Some(cmd) => {
-							Some(Box::leak(cmd.to_string().into_boxed_str()))
-						}
-						_ => None,
+			Some(ref matches) => Self::new(
+				match matches.value_of("command") {
+					Some(cmd) => Some(Box::leak(cmd.to_string().into_boxed_str())),
+					_ => None,
+				},
+				u64::from_str_radix(color, 16).unwrap_or(Self::default().color),
+				match parser.parse("border", 0) {
+					border if border > 0 => Some(border),
+					_ => None,
+				},
+				Self::parse_padding(&matches),
+				RecordTime::from_parser(&parser),
+				RecordFlag::new(
+					matches.is_present("with-alpha"),
+					if matches.is_present("no-keys") {
+						None
+					} else {
+						Some(Box::leak(
+							matches
+								.value_of("keys")
+								.unwrap_or_default()
+								.to_string()
+								.into_boxed_str(),
+						))
 					},
-					u64::from_str_radix(color, 16).unwrap_or(Self::default().color),
-					match parser.parse("border", 0) {
-						border if border > 0 => Some(border),
-						_ => None,
-					},
-					padding,
-					RecordTime::from_parser(&parser),
-					RecordFlag::new(
-						matches.is_present("with-alpha"),
-						if matches.is_present("no-keys") {
-							None
-						} else {
-							Some(Box::leak(
-								matches
-									.value_of("keys")
-									.unwrap_or_default()
-									.to_string()
-									.into_boxed_str(),
-							))
-						},
-						matches.value_of("font").unwrap_or_default(),
-					),
-					RecordWindow::from_args(&matches),
-				)
-			}
+					matches.value_of("font").unwrap_or_default(),
+				),
+				RecordWindow::from_args(&matches),
+			),
 			None => RecordSettings::default(),
 		}
+	}
+
+	/**
+	 * Parse the padding value from arguments.
+	 *
+	 * @param  matches
+	 * @return Padding
+	 */
+	fn parse_padding(matches: &ArgMatches<'_>) -> Padding {
+		let mut padding =
+			Padding::parse(matches.value_of("padding").unwrap_or_default());
+		if matches
+			.value_of("size")
+			.unwrap_or_default()
+			.matches('+')
+			.count() == 2
+		{
+			let mut values = matches
+				.value_of("size")
+				.unwrap_or_default()
+				.split('+')
+				.collect::<Vec<&str>>()
+				.into_iter()
+				.skip(1);
+			padding.left = values
+				.next()
+				.unwrap_or_default()
+				.parse()
+				.unwrap_or_default();
+			padding.top = values
+				.next()
+				.unwrap_or_default()
+				.parse()
+				.unwrap_or_default();
+		};
+		padding
 	}
 
 	/**
