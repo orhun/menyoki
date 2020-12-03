@@ -29,7 +29,7 @@ x11 = { version = "2.18.2", features = ["xlib"] }
 
 [dependencies]
 # window system
-device_query = "0.2.5"
+device_query = "0.2.6"
 ctrlc = { version = "3.1.7", features = ["termination"] }
 # image operations
 image = "0.23.11"
