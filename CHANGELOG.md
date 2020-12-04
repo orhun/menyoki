@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Disable default features of gifski dependency
+- Add `ski` feature for enabling gifski as default
 
 ## [0.1.5] - 2020-12-04
 ### Added

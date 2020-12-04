@@ -377,13 +377,19 @@ where
 				Arg::with_name("gifski")
 					.long("gifski")
 					.help("Use the gifski encoder")
-					.hidden(mode.has_format(AnimFormat::Apng)),
+					.hidden(
+						mode.has_format(AnimFormat::Apng)
+							|| cfg!(not(feature = "ski")),
+					),
 			)
 			.arg(
 				Arg::with_name("fast")
 					.long("fast")
 					.help("Encode 3 times faster (gifski)")
-					.hidden(mode.has_format(AnimFormat::Apng)),
+					.hidden(
+						mode.has_format(AnimFormat::Apng)
+							|| cfg!(not(feature = "ski")),
+					),
 			)
 			.arg(
 				Arg::with_name("speed")

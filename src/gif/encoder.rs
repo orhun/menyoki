@@ -29,6 +29,7 @@ impl<'a, Output: Write> EncoderConfig<'a, Output> {
 		output: Output,
 		settings: &'a AnimSettings,
 	) -> Self {
+		debug!("FPS: {}", fps);
 		Self {
 			fps,
 			geometry,
@@ -49,28 +50,41 @@ pub trait Encoder<'a, Output: Write> {
 #[cfg(test)]
 mod tests {
 	use super::*;
+	#[cfg(feature = "ski")]
 	use crate::gif::ski::GifskiEncoder;
 	use crate::gif::GifEncoder;
 	use image::Bgra;
-	#[test]
-	fn test_gif_encoder() {
+	const GIF_HEADER: &[u8] = &[0x47, 0x49, 0x46, 0x38, 0x39, 0x61];
+	fn get_config<'a, Output: Write>(
+		output: Output,
+		settings: &'a AnimSettings,
+	) -> (EncoderConfig<'a, Output>, Vec<Image>) {
 		let geometry = Geometry::new(0, 0, 1, 2);
 		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
 		let images = vec![
 			Image::new(data.clone(), false, geometry),
 			Image::new(data.into_iter().rev().collect(), false, geometry),
 		];
-		let settings = AnimSettings::default();
+		(EncoderConfig::new(10, geometry, output, settings), images)
+	}
+	#[test]
+	fn test_gif_encoder() {
 		let mut output = Vec::new();
-		let header = vec![0x47, 0x49, 0x46, 0x38, 0x39, 0x61];
-		let config = EncoderConfig::new(10, geometry, &mut output, &settings);
+		let settings = AnimSettings::default();
+		let (config, images) = get_config(&mut output, &settings);
 		GifEncoder::new(config).save(images.clone(), None);
 		output.truncate(6);
-		assert_eq!(header, output);
+		assert_eq!(GIF_HEADER, output);
 		output.clear();
-		let config = EncoderConfig::new(20, geometry, &mut output, &settings);
+	}
+	#[cfg(feature = "ski")]
+	#[test]
+	fn test_gifski_encoder() {
+		let mut output = Vec::new();
+		let settings = AnimSettings::default();
+		let (config, images) = get_config(&mut output, &settings);
 		GifskiEncoder::new(config).save(images, None);
 		output.truncate(6);
-		assert_eq!(header, output);
+		assert_eq!(GIF_HEADER, output);
 	}
 }

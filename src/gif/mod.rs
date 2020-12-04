@@ -1,4 +1,5 @@
 pub mod encoder;
+#[cfg(feature = "ski")]
 pub mod ski;
 
 use crate::anim::settings::AnimSettings;

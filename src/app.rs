@@ -5,6 +5,7 @@ use crate::args::Args;
 use crate::file::format::FileFormat;
 use crate::file::File as FileUtil;
 use crate::gif::encoder::{Encoder, EncoderConfig};
+#[cfg(feature = "ski")]
 use crate::gif::ski::GifskiEncoder;
 use crate::gif::GifEncoder;
 use crate::image::Image;
@@ -443,9 +444,9 @@ where
 	 * @param  frames (Option)
 	 * @param  output
 	 */
+	#[cfg(feature = "ski")]
 	fn save_gif<Output: Write>(self, frames: Option<Frames>, output: Output) {
 		let (images, fps) = frames.expect("Failed to get the frames");
-		debug!("FPS: {}", fps);
 		let config = EncoderConfig::new(
 			fps,
 			images.first().expect("No frames found to save").geometry,
@@ -457,6 +458,24 @@ where
 		} else {
 			GifEncoder::new(config).save(images, self.settings.input_state)
 		}
+	}
+
+	/**
+	 * Save frames to a GIF file.
+	 *
+	 * @param  frames (Option)
+	 * @param  output
+	 */
+	#[cfg(not(feature = "ski"))]
+	fn save_gif<Output: Write>(self, frames: Option<Frames>, output: Output) {
+		let (images, fps) = frames.expect("Failed to get the frames");
+		GifEncoder::new(EncoderConfig::new(
+			fps,
+			images.first().expect("No frames found to save").geometry,
+			output,
+			&self.settings.anim,
+		))
+		.save(images, self.settings.input_state)
 	}
 
 	/**
