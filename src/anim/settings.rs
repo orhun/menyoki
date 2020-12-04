@@ -105,7 +105,10 @@ impl AnimSettings {
 					parser.parse("cut-end", Self::default().cut.1) * 1000.,
 				),
 				Self::get_frames(&matches),
-				(matches.is_present("gifski"), matches.is_present("fast")),
+				(
+					matches.is_present("gifski") || matches.is_present("fast"),
+					matches.is_present("fast"),
+				),
 			),
 			None => Self::default(),
 		}
