@@ -38,7 +38,6 @@ rgb = "0.8.25"
 png = "0.16.7"
 apng = "0.2.0"
 gif = "0.11.1"
-gifski = "1.2.2"
 kamadak-exif = "0.5.2"
 dominant_color = "0.3.0"
 # utility
@@ -51,6 +50,10 @@ natord = "1.0.9"
 colored = "2.0.0"
 log = "0.4.11"
 fern_colored = { version = "0.6.1", features = ["colored"] }
+
+[dependencies.gifski]
+version = "1.2.2"
+default-features = false
 
 [dependencies.clap]
 version = "2.33.3"
