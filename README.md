@@ -123,7 +123,7 @@
 
 ## Installation
 
-[Xlib](https://en.wikipedia.org/wiki/Xlib) (libX11) should be installed to build **menyoki** on Linux.
+Linux: [Xlib](https://en.wikipedia.org/wiki/Xlib) (libX11) must be installed to build **menyoki**.
 
 ### Cargo
 
