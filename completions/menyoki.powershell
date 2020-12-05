@@ -1,0 +1,1259 @@
+
+using namespace System.Management.Automation
+using namespace System.Management.Automation.Language
+
+Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+
+    $commandElements = $commandAst.CommandElements
+    $command = @(
+        'menyoki'
+        for ($i = 1; $i -lt $commandElements.Count; $i++) {
+            $element = $commandElements[$i]
+            if ($element -isnot [StringConstantExpressionAst] -or
+                $element.StringConstantType -ne [StringConstantType]::BareWord -or
+                $element.Value.StartsWith('-')) {
+                break
+        }
+        $element.Value
+    }) -join ';'
+
+    $completions = @(switch ($command) {
+        'menyoki' {
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Set the configuration file')
+            [CompletionResult]::new('--config', 'config', [CompletionResultType]::ParameterName, 'Set the configuration file')
+            [CompletionResult]::new('--color', 'color', [CompletionResultType]::ParameterName, 'Set the main color')
+            [CompletionResult]::new('-v', 'v', [CompletionResultType]::ParameterName, 'Increase logging verbosity')
+            [CompletionResult]::new('--verbose', 'verbose', [CompletionResultType]::ParameterName, 'Increase logging verbosity')
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Do not show output')
+            [CompletionResult]::new('--quiet', 'quiet', [CompletionResultType]::ParameterName, 'Do not show output')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Print version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Print version information')
+            [CompletionResult]::new('record', 'record', [CompletionResultType]::ParameterValue, 'Record an animation')
+            [CompletionResult]::new('split', 'split', [CompletionResultType]::ParameterValue, 'Split an animation into frames')
+            [CompletionResult]::new('make', 'make', [CompletionResultType]::ParameterValue, 'Make an animation from frames')
+            [CompletionResult]::new('capture', 'capture', [CompletionResultType]::ParameterValue, 'Capture an image')
+            [CompletionResult]::new('edit', 'edit', [CompletionResultType]::ParameterValue, 'Edit an image')
+            [CompletionResult]::new('analyze', 'analyze', [CompletionResultType]::ParameterValue, 'Analyze an image')
+            [CompletionResult]::new('misc', 'misc', [CompletionResultType]::ParameterValue, 'Perfom miscellaneous operations')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;record' {
+            [CompletionResult]::new('-k', 'k', [CompletionResultType]::ParameterName, 'Set the action keys')
+            [CompletionResult]::new('--keys', 'keys', [CompletionResultType]::ParameterName, 'Set the action keys')
+            [CompletionResult]::new('-b', 'b', [CompletionResultType]::ParameterName, 'Set the border width')
+            [CompletionResult]::new('--border', 'border', [CompletionResultType]::ParameterName, 'Set the border width')
+            [CompletionResult]::new('-p', 'p', [CompletionResultType]::ParameterName, 'Set the record area padding')
+            [CompletionResult]::new('--padding', 'padding', [CompletionResultType]::ParameterName, 'Set the record area padding')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the record area size')
+            [CompletionResult]::new('--size', 'size', [CompletionResultType]::ParameterName, 'Set the record area size')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the duration for recording')
+            [CompletionResult]::new('--duration', 'duration', [CompletionResultType]::ParameterName, 'Set the duration for recording')
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Set the countdown before recording')
+            [CompletionResult]::new('--countdown', 'countdown', [CompletionResultType]::ParameterName, 'Set the countdown before recording')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Set the timeout for window selection')
+            [CompletionResult]::new('--timeout', 'timeout', [CompletionResultType]::ParameterName, 'Set the timeout for window selection')
+            [CompletionResult]::new('-i', 'i', [CompletionResultType]::ParameterName, 'Set the refresh interval for window selection')
+            [CompletionResult]::new('--interval', 'interval', [CompletionResultType]::ParameterName, 'Set the refresh interval for window selection')
+            [CompletionResult]::new('--font', 'font', [CompletionResultType]::ParameterName, 'Set the font to use for window selection')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Record the root window')
+            [CompletionResult]::new('--root', 'root', [CompletionResultType]::ParameterName, 'Record the root window')
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Record the focused window')
+            [CompletionResult]::new('--focus', 'focus', [CompletionResultType]::ParameterName, 'Record the focused window')
+            [CompletionResult]::new('--select', 'select', [CompletionResultType]::ParameterName, 'Select the window to record')
+            [CompletionResult]::new('--with-alpha', 'with-alpha', [CompletionResultType]::ParameterName, 'Record with the alpha channel')
+            [CompletionResult]::new('--no-keys', 'no-keys', [CompletionResultType]::ParameterName, 'Disable the action keys while recording')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('gif', 'gif', [CompletionResultType]::ParameterValue, 'Use the GIF encoder')
+            [CompletionResult]::new('apng', 'apng', [CompletionResultType]::ParameterValue, 'Use the APNG encoder')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;record;gif' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('--fps', 'fps', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('--repeat', 'repeat', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--speed', 'speed', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--cut-beginning', 'cut-beginning', [CompletionResultType]::ParameterName, 'Cut the beginning of the animation')
+            [CompletionResult]::new('--cut-end', 'cut-end', [CompletionResultType]::ParameterName, 'Cut the end of the animation')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--dir', 'dir', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the animation format')
+            [CompletionResult]::new('--gifski', 'gifski', [CompletionResultType]::ParameterName, 'Use the gifski encoder')
+            [CompletionResult]::new('--fast', 'fast', [CompletionResultType]::ParameterName, 'Encode 3 times faster (gifski)')
+            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('--no-sort', 'no-sort', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;record;gif;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;record;gif;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;record;apng' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('--fps', 'fps', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('--repeat', 'repeat', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--speed', 'speed', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--cut-beginning', 'cut-beginning', [CompletionResultType]::ParameterName, 'Cut the beginning of the animation')
+            [CompletionResult]::new('--cut-end', 'cut-end', [CompletionResultType]::ParameterName, 'Cut the end of the animation')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--dir', 'dir', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the animation format')
+            [CompletionResult]::new('--gifski', 'gifski', [CompletionResultType]::ParameterName, 'Use the gifski encoder')
+            [CompletionResult]::new('--fast', 'fast', [CompletionResultType]::ParameterName, 'Encode 3 times faster (gifski)')
+            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('--no-sort', 'no-sort', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;record;apng;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;record;apng;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;record;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;record;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the output directory')
+            [CompletionResult]::new('--dir', 'dir', [CompletionResultType]::ParameterName, 'Set the output directory')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('png', 'png', [CompletionResultType]::ParameterValue, 'Use the PNG encoder')
+            [CompletionResult]::new('jpg', 'jpg', [CompletionResultType]::ParameterValue, 'Use the JPG encoder')
+            [CompletionResult]::new('bmp', 'bmp', [CompletionResultType]::ParameterValue, 'Use the BMP encoder')
+            [CompletionResult]::new('ico', 'ico', [CompletionResultType]::ParameterValue, 'Use the ICO encoder')
+            [CompletionResult]::new('tiff', 'tiff', [CompletionResultType]::ParameterValue, 'Use the TIFF encoder')
+            [CompletionResult]::new('tga', 'tga', [CompletionResultType]::ParameterValue, 'Use the TGA encoder')
+            [CompletionResult]::new('pnm', 'pnm', [CompletionResultType]::ParameterValue, 'Use the PNM encoder')
+            [CompletionResult]::new('ff', 'ff', [CompletionResultType]::ParameterValue, 'Use the farbfeld encoder')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;png' {
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Set the compression level')
+            [CompletionResult]::new('--compression', 'compression', [CompletionResultType]::ParameterName, 'Set the compression level')
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the filter algorithm')
+            [CompletionResult]::new('--filter', 'filter', [CompletionResultType]::ParameterName, 'Set the filter algorithm')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;png;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;png;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;jpg' {
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the image quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the image quality (1-100)')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;jpg;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;jpg;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;bmp' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;bmp;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;bmp;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;ico' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;ico;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;ico;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;tiff' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;tiff;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;tiff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;tga' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;tga;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;tga;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;pnm' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the PNM format')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the PNM format')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Set the encoding for storing the samples')
+            [CompletionResult]::new('--encoding', 'encoding', [CompletionResultType]::ParameterName, 'Set the encoding for storing the samples')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;pnm;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;pnm;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;ff' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;ff;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;ff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;make' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('--fps', 'fps', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('--repeat', 'repeat', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--speed', 'speed', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--cut-beginning', 'cut-beginning', [CompletionResultType]::ParameterName, 'Cut the beginning of the animation')
+            [CompletionResult]::new('--cut-end', 'cut-end', [CompletionResultType]::ParameterName, 'Cut the end of the animation')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--dir', 'dir', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the animation format')
+            [CompletionResult]::new('--gifski', 'gifski', [CompletionResultType]::ParameterName, 'Use the gifski encoder')
+            [CompletionResult]::new('--fast', 'fast', [CompletionResultType]::ParameterName, 'Encode 3 times faster (gifski)')
+            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('--no-sort', 'no-sort', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;make;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;make;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture' {
+            [CompletionResult]::new('-k', 'k', [CompletionResultType]::ParameterName, 'Set the action keys')
+            [CompletionResult]::new('--keys', 'keys', [CompletionResultType]::ParameterName, 'Set the action keys')
+            [CompletionResult]::new('-b', 'b', [CompletionResultType]::ParameterName, 'Set the border width')
+            [CompletionResult]::new('--border', 'border', [CompletionResultType]::ParameterName, 'Set the border width')
+            [CompletionResult]::new('-p', 'p', [CompletionResultType]::ParameterName, 'Set the capture area padding')
+            [CompletionResult]::new('--padding', 'padding', [CompletionResultType]::ParameterName, 'Set the capture area padding')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the capture area size')
+            [CompletionResult]::new('--size', 'size', [CompletionResultType]::ParameterName, 'Set the capture area size')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the duration for recording')
+            [CompletionResult]::new('--duration', 'duration', [CompletionResultType]::ParameterName, 'Set the duration for recording')
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Set the countdown before capturing')
+            [CompletionResult]::new('--countdown', 'countdown', [CompletionResultType]::ParameterName, 'Set the countdown before capturing')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Set the timeout for window selection')
+            [CompletionResult]::new('--timeout', 'timeout', [CompletionResultType]::ParameterName, 'Set the timeout for window selection')
+            [CompletionResult]::new('-i', 'i', [CompletionResultType]::ParameterName, 'Set the refresh interval for window selection')
+            [CompletionResult]::new('--interval', 'interval', [CompletionResultType]::ParameterName, 'Set the refresh interval for window selection')
+            [CompletionResult]::new('--font', 'font', [CompletionResultType]::ParameterName, 'Set the font to use for window selection')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Capture the root window')
+            [CompletionResult]::new('--root', 'root', [CompletionResultType]::ParameterName, 'Capture the root window')
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Capture the focused window')
+            [CompletionResult]::new('--focus', 'focus', [CompletionResultType]::ParameterName, 'Capture the focused window')
+            [CompletionResult]::new('--select', 'select', [CompletionResultType]::ParameterName, 'Select the window to capture')
+            [CompletionResult]::new('--with-alpha', 'with-alpha', [CompletionResultType]::ParameterName, 'Capture with the alpha channel')
+            [CompletionResult]::new('--no-keys', 'no-keys', [CompletionResultType]::ParameterName, 'Disable the action keys while recording')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('png', 'png', [CompletionResultType]::ParameterValue, 'Use the PNG encoder')
+            [CompletionResult]::new('jpg', 'jpg', [CompletionResultType]::ParameterValue, 'Use the JPG encoder')
+            [CompletionResult]::new('bmp', 'bmp', [CompletionResultType]::ParameterValue, 'Use the BMP encoder')
+            [CompletionResult]::new('ico', 'ico', [CompletionResultType]::ParameterValue, 'Use the ICO encoder')
+            [CompletionResult]::new('tiff', 'tiff', [CompletionResultType]::ParameterValue, 'Use the TIFF encoder')
+            [CompletionResult]::new('tga', 'tga', [CompletionResultType]::ParameterValue, 'Use the TGA encoder')
+            [CompletionResult]::new('pnm', 'pnm', [CompletionResultType]::ParameterValue, 'Use the PNM encoder')
+            [CompletionResult]::new('ff', 'ff', [CompletionResultType]::ParameterValue, 'Use the farbfeld encoder')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;png' {
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Set the compression level')
+            [CompletionResult]::new('--compression', 'compression', [CompletionResultType]::ParameterName, 'Set the compression level')
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the filter algorithm')
+            [CompletionResult]::new('--filter', 'filter', [CompletionResultType]::ParameterName, 'Set the filter algorithm')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;png;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;png;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;jpg' {
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the image quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the image quality (1-100)')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;jpg;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;jpg;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;bmp' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;bmp;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;bmp;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;ico' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;ico;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;ico;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;tiff' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;tiff;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;tiff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;tga' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;tga;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;tga;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;pnm' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the PNM format')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the PNM format')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Set the encoding for storing the samples')
+            [CompletionResult]::new('--encoding', 'encoding', [CompletionResultType]::ParameterName, 'Set the encoding for storing the samples')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;pnm;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;pnm;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;ff' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;ff;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;ff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit' {
+            [CompletionResult]::new('--crop', 'crop', [CompletionResultType]::ParameterName, 'Apply padding to crop the image')
+            [CompletionResult]::new('--resize', 'resize', [CompletionResultType]::ParameterName, 'Resize the image without keeping the aspect ratio')
+            [CompletionResult]::new('--ratio', 'ratio', [CompletionResultType]::ParameterName, 'Resize the image proportionally by aspect ratio')
+            [CompletionResult]::new('--rotate', 'rotate', [CompletionResultType]::ParameterName, 'Rotate the image (clockwise)')
+            [CompletionResult]::new('--flip', 'flip', [CompletionResultType]::ParameterName, 'Flip the image')
+            [CompletionResult]::new('--blur', 'blur', [CompletionResultType]::ParameterName, 'Blur the image')
+            [CompletionResult]::new('--hue', 'hue', [CompletionResultType]::ParameterName, 'Adjust the hue of the image')
+            [CompletionResult]::new('--contrast', 'contrast', [CompletionResultType]::ParameterName, 'Adjust the contrast of the image')
+            [CompletionResult]::new('--brightness', 'brightness', [CompletionResultType]::ParameterName, 'Adjust the brightness of the image')
+            [CompletionResult]::new('--filter', 'filter', [CompletionResultType]::ParameterName, 'Set the sampling filter for scaling')
+            [CompletionResult]::new('--convert', 'convert', [CompletionResultType]::ParameterName, 'Convert image using the given encoder')
+            [CompletionResult]::new('--grayscale', 'grayscale', [CompletionResultType]::ParameterName, 'Convert image to grayscale')
+            [CompletionResult]::new('--invert', 'invert', [CompletionResultType]::ParameterName, 'Invert the colors of the image')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('gif', 'gif', [CompletionResultType]::ParameterValue, 'Use the GIF encoder')
+            [CompletionResult]::new('apng', 'apng', [CompletionResultType]::ParameterValue, 'Use the APNG encoder')
+            [CompletionResult]::new('png', 'png', [CompletionResultType]::ParameterValue, 'Use the PNG encoder')
+            [CompletionResult]::new('jpg', 'jpg', [CompletionResultType]::ParameterValue, 'Use the JPG encoder')
+            [CompletionResult]::new('bmp', 'bmp', [CompletionResultType]::ParameterValue, 'Use the BMP encoder')
+            [CompletionResult]::new('ico', 'ico', [CompletionResultType]::ParameterValue, 'Use the ICO encoder')
+            [CompletionResult]::new('tiff', 'tiff', [CompletionResultType]::ParameterValue, 'Use the TIFF encoder')
+            [CompletionResult]::new('tga', 'tga', [CompletionResultType]::ParameterValue, 'Use the TGA encoder')
+            [CompletionResult]::new('pnm', 'pnm', [CompletionResultType]::ParameterValue, 'Use the PNM encoder')
+            [CompletionResult]::new('ff', 'ff', [CompletionResultType]::ParameterValue, 'Use the farbfeld encoder')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;gif' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('--fps', 'fps', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('--repeat', 'repeat', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--speed', 'speed', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--cut-beginning', 'cut-beginning', [CompletionResultType]::ParameterName, 'Cut the beginning of the animation')
+            [CompletionResult]::new('--cut-end', 'cut-end', [CompletionResultType]::ParameterName, 'Cut the end of the animation')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--dir', 'dir', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the animation format')
+            [CompletionResult]::new('--gifski', 'gifski', [CompletionResultType]::ParameterName, 'Use the gifski encoder')
+            [CompletionResult]::new('--fast', 'fast', [CompletionResultType]::ParameterName, 'Encode 3 times faster (gifski)')
+            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('--no-sort', 'no-sort', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;gif;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;gif;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;apng' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('--fps', 'fps', [CompletionResultType]::ParameterName, 'Set the FPS')
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the frame quality (1-100)')
+            [CompletionResult]::new('-r', 'r', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('--repeat', 'repeat', [CompletionResultType]::ParameterName, 'Set the number of repetitions')
+            [CompletionResult]::new('-s', 's', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--speed', 'speed', [CompletionResultType]::ParameterName, 'Set the animation speed')
+            [CompletionResult]::new('--cut-beginning', 'cut-beginning', [CompletionResultType]::ParameterName, 'Cut the beginning of the animation')
+            [CompletionResult]::new('--cut-end', 'cut-end', [CompletionResultType]::ParameterName, 'Cut the end of the animation')
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--dir', 'dir', [CompletionResultType]::ParameterName, 'Set the directory to read frames')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the animation format')
+            [CompletionResult]::new('--gifski', 'gifski', [CompletionResultType]::ParameterName, 'Use the gifski encoder')
+            [CompletionResult]::new('--fast', 'fast', [CompletionResultType]::ParameterName, 'Encode 3 times faster (gifski)')
+            [CompletionResult]::new('-n', 'n', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('--no-sort', 'no-sort', [CompletionResultType]::ParameterName, 'Use frames in the order given')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;apng;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;apng;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;png' {
+            [CompletionResult]::new('-c', 'c', [CompletionResultType]::ParameterName, 'Set the compression level')
+            [CompletionResult]::new('--compression', 'compression', [CompletionResultType]::ParameterName, 'Set the compression level')
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the filter algorithm')
+            [CompletionResult]::new('--filter', 'filter', [CompletionResultType]::ParameterName, 'Set the filter algorithm')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;png;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;png;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;jpg' {
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the image quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the image quality (1-100)')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;jpg;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;jpg;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;bmp' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;bmp;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;bmp;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;ico' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;ico;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;ico;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;tiff' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;tiff;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;tiff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;tga' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;tga;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;tga;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;pnm' {
+            [CompletionResult]::new('-f', 'f', [CompletionResultType]::ParameterName, 'Set the PNM format')
+            [CompletionResult]::new('--format', 'format', [CompletionResultType]::ParameterName, 'Set the PNM format')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Set the encoding for storing the samples')
+            [CompletionResult]::new('--encoding', 'encoding', [CompletionResultType]::ParameterName, 'Set the encoding for storing the samples')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;pnm;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;pnm;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;ff' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;ff;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;ff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;analyze' {
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Set the time zone of the report')
+            [CompletionResult]::new('--time-zone', 'time-zone', [CompletionResultType]::ParameterName, 'Set the time zone of the report')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Use Unix timestamp for report dates')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;analyze;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;analyze;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;misc' {
+            [CompletionResult]::new('-g', 'g', [CompletionResultType]::ParameterName, 'Generate completions for the specified shell')
+            [CompletionResult]::new('--gen-completions', 'gen-completions', [CompletionResultType]::ParameterName, 'Generate completions for the specified shell')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+    })
+
+    $completions.Where{ $_.CompletionText -like "$wordToComplete*" } |
+        Sort-Object -Property ListItemText
+}
