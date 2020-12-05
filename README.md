@@ -762,14 +762,19 @@ There are 3 types of key bindings in terms of performed action:
 
 ## Configuration
 
-It's possible to override the default command line arguments with a configuration file. It can be specified via `--config` option or `$MENYOKI_CONFIG` environment variable. Also, it can be placed to a location where **menyoki** looks for as default.
+It's possible to override the default command line arguments with a configuration file. It can be specified via `--config` option or `$MENYOKI_CONFIG` environment variable. Also, it can be placed to a location where **menyoki** looks for as default:
 
-In Linux:
+* `{CONFIG_DIR}/menyoki.conf`
+* `{CONFIG_DIR}/menyoki/menyoki.conf`
+* `{CONFIG_DIR}/menyoki/config`
 
-* `$MENYOKI_CONFIG`
-* `$HOME/.config/menyoki.conf`
-* `$HOME/.config/menyoki/menyoki.conf`
-* `$HOME/.config/menyoki/config`
+`{CONFIG_DIR}` can be one of the following depending on the platform:
+* Linux: `$XDG_CONFIG_HOME` or `$HOME/.config`
+  * e.g. `/home/orhun/.config`
+* macOS: `$HOME/Library/Application Support`
+  * e.g. `/Users/Orhun/Library/Application Support`
+* Windows: `{FOLDERID_RoamingAppData}`
+  * e.g. `C:\Users\Orhun\AppData\Roaming`
 
 <details>
   <summary>Default configuration file<a href="https://github.com/orhun/menyoki/blob/master/config/menyoki.conf">*</a></summary>
