@@ -11,52 +11,105 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [linux-gnu, linux-musl]
+        build: [linux-gnu, linux-musl, win-gnu, win-msvc, win32-msvc, macos]
         include:
-        - build: linux-gnu
-          os: ubuntu-18.04
-          toolchain: stable
-          target: x86_64-unknown-linux-gnu
-        - build: linux-musl
-          os: ubuntu-18.04
-          toolchain: stable
-          target: x86_64-unknown-linux-musl
+          - build: linux-gnu
+            os: ubuntu-18.04
+            toolchain: stable
+            target: x86_64-unknown-linux-gnu
+          - build: linux-musl
+            os: ubuntu-18.04
+            toolchain: stable
+            target: x86_64-unknown-linux-musl
+          - build: win-gnu
+            os: windows-2019
+            toolchain: stable
+            target: x86_64-pc-windows-gnu
+          - build: win-msvc
+            os: windows-2019
+            toolchain: stable
+            target: x86_64-pc-windows-msvc
+          - build: win32-msvc
+            os: windows-2019
+            toolchain: stable
+            target: i686-pc-windows-msvc
+          - build: macos
+            os: macos-10.15
+            toolchain: stable
+            target: x86_64-apple-darwin
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
       - name: Set release version
+        shell: bash
         run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Install packages (linux)
         if: matrix.os == 'ubuntu-18.04'
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends --allow-unauthenticated libx11-dev musl-tools
+          sudo apt-get install -y --no-install-recommends \
+            --allow-unauthenticated libx11-dev musl-tools
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
           toolchain: ${{ matrix.toolchain }}
           target: ${{ matrix.target }}
           override: true
-      - name: Build the project
-        run: PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release --locked --target ${{ matrix.target }}
-      - name: Prepare assets
-        run: |
-          mkdir assets
-          cp -t assets/ LICENSE README.md CHANGELOG.md
-          cp -t assets/ --parents completions/* && rm -f assets/completions/generate.sh
-          cp -t assets/ --parents config/menyoki.conf
-          if [ "${{ matrix.os }}" = "ubuntu-18.04" ]; then
-            cp -t assets/ --parents man/*
-            cp -t assets/ target/${{ matrix.TARGET }}/release/menyoki && strip -s assets/menyoki
-            mv assets/ menyoki-${{ env.RELEASE_VERSION }}/
-            tar -czvf menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz menyoki-${{ env.RELEASE_VERSION }}
-            sha512sum menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz > menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz.sha512
-            echo "${{ secrets.GPG_RELEASE_KEY }}" | base64 --decode > release.key
-            echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --import release.key
-            echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback --passphrase-fd 0 --detach-sign menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz
-          fi
-      - name: Upload assets (linux)
+      - name: Build the project (linux)
         if: matrix.os == 'ubuntu-18.04'
+        run: |
+          if [ "${{ matrix.build }}" = "linux-arm" ]; then
+            PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
+              --locked --no-default-features --target ${{ matrix.target }}
+            docker run --rm -v \
+              "$PWD/target:/target:Z" \
+              rustembedded/cross:${{ matrix.TARGET }} \
+              arm-linux-gnueabihf-strip \
+              target/${{ matrix.TARGET }}/release/menyoki
+          else
+            PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
+              --locked --target ${{ matrix.target }}
+            strip -s target/${{ matrix.TARGET }}/release/menyoki
+          fi
+      - name: Build the project (windows)
+        if: matrix.os == 'windows-2019'
+        run: cargo build --verbose --release --locked --target ${{ matrix.target }}
+      - name: Build the project (macos)
+        if: matrix.os == 'macos-10.15'
+        run: |
+          cargo build --verbose --release --locked --target ${{ matrix.target }}
+          strip target/${{ matrix.TARGET }}/release/menyoki
+      - name: Prepare assets
+        shell: bash
+        run: |
+          mkdir -p assets/{completions,config}
+          cp {LICENSE,README.md,CHANGELOG.md} assets/
+          cp completions/{menyoki.bash,menyoki.fish,menyoki.zsh,menyoki.elvish,menyoki.powershell} \
+            assets/completions/
+          cp config/menyoki.conf assets/config/
+          if [ "${{ matrix.os }}" = "windows-2019" ]; then
+            cp target/${{ matrix.TARGET }}/release/menyoki.exe assets/
+            mv assets/ menyoki-${{ env.RELEASE_VERSION }}/
+            7z a -tzip "menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.zip" \
+              menyoki-${{ env.RELEASE_VERSION }}
+          else
+            mkdir assets/man
+            cp man/{menyoki.1,menyoki.conf.5} assets/man/
+            cp target/${{ matrix.TARGET }}/release/menyoki assets/
+            mv assets/ menyoki-${{ env.RELEASE_VERSION }}/
+            tar -czvf menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz \
+              menyoki-${{ env.RELEASE_VERSION }}
+            shasum -a 512 menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz \
+              > menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz.sha512
+            echo "${{ secrets.GPG_RELEASE_KEY }}" | base64 --decode > release.key
+            echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback \
+              --passphrase-fd 0 --import release.key
+            echo "${{ secrets.GPG_PASSPHRASE }}" | gpg --pinentry-mode=loopback \
+              --passphrase-fd 0 --detach-sign \
+              menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz
+          fi
+      - name: Upload assets (linux/macos)
+        if: matrix.os == 'ubuntu-18.04' || matrix.os == 'macos-10.15'
         uses: softprops/action-gh-release@v1
         with:
           files: |
@@ -65,16 +118,24 @@ jobs:
             menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz.sha512
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload assets (windows)
+        if: matrix.os == 'windows-2019'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-crates-io:
     name: Publish on crates.io
-    needs: ['publish-github']
+    needs: publish-github
     runs-on: ubuntu-18.04
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@master
-    - name: Publish
-      uses: actions-rs/cargo@v1
-      with:
-        command: publish
-        args: --locked --token ${{ secrets.CARGO_TOKEN }}
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Publish
+        uses: actions-rs/cargo@v1
+        with:
+          command: publish
+          args: --locked --token ${{ secrets.CARGO_TOKEN }}
