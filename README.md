@@ -912,7 +912,7 @@ The following are the ultimate goals of the **menyoki** project.
 
 ### Platforms
 
-[Supported platforms](#supported-platforms) list should be extended by implementing the core features of **menyoki** on different systems.
+[Supported platforms](#supported-platforms) list should be extended by [implementing](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) the core features of **menyoki** on different systems.
 
 ### Formats
 
