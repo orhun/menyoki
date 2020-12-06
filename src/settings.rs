@@ -123,6 +123,10 @@ impl<'a> AppSettings<'a> {
 		if self.anim.quality <= 20 {
 			warn!("Animation will be encoded in low quality.")
 		}
+		if self.record.time.countdown > 99 {
+			self.record.time.countdown = 99;
+			warn!("Countdown value cannot be greater than 99.")
+		}
 		if let Some(input_state) = self.input_state {
 			if self.record.flag.keys != Some(&ActionKeys::default().to_string()) {
 				info!(

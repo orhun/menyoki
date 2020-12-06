@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Enable gifski encoder if `--fast` flag is set
 - Create new GC while drawing text on window
+- Limit maximum countdown value to 99
 
 ## [0.1.5] - 2020-12-04
 ### Added
