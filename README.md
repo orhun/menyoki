@@ -38,7 +38,7 @@
 - [Supported Formats](#supported-formats)
 - [Installation](#installation)
   - [Cargo](#cargo)
-  - [AUR](#aur)
+  - [Arch Linux](#arch-linux)
   - [Docker](#docker)
     - [Docker Hub](#docker-hub)
     - [Building an image](#building-an-image)
@@ -98,10 +98,10 @@
 ## Supported Platforms
 
 - [x] Linux
-    - [x] [X11](https://www.x.org/wiki/)
-    - [ ] [Wayland](https://wayland.freedesktop.org/)
-- [ ] Windows
-- [ ] macOS
+    - [x] [X11](https://www.x.org/) (fully supported)
+    - [ ] [Wayland](https://wayland.freedesktop.org/) (no record/capture)
+- [ ] Windows (no record/capture)
+- [ ] macOS (no record/capture)
 
 **menyoki** requires a window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit** and **analyze** if it's compiled on macOS.
 
@@ -139,7 +139,7 @@ Use `--force` option to update.
 cargo install menyoki --force
 ```
 
-### AUR
+### Arch Linux
 
 **menyoki** can be installed from available [AUR packages](https://aur.archlinux.org/packages/?O=0&SeB=b&K=menyoki&outdated=&SB=n&SO=a&PP=50&do_Search=Go) using an [AUR helper](https://wiki.archlinux.org/index.php/AUR_helpers).
 
@@ -210,7 +210,7 @@ cargo install --path .
 #### Releases
 
 1. Download the latest archive from [releases](https://github.com/orhun/menyoki/releases) page and extract it.
-2. Move `menyoki` binary to `/usr/local/bin/`.
+2. Move `menyoki` binary to `/usr/local/bin/` (Linux)
 
 ## Features
 
