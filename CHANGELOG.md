@@ -16,6 +16,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `ski` feature for enabling gifski as default
 - Update pull request template about configuration file
 
+### Removed
+- Remove verbose flag from codecov action in CI workflow
+
 ### Fixed
 - Enable gifski encoder if `--fast` flag is set
 

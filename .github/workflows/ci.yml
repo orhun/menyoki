@@ -95,7 +95,6 @@ jobs:
           flags: unittests
           name: code-coverage-report
           fail_ci_if_error: true
-          verbose: true
 
   rustfmt:
     name: Format
