@@ -688,7 +688,7 @@ dependencies = [
 
 [[package]]
 name = "menyoki"
-version = "0.1.5"
+version = "1.0.0"
 dependencies = [
  "apng",
  "bytesize",
