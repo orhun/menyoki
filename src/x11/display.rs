@@ -237,7 +237,7 @@ impl Display {
 			|| (self.settings.border.is_none() && self.settings.time.countdown == 0)
 		{
 			window.clear_area();
-			window.show_text(Some(String::from(" ")), FpsClock::new(1000));
+			window.show_text(Some(String::from(" ")), FpsClock::new(500));
 		}
 		if xid.is_some() {
 			Some(window)

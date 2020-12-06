@@ -105,11 +105,21 @@ impl Window {
 	}
 
 	/**
+	 * Set the graphics context of Window object.
+	 *
+	 * @return Window
+	 */
+	unsafe fn set_gc(&mut self) -> Self {
+		self.gc = self.get_gc();
+		*self
+	}
+
+	/**
 	 * Get the graphics context from window.
 	 *
 	 * @return GC
 	 */
-	unsafe fn set_gc(&mut self) -> Self {
+	unsafe fn get_gc(&self) -> xlib::GC {
 		let gc = xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
 		xlib::XSetForeground(self.display.inner, gc, self.display.settings.color);
 		xlib::XSetLineAttributes(
@@ -123,8 +133,7 @@ impl Window {
 		if let Some(xfont) = self.display.font {
 			xlib::XSetFont(self.display.inner, gc, (*xfont).fid);
 		}
-		self.gc = gc;
-		*self
+		gc
 	}
 
 	/**
@@ -197,7 +206,7 @@ impl Window {
 			xlib::XDrawString(
 				self.display.inner,
 				self.xid,
-				self.gc,
+				self.get_gc(),
 				x,
 				y,
 				CString::new(text).unwrap_or_default().as_ptr(),
@@ -344,8 +353,13 @@ impl Capture for Window {
 				self.show_text(
 					if i != self.display.settings.time.countdown {
 						info!(
-							"Starting in {}\r",
-							self.display.settings.time.countdown - i
+							"Starting in {}{}\r",
+							self.display.settings.time.countdown - i,
+							if self.display.settings.time.countdown > 9 {
+								" "
+							} else {
+								""
+							}
 						);
 						io::stdout().flush().expect("Failed to flush stdout");
 						Some(format!(
