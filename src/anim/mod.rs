@@ -80,3 +80,29 @@ impl fmt::Display for AnimMode {
 		)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	use pretty_assertions::assert_eq;
+	#[test]
+	fn test_anim_mode() {
+		let anim_format = AnimFormat::Apng;
+		assert_eq!("Apng", anim_format.to_string().as_str());
+		let anim_mode = AnimMode::Edit(anim_format);
+		assert!(anim_mode.is_edit());
+		assert!(anim_mode.has_format(AnimFormat::Apng));
+		assert_eq!("Use the APNG encoder", anim_mode.get_description());
+		assert_eq!("Apng", anim_mode.to_string().as_str());
+		let anim_mode = AnimMode::Edit(AnimFormat::Gif);
+		assert!(anim_mode.is_edit());
+		assert!(anim_mode.has_format(AnimFormat::Gif));
+		assert_eq!("Use the GIF encoder", anim_mode.get_description());
+		assert_eq!("Gif", anim_mode.to_string().as_str());
+		let anim_mode = AnimMode::Make;
+		assert!(!anim_mode.is_edit());
+		assert!(!anim_mode.has_format(AnimFormat::Apng));
+		assert_eq!("Make an animation from frames", anim_mode.get_description());
+		assert_eq!("Make", anim_mode.to_string().as_str());
+	}
+}
