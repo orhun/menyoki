@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Disable default features of gifski dependency
 - Add `ski` feature for enabling gifski as default
+- Update pull request template about configuration file
 
 ### Fixed
 - Enable gifski encoder if `--fast` flag is set
