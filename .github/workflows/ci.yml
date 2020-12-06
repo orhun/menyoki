@@ -9,54 +9,85 @@ on:
       - master
 
 jobs:
-  analyze:
-    name: Analyze
-    runs-on: ubuntu-latest
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        build: [linux-gnu, linux-musl, win-gnu, win-msvc, win32-msvc, macos]
+        include:
+          - build: linux-gnu
+            os: ubuntu-18.04
+            toolchain: stable
+            target: x86_64-unknown-linux-gnu
+          - build: linux-musl
+            os: ubuntu-18.04
+            toolchain: stable
+            target: x86_64-unknown-linux-musl
+          - build: win-gnu
+            os: windows-2019
+            toolchain: stable
+            target: x86_64-pc-windows-gnu
+          - build: win-msvc
+            os: windows-2019
+            toolchain: stable
+            target: x86_64-pc-windows-msvc
+          - build: win32-msvc
+            os: windows-2019
+            toolchain: stable
+            target: i686-pc-windows-msvc
+          - build: macos
+            os: macos-10.15
+            toolchain: stable
+            target: x86_64-apple-darwin
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
+      - name: Install dependencies (linux)
+        if: matrix.os == 'ubuntu-18.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            --allow-unauthenticated xvfb
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: ${{ matrix.toolchain }}
+          target: ${{ matrix.target }}
           override: true
-      - name: Analyze the project files
+      - name: Check the project files
         uses: actions-rs/cargo@v1
         with:
           command: check
           args: --locked
-      - name: Run cargo bloat
-        uses: orf/cargo-bloat-action@v1
-
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+      - name: Check the lints
+        uses: actions-rs/cargo@v1
         with:
-          toolchain: stable
-          override: true
-      - name: Install dependencies
+          command: clippy
+          args: --verbose -- -D warnings
+      - name: Install cargo-tarpaulin (linux)
+        if: matrix.os == 'ubuntu-18.04'
         run: |
-          sudo apt-get update
-          sudo apt-get install -y -qq xvfb
-      - name: Install cargo-tarpaulin
-        run: |
-          bash -c "curl -s $repo | $parse | wget -qi -"
+          curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest | \
+            grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \" | wget -qi -
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
-        env:
-          repo: 'https://api.github.com/repos/xd009642/tarpaulin/releases/latest'
-          parse: 'grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \"'
-      - name: Run tests
-        run: bash -c "$xvfb $test --features test-ws"
-        env:
-          xvfb: 'xvfb-run --server-args="-screen 0 1366x768x24"'
-          test: 'cargo tarpaulin -o Xml -v'
-      - name: Upload reports to Codecov
+      - name: Run tests (linux)
+        if: matrix.os == 'ubuntu-18.04'
+        run: |
+          xvfb-run --server-args="-screen 0 1366x768x24" \
+            cargo tarpaulin -o Xml -v --features test-ws
+      - name: Run tests (macos/windows)
+        if: matrix.os == 'macos-10.15' || matrix.os == 'windows-2019'
+        run: |
+          cargo test --verbose --features test-ws
+      - name: Run cargo bloat (linux/macos)
+        if: matrix.os == 'ubuntu-18.04' || matrix.os == 'macos-10.15'
+        uses: orf/cargo-bloat-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload reports to Codecov (linux)
+        if: matrix.os == 'ubuntu-18.04'
         uses: codecov/codecov-action@v1.0.7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -66,9 +97,9 @@ jobs:
           fail_ci_if_error: true
           verbose: true
 
-  format:
+  rustfmt:
     name: Format
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
@@ -77,27 +108,10 @@ jobs:
         with:
           toolchain: stable
           override: true
+          profile: minimal
           components: rustfmt
       - name: Check the formatting
         uses: actions-rs/cargo@v1
         with:
           command: fmt
-          args: --all -- --check --verbose
-
-  lints:
-    name: Lint Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@master
-      - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-          components: clippy
-      - name: Check the lints
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --verbose -- -D warnings
+          args: -- --check --verbose

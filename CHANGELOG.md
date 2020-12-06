@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Add
 - Add completions for powershell and elvish
 - Update CD workflow about releasing on different platforms
+- Update CI workflow about testing on different platforms
 
 ### Changed
 - Disable default features of gifski dependency
