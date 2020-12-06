@@ -846,3 +846,17 @@ where
 			)
 	}
 }
+
+#[cfg(test)]
+mod tests {
+	use super::*;
+	#[test]
+	fn test_shell_completions() {
+		let mut output = Vec::new();
+		Args::gen_completions("bash", &mut output);
+		assert!(!output.is_empty());
+		output.clear();
+		Args::gen_completions("test", &mut output);
+		assert!(output.is_empty());
+	}
+}
