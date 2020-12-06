@@ -127,7 +127,7 @@ Linux: [Xlib](https://en.wikipedia.org/wiki/Xlib) (libX11) must be installed to 
 
 ### Cargo
 
-**menyoki** can be installed from [crates.io](https://crates.io/crates/menyoki/) using _cargo_ if [Rust](https://www.rust-lang.org/tools/install) is installed.
+**menyoki** can be installed from [crates.io](https://crates.io/crates/menyoki/) using cargo if [Rust](https://www.rust-lang.org/tools/install) is installed.
 
 ```sh
 cargo install menyoki
