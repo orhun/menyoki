@@ -336,7 +336,7 @@ where
 	 * @return App
 	 */
 	fn get_anim_args(mode: AnimMode) -> App<'a, 'b> {
-		SubCommand::with_name(&mode.to_string().to_lowercase())
+		SubCommand::with_name(&mode.to_string())
 			.about(mode.get_description())
 			.help_message("Print help information")
 			.aliases(if mode == AnimMode::Make {

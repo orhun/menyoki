@@ -45,8 +45,7 @@ impl AnimMode {
 	 */
 	pub fn has_format(&self, format: AnimFormat) -> bool {
 		match self {
-			Self::Record(f) => f == &format,
-			Self::Edit(f) => f == &format,
+			Self::Record(f) | Self::Edit(f) => f == &format,
 			_ => false,
 		}
 	}
@@ -73,10 +72,10 @@ impl fmt::Display for AnimMode {
 			f,
 			"{}",
 			match self {
-				Self::Record(format) => format.to_string(),
-				Self::Edit(format) => format.to_string(),
+				Self::Record(format) | Self::Edit(format) => format.to_string(),
 				_ => format!("{:?}", self),
 			}
+			.to_lowercase()
 		)
 	}
 }
@@ -89,20 +88,20 @@ mod tests {
 	fn test_anim_mode() {
 		let anim_format = AnimFormat::Apng;
 		assert_eq!("Apng", anim_format.to_string().as_str());
-		let anim_mode = AnimMode::Edit(anim_format);
-		assert!(anim_mode.is_edit());
+		let anim_mode = AnimMode::Record(anim_format);
+		assert!(!anim_mode.is_edit());
 		assert!(anim_mode.has_format(AnimFormat::Apng));
 		assert_eq!("Use the APNG encoder", anim_mode.get_description());
-		assert_eq!("Apng", anim_mode.to_string().as_str());
+		assert_eq!("apng", anim_mode.to_string().as_str());
 		let anim_mode = AnimMode::Edit(AnimFormat::Gif);
 		assert!(anim_mode.is_edit());
 		assert!(anim_mode.has_format(AnimFormat::Gif));
 		assert_eq!("Use the GIF encoder", anim_mode.get_description());
-		assert_eq!("Gif", anim_mode.to_string().as_str());
+		assert_eq!("gif", anim_mode.to_string().as_str());
 		let anim_mode = AnimMode::Make;
 		assert!(!anim_mode.is_edit());
 		assert!(!anim_mode.has_format(AnimFormat::Apng));
 		assert_eq!("Make an animation from frames", anim_mode.get_description());
-		assert_eq!("Make", anim_mode.to_string().as_str());
+		assert_eq!("make", anim_mode.to_string().as_str());
 	}
 }
