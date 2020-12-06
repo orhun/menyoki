@@ -71,7 +71,7 @@ where
 		debug!("Command: {:?}", self.settings.record.get_command());
 		if let Some(misc_args) = self.settings.args.subcommand_matches("misc") {
 			if let Some(shell) = misc_args.value_of("gen-completions") {
-				Args::gen_completions(shell);
+				Args::gen_completions(shell, &mut io::stdout());
 			}
 		} else if self.settings.args.is_present("split") {
 			info!("Reading frames from {:?}...", self.settings.split.file);

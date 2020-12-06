@@ -3,7 +3,7 @@ pub mod parser;
 use crate::anim::{AnimFormat, AnimMode};
 use crate::file::format::FileFormat;
 use clap::{App, AppSettings, Arg, ArgMatches, Shell, SubCommand};
-use std::io;
+use std::io::Write;
 use std::str::FromStr;
 
 /* Help template for the main arguments */
@@ -54,13 +54,14 @@ where
 	 * Generate completions for the specified shell.
 	 *
 	 * @param shell
+	 * @param output
 	 */
-	pub fn gen_completions(shell: &'a str) {
+	pub fn gen_completions<Output: Write>(shell: &'a str, mut output: Output) {
 		if let Ok(shell) = Shell::from_str(shell) {
 			Self::get_app().gen_completions_to(
 				env!("CARGO_PKG_NAME"),
 				shell,
-				&mut io::stdout(),
+				&mut output,
 			);
 		}
 	}
