@@ -355,6 +355,7 @@ mod tests {
 	fn test_x11_display() {
 		let mut settings = RecordSettings::default();
 		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
+		settings.flag.font = Some(DEFAULT_FONT);
 		let mut display = Display::open(Some(settings)).unwrap();
 		display
 			.set_focused_window(display.get_root_window().xid, xlib::RevertToParent);
