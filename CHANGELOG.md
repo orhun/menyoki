@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Changed
 - Update traced opcodes of X11 implementation
+- Update roadmap in README.md about platforms
 
 ## [1.0.0] - 2020-12-06
 ### Add
