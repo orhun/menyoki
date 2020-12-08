@@ -57,17 +57,17 @@ impl<'a> ImageAnalyzer<'a> {
 	 * Get the time information of the file.
 	 *
 	 * @param  info
-	 * @return date
+	 * @return date (Option)
 	 */
-	fn get_time_info(&self, info: TimeInfo) -> String {
+	fn get_time_info(&self, info: TimeInfo) -> Option<String> {
 		if let Ok(d) = match info {
 			TimeInfo::Created => self.metadata.created(),
 			TimeInfo::Modified => self.metadata.modified(),
 			TimeInfo::Accessed => self.metadata.accessed(),
 		} {
-			self.settings.time.get(d)
+			Some(self.settings.time.get(d))
 		} else {
-			String::from("(?)")
+			None
 		}
 	}
 
@@ -160,9 +160,12 @@ impl<'a> ImageAnalyzer<'a> {
 			} else {
 				""
 			},
-			self.get_time_info(TimeInfo::Created),
-			self.get_time_info(TimeInfo::Modified),
-			self.get_time_info(TimeInfo::Accessed),
+			self.get_time_info(TimeInfo::Created)
+				.unwrap_or_else(|| String::from("(?)")),
+			self.get_time_info(TimeInfo::Modified)
+				.unwrap_or_else(|| String::from("(?)")),
+			self.get_time_info(TimeInfo::Accessed)
+				.unwrap_or_else(|| String::from("(?)")),
 			self.format.map_or_else(
 				|| String::from("(?)"),
 				|f| format!("{:?}", f).to_uppercase()
@@ -256,27 +259,14 @@ mod tests {
 		);
 		let analyzer = ImageAnalyzer::new(&settings);
 		assert_eq!("73 B", analyzer.get_file_size());
-		assert_eq!(
-			Utc::now().format("%F").to_string(),
-			analyzer
-				.get_time_info(TimeInfo::Created)
-				.split_whitespace()
-				.collect::<Vec<&str>>()[0]
-		);
-		assert_eq!(
-			Utc::now().format("%F").to_string(),
-			analyzer
-				.get_time_info(TimeInfo::Modified)
-				.split_whitespace()
-				.collect::<Vec<&str>>()[0]
-		);
-		assert_eq!(
-			Utc::now().format("%F").to_string(),
-			analyzer
-				.get_time_info(TimeInfo::Accessed)
-				.split_whitespace()
-				.collect::<Vec<&str>>()[0]
-		);
+		for info in vec![TimeInfo::Created, TimeInfo::Modified, TimeInfo::Accessed] {
+			if let Some(time) = analyzer.get_time_info(info) {
+				assert_eq!(
+					Utc::now().format("%F").to_string(),
+					time.split_whitespace().collect::<Vec<&str>>()[0]
+				);
+			}
+		}
 		assert_eq!(false, analyzer.metadata.permissions().readonly());
 		assert_eq!(Some(ImageFormat::Png), analyzer.format);
 		assert_eq!(ColorType::Rgba8, analyzer.image.color());

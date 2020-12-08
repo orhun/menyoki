@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Update README.md about installation requirements
 
+### Fixed
+- Update analyze module tests about invalid file metadata
+
 ## [1.0.1] - 2020-12-07
 ### Changed
 - Update traced opcodes of X11 implementation
