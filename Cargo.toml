@@ -1,6 +1,6 @@
 [package]
 name = "menyoki"
-version = "1.0.1"
+version = "1.0.2"
 description = "Screen{shot,cast} and perform ImageOps on the command line"
 authors = ["Orhun Parmaksız <orhunparmaksiz@gmail.com>"]
 license = "GPL-3.0"
