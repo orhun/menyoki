@@ -123,7 +123,10 @@
 
 ## Installation
 
-Linux: [Xlib](https://en.wikipedia.org/wiki/Xlib) (libX11) must be installed to build **menyoki**.
+### Requirements
+
+* Rust: `1.44.0+`
+* Linux dependencies: [Xlib](https://en.wikipedia.org/wiki/Xlib) (libX11)
 
 ### Cargo
 
