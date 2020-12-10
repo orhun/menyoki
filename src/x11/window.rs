@@ -105,16 +105,6 @@ impl Window {
 	}
 
 	/**
-	 * Set the graphics context of Window object.
-	 *
-	 * @return Window
-	 */
-	unsafe fn set_gc(&mut self) -> Self {
-		self.gc = self.get_gc();
-		*self
-	}
-
-	/**
 	 * Get the graphics context from window.
 	 *
 	 * @return GC
@@ -134,6 +124,41 @@ impl Window {
 			xlib::XSetFont(self.display.inner, gc, (*xfont).fid);
 		}
 		gc
+	}
+
+	/**
+	 * Set the graphics context of Window object.
+	 *
+	 * @return Window
+	 */
+	unsafe fn set_gc(&mut self) -> Self {
+		self.gc = self.get_gc();
+		*self
+	}
+
+	/**
+	 * Get the parent window.
+	 *
+	 * @return Window (Option)
+	 */
+	pub unsafe fn get_parent(&self) -> Option<Self> {
+		let mut root = MaybeUninit::<u64>::uninit();
+		let mut parent = MaybeUninit::<u64>::uninit();
+		let mut children = MaybeUninit::<*mut u64>::uninit();
+		let mut nchildren = MaybeUninit::<u32>::uninit();
+		if xlib::XQueryTree(
+			self.display.inner,
+			self.xid as u64,
+			root.as_mut_ptr(),
+			parent.as_mut_ptr(),
+			children.as_mut_ptr(),
+			nchildren.as_mut_ptr(),
+		) == xlib::True
+		{
+			Some(Window::new(*parent.as_ptr(), self.display))
+		} else {
+			None
+		}
 	}
 
 	/**
@@ -411,6 +436,7 @@ mod tests {
 		window.draw_borders();
 		window.show_countdown();
 		window.clear_area();
+		assert_eq!(0, unsafe { window.get_parent() }.unwrap().xid);
 		assert_eq!(
 			"\n Window title  -> \"root-window\"\n Window size   -> [1366x768]",
 			format!("{}", window)

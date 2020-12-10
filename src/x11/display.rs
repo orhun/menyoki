@@ -102,7 +102,13 @@ impl Display {
 				focus_state.as_mut_ptr(),
 			);
 			if focus_state.assume_init() != xlib::RevertToNone {
-				Some(Window::new(*focus_window.as_ptr(), *self))
+				let mut window = Window::new(*focus_window.as_ptr(), *self);
+				if window.geometry == Geometry::new(0, 0, 1, 1) {
+					if let Some(parent) = window.get_parent() {
+						window = parent;
+					}
+				}
+				Some(window)
 			} else {
 				None
 			}
@@ -219,7 +225,10 @@ impl Display {
 					debug!("Window ID: {}", window.xid);
 					info!("{}", window);
 				}
-				self.ungrab_keys(xid);
+				if let Some(id) = xid {
+					Window::new(id, *self).clear_area();
+					self.ungrab_keys(xid);
+				}
 				self.settings.padding = window_padding;
 				self.update_padding(size, window.geometry);
 				window.clear_area();
