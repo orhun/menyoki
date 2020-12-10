@@ -1,6 +1,6 @@
 [package]
 name = "menyoki"
-version = "1.0.2"
+version = "1.1.0"
 description = "Screen{shot,cast} and perform ImageOps on the command line"
 authors = ["Orhun Parmaksız <orhunparmaksiz@gmail.com>"]
 license = "GPL-3.0"
@@ -37,7 +37,7 @@ ctrlc = { version = "3.1.7", features = ["termination"] }
 image = "0.23.12"
 imgref = { version = "1.7.0", optional = true }
 rgb = { version = "0.8.25", optional = true }
-png = "0.16.7"
+png = "0.16.8"
 apng = "0.2.0"
 gif = "0.11.1"
 kamadak-exif = "0.5.2"

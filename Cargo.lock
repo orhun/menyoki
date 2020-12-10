@@ -46,7 +46,7 @@ dependencies = [
  "failure",
  "flate2",
  "image 0.22.5",
- "png 0.16.7",
+ "png 0.16.8",
 ]
 
 [[package]]
@@ -199,9 +199,9 @@ dependencies = [
 
 [[package]]
 name = "const_fn"
-version = "0.4.3"
+version = "0.4.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c478836e029dcef17fb47c89023448c64f781a046e0300e257ad8225ae59afab"
+checksum = "cd51eab21ab4fd6a3bf889e2d0958c0a6e3a61ad04260325e919e652a2a62826"
 
 [[package]]
 name = "constant_time_eq"
@@ -568,7 +568,7 @@ dependencies = [
  "num-iter",
  "num-rational 0.3.2",
  "num-traits",
- "png 0.16.7",
+ "png 0.16.8",
  "scoped_threadpool",
  "tiff 0.6.0",
 ]
@@ -688,7 +688,7 @@ dependencies = [
 
 [[package]]
 name = "menyoki"
-version = "1.0.2"
+version = "1.1.0"
 dependencies = [
  "apng",
  "bytesize",
@@ -708,7 +708,7 @@ dependencies = [
  "kamadak-exif",
  "log",
  "natord",
- "png 0.16.7",
+ "png 0.16.8",
  "pretty_assertions",
  "rgb",
  "rust-ini",
@@ -888,9 +888,9 @@ dependencies = [
 
 [[package]]
 name = "png"
-version = "0.16.7"
+version = "0.16.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dfe7f9f1c730833200b134370e1d5098964231af8450bce9b78ee3ab5278b970"
+checksum = "3c3287920cb847dee3de33d301c463fba14dda99db24214ddf93f83d3021f4c6"
 dependencies = [
  "bitflags",
  "crc32fast",
