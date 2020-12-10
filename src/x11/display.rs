@@ -189,8 +189,10 @@ impl Display {
 		let start_time = Instant::now();
 		while !input_state.check_action_keys() {
 			window = self.get_window().0;
-			window.draw_borders();
-			window.show_text_centered(Some(window.area.to_string()), font);
+			if self.settings.flag.select {
+				window.draw_borders();
+				window.show_text_centered(Some(window.area.to_string()), font);
+			}
 			let reset_area =
 				self.update_area(window, input_state, &mut change_factor);
 			if input_state.check_cancel_keys() {
@@ -202,7 +204,7 @@ impl Display {
 				xid = None;
 				break;
 			} else if xid != Some(window.xid) || reset_area {
-				if !reset_area {
+				if !reset_area && self.settings.flag.select {
 					debug!("Window ID: {}", window.xid);
 					info!("{}", window);
 				}
@@ -218,13 +220,16 @@ impl Display {
 					self.get_symbol_from_keycode(&input_state.action_keys.main_key),
 				);
 				xid = Some(window.xid);
+			} else if !self.settings.flag.select {
+				break;
 			}
 			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
 		trace!("{:?}", input_state);
 		debug!("Selected window: {:?}", xid);
-		if self.settings.border.is_some()
-			|| (self.settings.border.is_none() && self.settings.time.countdown == 0)
+		if (self.settings.border.is_some()
+			|| (self.settings.border.is_none() && self.settings.time.countdown == 0))
+			&& self.settings.flag.select
 		{
 			window.clear_area();
 			window.show_text(Some(String::from(" ")), FpsClock::new(500));

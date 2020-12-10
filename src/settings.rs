@@ -135,6 +135,9 @@ impl<'a> AppSettings<'a> {
 				);
 			}
 		}
+		if !self.record.flag.select {
+			self.record.border = None;
+		}
 		if self.save.file.format == FileFormat::Ico {
 			self.set_icon_size()
 		}

@@ -74,6 +74,7 @@ pub struct RecordFlag {
 	pub alpha: bool,
 	pub keys: Option<&'static str>,
 	pub font: Option<&'static str>,
+	pub select: bool,
 }
 
 /* Default initialization values for RecordFlag */
@@ -83,6 +84,7 @@ impl Default for RecordFlag {
 			alpha: false,
 			keys: Some(""),
 			font: None,
+			select: true,
 		}
 	}
 }
@@ -94,9 +96,15 @@ impl RecordFlag {
 	 * @param  alpha
 	 * @param  keys (Option)
 	 * @param  font (Option)
+	 * @param  select
 	 * @return RecordFlag
 	 */
-	pub fn new(alpha: bool, keys: Option<&'static str>, font: &str) -> Self {
+	pub fn new(
+		alpha: bool,
+		keys: Option<&'static str>,
+		font: &str,
+		select: bool,
+	) -> Self {
 		Self {
 			alpha,
 			keys,
@@ -105,6 +113,7 @@ impl RecordFlag {
 			} else {
 				Some(Box::leak(font.to_string().into_boxed_str()))
 			},
+			select,
 		}
 	}
 }
@@ -261,6 +270,11 @@ impl RecordSettings {
 						))
 					},
 					matches.value_of("font").unwrap_or_default(),
+					if matches.value_of("size").unwrap_or_default().contains('+') {
+						matches.is_present("select")
+					} else {
+						true
+					},
 				),
 				RecordWindow::from_args(&matches),
 			),
