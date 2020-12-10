@@ -334,6 +334,7 @@ SUBCOMMANDS:
 | `menyoki record gif --gifski`                                     	| Record and encode using the gifski encoder                                        	|
 | `menyoki record gif save "test.gif" --timestamp`                  	| Record and save as "test.gif" with timestamp in the file name                     	|
 | `menyoki record apng --fps 30`                                    	| Record 30 frames per second and encode as APNG                                    	|
+| `menyoki -q record save "-" > test.gif`                           	| Record and redirect output to "test.gif"                                          	|
 | `menyoki -q record "kmon -t 2000"`                                	| Execute the command and record its output in quiet mode                           	|
 | `menyoki record --font "-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*"` 	| Use custom font for showing the area size (see `xfontsel`)                        	|
 
@@ -475,6 +476,7 @@ SUBCOMMANDS:
 | `menyoki capture jpg --quality 100`                    	| Screenshot and encode with the specified JPEG options                                        	|
 | `menyoki capture pnm --format pixmap --encoding ascii` 	| Screenshot and encode with the specified PNM options                                         	|
 | `menyoki capture ff save "test.ff" --timestamp`        	| Screenshot and save as "test.ff" in farbfeld format with timestamp in the file name          	|
+| `menyoki -q capture png save "-" > test.png`           	| Screenshot and redirect output to "test.png"                                                 	|
 | `menyoki -q capture "kmon -t 2000"`                    	| Execute the command and screenshot its output in quiet mode (sets countdown to 3 implicitly) 	|
 
 Also, see the [pro tip](#pro-tip) about `--size` argument.

@@ -30,7 +30,7 @@ use image::{
 use std::convert::TryInto;
 use std::fmt::Debug;
 use std::fs::{self, File};
-use std::io::{self, Error, Read, Seek, Write};
+use std::io::{self, Error, Read, Write};
 use std::path::Path;
 use std::thread;
 
@@ -84,6 +84,8 @@ where
 		} else if self.settings.args.is_present("analyze") {
 			debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
 			self.analyze_image()?;
+		} else if self.settings.save.file.path.to_str() == Some("-") {
+			self.save_output(self.get_app_output(), io::stdout());
 		} else {
 			self.save_output(
 				self.get_app_output(),
@@ -327,11 +329,7 @@ where
 	 * @param  app_output
 	 * @param  output
 	 */
-	fn save_output<Output: Write + Seek>(
-		&self,
-		app_output: AppOutput,
-		mut output: Output,
-	) {
+	fn save_output<Output: Write>(&self, app_output: AppOutput, mut output: Output) {
 		let (image, frames) = app_output;
 		match self.settings.save.file.format {
 			FileFormat::Gif => {
@@ -371,7 +369,10 @@ where
 			),
 			FileFormat::Tiff => self.save_image(
 				image,
-				TiffEncoder::new(output),
+				TiffEncoder::new(
+					File::create(&self.settings.save.file.path)
+						.expect("Failed to create file for TIFF"),
+				),
 				ExtendedColorType::Rgba8,
 			),
 			FileFormat::Tga => self.save_image(
@@ -522,6 +523,7 @@ mod tests {
 			let path =
 				FileUtil::get_path_with_extension(PathBuf::from("test.*"), &format);
 			settings.save.file.format = format.clone();
+			settings.save.file.path = path.clone();
 			settings.analyze.file = path.clone();
 			let app = App::new(Some(window), &settings);
 			app.save_output((app.get_image(), None), File::create(&path)?);
