@@ -329,6 +329,19 @@ impl Window {
 		}
 		trace!("Grabbed the key {} of {:?}", key, self.xid);
 	}
+
+	/* Ungrab the keys in the window.*/
+	pub fn ungrab_keys(&self) {
+		unsafe {
+			xlib::XUngrabKey(
+				self.display.inner,
+				xlib::AnyKey,
+				xlib::AnyModifier,
+				self.xid,
+			);
+		}
+		trace!("Ungrabbed the keys of {:?}", self.xid);
+	}
 }
 
 /* Capture implementation for X11 Window */
@@ -420,6 +433,7 @@ mod tests {
 	use crate::x11::display::Display;
 	use image::ExtendedColorType;
 	use pretty_assertions::assert_eq;
+	use x11::keysym;
 	#[test]
 	fn test_x11_window() {
 		let mut settings = RecordSettings::default();
@@ -433,6 +447,8 @@ mod tests {
 				CString::new("root-window").unwrap_or_default().as_ptr(),
 			);
 		};
+		window.grab_key(keysym::XK_space.into());
+		window.ungrab_keys();
 		window.draw_borders();
 		window.show_countdown();
 		window.clear_area();

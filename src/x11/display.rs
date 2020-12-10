@@ -170,25 +170,6 @@ impl Display {
 	}
 
 	/**
-	 * Ungrab the keys in the given window.
-	 *
-	 * @param xid (Option)
-	 */
-	fn ungrab_keys(&self, xid: Option<u64>) {
-		if let Some(window) = xid {
-			unsafe {
-				xlib::XUngrabKey(
-					self.inner,
-					xlib::AnyKey,
-					xlib::AnyModifier,
-					window,
-				);
-			}
-			trace!("Ungrabbed the keys of {:?}", xid);
-		}
-	}
-
-	/**
 	 * Select a Window from display with user interaction.
 	 *
 	 * @param  input_state
@@ -226,8 +207,9 @@ impl Display {
 					info!("{}", window);
 				}
 				if let Some(id) = xid {
-					Window::new(id, *self).clear_area();
-					self.ungrab_keys(xid);
+					let prev_window = Window::new(id, *self);
+					prev_window.clear_area();
+					prev_window.ungrab_keys();
 				}
 				self.settings.padding = window_padding;
 				self.update_padding(size, window.geometry);
@@ -241,14 +223,14 @@ impl Display {
 		}
 		trace!("{:?}", input_state);
 		debug!("Selected window: {:?}", xid);
-		self.ungrab_keys(xid);
 		if self.settings.border.is_some()
 			|| (self.settings.border.is_none() && self.settings.time.countdown == 0)
 		{
 			window.clear_area();
 			window.show_text(Some(String::from(" ")), FpsClock::new(500));
 		}
-		if xid.is_some() {
+		if let Some(id) = xid {
+			Window::new(id, *self).ungrab_keys();
 			Some(window)
 		} else {
 			None
