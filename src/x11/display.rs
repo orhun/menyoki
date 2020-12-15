@@ -7,6 +7,7 @@ use device_query::{DeviceQuery, Keycode};
 use std::ffi::CString;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
+use std::os::raw::{c_int, c_ulong};
 use std::ptr;
 use std::thread;
 use std::time::{Duration, Instant};
@@ -94,8 +95,8 @@ impl Display {
 	 */
 	pub fn get_focused_window(&self) -> Option<Window> {
 		unsafe {
-			let mut focus_window = MaybeUninit::<u64>::uninit();
-			let mut focus_state = MaybeUninit::<i32>::uninit();
+			let mut focus_window = MaybeUninit::<c_ulong>::uninit();
+			let mut focus_state = MaybeUninit::<c_int>::uninit();
 			xlib::XGetInputFocus(
 				self.inner,
 				focus_window.as_mut_ptr(),
@@ -122,7 +123,7 @@ impl Display {
 	 * @param  focus_state
 	 */
 	#[allow(dead_code)]
-	pub fn set_focused_window(&self, xid: u64, focus_state: i32) {
+	pub fn set_focused_window(&self, xid: c_ulong, focus_state: c_int) {
 		unsafe {
 			xlib::XSetInputFocus(self.inner, xid, focus_state, xlib::CurrentTime)
 		};
@@ -149,9 +150,9 @@ impl Display {
 	 * Get the corresponding key symbol from keycode.
 	 *
 	 * @param  keycode
-	 * @return u64
+	 * @return c_ulong
 	 */
-	fn get_symbol_from_keycode(&self, keycode: &Keycode) -> u64 {
+	fn get_symbol_from_keycode(&self, keycode: &Keycode) -> c_ulong {
 		let mut key = format!("{:?}", keycode)
 			.trim_start_matches("Key")
 			.to_string();
@@ -365,14 +366,15 @@ mod tests {
 		assert_eq!(
 			u64::try_from(keysym::XK_Alt_L).unwrap(),
 			display.get_symbol_from_keycode(&input_state.action_keys.main_key)
+				as u64
 		);
 		assert_eq!(
 			u64::try_from(keysym::XK_Control_R).unwrap(),
-			display.get_symbol_from_keycode(&Keycode::RControl)
+			display.get_symbol_from_keycode(&Keycode::RControl) as u64
 		);
 		assert_eq!(
 			u64::try_from(keysym::XK_X).unwrap(),
-			display.get_symbol_from_keycode(&Keycode::X)
+			display.get_symbol_from_keycode(&Keycode::X) as u64
 		);
 		display.get_root_window().release();
 	}

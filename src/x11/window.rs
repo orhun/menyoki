@@ -9,6 +9,7 @@ use std::ffi::CString;
 use std::fmt;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
+use std::os::raw::{c_char, c_uint, c_ulong};
 use std::ptr;
 use std::slice;
 use x11::xlib;
@@ -23,7 +24,7 @@ const BORDER_PADDING: u32 = 1;
 /* X11 window id, geometric properties and its display */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
-	pub xid: u64,
+	pub xid: c_ulong,
 	display: Display,
 	gc: xlib::GC,
 	pub geometry: Geometry,
@@ -55,7 +56,7 @@ impl Window {
 	 * @param  display
 	 * @return Window
 	 */
-	pub fn new(xid: u64, display: Display) -> Self {
+	pub fn new(xid: c_ulong, display: Display) -> Self {
 		unsafe {
 			Self {
 				xid,
@@ -111,7 +112,11 @@ impl Window {
 	 */
 	unsafe fn get_gc(&self) -> xlib::GC {
 		let gc = xlib::XCreateGC(self.display.inner, self.xid, 0, ptr::null_mut());
-		xlib::XSetForeground(self.display.inner, gc, self.display.settings.color);
+		xlib::XSetForeground(
+			self.display.inner,
+			gc,
+			self.display.settings.color as c_ulong,
+		);
 		xlib::XSetLineAttributes(
 			self.display.inner,
 			gc,
@@ -142,13 +147,13 @@ impl Window {
 	 * @return Window (Option)
 	 */
 	pub unsafe fn get_parent(&self) -> Option<Self> {
-		let mut root = MaybeUninit::<u64>::uninit();
-		let mut parent = MaybeUninit::<u64>::uninit();
-		let mut children = MaybeUninit::<*mut u64>::uninit();
-		let mut nchildren = MaybeUninit::<u32>::uninit();
+		let mut root = MaybeUninit::<c_ulong>::uninit();
+		let mut parent = MaybeUninit::<c_ulong>::uninit();
+		let mut children = MaybeUninit::<*mut c_ulong>::uninit();
+		let mut nchildren = MaybeUninit::<c_uint>::uninit();
 		if xlib::XQueryTree(
 			self.display.inner,
-			self.xid as u64,
+			self.xid,
 			root.as_mut_ptr(),
 			parent.as_mut_ptr(),
 			children.as_mut_ptr(),
@@ -168,7 +173,7 @@ impl Window {
 	 */
 	pub fn get_name(&self) -> Option<String> {
 		unsafe {
-			let mut window_name = MaybeUninit::<*mut i8>::uninit();
+			let mut window_name = MaybeUninit::<*mut c_char>::uninit();
 			if xlib::XFetchName(
 				self.display.inner,
 				self.xid,
@@ -315,7 +320,7 @@ impl Window {
 	 *
 	 * @param key
 	 */
-	pub fn grab_key(&self, key: u64) {
+	pub fn grab_key(&self, key: c_ulong) {
 		unsafe {
 			xlib::XGrabKey(
 				self.display.inner,
