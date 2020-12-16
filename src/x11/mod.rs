@@ -42,11 +42,18 @@ impl<'a> Access<'a, Window> for WindowSystem<'a> {
 	fn get_window(&mut self) -> Option<Window> {
 		debug!("Record window: {:?}", self.settings.record.window);
 		match self.settings.record.window {
-			RecordWindow::Focus(None) => self.display.get_focused_window(),
+			RecordWindow::Focus(None, parent) => {
+				self.display.get_focused_window(parent)
+			}
 			RecordWindow::Root(None) => Some(self.display.get_root_window()),
 			_ => {
 				if self.settings.record.command.is_some() {
-					self.display.get_focused_window()
+					self.display.get_focused_window(
+						match self.settings.record.window {
+							RecordWindow::Focus(_, parent) => parent,
+							_ => false,
+						},
+					)
 				} else {
 					self.display.select_window(
 						&self
@@ -126,13 +133,14 @@ mod tests {
 			.unwrap()
 			.get_window()
 			.is_none());
-		settings.record.window = RecordWindow::Focus(Some(Geometry::default()));
+		settings.record.window =
+			RecordWindow::Focus(Some(Geometry::default()), false);
 		settings.record.command = Some("test");
 		assert!(WindowSystem::init(&settings)
 			.unwrap()
 			.get_window()
 			.is_some());
-		settings.record.window = RecordWindow::Focus(None);
+		settings.record.window = RecordWindow::Focus(None, false);
 		let mut window_system = WindowSystem::init(&settings).unwrap();
 		window_system.display.set_focused_window(
 			window_system.display.get_root_window().xid,

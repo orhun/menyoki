@@ -59,6 +59,7 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)-f[Record the focused window]' \
 '(-r --root)--focus[Record the focused window]' \
 '--select[Select the window to record]' \
+'--parent[Record the parent of the window]' \
 '--with-alpha[Record with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
@@ -1493,6 +1494,7 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)-f[Capture the focused window]' \
 '(-r --root)--focus[Capture the focused window]' \
 '--select[Select the window to capture]' \
+'--parent[Capture the parent of the window]' \
 '--with-alpha[Capture with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
@@ -2041,6 +2043,7 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)-f[Capture the focused window]' \
 '(-r --root)--focus[Capture the focused window]' \
 '--select[Select the window to capture]' \
+'--parent[Capture the parent of the window]' \
 '--with-alpha[Capture with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \
@@ -2589,6 +2592,7 @@ _arguments "${_arguments_options[@]}" \
 '(-r --root)-f[Capture the focused window]' \
 '(-r --root)--focus[Capture the focused window]' \
 '--select[Select the window to capture]' \
+'--parent[Capture the parent of the window]' \
 '--with-alpha[Capture with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
 '-h[Print help information]' \

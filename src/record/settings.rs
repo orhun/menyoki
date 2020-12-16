@@ -121,7 +121,7 @@ impl RecordFlag {
 /* Window to record, with geometric properties  */
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum RecordWindow {
-	Focus(Option<Geometry>),
+	Focus(Option<Geometry>, bool),
 	Root(Option<Geometry>),
 }
 
@@ -146,11 +146,11 @@ impl RecordWindow {
 				None
 			};
 		if matches.is_present("focus") {
-			Self::Focus(size)
+			Self::Focus(size, matches.is_present("parent"))
 		} else if matches.is_present("root") {
 			Self::Root(size)
 		} else {
-			Self::Focus(Some(size.unwrap_or_default()))
+			Self::Focus(Some(size.unwrap_or_default()), matches.is_present("parent"))
 		}
 	}
 }
@@ -177,7 +177,7 @@ impl Default for RecordSettings {
 			padding: Padding::default(),
 			time: RecordTime::default(),
 			flag: RecordFlag::default(),
-			window: RecordWindow::Focus(Some(Geometry::default())),
+			window: RecordWindow::Focus(Some(Geometry::default()), false),
 		}
 	}
 }

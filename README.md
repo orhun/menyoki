@@ -295,6 +295,7 @@ FLAGS:
     -r, --root          Record the root window
     -f, --focus         Record the focused window
         --select        Select the window to record
+        --parent        Record the parent of the window
         --with-alpha    Record with the alpha channel
         --no-keys       Disable the action keys while recording
     -h, --help          Print help information
@@ -328,6 +329,7 @@ SUBCOMMANDS:
 | `menyoki record --focus --with-alpha`                             	| Record the focused window with the alpha channel (for transparency)               	|
 | `menyoki record --size 200x300 --duration 10`                     	| Record an area of size 200x300 for 10 seconds                                     	|
 | `menyoki record --padding 20:10:0:10 --timeout 120`               	| Record an area with given padding and set window selection timeout to 120 seconds 	|
+| `menyoki record --parent`                                         	| Record the parent window of the selected window                                   	|
 | `menyoki record --border 5`                                       	| Record the area selected by a border with 5 width                                 	|
 | `menyoki record --keys LControl-Q/W`                              	| Record with the default settings using custom key bindings                        	|
 | `menyoki record gif --fps 15 --quality 90`                        	| Record 15 frames per second with 90% quality                                      	|
@@ -435,6 +437,7 @@ FLAGS:
     -r, --root          Capture the root window
     -f, --focus         Capture the focused window
         --select        Select the window to capture
+        --parent        Record the parent of the window
         --with-alpha    Capture with the alpha channel
     -h, --help          Print help information
 
@@ -794,6 +797,7 @@ color = 3AA431
 root = false
 focus = true
 select = true
+parent = false
 with-alpha = false
 no-keys = false
 keys = LAlt-S/Enter
@@ -822,6 +826,7 @@ format = gif
 root = false
 focus = true
 select = true
+parent = false
 with-alpha = false
 keys = LAlt-S/Enter
 border = 1

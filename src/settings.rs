@@ -147,13 +147,13 @@ impl<'a> AppSettings<'a> {
 	fn set_icon_size(&mut self) {
 		let ico_geometry = Geometry::new(0, 0, 256, 256);
 		match self.record.window {
-			RecordWindow::Focus(None) => {
-				self.record.window = RecordWindow::Focus(Some(ico_geometry))
+			RecordWindow::Focus(None, parent) => {
+				self.record.window = RecordWindow::Focus(Some(ico_geometry), parent)
 			}
 			RecordWindow::Root(None) => {
 				self.record.window = RecordWindow::Root(Some(ico_geometry))
 			}
-			RecordWindow::Focus(Some(ref mut geometry))
+			RecordWindow::Focus(Some(ref mut geometry), _)
 			| RecordWindow::Root(Some(ref mut geometry)) => {
 				if geometry.width == 0 || geometry.width > ico_geometry.width {
 					geometry.width = ico_geometry.width;
@@ -188,7 +188,8 @@ mod tests {
 		settings.jpg.quality = 0;
 		settings.anim.quality = 0;
 		settings.save.file.format = FileFormat::Ico;
-		settings.record.window = RecordWindow::Focus(Some(Geometry::default()));
+		settings.record.window =
+			RecordWindow::Focus(Some(Geometry::default()), false);
 		settings.check();
 	}
 }

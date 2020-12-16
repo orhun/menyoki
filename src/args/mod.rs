@@ -220,6 +220,11 @@ where
 			} else {
 				"Select the window to record"
 			}))
+			.arg(Arg::with_name("parent").long("parent").help(if capture {
+				"Capture the parent of the window"
+			} else {
+				"Record the parent of the window"
+			}))
 			.arg(
 				Arg::with_name("with-alpha")
 					.long("with-alpha")

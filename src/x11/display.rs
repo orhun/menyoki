@@ -91,9 +91,10 @@ impl Display {
 	/**
 	 * Get the focused window.
 	 *
+	 * @param  parent
 	 * @return Window (Option)
 	 */
-	pub fn get_focused_window(&self) -> Option<Window> {
+	pub fn get_focused_window(&self, parent: bool) -> Option<Window> {
 		unsafe {
 			let mut focus_window = MaybeUninit::<c_ulong>::uninit();
 			let mut focus_state = MaybeUninit::<c_int>::uninit();
@@ -104,7 +105,7 @@ impl Display {
 			);
 			if focus_state.assume_init() != xlib::RevertToNone {
 				let mut window = Window::new(*focus_window.as_ptr(), *self);
-				if window.geometry == Geometry::new(0, 0, 1, 1) {
+				if window.geometry == Geometry::new(0, 0, 1, 1) || parent {
 					if let Some(parent) = window.get_parent() {
 						window = parent;
 					}
@@ -136,8 +137,9 @@ impl Display {
 	 */
 	fn get_window(&self) -> (Window, Geometry) {
 		match self.settings.window {
-			RecordWindow::Focus(geometry) => (
-				self.get_focused_window().expect("Failed to get the window"),
+			RecordWindow::Focus(geometry, parent) => (
+				self.get_focused_window(parent)
+					.expect("Failed to get the window"),
 				geometry.unwrap_or_default(),
 			),
 			RecordWindow::Root(geometry) => {
@@ -359,7 +361,7 @@ mod tests {
 		display.update_padding(Geometry::new(0, 0, 10, 10), Geometry::default());
 		assert_eq!(
 			display.get_root_window().xid,
-			display.get_focused_window().unwrap().xid
+			display.get_focused_window(false).unwrap().xid
 		);
 		let input_state = InputState::default();
 		assert!(display.select_window(&input_state).is_none());

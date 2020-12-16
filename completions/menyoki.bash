@@ -207,7 +207,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__capture)
-            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2298,7 +2298,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__record)
-            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  gif apng save help    out"
+            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  gif apng save help    out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2698,7 +2698,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__screenshot)
-            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3513,7 +3513,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__ss)
-            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -h -V -k -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --help --version --keys --border --padding --size --duration --countdown --timeout --interval --font  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
