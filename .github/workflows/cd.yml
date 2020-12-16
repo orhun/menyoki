@@ -48,7 +48,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            --allow-unauthenticated librust-x11-dev musl-tools
+            --allow-unauthenticated libx11-dev musl-tools
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -59,15 +59,16 @@ jobs:
         if: matrix.os == 'ubuntu-18.04'
         run: |
           if [ "${{ matrix.build }}" = "linux-arm" ]; then
-            cargo build --verbose --release --locked --no-default-features \
-              --target ${{ matrix.target }}
+            PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
+              --locked --no-default-features --target ${{ matrix.target }}
             docker run --rm -v \
               "$PWD/target:/target:Z" \
               rustembedded/cross:${{ matrix.TARGET }} \
               arm-linux-gnueabihf-strip \
               target/${{ matrix.TARGET }}/release/menyoki
           else
-            cargo build --verbose --release --locked --target ${{ matrix.target }}
+            PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
+              --locked --target ${{ matrix.target }}
             strip -s target/${{ matrix.TARGET }}/release/menyoki
           fi
       - name: Build the project (windows)
