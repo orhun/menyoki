@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Use architecture compatible types for Xlib calls
 - Update README.md about Linux dependencies ([#7](https://github.com/orhun/menyoki/issues/7))
 
+### Fixed
+- Install librust-x11-dev package instead of libx11-dev in CD workflow
+
 ## [1.1.0] - 2020-12-10
 ### Added
 - Use stdout as output if "-" is given as file ([#10](https://github.com/orhun/menyoki/issues/10))
