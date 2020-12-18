@@ -489,6 +489,7 @@ mod tests {
 		window.draw_borders();
 		window.show_countdown();
 		window.clear_area();
+		assert_eq!(Geometry::new(0, 0, 1366, 768), window.get_crtc_info()[0]);
 		assert_eq!(0, unsafe { window.get_parent() }.unwrap().xid);
 		assert_eq!(
 			"\n Window title  -> \"root-window\"\n Window size   -> [1366x768]",
