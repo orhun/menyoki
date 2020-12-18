@@ -74,6 +74,7 @@ pub struct RecordFlag {
 	pub alpha: bool,
 	pub keys: Option<&'static str>,
 	pub font: Option<&'static str>,
+	pub monitor: Option<usize>,
 	pub select: bool,
 }
 
@@ -84,6 +85,7 @@ impl Default for RecordFlag {
 			alpha: false,
 			keys: Some(""),
 			font: None,
+			monitor: None,
 			select: true,
 		}
 	}
@@ -95,7 +97,8 @@ impl RecordFlag {
 	 *
 	 * @param  alpha
 	 * @param  keys (Option)
-	 * @param  font (Option)
+	 * @param  font
+	 * @param  monitor (Option)
 	 * @param  select
 	 * @return RecordFlag
 	 */
@@ -103,6 +106,7 @@ impl RecordFlag {
 		alpha: bool,
 		keys: Option<&'static str>,
 		font: &str,
+		monitor: Option<usize>,
 		select: bool,
 	) -> Self {
 		Self {
@@ -113,6 +117,7 @@ impl RecordFlag {
 			} else {
 				Some(Box::leak(font.to_string().into_boxed_str()))
 			},
+			monitor,
 			select,
 		}
 	}
@@ -145,9 +150,9 @@ impl RecordWindow {
 			} else {
 				None
 			};
-		if matches.is_present("focus") {
+		if matches.is_present("focus") && !matches.is_present("monitor") {
 			Self::Focus(size, matches.is_present("parent"))
-		} else if matches.is_present("root") {
+		} else if matches.is_present("root") || matches.is_present("monitor") {
 			Self::Root(size)
 		} else {
 			Self::Focus(Some(size.unwrap_or_default()), matches.is_present("parent"))
@@ -270,6 +275,7 @@ impl RecordSettings {
 						))
 					},
 					matches.value_of("font").unwrap_or_default(),
+					matches.value_of("monitor").and_then(|v| v.parse().ok()),
 					if matches.value_of("size").unwrap_or_default().contains('+') {
 						matches.is_present("select")
 					} else {

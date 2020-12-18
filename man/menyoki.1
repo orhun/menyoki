@@ -139,6 +139,7 @@ OPTIONS:
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
         --font <FONT>          Set the font to use for window selection
+        --monitor <NUM>        Set the monitor to record as root window
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -187,6 +188,21 @@ Record an area with given padding and set window selection timeout to
 120 seconds
 T}
 T{
+\f[C]menyoki record --parent\f[R]
+T}@T{
+Record the parent window of the selected window
+T}
+T{
+\f[C]menyoki record --root --select --monitor 1\f[R]
+T}@T{
+Record the first monitor as root window
+T}
+T{
+\f[C]menyoki record --border 5\f[R]
+T}@T{
+Record the area selected by a border with 5 width
+T}
+T{
 \f[C]menyoki record --keys LControl-Q/W\f[R]
 T}@T{
 Record with the default settings using custom key bindings
@@ -210,6 +226,11 @@ T{
 \f[C]menyoki record apng --fps 30\f[R]
 T}@T{
 Record 30 frames per second and encode as APNG
+T}
+T{
+\f[C]menyoki -q record save \[dq]-\[dq] > test.gif\f[R]
+T}@T{
+Record and redirect output to \[lq]test.gif\[rq]
 T}
 T{
 \f[C]menyoki -q record \[dq]kmon -t 2000\[dq]\f[R]
@@ -385,6 +406,7 @@ OPTIONS:
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
         --font <FONT>          Set the font to use for window selection
+        --monitor <NUM>        Set the monitor to capture as root window
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -458,6 +480,11 @@ T{
 T}@T{
 Screenshot and save as \[lq]test.ff\[rq] in farbfeld format with
 timestamp in the file name
+T}
+T{
+\f[C]menyoki -q capture png save \[dq]-\[dq] > test.png\f[R]
+T}@T{
+Screenshot and redirect output to \[lq]test.png\[rq]
 T}
 T{
 \f[C]menyoki -q capture \[dq]kmon -t 2000\[dq]\f[R]

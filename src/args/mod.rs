@@ -333,6 +333,17 @@ where
 					.allow_hyphen_values(true)
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("monitor")
+					.long("monitor")
+					.value_name("NUM")
+					.help(if capture {
+						"Set the monitor to capture as root window"
+					} else {
+						"Set the monitor to record as root window"
+					})
+					.takes_value(true),
+			)
 	}
 
 	/**

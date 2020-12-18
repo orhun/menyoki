@@ -314,6 +314,7 @@ OPTIONS:
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
         --font <FONT>          Set the font to use for window selection
+        --monitor <NUM>        Set the monitor to record as root window
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -334,6 +335,7 @@ SUBCOMMANDS:
 | `menyoki record --size 200x300 --duration 10`                     	| Record an area of size 200x300 for 10 seconds                                     	|
 | `menyoki record --padding 20:10:0:10 --timeout 120`               	| Record an area with given padding and set window selection timeout to 120 seconds 	|
 | `menyoki record --parent`                                         	| Record the parent window of the selected window                                   	|
+| `menyoki record --root --select --monitor 1`                      	| Record the first monitor as root window                                           	|
 | `menyoki record --border 5`                                       	| Record the area selected by a border with 5 width                                 	|
 | `menyoki record --keys LControl-Q/W`                              	| Record with the default settings using custom key bindings                        	|
 | `menyoki record gif --fps 15 --quality 90`                        	| Record 15 frames per second with 90% quality                                      	|
@@ -454,6 +456,7 @@ OPTIONS:
     -t, --timeout <S>          Set the timeout for window selection [default: 60]
     -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
         --font <FONT>          Set the font to use for window selection
+        --monitor <NUM>        Set the monitor to capture as root window
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -812,6 +815,8 @@ duration = ∞
 countdown = 3
 timeout = 60
 interval = 10
+#font =
+#monitor = 
 #command = 
 
 [split]
@@ -839,6 +844,8 @@ border = 1
 countdown = 0
 timeout = 60
 interval = 10
+#font =
+#monitor = 
 #command = 
 
 [edit]

@@ -27,7 +27,7 @@ test-ws = []
 # MacOS dependencies
 
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
-x11 = { version = "2.18.2", features = ["xlib"] }
+x11 = { version = "2.18.2", features = ["xlib", "xrandr"] }
 
 [dependencies]
 # window system

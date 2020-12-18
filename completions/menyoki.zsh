@@ -54,6 +54,7 @@ _arguments "${_arguments_options[@]}" \
 '-i+[Set the refresh interval for window selection]' \
 '--interval=[Set the refresh interval for window selection]' \
 '--font=[Set the font to use for window selection]' \
+'--monitor=[Set the monitor to record as root window]' \
 '-r[Record the root window]' \
 '--root[Record the root window]' \
 '(-r --root)-f[Record the focused window]' \
@@ -1489,6 +1490,7 @@ _arguments "${_arguments_options[@]}" \
 '-i+[Set the refresh interval for window selection]' \
 '--interval=[Set the refresh interval for window selection]' \
 '--font=[Set the font to use for window selection]' \
+'--monitor=[Set the monitor to capture as root window]' \
 '-r[Capture the root window]' \
 '--root[Capture the root window]' \
 '(-r --root)-f[Capture the focused window]' \
@@ -2038,6 +2040,7 @@ _arguments "${_arguments_options[@]}" \
 '-i+[Set the refresh interval for window selection]' \
 '--interval=[Set the refresh interval for window selection]' \
 '--font=[Set the font to use for window selection]' \
+'--monitor=[Set the monitor to capture as root window]' \
 '-r[Capture the root window]' \
 '--root[Capture the root window]' \
 '(-r --root)-f[Capture the focused window]' \
@@ -2587,6 +2590,7 @@ _arguments "${_arguments_options[@]}" \
 '-i+[Set the refresh interval for window selection]' \
 '--interval=[Set the refresh interval for window selection]' \
 '--font=[Set the font to use for window selection]' \
+'--monitor=[Set the monitor to capture as root window]' \
 '-r[Capture the root window]' \
 '--root[Capture the root window]' \
 '(-r --root)-f[Capture the focused window]' \

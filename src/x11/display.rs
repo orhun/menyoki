@@ -4,6 +4,7 @@ use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::{DeviceQuery, Keycode};
+use std::convert::TryInto;
 use std::ffi::CString;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
@@ -149,6 +150,29 @@ impl Display {
 	}
 
 	/**
+	 * Get a window from monitor specified via settings.
+	 *
+	 * @return Tuple (Window, Geometry)
+	 */
+	fn get_window_from_monitor(&mut self) -> (Window, Geometry) {
+		let (window, mut size) = self.get_window();
+		if let RecordWindow::Root(_) = self.settings.window {
+			if let Some(monitor) = self.settings.flag.monitor {
+				let crtc = window.get_crtc_info();
+				let geometry = crtc
+					.get(monitor.checked_sub(1).unwrap_or_default())
+					.expect("Invalid monitor number");
+				size = *geometry;
+				self.settings.padding.left =
+					geometry.x.try_into().unwrap_or_default();
+				self.settings.padding.top =
+					geometry.y.try_into().unwrap_or_default();
+			}
+		}
+		(window, size)
+	}
+
+	/**
 	 * Get the corresponding key symbol from keycode.
 	 *
 	 * @param  keycode
@@ -179,7 +203,7 @@ impl Display {
 	 * @return Window (Option)
 	 */
 	pub fn select_window(&mut self, input_state: &InputState) -> Option<Window> {
-		let (mut window, size) = self.get_window();
+		let (mut window, size) = self.get_window_from_monitor();
 		let mut xid = None;
 		let window_padding = self.settings.padding;
 		let mut change_factor = AREA_CHANGE_FACTOR;

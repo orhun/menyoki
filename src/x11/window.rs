@@ -12,7 +12,7 @@ use std::mem::MaybeUninit;
 use std::os::raw::{c_char, c_uint, c_ulong};
 use std::ptr;
 use std::slice;
-use x11::xlib;
+use x11::{xlib, xrandr};
 
 /* Maximum height of the text to show on window */
 const MAX_TEXT_HEIGHT: u32 = 40;
@@ -164,6 +164,38 @@ impl Window {
 		} else {
 			None
 		}
+	}
+
+	/**
+	 * Get CRTC (VDC) information of the window.
+	 *
+	 * @param Vector of Geometry
+	 */
+	pub fn get_crtc_info(&self) -> Vec<Geometry> {
+		let mut crtc_info = Vec::new();
+		unsafe {
+			let resources =
+				xrandr::XRRGetScreenResources(self.display.inner, self.xid);
+			for crtc in slice::from_raw_parts(
+				(*resources).crtcs,
+				(*resources).ncrtc.try_into().unwrap_or_default(),
+			)
+			.iter()
+			.map(|v| xrandr::XRRGetCrtcInfo(self.display.inner, resources, *v))
+			{
+				if (*crtc).noutput > 0 {
+					crtc_info.push(Geometry::new(
+						(*crtc).x as i32,
+						(*crtc).y as i32,
+						(*crtc).width as u32,
+						(*crtc).height as u32,
+					));
+				}
+				xrandr::XRRFreeCrtcInfo(crtc);
+			}
+			xrandr::XRRFreeScreenResources(resources);
+		}
+		crtc_info
 	}
 
 	/**

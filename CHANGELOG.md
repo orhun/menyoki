@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add `--parent` flag for recording/capturing the parent window ([#14](https://github.com/orhun/menyoki/issues/14))
+- Add `--monitor` argument for selecting the monitor to capture/record ([#15](https://github.com/orhun/menyoki/issues/15))
 
 ### Changed
 - Use architecture compatible types for Xlib calls
