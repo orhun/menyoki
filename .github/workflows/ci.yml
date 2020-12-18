@@ -48,7 +48,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            --allow-unauthenticated xvfb
+            --allow-unauthenticated xvfb libx11-dev libxrandr-dev
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
