@@ -128,9 +128,9 @@
 
 * Rust: `1.44.0+`
 * Dependencies
-  * Arch Linux: [libx11](https://www.archlinux.org/packages/extra/x86_64/libx11/)
-  * Debian, Ubuntu: [librust-x11-dev](https://packages.debian.org/search?keywords=librust-x11-dev)
-  * Fedora: [libX11-devel](https://fedora.pkgs.org/31/fedora-x86_64/libX11-devel-1.6.8-3.fc31.x86_64.rpm.html)
+  * Arch Linux: `libx11`, `libxrandr`
+  * Debian, Ubuntu: `libx11-dev`/`librust-x11-dev`, `libxrandr-dev`
+  * Fedora: `libX11-devel`, `libXrandr`
 
 ### Cargo
 
