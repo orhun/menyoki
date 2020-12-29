@@ -124,4 +124,4 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1
         with:
-          args: -v README.md
+          args: --exclude "twitter.com|crates.io|aur.archlinux.org/(.+?).git|patreon.com|mailto:+" -v *.md
