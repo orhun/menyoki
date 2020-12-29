@@ -124,6 +124,6 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1
         with:
-          args: --exclude "twitter.com|crates.io|aur.archlinux.org/(.+?).git|patreon.com|mailto:+" -v *.md
+          args: --exclude "twitter.com|crates.io|aur.archlinux.org/(.+?).git|patreon.com|mailto:+|%7Busername%7D" -v *.md
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
