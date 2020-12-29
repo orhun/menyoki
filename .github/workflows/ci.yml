@@ -114,3 +114,14 @@ jobs:
         with:
           command: fmt
           args: -- --check --verbose
+
+  lychee:
+    name: Check the links
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@master
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1
+        with:
+          args: -v README.md
