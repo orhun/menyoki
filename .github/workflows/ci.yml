@@ -125,3 +125,5 @@ jobs:
         uses: lycheeverse/lychee-action@v1
         with:
           args: --exclude "twitter.com|crates.io|aur.archlinux.org/(.+?).git|patreon.com|mailto:+" -v *.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
