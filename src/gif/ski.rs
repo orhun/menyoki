@@ -1,7 +1,8 @@
 use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::image::Image;
 use crate::util::state::InputState;
-use gifski::{Collector, Writer};
+use gifski::{Collector, Repeat, Writer};
+use std::convert::TryInto;
 use std::io::{self, Write};
 use std::thread;
 
@@ -25,8 +26,11 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 			width: Some(config.geometry.width),
 			height: Some(config.geometry.height),
 			quality: config.settings.quality,
-			once: config.settings.repeat == 0,
 			fast: config.settings.gifski.1,
+			repeat: match config.settings.repeat {
+				n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
+				_ => Repeat::Infinite,
+			},
 		})
 		.expect("Failed to initialize the gifski encoder");
 		Self {
