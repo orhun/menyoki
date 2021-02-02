@@ -44,7 +44,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            --allow-unauthenticated libx11-dev libxrandr-dev musl-tools
+            --allow-unauthenticated libx11-dev libxrandr-dev
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
@@ -134,7 +134,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            --allow-unauthenticated libx11-dev libxrandr-dev musl-tools
+            --allow-unauthenticated libx11-dev libxrandr-dev
       - name: Publish
         uses: actions-rs/cargo@v1
         with:
