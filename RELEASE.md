@@ -15,6 +15,6 @@
 
 Automated builds for new tags are enabled in [Docker Hub](https://hub.docker.com/r/orhunp/menyoki) so no action is required.
 
-### AUR
+### Arch Linux
 
-Flag [packages](https://aur.archlinux.org/packages/?O=0&SeB=b&K=menyoki&outdated=&SB=n&SO=a&PP=50&do_Search=Go) out-of-date on AUR. If they are not updated within 3 days, contact and ask for the [current maintainer](https://aur.archlinux.org/account/orhun) to update them.
+Flag the packages out-of-date both on [AUR](https://aur.archlinux.org/packages/?O=0&SeB=b&K=menyoki&outdated=&SB=n&SO=a&PP=50&do_Search=Go) and [community repository](https://archlinux.org/packages/community/x86_64/menyoki/). If they are not updated within 3 days, contact and ask for the [current maintainer](mailto:orhunparmaksiz@gmail.com) to update them.
