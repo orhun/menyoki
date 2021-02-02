@@ -6,8 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.2.1] - 2021-02-03
 ### Added
 - Add [lychee-action](https://github.com/lycheeverse/lychee-action) to CI workflow
+
+### Changed
+- Disable musl builds ([#17](https://github.com/orhun/menyoki/issues/17))
+- Update README.md about installation instructions
+- Update RELEASE.md about releasing for Arch Linux
+- Upgrade dependencies
 
 ## [1.2.0] - 2020-12-20
 ### Added
