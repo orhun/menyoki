@@ -394,6 +394,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "fallible_collections"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "74bebf0efe2e883c1619c455e3f1764333064694ebd5125d2faddabfb5963186"
+dependencies = [
+ "hashbrown",
+]
+
+[[package]]
 name = "fern_colored"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -448,9 +457,9 @@ dependencies = [
 
 [[package]]
 name = "gif-dispose"
-version = "3.1.0"
+version = "3.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3449e90a378cbf471a215eedfb74fa1c18e4d221aaad9a9a2b1c52ed72ff2b35"
+checksum = "243e0347e8f4384181cb12069d87b9dae021c41bdaada7bd0d6743ad6d95c1d7"
 dependencies = [
  "gif 0.11.1",
  "imgref",
@@ -459,9 +468,9 @@ dependencies = [
 
 [[package]]
 name = "gifski"
-version = "1.2.6"
+version = "1.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "032ae95c545fcf010d07d61126fb92aee50d69bc9a7ec3d414d2e656e2c60286"
+checksum = "1dbf992b49c52469a319600920f816b7bb7aa6c1b1ab6091d8ed706e8faaa074"
 dependencies = [
  "clap",
  "crossbeam-channel",
@@ -553,20 +562,22 @@ dependencies = [
 
 [[package]]
 name = "imagequant"
-version = "2.13.0"
+version = "3.0.3+sys2.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0b4956599cc38af9162b51fe752f73f3901b07139a6990b5dc63274868aae38"
+checksum = "670a496b08ae806100367d0c3734ccf48562d8f3f1c61c2c6f13e6aca1ae2881"
 dependencies = [
  "imagequant-sys",
  "libc",
+ "rgb",
 ]
 
 [[package]]
 name = "imagequant-sys"
-version = "2.13.1"
+version = "3.0.3+sys2.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe496775eb341b68cbb07cfb1692e97360f28cc07d7ded535fb048db8e37a9ba"
+checksum = "3689df1fd74c4a1737ea60ba03a05105d37d0fc8e7ba3028e7e10f162939f8fd"
 dependencies = [
+ "bitflags",
  "cc",
  "rgb",
 ]
@@ -619,16 +630,17 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "libc"
-version = "0.2.81"
+version = "0.2.85"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1482821306169ec4d07f6aca392a4681f66c75c9918aa49641a2595db64053cb"
+checksum = "7ccac4b00700875e6a07c6cde370d44d32fa01c5a65cdd2fca6858c479d28bb3"
 
 [[package]]
 name = "lodepng"
-version = "3.2.2"
+version = "3.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6eb909184223b89c76d66b80199b7ad4163aebb2519244e6ebac8ba74e67eab"
+checksum = "11443d177d97dc468ee5cc956769bbdeb4c20707d443c62dfd8b473505365613"
 dependencies = [
+ "fallible_collections",
  "flate2",
  "libc",
  "rgb",
@@ -636,11 +648,11 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.13"
+version = "0.4.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fcf3805d4480bb5b86070dcfeb9e2cb2ebc148adb753c5cca5f884d1d65a42b2"
+checksum = "51b9bbe6c47d51fc3e1a9b945965946b4c44142ab8792c50835a980d362c2710"
 dependencies = [
- "cfg-if 0.1.10",
+ "cfg-if 1.0.0",
 ]
 
 [[package]]
