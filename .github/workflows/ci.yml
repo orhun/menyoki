@@ -14,16 +14,12 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [linux-gnu, linux-musl, win-gnu, win-msvc, win32-msvc, macos]
+        build: [linux-gnu, win-gnu, win-msvc, win32-msvc, macos]
         include:
           - build: linux-gnu
             os: ubuntu-18.04
             toolchain: stable
             target: x86_64-unknown-linux-gnu
-          - build: linux-musl
-            os: ubuntu-18.04
-            toolchain: stable
-            target: x86_64-unknown-linux-musl
           - build: win-gnu
             os: windows-2019
             toolchain: stable
