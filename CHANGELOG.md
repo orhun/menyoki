@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add examples for copying captures and videos ([#19](https://github.com/orhun/menyoki/pull/19))
 
+### Fixed
+- Compare ICO height with geometry height in set_icon_size
+
 ## [1.2.1] - 2021-02-03
 ### Added
 - Add [lychee-action](https://github.com/lycheeverse/lychee-action) to CI workflow
