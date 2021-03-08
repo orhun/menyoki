@@ -237,8 +237,8 @@ cargo install --path .
 
 ## Usage
 
-| Action                                                                                                                     	| Result                                                                                                          	|
-|----------------------------------------------------------------------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------------	|
+| Action                                                                                                                     	| Result                                                                                                          	        |
+|-------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
 | ![menyoki on action](https://user-images.githubusercontent.com/24392180/99543947-cdeb2280-29c4-11eb-87a9-ad559f9522ad.gif) 	| ![record result](https://user-images.githubusercontent.com/24392180/99814600-3cadb480-2b5a-11eb-84ce-1a693d5ddc2c.gif) 	|
 
 Command line arguments of **menyoki** are designed to be as intuitive as possible. As a result of that, an action can be performed with a chain of subcommands along with the flags and options. The general prototype for the usage of command line arguments is the following:
@@ -280,7 +280,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                               	| Action                                                                  	|
-|---------------------------------------	|-------------------------------------------------------------------------	|
+|-------------------------------------------|---------------------------------------------------------------------------|
 | `menyoki -V`                          	| Print the version information                                           	|
 | `menyoki -vv --color FF00FF <action>` 	| Set log verbosity level to 2 (trace) and use "FF00FF" as the main color 	|
 | `menyoki -q -c menyoki.conf <action>`  	| Run in quiet mode and read the configuration from "menyoki.conf"         	|
@@ -335,7 +335,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                                                           	    | Action                                                                            	|
-|-------------------------------------------------------------------     	|-----------------------------------------------------------------------------------	|
+|---------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | `menyoki record`                                                      	| Select a window and start recording with default settings                         	|
 | `menyoki record --root --countdown 5`                                 	| Record the root window after 5 seconds of countdown                               	|
 | `menyoki record --focus --with-alpha`                                 	| Record the focused window with the alpha channel (for transparency)               	|
@@ -350,7 +350,7 @@ SUBCOMMANDS:
 | `menyoki record gif save "test.gif" --timestamp`                      	| Record and save as "test.gif" with timestamp in the file name                     	|
 | `menyoki record apng --fps 30`                                    	    | Record 30 frames per second and encode as APNG                                    	|
 | `menyoki -q record save "-" > test.gif`                           	    | Record and redirect output to "test.gif"                                          	|
-| `menyoki -q record save "-" | xclip -selection clipboard -t image/gif`    | Record and pipes output to xclip's clipboard selection, specifying target as a gif |
+| `menyoki -q record save "-" | xclip -selection clipboard -t image/gif`    | Record and pipes output to xclip's clipboard selection, specifying target as a gif    |
 | `menyoki -q record "kmon -t 2000"`                                	    | Execute the command and record its output in quiet mode                          	    |
 | `menyoki record --font "-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*"` 	    | Use custom font for showing the area size (see `xfontsel`)                       	    |
 
@@ -394,7 +394,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                                   	| Action                                                  	|
-|-------------------------------------------	|---------------------------------------------------------	|
+|-----------------------------------------------|-----------------------------------------------------------|
 | `menyoki split rec.gif`                   	| Extract frames from the "rec.gif" file                  	|
 | `menyoki split rec.gif jpg --quality 100` 	| Extract frames as JPEG in maximum quality               	|
 | `menyoki split rec.gif --dir frames/`     	| Extract frames and save them to the specified directory 	|
@@ -431,7 +431,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                                          	| Action                                                           	|
-|--------------------------------------------------	|------------------------------------------------------------------	|
+|---------------------------------------------------|-------------------------------------------------------------------|
 | `menyoki make 1.png 2.png`                       	| Make a GIF that consists of two frames as "1.png" and "2.png"    	|
 | `menyoki make 1.png 2.png --fps 5 --quality 100` 	| Make a GIF with the specified properties from given frames       	|
 | `menyoki make 1.png 2.png save 3.gif --date`     	| Make a GIF and save the file ("3.gif") with the date information 	|
@@ -484,7 +484,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                                                                     | Action                                                                                       	|
-|--------------------------------------------------------                     |----------------------------------------------------------------------------------------------	|
+|-----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
 | `menyoki capture`                                                           | Select a window and screenshot with default settings                                         	|
 | `menyoki capture --root --countdown 5`                                      | Screenshot the root window after 5 seconds of countdown                                      	|
 | `menyoki capture --focus --with-alpha`                                      | Screenshot the focused window with the alpha channel (for transparency)                      	|
@@ -548,7 +548,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                                                                                                            	| Action                                                         	|
-|--------------------------------------------------------------------------------------------------------------------	|----------------------------------------------------------------	|
+|-----------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 | `menyoki edit test.png`                                                                                            	| Re-encode the "test.png" file without editing                  	|
 | `menyoki edit test.png --grayscale`                                                                                	| Convert image to grayscale                                     	|
 | `menyoki edit test.png --invert`                                                                                   	| Invert the colors of the image                                 	|
@@ -596,7 +596,7 @@ SUBCOMMANDS:
 #### Examples
 
 | Command                                                 	| Action                                                        	|
-|---------------------------------------------------------	|---------------------------------------------------------------	|
+|-----------------------------------------------------------|-------------------------------------------------------------------|
 | `menyoki analyze test.jpg`                              	| Inspect "test.jpg" and print the report                       	|
 | `menyoki analyze test.jpg save test_report.txt`         	| Inspect "test.jpg" and save the report as "test_report.txt"   	|
 | `menyoki analyze test.jpg --timestamp`                  	| Inspect the file and create a report based on timestamps      	|
@@ -772,7 +772,7 @@ There are 3 types of key bindings in terms of performed action:
 * Miscellaneous keys (the keys that can be used for resizing the selected area such as `LAlt-[up]`)
 
 | Key                               	| Action                                                      	|
-|-----------------------------------	|-------------------------------------------------------------	|
+|---------------------------------------|---------------------------------------------------------------|
 | `LAlt-[S/Enter]`                  	| Start/stop recording or screenshot the selected area        	|
 | `LControl-D, Escape`              	| Cancel the current operation                                	|
 | `LControl-C`                      	| Cancel the current operation or stop recording              	|
@@ -924,7 +924,7 @@ Corresponding environment variables can be set for overriding the command line f
 ### Examples
 
 | Command                                                     	| Environment Variables                                     	|
-|-------------------------------------------------------------	|-----------------------------------------------------------	|
+|---------------------------------------------------------------|---------------------------------------------------------------|
 | `menyoki --quiet`                                           	| `MENYOKI_GENERAL_QUIET=true`                              	|
 | `menyoki record gif --fps 10 save --timestamp`              	| `MENYOKI_GIF_FPS=10 MENYOKI_SAVE_TIMESTAMP=true`          	|
 | `menyoki capture --size 200x300 jpg --quality 100`          	| `MENYOKI_CAPTURE_SIZE=200x300 MENYOKI_JPG_QUALITY=100`    	|
