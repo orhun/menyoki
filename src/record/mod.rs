@@ -127,7 +127,7 @@ where
 					debug!("\n");
 					warn!("User interrupt detected.");
 					break;
-				} else if state.check_action_keys() {
+				} else if state.check_action() {
 					break;
 				}
 			}

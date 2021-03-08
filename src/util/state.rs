@@ -55,11 +55,11 @@ impl InputState {
 	}
 
 	/**
-	 * Check if the action keys are pressed.
+	 * Check for action keys and mouse state to see if there is any action.
 	 *
 	 * @return bool
 	 */
-	pub fn check_action_keys(&self) -> bool {
+	pub fn check_action(&self) -> bool {
 		let keys_pressed = self.action_keys.check(self.state.get_keys());
 		if self.check_mouse {
 			keys_pressed || self.state.get_mouse().button_pressed[1]
@@ -88,7 +88,7 @@ mod tests {
 	#[test]
 	fn test_input_state() {
 		let input_state = InputState::default().into_boxed_state();
-		assert!(!input_state.check_action_keys());
+		assert!(!input_state.check_action());
 		assert!(!input_state.check_cancel_keys());
 		assert!(format!("{:?}", input_state).len() > 0);
 	}

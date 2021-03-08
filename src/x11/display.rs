@@ -214,7 +214,7 @@ impl Display {
 			)
 		});
 		let start_time = Instant::now();
-		while !input_state.check_action_keys() {
+		while !input_state.check_action() {
 			window = self.get_window().0;
 			if self.settings.flag.select {
 				window.draw_borders();
