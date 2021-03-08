@@ -158,7 +158,7 @@ impl<'a> AppSettings<'a> {
 				if geometry.width == 0 || geometry.width > ico_geometry.width {
 					geometry.width = ico_geometry.width;
 				}
-				if geometry.height == 0 || geometry.height > ico_geometry.width {
+				if geometry.height == 0 || geometry.height > ico_geometry.height {
 					geometry.height = ico_geometry.height;
 				}
 			}
