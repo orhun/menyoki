@@ -6,12 +6,13 @@ use std::fmt;
 pub struct InputState {
 	pub state: DeviceState,
 	pub action_keys: ActionKeys,
+	pub check_mouse: bool,
 }
 
 /* Default initialization values for InputState */
 impl Default for InputState {
 	fn default() -> Self {
-		Self::new(ActionKeys::default())
+		Self::new(ActionKeys::default(), false)
 	}
 }
 
@@ -33,12 +34,14 @@ impl InputState {
 	 * Create a new InputState object.
 	 *
 	 * @param  action_keys
+	 * @param  check_mouse
 	 * @return InputState
 	 */
-	pub fn new(action_keys: ActionKeys) -> Self {
+	pub fn new(action_keys: ActionKeys, check_mouse: bool) -> Self {
 		Self {
 			state: DeviceState::new(),
 			action_keys,
+			check_mouse,
 		}
 	}
 
@@ -57,7 +60,12 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_action_keys(&self) -> bool {
-		self.action_keys.check(self.state.get_keys())
+		let keys_pressed = self.action_keys.check(self.state.get_keys());
+		if self.check_mouse {
+			keys_pressed || self.state.get_mouse().button_pressed[1]
+		} else {
+			keys_pressed
+		}
 	}
 
 	/**

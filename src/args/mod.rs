@@ -250,6 +250,12 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("mouse")
+					.short("m")
+					.long("mouse")
+					.help("Select the window with mouse click"),
+			)
+			.arg(
 				Arg::with_name("border")
 					.short("b")
 					.long("border")

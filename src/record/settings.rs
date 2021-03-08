@@ -76,6 +76,7 @@ pub struct RecordFlag {
 	pub font: Option<&'static str>,
 	pub monitor: Option<usize>,
 	pub select: bool,
+	pub mouse: bool,
 }
 
 /* Default initialization values for RecordFlag */
@@ -87,6 +88,7 @@ impl Default for RecordFlag {
 			font: None,
 			monitor: None,
 			select: true,
+			mouse: false,
 		}
 	}
 }
@@ -100,6 +102,7 @@ impl RecordFlag {
 	 * @param  font
 	 * @param  monitor (Option)
 	 * @param  select
+	 * @param  mouse
 	 * @return RecordFlag
 	 */
 	pub fn new(
@@ -108,6 +111,7 @@ impl RecordFlag {
 		font: &str,
 		monitor: Option<usize>,
 		select: bool,
+		mouse: bool,
 	) -> Self {
 		Self {
 			alpha,
@@ -119,6 +123,7 @@ impl RecordFlag {
 			},
 			monitor,
 			select,
+			mouse,
 		}
 	}
 }
@@ -281,6 +286,7 @@ impl RecordSettings {
 					} else {
 						true
 					},
+					matches.is_present("mouse"),
 				),
 				RecordWindow::from_args(&matches),
 			),

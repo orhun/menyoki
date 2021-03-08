@@ -309,6 +309,7 @@ FLAGS:
         --parent        Record the parent of the window
         --with-alpha    Record with the alpha channel
         --no-keys       Disable the action keys while recording
+    -m, --mouse         Select the window with mouse click
     -h, --help          Print help information
 
 OPTIONS:
@@ -453,6 +454,7 @@ FLAGS:
         --select        Select the window to capture
         --parent        Record the parent of the window
         --with-alpha    Capture with the alpha channel
+    -m, --mouse         Select the window with mouse click
     -h, --help          Print help information
 
 OPTIONS:
@@ -483,20 +485,21 @@ SUBCOMMANDS:
 
 #### Examples
 
-| Command                                                                      | Action                                                                                       	|
-|------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------|
-| `menyoki capture`                                                            | Select a window and screenshot with default settings                                         	|
-| `menyoki capture --root --countdown 5`                                       | Screenshot the root window after 5 seconds of countdown                                      	|
-| `menyoki capture --focus --with-alpha`                                       | Screenshot the focused window with the alpha channel (for transparency)                      	|
-| `menyoki capture --size 200x300 --duration 10`                               | Screenshot an area of size 200x300 for 10 seconds                                            	|
-| `menyoki capture --padding 20:10:0:10 --timeout 120`                         | Screenshot an area with given padding and set window selection timeout to 120 seconds        	|
-| `menyoki capture png --filter avg --compression fast`                        | Screenshot and encode with the specified PNG options                                         	|
-| `menyoki capture jpg --quality 100`                                          | Screenshot and encode with the specified JPEG options                                        	|
-| `menyoki capture pnm --format pixmap --encoding ascii`                       | Screenshot and encode with the specified PNM options                                         	|
-| `menyoki capture ff save "test.ff" --timestamp`                              | Screenshot and save as "test.ff" in farbfeld format with timestamp in the file name          	|
-| `menyoki -q capture png save "-" > test.png`                                 | Screenshot and redirect output to "test.png"                                                 	|
-| `menyoki -q capture png save "-" \| xclip -selection clipboard -t image/png` | Screenshot and pipe output to xclip's clipboard selection, specifying an image/png target     	|
-| `menyoki -q capture "kmon -t 2000"`                    	                   | Execute the command and screenshot its output in quiet mode (sets countdown to 3 implicitly) 	|
+| Command                                                                      | Action                                                                                       |
+|------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------|
+| `menyoki capture`                                                            | Select a window and screenshot with default settings                                         |
+| `menyoki capture --root --countdown 5`                                       | Screenshot the root window after 5 seconds of countdown                                      |
+| `menyoki capture --focus --with-alpha`                                       | Screenshot the focused window with the alpha channel (for transparency)                      |
+| `menyoki capture --size 200x300 --duration 10`                               | Screenshot an area of size 200x300 for 10 seconds                                            |
+| `menyoki capture --padding 20:10:0:10 --timeout 120`                         | Screenshot an area with given padding and set window selection timeout to 120 seconds        |
+| `menyoki capture --mouse`                                                    | Screenshot the selected window with a mouse click                                            |
+| `menyoki capture png --filter avg --compression fast`                        | Screenshot and encode with the specified PNG options                                         |
+| `menyoki capture jpg --quality 100`                                          | Screenshot and encode with the specified JPEG options                                        |
+| `menyoki capture pnm --format pixmap --encoding ascii`                       | Screenshot and encode with the specified PNM options                                         |
+| `menyoki capture ff save "test.ff" --timestamp`                              | Screenshot and save as "test.ff" in farbfeld format with timestamp in the file name          |
+| `menyoki -q capture png save "-" > test.png`                                 | Screenshot and redirect output to "test.png"                                                 |
+| `menyoki -q capture png save "-" \| xclip -selection clipboard -t image/png` | Screenshot and pipe output to xclip's clipboard selection, specifying an image/png target    |
+| `menyoki -q capture "kmon -t 2000"`                                          | Execute the command and screenshot its output in quiet mode (sets countdown to 3 implicitly) |
 
 Also, see the [pro tip](#pro-tip) about `--size` argument.
 
@@ -816,6 +819,7 @@ select = true
 parent = false
 with-alpha = false
 no-keys = false
+mouse = false
 keys = LAlt-S/Enter
 border = 1
 #padding = T:R:B:L
@@ -846,6 +850,7 @@ focus = true
 select = true
 parent = false
 with-alpha = false
+mouse = false
 keys = LAlt-S/Enter
 border = 1
 #padding = T:R:B:L

@@ -63,6 +63,8 @@ _arguments "${_arguments_options[@]}" \
 '--parent[Record the parent of the window]' \
 '--with-alpha[Record with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
+'-m[Select the window with mouse click]' \
+'--mouse[Select the window with mouse click]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Prints version information]' \
@@ -1499,6 +1501,8 @@ _arguments "${_arguments_options[@]}" \
 '--parent[Capture the parent of the window]' \
 '--with-alpha[Capture with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
+'-m[Select the window with mouse click]' \
+'--mouse[Select the window with mouse click]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Prints version information]' \
@@ -2049,6 +2053,8 @@ _arguments "${_arguments_options[@]}" \
 '--parent[Capture the parent of the window]' \
 '--with-alpha[Capture with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
+'-m[Select the window with mouse click]' \
+'--mouse[Select the window with mouse click]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Prints version information]' \
@@ -2599,6 +2605,8 @@ _arguments "${_arguments_options[@]}" \
 '--parent[Capture the parent of the window]' \
 '--with-alpha[Capture with the alpha channel]' \
 '--no-keys[Disable the action keys while recording]' \
+'-m[Select the window with mouse click]' \
+'--mouse[Select the window with mouse click]' \
 '-h[Print help information]' \
 '--help[Print help information]' \
 '-V[Prints version information]' \

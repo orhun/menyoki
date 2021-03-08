@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Add examples for copying captures and videos ([#19](https://github.com/orhun/menyoki/pull/19))
+- Add `--mouse` flag for selecting windows with a mouse click
 
 ### Fixed
 - Compare ICO height with geometry height in set_icon_size
