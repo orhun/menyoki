@@ -29,7 +29,9 @@ impl<'a> Logger<'a> {
 				.warn(Color::Yellow)
 				.debug(Color::Blue)
 				.trace(Color::BrightBlack),
-			level_filter: if settings.args.is_present("quiet") {
+			level_filter: if settings.args.is_present("quiet")
+				|| settings.save.file.path.to_str() == Some("-")
+			{
 				LevelFilter::Off
 			} else {
 				match settings.args.occurrences_of("verbose") {
