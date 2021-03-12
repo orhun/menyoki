@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Compare ICO height with geometry height in set_icon_size
 - Set the `--quiet` flag implicitly if output is piped to stdout
+- Sleep before drawing the borders while selecting a window
 
 ## [1.2.1] - 2021-02-03
 ### Added

@@ -215,6 +215,7 @@ impl Display {
 		});
 		let start_time = Instant::now();
 		while !input_state.check_action() {
+			thread::sleep(Duration::from_millis(self.settings.time.interval));
 			window = self.get_window().0;
 			if self.settings.flag.select {
 				window.draw_borders();
@@ -250,7 +251,6 @@ impl Display {
 			} else if !self.settings.flag.select {
 				break;
 			}
-			thread::sleep(Duration::from_millis(self.settings.time.interval));
 		}
 		trace!("{:?}", input_state);
 		debug!("Selected window: {:?}", xid);
