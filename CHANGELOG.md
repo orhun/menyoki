@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Set the `--quiet` flag implicitly if output is piped to stdout
 - Sleep before drawing the borders while selecting a window
 
+### Changed
+- Upgrade dependencies in Cargo.toml
+
 ## [1.2.1] - 2021-02-03
 ### Added
 - Add [lychee-action](https://github.com/lycheeverse/lychee-action) to CI workflow
