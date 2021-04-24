@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.4.0] - 2021-04-25
 ### Added
 - Add `--cancel-keys` option for changing the key bindings that are responsible for cancelling an operation. ([#22](https://github.com/orhun/menyoki/issues/22))
 
