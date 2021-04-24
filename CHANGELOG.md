@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- [**breaking**] Improve the action key parser to support multiple key bindings. Representation of the default action key is changed to `LAlt-S,LAlt-Enter` (<s>`LAlt-S/Enter`</s>). New syntax for the key bindings is: `<key1>,<key2>-<key3>-...-<key4>,<key5>`
+
 ## [1.3.0] - 2021-03-20
 ### Added
 - Add examples for copying captures and videos ([#19](https://github.com/orhun/menyoki/pull/19))

@@ -375,7 +375,7 @@ mod tests {
 			.get_matches_from(vec![
 				"test",
 				"--keys",
-				"LControl-Q/S",
+				"LControl-Q,S",
 				"--border",
 				"10",
 				"--padding",
@@ -406,6 +406,6 @@ mod tests {
 			record_settings.window
 		);
 		assert!(record_settings.flag.alpha);
-		assert_eq!("LControl-Q/S", record_settings.flag.keys.unwrap());
+		assert_eq!("LControl-Q,S", record_settings.flag.keys.unwrap());
 	}
 }

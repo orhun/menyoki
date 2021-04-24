@@ -320,7 +320,7 @@ FLAGS:
     -h, --help          Print help information
 
 OPTIONS:
-    -k, --keys <KEYS>          Set the action keys [default: LAlt-S/Enter]
+    -k, --keys <KEYS>          Set the action keys [default: LAlt-S,LAlt-Enter]
     -b, --border <BORDER>      Set the border width [default: 1]
     -p, --padding <T:R:B:L>    Set the record area padding
     -s, --size <WxH>           Set the record area size
@@ -342,25 +342,25 @@ SUBCOMMANDS:
 
 #### Examples
 
-| Command                                                           	     | Action                                                                            	|
-|----------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
-| `menyoki record`                                                      	 | Select a window and start recording with default settings                         	|
-| `menyoki record --root --countdown 5`                                 	 | Record the root window after 5 seconds of countdown                               	|
-| `menyoki record --focus --with-alpha`                                 	 | Record the focused window with the alpha channel (for transparency)               	|
-| `menyoki record --size 200x300 --duration 10`                         	 | Record an area of size 200x300 for 10 seconds                                     	|
-| `menyoki record --padding 20:10:0:10 --timeout 120`                   	 | Record an area with given padding and set window selection timeout to 120 seconds 	|
-| `menyoki record --parent`                                             	 | Record the parent window of the selected window                                   	|
-| `menyoki record --root --select --monitor 1`                          	 | Record the first monitor as root window                                           	|
-| `menyoki record --border 5`                                           	 | Record the area selected by a border with 5 width                                 	|
-| `menyoki record --keys LControl-Q/W`                                  	 | Record with the default settings using custom key bindings                        	|
-| `menyoki record gif --fps 15 --quality 90`                            	 | Record 15 frames per second with 90% quality                                      	|
-| `menyoki record gif --gifski`                                         	 | Record and encode using the gifski encoder                                        	|
-| `menyoki record gif save "test.gif" --timestamp`                      	 | Record and save as "test.gif" with timestamp in the file name                     	|
-| `menyoki record apng --fps 30`                                    	     | Record 30 frames per second and encode as APNG                                    	|
-| `menyoki -q record save "-" > test.gif`                           	     | Record and redirect output to "test.gif"                                          	|
-| `menyoki -q record save "-" \| xclip -selection clipboard -t image/gif`    | Record and pipes output to xclip's clipboard selection, specifying target as a gif   |
-| `menyoki -q record "kmon -t 2000"`                                	     | Execute the command and record its output in quiet mode                              |
-| `menyoki record --font "-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*"` 	     | Use custom font for showing the area size (see `xfontsel`)                           |
+| Command                                                                 | Action                                                                             |
+|-------------------------------------------------------------------------|------------------------------------------------------------------------------------|
+| `menyoki record`                                                        | Select a window and start recording with default settings                          |
+| `menyoki record --root --countdown 5`                                   | Record the root window after 5 seconds of countdown                                |
+| `menyoki record --focus --with-alpha`                                   | Record the focused window with the alpha channel (for transparency)                |
+| `menyoki record --size 200x300 --duration 10`                           | Record an area of size 200x300 for 10 seconds                                      |
+| `menyoki record --padding 20:10:0:10 --timeout 120`                     | Record an area with given padding and set window selection timeout to 120 seconds  |
+| `menyoki record --parent`                                               | Record the parent window of the selected window                                    |
+| `menyoki record --root --select --monitor 1`                            | Record the first monitor as root window                                            |
+| `menyoki record --border 5`                                             | Record the area selected by a border with 5 width                                  |
+| `menyoki record --keys LControl-Q,LAlt-W`                               | Record with the default settings using custom key bindings                         |
+| `menyoki record gif --fps 15 --quality 90`                              | Record 15 frames per second with 90% quality                                       |
+| `menyoki record gif --gifski`                                           | Record and encode using the gifski encoder                                         |
+| `menyoki record gif save "test.gif" --timestamp`                        | Record and save as "test.gif" with timestamp in the file name                      |
+| `menyoki record apng --fps 30`                                          | Record 30 frames per second and encode as APNG                                     |
+| `menyoki -q record save "-" > test.gif`                                 | Record and redirect output to "test.gif"                                           |
+| `menyoki -q record save "-" \| xclip -selection clipboard -t image/gif` | Record and pipes output to xclip's clipboard selection, specifying target as a gif |
+| `menyoki -q record "kmon -t 2000"`                                      | Execute the command and record its output in quiet mode                            |
+| `menyoki record --font "-*-dejavu sans-*-*-*-*-17-*-*-*-*-*-*-*"`       | Use custom font for showing the area size (see `xfontsel`)                         |
 
 #### Pro Tip
 
@@ -465,7 +465,7 @@ FLAGS:
     -h, --help          Print help information
 
 OPTIONS:
-    -k, --keys <KEYS>          Set the action keys [default: LAlt-S/Enter]
+    -k, --keys <KEYS>          Set the action keys [default: LAlt-S,LAlt-Enter]
     -b, --border <BORDER>      Set the border width [default: 1]
     -p, --padding <T:R:B:L>    Set the capture area padding
     -s, --size <WxH>           Set the capture area size
@@ -827,7 +827,7 @@ parent = false
 with-alpha = false
 no-keys = false
 mouse = false
-keys = LAlt-S/Enter
+keys = LAlt-S,LAlt-Enter
 border = 1
 #padding = T:R:B:L
 #size = WxH
@@ -858,7 +858,7 @@ select = true
 parent = false
 with-alpha = false
 mouse = false
-keys = LAlt-S/Enter
+keys = LAlt-S,LAlt-Enter
 border = 1
 #padding = T:R:B:L
 #size = WxH

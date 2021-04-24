@@ -244,9 +244,13 @@ impl Display {
 				self.settings.padding = window_padding;
 				self.update_padding(size, window.geometry);
 				window.clear_area();
-				window.grab_key(
-					self.get_symbol_from_keycode(&input_state.action_keys.main_key),
-				);
+				input_state
+					.action_keys
+					.get_primary()
+					.iter()
+					.for_each(|key| {
+						window.grab_key(self.get_symbol_from_keycode(&key))
+					});
 				xid = Some(window.xid);
 			} else if !self.settings.flag.select {
 				break;
