@@ -395,7 +395,8 @@ mod tests {
 		assert!(display.select_window(&input_state).is_none());
 		assert_eq!(
 			u64::try_from(keysym::XK_Alt_L).unwrap(),
-			display.get_symbol_from_keycode(&input_state.action_keys.main_key)
+			display
+				.get_symbol_from_keycode(&input_state.action_keys.get_primary()[0])
 				as u64
 		);
 		assert_eq!(
