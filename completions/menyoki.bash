@@ -207,7 +207,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__capture)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -215,6 +215,10 @@ _menyoki() {
             case "${prev}" in
                 
                 --action-keys)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cancel-keys)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -2298,7 +2302,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__record)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  gif apng save help    out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  gif apng save help    out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2306,6 +2310,10 @@ _menyoki() {
             case "${prev}" in
                 
                 --action-keys)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cancel-keys)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -2698,7 +2706,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__screenshot)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2706,6 +2714,10 @@ _menyoki() {
             case "${prev}" in
                 
                 --action-keys)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cancel-keys)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
@@ -3513,7 +3525,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__ss)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3521,6 +3533,10 @@ _menyoki() {
             case "${prev}" in
                 
                 --action-keys)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                --cancel-keys)
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;

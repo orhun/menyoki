@@ -1,18 +1,23 @@
-use crate::util::keys::ActionKeys;
-use device_query::{DeviceQuery, DeviceState, Keycode};
+use crate::util::keys::{ActionKeys, CancelKeys, KeyType};
+use device_query::{DeviceQuery, DeviceState};
 use std::fmt;
 
 /* State of the mouse and keyboard inputs */
 pub struct InputState {
 	pub state: DeviceState,
 	pub action_keys: ActionKeys,
-	pub check_mouse: bool,
+	pub cancel_keys: CancelKeys,
+	check_mouse: bool,
 }
 
 /* Default initialization values for InputState */
 impl Default for InputState {
 	fn default() -> Self {
-		Self::new(ActionKeys::default(), false)
+		Self::new(
+			ActionKeys::default(KeyType::ActionKeys),
+			CancelKeys::default(KeyType::CancelKeys),
+			false,
+		)
 	}
 }
 
@@ -34,13 +39,19 @@ impl InputState {
 	 * Create a new InputState object.
 	 *
 	 * @param  action_keys
+	 * @param  cancel_keys
 	 * @param  check_mouse
 	 * @return InputState
 	 */
-	pub fn new(action_keys: ActionKeys, check_mouse: bool) -> Self {
+	pub fn new(
+		action_keys: ActionKeys,
+		cancel_keys: CancelKeys,
+		check_mouse: bool,
+	) -> Self {
 		Self {
 			state: DeviceState::new(),
 			action_keys,
+			cancel_keys,
 			check_mouse,
 		}
 	}
@@ -74,10 +85,7 @@ impl InputState {
 	 * @return bool
 	 */
 	pub fn check_cancel_keys(&self) -> bool {
-		matches!(
-			self.state.get_keys().as_slice(),
-			[Keycode::Escape] | [Keycode::LControl, Keycode::D]
-		)
+		self.cancel_keys.check(self.state.get_keys())
 	}
 }
 

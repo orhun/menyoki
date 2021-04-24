@@ -132,6 +132,7 @@ FLAGS:
 
 OPTIONS:
         --action-keys <KEYS>    Set the action keys [default: LAlt-S,LAlt-Enter]
+        --cancel-keys <KEYS>    Set the cancel keys [default: LControl-D,Escape]
     -b, --border <BORDER>       Set the border width [default: 1]
     -p, --padding <T:R:B:L>     Set the record area padding
     -s, --size <WxH>            Set the record area size
@@ -205,6 +206,11 @@ Record the area selected by a border with 5 width
 T}
 T{
 \f[C]menyoki record --action-keys LControl-Q,LAlt-W\f[R]
+T}@T{
+Record with the default settings using custom key bindings
+T}
+T{
+\f[C]menyoki record --cancel-keys LControl-X,E\f[R]
 T}@T{
 Record with the default settings using custom key bindings
 T}
@@ -401,6 +407,7 @@ FLAGS:
 
 OPTIONS:
         --action-keys <KEYS>    Set the action keys [default: LAlt-S,LAlt-Enter]
+        --cancel-keys <KEYS>    Set the cancel keys [default: LControl-D,Escape]
     -b, --border <BORDER>       Set the border width [default: 1]
     -p, --padding <T:R:B:L>     Set the capture area padding
     -s, --size <WxH>            Set the capture area size
@@ -821,7 +828,7 @@ There are 3 types of key bindings in terms of performed action:
 .IP \[bu] 2
 Action keys (main action keys such as \f[C]LAlt-S\f[R], can be
 customized (https://docs.rs/device_query/latest/device_query/keymap/enum.Keycode.html)
-via \f[C]--action-keys\f[R] option)
+via \f[C]--action-keys\f[R] and \f[C]--cancel-keys\f[R] options)
 .IP \[bu] 2
 Cancel keys (the keys that will cancel the operation,
 e.g.\ \f[C]LControl-D\f[R])

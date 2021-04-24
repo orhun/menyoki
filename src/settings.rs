@@ -7,7 +7,7 @@ use crate::file::settings::SaveSettings;
 use crate::image::geometry::Geometry;
 use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::{RecordSettings, RecordWindow};
-use crate::util::keys::ActionKeys;
+use crate::util::keys::{ActionKeys, KeyType};
 use crate::util::state::InputState;
 use colored::Color;
 
@@ -103,10 +103,15 @@ impl<'a> AppSettings<'a> {
 		if window_required {
 			Some(Box::leak(
 				InputState::new(
-					if let Some(keys) = record.flag.keys {
-						ActionKeys::parse(keys)
+					if let Some(keys) = record.flag.action_keys {
+						ActionKeys::parse(keys, KeyType::ActionKeys)
 					} else {
-						ActionKeys::default()
+						ActionKeys::default(KeyType::ActionKeys)
+					},
+					if let Some(keys) = record.flag.cancel_keys {
+						ActionKeys::parse(keys, KeyType::CancelKeys)
+					} else {
+						ActionKeys::default(KeyType::CancelKeys)
 					},
 					record.flag.mouse,
 				)
@@ -131,10 +136,20 @@ impl<'a> AppSettings<'a> {
 			warn!("Countdown value cannot be greater than 99.")
 		}
 		if let Some(input_state) = self.input_state {
-			if self.record.flag.keys != Some(&ActionKeys::default().to_string()) {
+			if self.record.flag.action_keys
+				!= Some(&ActionKeys::default(KeyType::ActionKeys).to_string())
+			{
 				info!(
 					"Using custom action keys: {}",
 					input_state.action_keys.to_string()
+				);
+			}
+			if self.record.flag.cancel_keys
+				!= Some(&ActionKeys::default(KeyType::CancelKeys).to_string())
+			{
+				info!(
+					"Using custom cancel keys: {}",
+					input_state.cancel_keys.to_string()
 				);
 			}
 		}

@@ -321,6 +321,7 @@ FLAGS:
 
 OPTIONS:
         --action-keys <KEYS>    Set the action keys [default: LAlt-S,LAlt-Enter]
+        --cancel-keys <KEYS>    Set the cancel keys [default: LControl-D,Escape]
     -b, --border <BORDER>       Set the border width [default: 1]
     -p, --padding <T:R:B:L>     Set the record area padding
     -s, --size <WxH>            Set the record area size
@@ -353,6 +354,7 @@ SUBCOMMANDS:
 | `menyoki record --root --select --monitor 1`                            | Record the first monitor as root window                                            |
 | `menyoki record --border 5`                                             | Record the area selected by a border with 5 width                                  |
 | `menyoki record --action-keys LControl-Q,LAlt-W`                        | Record with the default settings using custom key bindings                         |
+| `menyoki record --cancel-keys LControl-X,E`                             | Record with the default settings using custom key bindings                         |
 | `menyoki record gif --fps 15 --quality 90`                              | Record 15 frames per second with 90% quality                                       |
 | `menyoki record gif --gifski`                                           | Record and encode using the gifski encoder                                         |
 | `menyoki record gif save "test.gif" --timestamp`                        | Record and save as "test.gif" with timestamp in the file name                      |
@@ -466,6 +468,7 @@ FLAGS:
 
 OPTIONS:
         --action-keys <KEYS>    Set the action keys [default: LAlt-S,LAlt-Enter]
+        --cancel-keys <KEYS>    Set the cancel keys [default: LControl-D,Escape]
     -b, --border <BORDER>       Set the border width [default: 1]
     -p, --padding <T:R:B:L>     Set the capture area padding
     -s, --size <WxH>            Set the capture area size
@@ -777,7 +780,7 @@ Key bindings are only used and present while **capture** or **record** actions a
 
 There are 3 types of key bindings in terms of performed action:
 
-* Action keys (main action keys such as `LAlt-S`, can be [customized](https://docs.rs/device_query/latest/device_query/keymap/enum.Keycode.html) via `--action-keys` option)
+* Action keys (main action keys such as `LAlt-S`, can be [customized](https://docs.rs/device_query/latest/device_query/keymap/enum.Keycode.html) via `--action-keys` and `--cancel-keys` options)
 * Cancel keys (the keys that will cancel the operation, e.g. `LControl-D`)
 * Miscellaneous keys (the keys that can be used for resizing the selected area such as `LAlt-[up]`)
 
@@ -827,7 +830,8 @@ parent = false
 with-alpha = false
 no-keys = false
 mouse = false
-keys = LAlt-S,LAlt-Enter
+action-keys = LAlt-S,LAlt-Enter
+cancel-keys = LControl-D,Escape
 border = 1
 #padding = T:R:B:L
 #size = WxH
@@ -858,7 +862,8 @@ select = true
 parent = false
 with-alpha = false
 mouse = false
-keys = LAlt-S,LAlt-Enter
+action-keys = LAlt-S,LAlt-Enter
+cancel-keys = LControl-D,Escape
 border = 1
 #padding = T:R:B:L
 #size = WxH

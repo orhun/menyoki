@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Add `--cancel-keys` option for changing the key bindings that are responsible for cancelling an operation. ([#22](https://github.com/orhun/menyoki/issues/22))
 
 ### Changed
 - [**breaking**] Improve the action key parser to support multiple key bindings. Representation of the default action key is changed to `LAlt-S,LAlt-Enter` (<s>`LAlt-S/Enter`</s>). New syntax for the key bindings is: `<key1>,<key2>-<key3>-...-<key4>,<key5>`

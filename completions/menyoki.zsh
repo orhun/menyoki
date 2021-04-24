@@ -38,6 +38,7 @@ _menyoki() {
             (record)
 _arguments "${_arguments_options[@]}" \
 '--action-keys=[Set the action keys]' \
+'--cancel-keys=[Set the cancel keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the record area padding]' \
@@ -1475,6 +1476,7 @@ esac
 (screenshot)
 _arguments "${_arguments_options[@]}" \
 '--action-keys=[Set the action keys]' \
+'--cancel-keys=[Set the cancel keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
@@ -2026,6 +2028,7 @@ esac
 (ss)
 _arguments "${_arguments_options[@]}" \
 '--action-keys=[Set the action keys]' \
+'--cancel-keys=[Set the cancel keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
@@ -2577,6 +2580,7 @@ esac
 (capture)
 _arguments "${_arguments_options[@]}" \
 '--action-keys=[Set the action keys]' \
+'--cancel-keys=[Set the cancel keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \

@@ -47,7 +47,7 @@ Details of the implementation of **menyoki**.
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/record/settings.rs) -> `RecordSettings`
 * util
   * [command.rs](https://github.com/orhun/menyoki/blob/master/src/util/command.rs) -> `Command` (for executing OS commands)
-  * [keys.rs](https://github.com/orhun/menyoki/blob/master/src/util/keys.rs) -> `ActionKeys` (parser and checker)
+  * [keys.rs](https://github.com/orhun/menyoki/blob/master/src/util/keys.rs) -> `ActionKeys`, `CancelKeys`, `KeyType` (parser and checker)
   * [logger.rs](https://github.com/orhun/menyoki/blob/master/src/util/logger.rs) -> `Logger` (for initializing the logger)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/util/mod.rs) -> module declarations
   * [state.rs](https://github.com/orhun/menyoki/blob/master/src/util/state.rs) -> `InputState` (checks the pressed keys)

@@ -37,6 +37,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
         }
         &'menyoki;record'= {
             cand --action-keys 'Set the action keys'
+            cand --cancel-keys 'Set the cancel keys'
             cand -b 'Set the border width'
             cand --border 'Set the border width'
             cand -p 'Set the record area padding'
@@ -475,6 +476,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
         }
         &'menyoki;capture'= {
             cand --action-keys 'Set the action keys'
+            cand --cancel-keys 'Set the cancel keys'
             cand -b 'Set the border width'
             cand --border 'Set the border width'
             cand -p 'Set the capture area padding'

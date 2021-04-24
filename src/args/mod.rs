@@ -250,6 +250,14 @@ where
 					.takes_value(true),
 			)
 			.arg(
+				Arg::with_name("cancel-keys")
+					.long("cancel-keys")
+					.value_name("KEYS")
+					.default_value("LControl-D,Escape")
+					.help("Set the cancel keys")
+					.takes_value(true),
+			)
+			.arg(
 				Arg::with_name("mouse")
 					.short("m")
 					.long("mouse")

@@ -72,7 +72,8 @@ impl RecordTime {
 #[derive(Clone, Copy, Debug)]
 pub struct RecordFlag {
 	pub alpha: bool,
-	pub keys: Option<&'static str>,
+	pub action_keys: Option<&'static str>,
+	pub cancel_keys: Option<&'static str>,
 	pub font: Option<&'static str>,
 	pub monitor: Option<usize>,
 	pub select: bool,
@@ -84,7 +85,8 @@ impl Default for RecordFlag {
 	fn default() -> Self {
 		Self {
 			alpha: false,
-			keys: Some(""),
+			action_keys: Some(""),
+			cancel_keys: Some(""),
 			font: None,
 			monitor: None,
 			select: true,
@@ -98,7 +100,8 @@ impl RecordFlag {
 	 * Create a new RecordFlag object.
 	 *
 	 * @param  alpha
-	 * @param  keys (Option)
+	 * @param  action_keys (Option)
+	 * @param  cancel_keys (Option)
 	 * @param  font
 	 * @param  monitor (Option)
 	 * @param  select
@@ -107,7 +110,8 @@ impl RecordFlag {
 	 */
 	pub fn new(
 		alpha: bool,
-		keys: Option<&'static str>,
+		action_keys: Option<&'static str>,
+		cancel_keys: Option<&'static str>,
 		font: &str,
 		monitor: Option<usize>,
 		select: bool,
@@ -115,7 +119,8 @@ impl RecordFlag {
 	) -> Self {
 		Self {
 			alpha,
-			keys,
+			action_keys,
+			cancel_keys,
 			font: if font.is_empty() {
 				None
 			} else {
@@ -279,6 +284,13 @@ impl RecordSettings {
 								.into_boxed_str(),
 						))
 					},
+					Some(Box::leak(
+						matches
+							.value_of("cancel-keys")
+							.unwrap_or_default()
+							.to_string()
+							.into_boxed_str(),
+					)),
 					matches.value_of("font").unwrap_or_default(),
 					matches.value_of("monitor").and_then(|v| v.parse().ok()),
 					if matches.value_of("size").unwrap_or_default().contains('+') {
@@ -353,6 +365,11 @@ mod tests {
 					.long("action-keys")
 					.takes_value(true),
 			)
+			.arg(
+				Arg::with_name("cancel-keys")
+					.long("cancel-keys")
+					.takes_value(true),
+			)
 			.arg(Arg::with_name("border").long("border").takes_value(true))
 			.arg(Arg::with_name("padding").long("padding").takes_value(true))
 			.arg(Arg::with_name("size").long("size").takes_value(true))
@@ -380,6 +397,8 @@ mod tests {
 				"test",
 				"--action-keys",
 				"LControl-Q,S",
+				"--cancel-keys",
+				"X",
 				"--border",
 				"10",
 				"--padding",
@@ -410,6 +429,7 @@ mod tests {
 			record_settings.window
 		);
 		assert!(record_settings.flag.alpha);
-		assert_eq!("LControl-Q,S", record_settings.flag.keys.unwrap());
+		assert_eq!("LControl-Q,S", record_settings.flag.action_keys.unwrap());
+		assert_eq!("X", record_settings.flag.cancel_keys.unwrap());
 	}
 }
