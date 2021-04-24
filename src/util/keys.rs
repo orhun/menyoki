@@ -133,7 +133,7 @@ mod tests {
 			.check(vec![Keycode::LControl, Keycode::J]));
 		assert!(ActionKeys::parse("LControl-A,X,Y").check(vec![Keycode::Y]));
 		assert_eq!(
-			Vec::<Vec<Keycode>>::new(),
+			ActionKeys::default().key_groups,
 			ActionKeys::parse("LCxntrxl-WW").key_groups
 		);
 		assert_eq!(
