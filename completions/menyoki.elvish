@@ -36,8 +36,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand help 'Prints this message or the help of the given subcommand(s)'
         }
         &'menyoki;record'= {
-            cand -k 'Set the action keys'
-            cand --keys 'Set the action keys'
+            cand --action-keys 'Set the action keys'
             cand -b 'Set the border width'
             cand --border 'Set the border width'
             cand -p 'Set the record area padding'
@@ -475,8 +474,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
         }
         &'menyoki;capture'= {
-            cand -k 'Set the action keys'
-            cand --keys 'Set the action keys'
+            cand --action-keys 'Set the action keys'
             cand -b 'Set the border width'
             cand --border 'Set the border width'
             cand -p 'Set the capture area padding'

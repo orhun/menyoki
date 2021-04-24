@@ -273,7 +273,7 @@ impl RecordSettings {
 					} else {
 						Some(Box::leak(
 							matches
-								.value_of("keys")
+								.value_of("action-keys")
 								.unwrap_or_default()
 								.to_string()
 								.into_boxed_str(),
@@ -348,7 +348,11 @@ mod tests {
 	#[test]
 	fn test_record_settings() {
 		let args = App::new("test")
-			.arg(Arg::with_name("keys").long("keys").takes_value(true))
+			.arg(
+				Arg::with_name("action-keys")
+					.long("action-keys")
+					.takes_value(true),
+			)
 			.arg(Arg::with_name("border").long("border").takes_value(true))
 			.arg(Arg::with_name("padding").long("padding").takes_value(true))
 			.arg(Arg::with_name("size").long("size").takes_value(true))
@@ -374,7 +378,7 @@ mod tests {
 			.arg(Arg::with_name("no-keys").long("no-keys"))
 			.get_matches_from(vec![
 				"test",
-				"--keys",
+				"--action-keys",
 				"LControl-Q,S",
 				"--border",
 				"10",

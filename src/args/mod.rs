@@ -241,9 +241,9 @@ where
 					.hidden(capture),
 			)
 			.arg(
-				Arg::with_name("keys")
-					.short("k")
-					.long("keys")
+				Arg::with_name("action-keys")
+					.long("action-keys")
+					.alias("keys")
 					.value_name("KEYS")
 					.default_value("LAlt-S,LAlt-Enter")
 					.help("Set the action keys")

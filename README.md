@@ -320,16 +320,16 @@ FLAGS:
     -h, --help          Print help information
 
 OPTIONS:
-    -k, --keys <KEYS>          Set the action keys [default: LAlt-S,LAlt-Enter]
-    -b, --border <BORDER>      Set the border width [default: 1]
-    -p, --padding <T:R:B:L>    Set the record area padding
-    -s, --size <WxH>           Set the record area size
-    -d, --duration <S>         Set the duration for recording [default: ∞]
-    -c, --countdown <S>        Set the countdown before recording [default: 3]
-    -t, --timeout <S>          Set the timeout for window selection [default: 60]
-    -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
-        --font <FONT>          Set the font to use for window selection
-        --monitor <NUM>        Set the monitor to record as root window
+        --action-keys <KEYS>    Set the action keys [default: LAlt-S,LAlt-Enter]
+    -b, --border <BORDER>       Set the border width [default: 1]
+    -p, --padding <T:R:B:L>     Set the record area padding
+    -s, --size <WxH>            Set the record area size
+    -d, --duration <S>          Set the duration for recording [default: ∞]
+    -c, --countdown <S>         Set the countdown before recording [default: 3]
+    -t, --timeout <S>           Set the timeout for window selection [default: 60]
+    -i, --interval <MS>         Set the refresh interval for window selection [default: 10]
+        --font <FONT>           Set the font to use for window selection
+        --monitor <NUM>         Set the monitor to record as root window
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -352,7 +352,7 @@ SUBCOMMANDS:
 | `menyoki record --parent`                                               | Record the parent window of the selected window                                    |
 | `menyoki record --root --select --monitor 1`                            | Record the first monitor as root window                                            |
 | `menyoki record --border 5`                                             | Record the area selected by a border with 5 width                                  |
-| `menyoki record --keys LControl-Q,LAlt-W`                               | Record with the default settings using custom key bindings                         |
+| `menyoki record --action-keys LControl-Q,LAlt-W`                        | Record with the default settings using custom key bindings                         |
 | `menyoki record gif --fps 15 --quality 90`                              | Record 15 frames per second with 90% quality                                       |
 | `menyoki record gif --gifski`                                           | Record and encode using the gifski encoder                                         |
 | `menyoki record gif save "test.gif" --timestamp`                        | Record and save as "test.gif" with timestamp in the file name                      |
@@ -465,15 +465,15 @@ FLAGS:
     -h, --help          Print help information
 
 OPTIONS:
-    -k, --keys <KEYS>          Set the action keys [default: LAlt-S,LAlt-Enter]
-    -b, --border <BORDER>      Set the border width [default: 1]
-    -p, --padding <T:R:B:L>    Set the capture area padding
-    -s, --size <WxH>           Set the capture area size
-    -c, --countdown <S>        Set the countdown before capturing [default: 0]
-    -t, --timeout <S>          Set the timeout for window selection [default: 60]
-    -i, --interval <MS>        Set the refresh interval for window selection [default: 10]
-        --font <FONT>          Set the font to use for window selection
-        --monitor <NUM>        Set the monitor to capture as root window
+        --action-keys <KEYS>    Set the action keys [default: LAlt-S,LAlt-Enter]
+    -b, --border <BORDER>       Set the border width [default: 1]
+    -p, --padding <T:R:B:L>     Set the capture area padding
+    -s, --size <WxH>            Set the capture area size
+    -c, --countdown <S>         Set the countdown before capturing [default: 0]
+    -t, --timeout <S>           Set the timeout for window selection [default: 60]
+    -i, --interval <MS>         Set the refresh interval for window selection [default: 10]
+        --font <FONT>           Set the font to use for window selection
+        --monitor <NUM>         Set the monitor to capture as root window
 
 ARGS:
     <COMMAND>    Set the command to run
@@ -777,7 +777,7 @@ Key bindings are only used and present while **capture** or **record** actions a
 
 There are 3 types of key bindings in terms of performed action:
 
-* Action keys (main action keys such as `LAlt-S`, can be [customized](https://docs.rs/device_query/latest/device_query/keymap/enum.Keycode.html) via `--keys` option)
+* Action keys (main action keys such as `LAlt-S`, can be [customized](https://docs.rs/device_query/latest/device_query/keymap/enum.Keycode.html) via `--action-keys` option)
 * Cancel keys (the keys that will cancel the operation, e.g. `LControl-D`)
 * Miscellaneous keys (the keys that can be used for resizing the selected area such as `LAlt-[up]`)
 

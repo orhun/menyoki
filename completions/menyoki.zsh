@@ -37,8 +37,7 @@ _menyoki() {
         case $line[1] in
             (record)
 _arguments "${_arguments_options[@]}" \
-'-k+[Set the action keys]' \
-'--keys=[Set the action keys]' \
+'--action-keys=[Set the action keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the record area padding]' \
@@ -1475,8 +1474,7 @@ esac
 ;;
 (screenshot)
 _arguments "${_arguments_options[@]}" \
-'-k+[Set the action keys]' \
-'--keys=[Set the action keys]' \
+'--action-keys=[Set the action keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
@@ -2027,8 +2025,7 @@ esac
 ;;
 (ss)
 _arguments "${_arguments_options[@]}" \
-'-k+[Set the action keys]' \
-'--keys=[Set the action keys]' \
+'--action-keys=[Set the action keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \
@@ -2579,8 +2576,7 @@ esac
 ;;
 (capture)
 _arguments "${_arguments_options[@]}" \
-'-k+[Set the action keys]' \
-'--keys=[Set the action keys]' \
+'--action-keys=[Set the action keys]' \
 '-b+[Set the border width]' \
 '--border=[Set the border width]' \
 '-p+[Set the capture area padding]' \

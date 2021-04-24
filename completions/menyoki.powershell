@@ -42,8 +42,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             break
         }
         'menyoki;record' {
-            [CompletionResult]::new('-k', 'k', [CompletionResultType]::ParameterName, 'Set the action keys')
-            [CompletionResult]::new('--keys', 'keys', [CompletionResultType]::ParameterName, 'Set the action keys')
+            [CompletionResult]::new('--action-keys', 'action-keys', [CompletionResultType]::ParameterName, 'Set the action keys')
             [CompletionResult]::new('-b', 'b', [CompletionResultType]::ParameterName, 'Set the border width')
             [CompletionResult]::new('--border', 'border', [CompletionResultType]::ParameterName, 'Set the border width')
             [CompletionResult]::new('-p', 'p', [CompletionResultType]::ParameterName, 'Set the record area padding')
@@ -520,8 +519,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             break
         }
         'menyoki;capture' {
-            [CompletionResult]::new('-k', 'k', [CompletionResultType]::ParameterName, 'Set the action keys')
-            [CompletionResult]::new('--keys', 'keys', [CompletionResultType]::ParameterName, 'Set the action keys')
+            [CompletionResult]::new('--action-keys', 'action-keys', [CompletionResultType]::ParameterName, 'Set the action keys')
             [CompletionResult]::new('-b', 'b', [CompletionResultType]::ParameterName, 'Set the border width')
             [CompletionResult]::new('--border', 'border', [CompletionResultType]::ParameterName, 'Set the border width')
             [CompletionResult]::new('-p', 'p', [CompletionResultType]::ParameterName, 'Set the capture area padding')
