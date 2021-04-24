@@ -326,7 +326,7 @@ where
 					.short("t")
 					.long("timeout")
 					.value_name("S")
-					.default_value("60")
+					.default_value("300")
 					.help("Set the timeout for window selection")
 					.takes_value(true),
 			)

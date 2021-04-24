@@ -327,7 +327,7 @@ OPTIONS:
     -s, --size <WxH>            Set the record area size
     -d, --duration <S>          Set the duration for recording [default: ∞]
     -c, --countdown <S>         Set the countdown before recording [default: 3]
-    -t, --timeout <S>           Set the timeout for window selection [default: 60]
+    -t, --timeout <S>           Set the timeout for window selection [default: 300]
     -i, --interval <MS>         Set the refresh interval for window selection [default: 10]
         --font <FONT>           Set the font to use for window selection
         --monitor <NUM>         Set the monitor to record as root window
@@ -473,7 +473,7 @@ OPTIONS:
     -p, --padding <T:R:B:L>     Set the capture area padding
     -s, --size <WxH>            Set the capture area size
     -c, --countdown <S>         Set the countdown before capturing [default: 0]
-    -t, --timeout <S>           Set the timeout for window selection [default: 60]
+    -t, --timeout <S>           Set the timeout for window selection [default: 300]
     -i, --interval <MS>         Set the refresh interval for window selection [default: 10]
         --font <FONT>           Set the font to use for window selection
         --monitor <NUM>         Set the monitor to capture as root window
@@ -837,7 +837,7 @@ border = 1
 #size = WxH
 duration = ∞
 countdown = 3
-timeout = 60
+timeout = 300
 interval = 10
 #font =
 #monitor =
@@ -868,7 +868,7 @@ border = 1
 #padding = T:R:B:L
 #size = WxH
 countdown = 0
-timeout = 60
+timeout = 300
 interval = 10
 #font =
 #monitor =

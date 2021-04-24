@@ -19,7 +19,7 @@ impl Default for RecordTime {
 		Self {
 			duration: None,
 			countdown: 3,
-			timeout: 60,
+			timeout: 300,
 			interval: 10,
 		}
 	}
@@ -410,7 +410,7 @@ mod tests {
 				"--countdown",
 				"2",
 				"--timeout",
-				"60",
+				"300",
 				"--interval",
 				"12",
 				"--root",
@@ -422,7 +422,7 @@ mod tests {
 		assert_eq!(10, record_settings.border.unwrap());
 		assert_eq!(Padding::new(10, 0, 0, 10), record_settings.padding);
 		assert_eq!(2, record_settings.time.countdown);
-		assert_eq!(60, record_settings.time.timeout);
+		assert_eq!(300, record_settings.time.timeout);
 		assert_eq!(12, record_settings.time.interval);
 		assert_eq!(
 			RecordWindow::Root(Some(Geometry::new(0, 0, 10, 10))),
