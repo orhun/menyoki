@@ -1,4 +1,5 @@
 #![allow(clippy::tabs_in_doc_comments)]
+#![allow(clippy::manual_map)]
 #![warn(rust_2018_idioms)]
 
 #[macro_use]

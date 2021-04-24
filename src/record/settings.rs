@@ -336,10 +336,7 @@ impl RecordSettings {
 	 * @return Command (Option)
 	 */
 	pub fn get_command<'a>(&self) -> Option<Command<'a>> {
-		match self.command {
-			Some(v) => Some(Command::from(v)),
-			_ => None,
-		}
+		self.command.map(Command::from)
 	}
 }
 
