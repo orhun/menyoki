@@ -76,6 +76,7 @@ impl ActionKeys {
 	 *
 	 * @return Vector of KeyCode
 	 */
+	#[allow(dead_code)]
 	pub fn get_primary(&self) -> Vec<&Keycode> {
 		self.key_groups
 			.iter()
