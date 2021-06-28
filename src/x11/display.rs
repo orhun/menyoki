@@ -249,7 +249,7 @@ impl Display {
 					.get_primary()
 					.iter()
 					.for_each(|key| {
-						window.grab_key(self.get_symbol_from_keycode(&key))
+						window.grab_key(self.get_symbol_from_keycode(key))
 					});
 				xid = Some(window.xid);
 			} else if !self.settings.flag.select {

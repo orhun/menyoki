@@ -56,8 +56,7 @@ impl<'a> Access<'a, Window> for WindowSystem<'a> {
 					)
 				} else {
 					self.display.select_window(
-						&self
-							.settings
+						self.settings
 							.input_state
 							.expect("Failed to get the input state"),
 					)

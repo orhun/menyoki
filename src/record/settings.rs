@@ -269,7 +269,7 @@ impl RecordSettings {
 					border if border > 0 => Some(border),
 					_ => None,
 				},
-				Self::parse_padding(&matches),
+				Self::parse_padding(matches),
 				RecordTime::from_parser(&parser),
 				RecordFlag::new(
 					matches.is_present("with-alpha"),
@@ -300,7 +300,7 @@ impl RecordSettings {
 					},
 					matches.is_present("mouse"),
 				),
-				RecordWindow::from_args(&matches),
+				RecordWindow::from_args(matches),
 			),
 			None => RecordSettings::default(),
 		}
