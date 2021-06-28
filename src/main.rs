@@ -22,7 +22,7 @@ mod window;
 mod ws;
 #[cfg(all(unix, not(target_os = "macos")))]
 mod x11;
-use self::app::{App, AppResult};
+use self::app::App;
 use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
@@ -33,7 +33,7 @@ use self::ws::WindowSystem;
 #[cfg(all(unix, not(target_os = "macos")))]
 use self::x11::WindowSystem;
 
-fn main() -> AppResult {
+fn main() {
 	let args = Args::parse();
 	let matches = ArgMatches::new(&args);
 	let mut settings = AppSettings::new(&matches);
@@ -42,16 +42,23 @@ fn main() -> AppResult {
 		.expect("Failed to initialize the logger");
 	settings.check();
 	let window = if settings.window_required {
-		if let Some(window) = WindowSystem::init(&settings)
-			.expect("Failed to access the window system")
-			.get_window()
-		{
-			Some(window)
-		} else {
-			return Ok(());
+		match WindowSystem::init(&settings) {
+			Some(mut ws) => match ws.get_window() {
+				Some(window) => Some(window),
+				None => {
+					error!("Failed to retrieve the window");
+					return;
+				}
+			},
+			None => {
+				error!("Failed to access the window system");
+				return;
+			}
 		}
 	} else {
 		None
 	};
-	App::new(window, &settings).start()
+	if let Err(e) = App::new(window, &settings).start() {
+		error!("{}", e);
+	}
 }

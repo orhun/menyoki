@@ -52,6 +52,7 @@ natord = "1.0.9"
 colored = "2.0.0"
 log = "0.4.14"
 fern_colored = { version = "0.6.1", features = ["colored"] }
+thiserror = "1.0.25"
 
 [dependencies.gifski]
 version = "1.4.3"
