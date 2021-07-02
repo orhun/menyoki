@@ -104,24 +104,17 @@ jobs:
               --passphrase-fd 0 --detach-sign \
               menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz
           fi
-      - name: Upload assets (linux/macos)
-        if: matrix.os == 'ubuntu-18.04' || matrix.os == 'macos-10.15'
-        uses: softprops/action-gh-release@v1
+      - name: Upload assets
+        uses: svenstaro/upload-release-action@v2
         with:
-          files: |
-            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz
-            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz.sig
-            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.tar.gz.sha512
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload assets (windows)
-        if: matrix.os == 'windows-2019'
-        uses: softprops/action-gh-release@v1
-        with:
-          files: |
-            menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: menyoki-${{ env.RELEASE_VERSION }}-${{ matrix.target }}*
+          file_glob: true
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: |
+            <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/98470768-09356680-21f9-11eb-81de-94a622b32db4.png" width="300"></a>
+            See [**changelog**](https://github.com/orhun/menyoki/blob/master/CHANGELOG.md) for release notes.
 
   publish-crates-io:
     name: Publish on crates.io
