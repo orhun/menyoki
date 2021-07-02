@@ -1,6 +1,7 @@
 pub mod settings;
 
 use crate::analyze::settings::AnalyzeSettings;
+use crate::app::AppResult;
 use bytesize::ByteSize;
 use colored::{Color, Colorize};
 use exif::{Exif, Reader as ExifReader};
@@ -31,26 +32,22 @@ impl<'a> ImageAnalyzer<'a> {
 	 * Create a new ImageAnalyzer object.
 	 *
 	 * @param  settings
-	 * @return ImageAnalyzer
+	 * @return ImageAnalyzer (Result)
 	 */
-	pub fn new(settings: &'a AnalyzeSettings) -> Self {
+	pub fn new(settings: &'a AnalyzeSettings) -> AppResult<Self> {
 		debug!("{:?}", settings);
-		let reader = ImageReader::open(&settings.file)
-			.expect("File not found")
-			.with_guessed_format()
-			.expect("File format not supported");
-		Self {
+		let reader = ImageReader::open(&settings.file)?.with_guessed_format()?;
+		Ok(Self {
 			format: reader.format(),
-			image: reader.decode().expect("Failed to decode the image"),
-			metadata: fs::metadata(&settings.file)
-				.expect("Failed to get information about the file"),
+			image: reader.decode()?,
+			metadata: fs::metadata(&settings.file)?,
 			exif: ExifReader::new()
-				.read_from_container(&mut BufReader::new(
-					File::open(&settings.file).expect("File not found"),
-				))
+				.read_from_container(&mut BufReader::new(File::open(
+					&settings.file,
+				)?))
 				.ok(),
 			settings,
-		}
+		})
 	}
 
 	/**
@@ -257,7 +254,7 @@ mod tests {
 			Color::White,
 			TimeZone::Utc(false),
 		);
-		let analyzer = ImageAnalyzer::new(&settings);
+		let analyzer = ImageAnalyzer::new(&settings).unwrap();
 		assert_eq!("73 B", analyzer.get_file_size());
 		for info in vec![TimeInfo::Created, TimeInfo::Modified, TimeInfo::Accessed] {
 			if let Some(time) = analyzer.get_time_info(info) {

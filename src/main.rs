@@ -46,12 +46,12 @@ fn main() {
 			Some(mut ws) => match ws.get_window() {
 				Some(window) => Some(window),
 				None => {
-					error!("Failed to retrieve the window");
+					error!("Failed to retrieve the window.");
 					return;
 				}
 			},
 			None => {
-				error!("Failed to access the window system");
+				error!("Failed to access the window system.");
 				return;
 			}
 		}

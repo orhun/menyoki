@@ -47,6 +47,13 @@ pub enum AppError {
 	WsError(String),
 	#[error("Image error: `{0}`")]
 	Image(#[from] image::error::ImageError),
+	#[error("GIF encoding error: `{0}`")]
+	GifEncoding(#[from] gif::EncodingError),
+	#[cfg(feature = "ski")]
+	#[error("gifski error: `{0}`")]
+	Gifski(#[from] gifski::Error),
+	#[error("Ctrlc error: `{0}`")]
+	Ctrlc(#[from] ctrlc::Error),
 	#[error("Frame error: `{0}`")]
 	FrameError(String),
 	#[error("Command error: `{0}`")]
@@ -208,7 +215,7 @@ where
 				.execute()?;
 			image_thread
 				.join()
-				.expect("Failed to join the image thread")
+				.expect("Failed to join the image thread.")
 		} else {
 			window.show_countdown();
 			info!("Capturing an image...");
@@ -243,7 +250,7 @@ where
 				})?
 				.execute()?;
 			Ok(match record.get() {
-				Some(frames) => frames.expect("Failed to retrieve the frames"),
+				Some(frames) => frames.expect("Failed to retrieve the frames."),
 				None => Vec::new(),
 			})
 		} else {
@@ -253,7 +260,7 @@ where
 				} else {
 					None
 				},
-			))
+			)?)
 		}
 	}
 
@@ -283,7 +290,7 @@ where
 	 * @return Result
 	 */
 	fn analyze_image(self) -> AppResult<()> {
-		let analyzer = self.settings.analyze.get_analyzer();
+		let analyzer = self.settings.analyze.get_analyzer()?;
 		if self.settings.save.file.format == FileFormat::Txt {
 			fs::write(&self.settings.save.file.path, analyzer.get_report() + "\n")?;
 			info!(
@@ -322,7 +329,7 @@ where
 							UnsupportedErrorKind::Format(ImageFormatHint::Unknown),
 						),
 					)),
-				}?);
+				}?)?;
 		Ok(frames)
 	}
 
@@ -493,9 +500,9 @@ where
 			.geometry;
 		let config = EncoderConfig::new(fps, geometry, output, &self.settings.anim);
 		if self.settings.anim.gifski.0 {
-			GifskiEncoder::new(config).save(images, self.settings.input_state);
+			GifskiEncoder::new(config)?.save(images, self.settings.input_state)?;
 		} else {
-			GifEncoder::new(config).save(images, self.settings.input_state);
+			GifEncoder::new(config)?.save(images, self.settings.input_state)?;
 		}
 		Ok(())
 	}
@@ -527,8 +534,8 @@ where
 			geometry,
 			output,
 			&self.settings.anim,
-		))
-		.save(images, self.settings.input_state);
+		))?
+		.save(images, self.settings.input_state)?;
 		Ok(())
 	}
 

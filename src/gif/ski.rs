@@ -1,3 +1,4 @@
+use crate::app::AppResult;
 use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::image::Image;
 use crate::util::state::InputState;
@@ -19,9 +20,9 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 	 * Create a new GifskiEncoder object.
 	 *
 	 * @param  config
-	 * @return GifskiEncoder
+	 * @return GifskiEncoder (Result)
 	 */
-	fn new(config: EncoderConfig<'a, Output>) -> Self {
+	fn new(config: EncoderConfig<'a, Output>) -> AppResult<Self> {
 		let (collector, writer) = gifski::new(gifski::Settings {
 			width: Some(config.geometry.width),
 			height: Some(config.geometry.height),
@@ -31,23 +32,27 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 				n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
 				_ => Repeat::Infinite,
 			},
-		})
-		.expect("Failed to initialize the gifski encoder");
-		Self {
+		})?;
+		Ok(Self {
 			fps: config.fps,
 			collector,
 			writer,
 			output: config.output,
-		}
+		})
 	}
 
 	/**
 	 * Encode images as frame and write to the GIF file.
 	 *
-	 * @param images
-	 * @param input_state (Option)
+	 * @param  images
+	 * @param  input_state (Option)
+	 * @param  Result
 	 */
-	fn save(self, images: Vec<Image>, input_state: Option<&'static InputState>) {
+	fn save(
+		self,
+		images: Vec<Image>,
+		input_state: Option<&'static InputState>,
+	) -> AppResult<()> {
 		let fps = self.fps;
 		let mut collector = self.collector;
 		let collector_thread = thread::spawn(move || {
@@ -75,10 +80,10 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 			info!("\n");
 		});
 		self.writer
-			.write(self.output, &mut gifski::progress::NoProgress {})
-			.expect("Failed to write the frames");
+			.write(self.output, &mut gifski::progress::NoProgress {})?;
 		collector_thread
 			.join()
 			.expect("Failed to collect the frames");
+		Ok(())
 	}
 }

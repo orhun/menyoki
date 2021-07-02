@@ -1,4 +1,5 @@
 use crate::anim::settings::AnimSettings;
+use crate::app::AppResult;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
@@ -41,10 +42,14 @@ impl<'a, Output: Write> EncoderConfig<'a, Output> {
 
 /* Required GIF encoding methods */
 pub trait Encoder<'a, Output: Write> {
-	fn new(config: EncoderConfig<'a, Output>) -> Self
+	fn new(config: EncoderConfig<'a, Output>) -> AppResult<Self>
 	where
 		Self: Sized;
-	fn save(self, images: Vec<Image>, input_state: Option<&'static InputState>);
+	fn save(
+		self,
+		images: Vec<Image>,
+		input_state: Option<&'static InputState>,
+	) -> AppResult<()>;
 }
 
 #[cfg(test)]
@@ -72,7 +77,10 @@ mod tests {
 		let mut output = Vec::new();
 		let settings = AnimSettings::default();
 		let (config, images) = get_config(&mut output, &settings);
-		GifEncoder::new(config).save(images.clone(), None);
+		GifEncoder::new(config)
+			.unwrap()
+			.save(images.clone(), None)
+			.unwrap();
 		output.truncate(6);
 		assert_eq!(GIF_HEADER, output);
 		output.clear();
@@ -83,7 +91,10 @@ mod tests {
 		let mut output = Vec::new();
 		let settings = AnimSettings::default();
 		let (config, images) = get_config(&mut output, &settings);
-		GifskiEncoder::new(config).save(images, None);
+		GifskiEncoder::new(config)
+			.unwrap()
+			.save(images, None)
+			.unwrap();
 		output.truncate(6);
 		assert_eq!(GIF_HEADER, output);
 	}

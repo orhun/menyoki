@@ -3,6 +3,7 @@ pub mod encoder;
 pub mod ski;
 
 use crate::anim::settings::AnimSettings;
+use crate::app::AppResult;
 use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::image::Image;
 use crate::util::state::InputState;
@@ -23,36 +24,38 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 	 * Create a new GifEncoder object.
 	 *
 	 * @param  config
-	 * @return GifEncoder
+	 * @return GifEncoder (Result)
 	 */
-	fn new(config: EncoderConfig<'a, Output>) -> Self {
+	fn new(config: EncoderConfig<'a, Output>) -> AppResult<Self> {
 		let mut encoder = BaseEncoder::new(
 			config.output,
 			config.geometry.width.try_into().unwrap_or_default(),
 			config.geometry.height.try_into().unwrap_or_default(),
 			&[],
-		)
-		.expect("Failed to create a GIF encoder");
-		encoder
-			.set_repeat(match config.settings.repeat {
-				n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
-				_ => Repeat::Infinite,
-			})
-			.expect("Failed to set repeat count");
-		Self {
+		)?;
+		encoder.set_repeat(match config.settings.repeat {
+			n if n >= 0 => Repeat::Finite(n.try_into().unwrap_or_default()),
+			_ => Repeat::Infinite,
+		})?;
+		Ok(Self {
 			fps: config.fps,
 			encoder,
 			settings: config.settings,
-		}
+		})
 	}
 
 	/**
 	 * Encode images as frame and write to the GIF file.
 	 *
-	 * @param images
-	 * @param input_state (Option)
+	 * @param  images
+	 * @param  input_state (Option)
+	 * @param  Result
 	 */
-	fn save(mut self, images: Vec<Image>, input_state: Option<&'static InputState>) {
+	fn save(
+		mut self,
+		images: Vec<Image>,
+		input_state: Option<&'static InputState>,
+	) -> AppResult<()> {
 		let speed = 30
 			- self.settings.map_range(
 				self.settings.quality.into(),
@@ -68,7 +71,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 				i + 1,
 				images.len()
 			);
-			io::stdout().flush().expect("Failed to flush stdout");
+			io::stdout().flush()?;
 			if let Some(state) = input_state {
 				if state.check_cancel_keys() {
 					info!("\n");
@@ -88,5 +91,6 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 			});
 		}
 		info!("\n");
+		Ok(())
 	}
 }

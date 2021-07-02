@@ -1,5 +1,6 @@
 use crate::anim::settings::AnimSettings;
 use crate::anim::Frames;
+use crate::app::{AppError, AppResult};
 use crate::edit::ImageOps;
 use image::Frame;
 use std::convert::TryInto;
@@ -56,10 +57,12 @@ impl<'a> AnimDecoder<'a> {
 	 * Update and return the frames.
 	 *
 	 * @param  frames
-	 * @return Frames
+	 * @return Frames (Result)
 	 */
-	pub fn update_frames(mut self, mut frames: Vec<Frame>) -> Frames {
-		let first_frame = frames.first().expect("No frames found to process");
+	pub fn update_frames(mut self, mut frames: Vec<Frame>) -> AppResult<Frames> {
+		let first_frame = frames.first().ok_or_else(|| {
+			AppError::FrameError(String::from("No frames found to process"))
+		})?;
 		self.imageops
 			.init(first_frame.clone().into_buffer().dimensions());
 		let fps = ((1e3 / first_frame.delay().numer_denom_ms().0 as f32)
@@ -76,7 +79,7 @@ impl<'a> AnimDecoder<'a> {
 				i + 1,
 				frames.len()
 			);
-			io::stdout().flush().expect("Failed to flush stdout");
+			io::stdout().flush()?;
 			images.push(
 				self.imageops
 					.process(frame.clone().into_buffer())
@@ -84,7 +87,7 @@ impl<'a> AnimDecoder<'a> {
 			);
 		}
 		info!("\n");
-		(images, fps)
+		Ok((images, fps))
 	}
 }
 
@@ -116,7 +119,8 @@ mod tests {
 					0,
 					Delay::from_numer_denom_ms(10, 1),
 				),
-			]);
+			])
+			.unwrap();
 		assert_eq!(2, frames.1);
 		assert_eq!(1, frames.0.len());
 		assert_eq!(Geometry::new(0, 0, 2, 2), frames.0[0].geometry);

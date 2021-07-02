@@ -1,6 +1,7 @@
 pub mod fps;
 pub mod settings;
 
+use crate::app::{AppError, AppResult};
 use crate::image::Image;
 use crate::record::fps::FpsClock;
 use crate::record::settings::RecordSettings;
@@ -110,14 +111,16 @@ where
 	 * @param  input_state (Option)
 	 * @return Vector of Image
 	 */
-	pub fn record_sync(&mut self, input_state: Option<&InputState>) -> Vec<Image> {
+	pub fn record_sync(
+		&mut self,
+		input_state: Option<&InputState>,
+	) -> AppResult<Vec<Image>> {
 		let mut frames = Vec::new();
 		let recording = Arc::new(AtomicBool::new(true));
 		let rec_state = recording.clone();
 		ctrlc::set_handler(move || {
 			rec_state.store(false, Ordering::SeqCst);
-		})
-		.expect("Failed to set the signal handler");
+		})?;
 		self.window.show_countdown();
 		let max_frames = self.get_max_frames();
 		while recording.load(Ordering::SeqCst) && frames.len() < max_frames {
@@ -132,12 +135,14 @@ where
 				}
 			}
 			self.clock.tick();
-			frames.push(self.window.get_image().expect("Failed to get the image"));
+			frames.push(self.window.get_image().ok_or_else(|| {
+				AppError::FrameError(String::from("Failed to get image"))
+			})?);
 			debug!("Frames: {}\r", frames.len());
-			io::stdout().flush().expect("Failed to flush stdout");
+			io::stdout().flush()?;
 		}
 		debug!("\n");
-		frames
+		Ok(frames)
 	}
 
 	/**
@@ -189,6 +194,6 @@ mod tests {
 		let mut recorder =
 			Recorder::new(window, 10, false, RecordSettings::default());
 		recorder.settings.time.duration = Some(0.2);
-		assert_ne!(0, recorder.record_sync(None).len());
+		assert_ne!(0, recorder.record_sync(None).unwrap().len());
 	}
 }

@@ -1,4 +1,5 @@
 use crate::analyze::ImageAnalyzer;
+use crate::app::AppResult;
 use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use chrono::{DateTime, Local, Utc};
@@ -118,9 +119,9 @@ impl AnalyzeSettings {
 	/**
 	 * Get ImageAnalyzer object from AnalyzeSettings.
 	 *
-	 * @return ImageAnalyzer
+	 * @return ImageAnalyzer (Result)
 	 */
-	pub fn get_analyzer(&self) -> ImageAnalyzer<'_> {
+	pub fn get_analyzer(&self) -> AppResult<ImageAnalyzer<'_>> {
 		ImageAnalyzer::new(self)
 	}
 }
