@@ -124,6 +124,8 @@
 
 ## Installation
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/menyoki.svg)](https://repology.org/project/menyoki/versions)
+
 ### Requirements
 
 * Rust: `1.44.0+`
