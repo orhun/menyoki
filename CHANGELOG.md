@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.1] - 2021-07-02
+### Changed
+- Implement custom error handling ([#21](https://github.com/orhun/menyoki/issues/21))
+- Update the PGP keyserver link in documentation
+
+### Fixed
+- Fix clippy lints
+- Remove cargo-bloat from workflows
+
 ## [1.4.0] - 2021-04-25
 ### Added
 - Add `--cancel-keys` option for changing the key bindings that are responsible for cancelling an operation. ([#22](https://github.com/orhun/menyoki/issues/22))
