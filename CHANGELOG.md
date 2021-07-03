@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.0] - 2021-07-04
+### Added
+- Add **view** subcommand for viewing image files from the terminal
+
 ## [1.4.2] - 2021-07-02
 ### Changed
 - Switch from [softprops/action-gh-release](https://github.com/softprops/action-gh-release) to [svenstaro/upload-release-action](https://github.com/svenstaro/upload-release-action)
