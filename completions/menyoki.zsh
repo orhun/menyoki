@@ -3938,6 +3938,17 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(view)
+_arguments "${_arguments_options[@]}" \
+'-t[Display transparent image with transparent background]' \
+'--transparent[Display transparent image with transparent background]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+':file -- Set the input file:_files' \
+&& ret=0
+;;
 (misc)
 _arguments "${_arguments_options[@]}" \
 '-g+[Generate completions for the specified shell]: :(bash fish zsh powershell elvish)' \
@@ -3970,6 +3981,7 @@ _menyoki_commands() {
 "capture:Capture an image" \
 "edit:Edit an image" \
 "analyze:Analyze an image" \
+"view:View an image" \
 "misc:Perfom miscellaneous operations" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -5073,6 +5085,13 @@ _menyoki__split__tiff_commands() {
 "help:Prints this message or the help of the given subcommand(s)" \
     )
     _describe -t commands 'menyoki split tiff commands' commands "$@"
+}
+(( $+functions[_menyoki__view_commands] )) ||
+_menyoki__view_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki view commands' commands "$@"
 }
 
 _menyoki "$@"

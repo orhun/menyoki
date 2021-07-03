@@ -9,6 +9,7 @@ use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
 use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::keys::{ActionKeys, KeyType};
 use crate::util::state::InputState;
+use crate::view::settings::ViewSettings;
 use colored::Color;
 
 /* General application settings */
@@ -23,6 +24,7 @@ pub struct AppSettings<'a> {
 	pub pnm: PnmSettings,
 	pub edit: EditSettings,
 	pub analyze: AnalyzeSettings,
+	pub view: ViewSettings,
 	pub save: SaveSettings,
 	pub input_state: Option<&'static InputState>,
 	pub window_required: bool,
@@ -51,6 +53,7 @@ impl<'a> AppSettings<'a> {
 			png: PngSettings::from_args(args),
 			jpg: JpgSettings::from_args(args),
 			analyze: AnalyzeSettings::from_args(args, Self::get_color(args)),
+			view: ViewSettings::from_args(args),
 			pnm,
 			edit,
 			save,

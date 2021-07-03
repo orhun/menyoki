@@ -17,6 +17,7 @@ mod image;
 mod record;
 mod settings;
 mod util;
+mod view;
 mod window;
 #[cfg(not(all(unix, not(target_os = "macos"))))]
 mod ws;

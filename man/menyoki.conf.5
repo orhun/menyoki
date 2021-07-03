@@ -224,6 +224,14 @@ values: utc, local]
 .TP
 .B file
 Set the image file
+.SH VIEW
+Options that belong to the [view] section.
+.TP
+.B transparent
+Display transparent image with transparent background
+.TP
+.B file
+Set the image file
 .SH SAVE
 Options that belong to the [save] section.
 .TP
@@ -354,6 +362,11 @@ T{
 \f[C]menyoki analyze test.png --timestamp save --date %H%M%S\f[R]
 T}@T{
 \f[C]MENYOKI_ANALYZE_TIMESTAMP=true MENYOKI_SAVE_DATE=%H%M%S\f[R]
+T}
+T{
+\f[C]menyoki view test.png --transparent\f[R]
+T}@T{
+\f[C]MENYOKI_VIEW_TRANSPARENT=true\f[R]
 T}
 .TE
 .SH AUTHOR

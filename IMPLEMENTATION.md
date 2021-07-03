@@ -51,6 +51,9 @@ Details of the implementation of **menyoki**.
   * [logger.rs](https://github.com/orhun/menyoki/blob/master/src/util/logger.rs) -> `Logger` (for initializing the logger)
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/util/mod.rs) -> module declarations
   * [state.rs](https://github.com/orhun/menyoki/blob/master/src/util/state.rs) -> `InputState` (checks the pressed keys)
+* view
+  * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/view/mod.rs) -> `ImageViewer`
+  * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/view/settings.rs) -> `ViewSettings`
 * window
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/window/mod.rs) -> `Access`, `Capture` (crucial traits)
   * [test.rs](https://github.com/orhun/menyoki/blob/master/src/window/test.rs) -> `TestWindow` (implements `Capture` trait for testing purposes)

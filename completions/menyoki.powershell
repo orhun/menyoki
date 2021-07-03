@@ -37,6 +37,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('capture', 'capture', [CompletionResultType]::ParameterValue, 'Capture an image')
             [CompletionResult]::new('edit', 'edit', [CompletionResultType]::ParameterValue, 'Edit an image')
             [CompletionResult]::new('analyze', 'analyze', [CompletionResultType]::ParameterValue, 'Analyze an image')
+            [CompletionResult]::new('view', 'view', [CompletionResultType]::ParameterValue, 'View an image')
             [CompletionResult]::new('misc', 'misc', [CompletionResultType]::ParameterValue, 'Perfom miscellaneous operations')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
             break
@@ -1240,6 +1241,15 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
         'menyoki;analyze;help' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;view' {
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Display transparent image with transparent background')
+            [CompletionResult]::new('--transparent', 'transparent', [CompletionResultType]::ParameterName, 'Display transparent image with transparent background')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
             [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
             [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             break

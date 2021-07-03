@@ -10,6 +10,7 @@ complete -c menyoki -n "__fish_use_subcommand" -f -a "make" -d 'Make an animatio
 complete -c menyoki -n "__fish_use_subcommand" -f -a "capture" -d 'Capture an image'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "edit" -d 'Edit an image'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "analyze" -d 'Analyze an image'
+complete -c menyoki -n "__fish_use_subcommand" -f -a "view" -d 'View an image'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "misc" -d 'Perfom miscellaneous operations'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "help" -d 'Prints this message or the help of the given subcommand(s)'
 complete -c menyoki -n "__fish_seen_subcommand_from record" -l action-keys -d 'Set the action keys'
@@ -536,6 +537,9 @@ complete -c menyoki -n "__fish_seen_subcommand_from save" -s h -l help -d 'Print
 complete -c menyoki -n "__fish_seen_subcommand_from save" -s V -l version -d 'Prints version information'
 complete -c menyoki -n "__fish_seen_subcommand_from help" -s h -l help -d 'Prints help information'
 complete -c menyoki -n "__fish_seen_subcommand_from help" -s V -l version -d 'Prints version information'
+complete -c menyoki -n "__fish_seen_subcommand_from view" -s t -l transparent -d 'Display transparent image with transparent background'
+complete -c menyoki -n "__fish_seen_subcommand_from view" -s h -l help -d 'Print help information'
+complete -c menyoki -n "__fish_seen_subcommand_from view" -s V -l version -d 'Prints version information'
 complete -c menyoki -n "__fish_seen_subcommand_from misc" -s g -l gen-completions -d 'Generate completions for the specified shell' -r -f -a "bash fish zsh powershell elvish"
 complete -c menyoki -n "__fish_seen_subcommand_from misc" -s h -l help -d 'Print help information'
 complete -c menyoki -n "__fish_seen_subcommand_from misc" -s V -l version -d 'Prints version information'

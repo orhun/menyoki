@@ -88,6 +88,9 @@ _menyoki() {
             tiff)
                 cmd+="__tiff"
                 ;;
+            view)
+                cmd+="__view"
+                ;;
             *)
                 ;;
         esac
@@ -95,7 +98,7 @@ _menyoki() {
 
     case "${cmd}" in
         menyoki)
-            opts=" -v -q -h -V -c  --verbose --quiet --help --version --config --color   record split make capture edit analyze misc help   extract  combine  screenshot ss  inspect"
+            opts=" -v -q -h -V -c  --verbose --quiet --help --version --config --color   record split make capture edit analyze view misc help   extract  combine  screenshot ss  inspect"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 1 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -3604,6 +3607,21 @@ _menyoki() {
                     COMPREPLY=($(compgen -f "${cur}"))
                     return 0
                     ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__view)
+            opts=" -t -h -V  --transparent --help --version  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
                 *)
                     COMPREPLY=()
                     ;;

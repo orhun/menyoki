@@ -11,6 +11,7 @@ use crate::gif::GifEncoder;
 use crate::image::Image;
 use crate::record::Recorder;
 use crate::settings::AppSettings;
+use crate::view::ImageViewer;
 use crate::window::Capture;
 use bytesize::ByteSize;
 use image::bmp::BmpEncoder;
@@ -52,6 +53,8 @@ pub enum AppError {
 	#[cfg(feature = "ski")]
 	#[error("gifski error: `{0}`")]
 	Gifski(#[from] gifski::Error),
+	#[error("viu error: `{0}`")]
+	Viu(#[from] viuer::ViuError),
 	#[error("Ctrlc error: `{0}`")]
 	Ctrlc(#[from] ctrlc::Error),
 	#[error("Frame error: `{0}`")]
@@ -110,6 +113,9 @@ where
 		} else if self.settings.args.is_present("analyze") {
 			debug!("Analyzing the image... ({:?})", self.settings.analyze.file);
 			self.analyze_image()?;
+		} else if self.settings.args.is_present("view") {
+			debug!("Viewing the image... ({:?})", self.settings.view.file);
+			self.view_image()?;
 		} else if self.settings.save.file.path.to_str() == Some("-") {
 			self.save_output(self.get_app_output()?, io::stdout())?;
 		} else {
@@ -302,6 +308,21 @@ where
 			info!("{}#", analyzer.get_colored_report());
 		}
 		Ok(())
+	}
+
+	/**
+	 * View the image.
+	 *
+	 * @return Result
+	 */
+	fn view_image(self) -> AppResult<()> {
+		let image = Reader::open(&self.settings.view.file)?
+			.with_guessed_format()?
+			.decode()?;
+		let viewer = ImageViewer::new(image, &self.settings.view);
+		viewer
+			.view()
+			.map(|(w, h)| debug!("Image dimensions: {}x{}", w, h))
 	}
 
 	/**

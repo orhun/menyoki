@@ -34,6 +34,7 @@ pub struct Args<'a, 'b> {
 	capture: App<'a, 'b>,
 	edit: App<'a, 'b>,
 	analyze: App<'a, 'b>,
+	view: App<'a, 'b>,
 	misc: App<'a, 'b>,
 }
 
@@ -79,6 +80,7 @@ where
 			capture: Self::get_record_args(true),
 			edit: Self::get_edit_args(),
 			analyze: Self::get_analyze_args(),
+			view: Self::get_view_args(),
 			misc: Self::get_misc_args(),
 		}
 	}
@@ -171,6 +173,7 @@ where
 				args.analyze
 					.subcommand(Self::get_save_args(FileFormat::Txt)),
 			)
+			.subcommand(args.view)
 			.subcommand(args.misc)
 	}
 
@@ -666,6 +669,29 @@ where
 				Arg::with_name("timestamp")
 					.long("timestamp")
 					.help("Use Unix timestamp for report dates"),
+			)
+	}
+
+	/**
+	 * Get the image viewing arguments.
+	 *
+	 * @return App
+	 */
+	fn get_view_args() -> App<'a, 'b> {
+		SubCommand::with_name("view")
+			.help_message("Print help information")
+			.about("View an image")
+			.arg(
+				Arg::with_name("file")
+					.value_name("FILE")
+					.help("Set the input file")
+					.required(true),
+			)
+			.arg(
+				Arg::with_name("transparent")
+					.short("t")
+					.long("transparent")
+					.help("Display transparent image with transparent background"),
 			)
 	}
 

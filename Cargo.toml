@@ -42,6 +42,7 @@ apng = "0.2.0"
 gif = "0.11.2"
 kamadak-exif = "0.5.4"
 dominant_color = "0.3.0"
+viuer = "0.5.1"
 # utility
 dirs = "3.0.2"
 rust-ini = "0.17.0"

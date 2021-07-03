@@ -29,7 +29,7 @@
     </a>
 </p>
 
-**menyoki** is a screencast and screenshot utility that can also perform various image related operations such as making/splitting GIFs and modifying/analyzing image files. It aims to be a lightweight command line tool for either helping out on day-to-day life operations or complicated detail-centric issues. Originally it was designed to record/screenshot terminal windows but it can be tweaked easily for other purposes with command line arguments, environment variables, or a configuration file.
+**menyoki** is a screencast and screenshot utility that can also perform various image related operations such as making/splitting GIFs and modifying/analyzing/viewing image files. It aims to be a lightweight command line tool for either helping out on day-to-day life operations or complicated detail-centric issues. Originally it was designed to record/screenshot terminal windows but it can be tweaked easily for other purposes with command line arguments, environment variables, or a configuration file.
 
 <details>
   <summary>Table of Contents</summary>
@@ -70,6 +70,9 @@
   - [Analyze](#analyze-)
     - [Arguments](#arguments-6)
     - [Examples](#examples-6)
+  - [View](#view-)
+    - [Arguments](#arguments-7)
+    - [Examples](#examples-7)
   - [Other](#other-)
     - [GIF/APNG](#gifapng)
     - [PNG](#png)
@@ -79,7 +82,7 @@
 - [Key Bindings](#key-bindings)
 - [Configuration](#configuration)
 - [Environment Variables](#environment-variables)
-  - [Examples](#examples-7)
+  - [Examples](#examples-8)
 - [Roadmap](#roadmap)
   - [Accessibility](#accessibility)
   - [Platforms](#platforms)
@@ -104,7 +107,7 @@
 - [ ] Windows (no record/capture)
 - [ ] macOS (no record/capture)
 
-**menyoki** requires a window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit** and **analyze** if it's compiled on macOS.
+**menyoki** requires a window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit**, **analyze** and **view** if it's compiled on macOS.
 
 ## Supported Formats
 
@@ -236,6 +239,7 @@ cargo install --path .
 * [Capture an image](#capture-)
 * [Edit an image](#edit-)
 * [Analyze an image](#analyze-)
+* [View an image](#view-)
 
 ## Usage
 
@@ -284,6 +288,7 @@ SUBCOMMANDS:
     capture    Capture an image
     edit       Edit an image
     analyze    Analyze an image
+    view       View an image
 ```
 
 #### Examples
@@ -694,6 +699,30 @@ generated on 2020-11-11 23:14:04.652826438 UTC
 
 </details>
 
+### View <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
+
+**view** subcommand can be used to simply view an image from the terminal. It uses the core library of [viu](https://github.com/atanunq/viu).
+
+`menyoki view [FLAGS] <FILE>`
+
+#### Arguments
+
+```
+FLAGS:
+    -t, --transparent    Display transparent image with transparent background
+    -h, --help           Print help information
+
+ARGS:
+    <FILE>    Set the input file
+```
+
+#### Examples
+
+| Command                               | Action                                                      |
+|---------------------------------------|-------------------------------------------------------------|
+| `menyoki view test.jpg`               | View "test.jpg" from the terminal                           |
+| `menyoki view test.png --transparent` | View "test.png" from the terminal with transparency enabled |
+
 ### Other <a href="https://github.com/orhun/menyoki"><img src="https://user-images.githubusercontent.com/24392180/99184076-96c10b00-2751-11eb-99ea-ad962144df76.png" height="30"></a>
 
 It's possible to change the GIF, APNG, PNG, JPG, and PNM encoding options with specifying flags/options to the corresponding subcommands. Also, **save** subcommand can be used for changing the default output settings.
@@ -897,6 +926,10 @@ timestamp = false
 time-zone = utc
 #file =
 
+[view]
+transparent = false
+#file =
+
 [save]
 with-extension = false
 timestamp = false
@@ -942,14 +975,15 @@ Corresponding environment variables can be set for overriding the command line f
 
 ### Examples
 
-| Command                                                     	| Environment Variables                                     	|
-|---------------------------------------------------------------|---------------------------------------------------------------|
-| `menyoki --quiet`                                           	| `MENYOKI_GENERAL_QUIET=true`                              	|
-| `menyoki record gif --fps 10 save --timestamp`              	| `MENYOKI_GIF_FPS=10 MENYOKI_SAVE_TIMESTAMP=true`          	|
-| `menyoki capture --size 200x300 jpg --quality 100`          	| `MENYOKI_CAPTURE_SIZE=200x300 MENYOKI_JPG_QUALITY=100`    	|
-| `menyoki edit test.png --ratio 2.0 --filter triangle`       	| `MENYOKI_EDIT_RATIO=2.0 MENYOKI_EDIT_FILTER=triangle`     	|
-| `menyoki split test.gif --dir frames/ pnm --format graymap` 	| `MENYOKI_SPLIT_DIR=frames/ MENYOKI_PNM_FORMAT=graymap`    	|
-| `menyoki analyze test.png --timestamp save --date %H%M%S`   	| `MENYOKI_ANALYZE_TIMESTAMP=true MENYOKI_SAVE_DATE=%H%M%S` 	|                                                      	|
+| Command                                                     | Environment Variables                                     |
+|-------------------------------------------------------------|-----------------------------------------------------------|
+| `menyoki --quiet`                                           | `MENYOKI_GENERAL_QUIET=true`                              |
+| `menyoki record gif --fps 10 save --timestamp`              | `MENYOKI_GIF_FPS=10 MENYOKI_SAVE_TIMESTAMP=true`          |
+| `menyoki capture --size 200x300 jpg --quality 100`          | `MENYOKI_CAPTURE_SIZE=200x300 MENYOKI_JPG_QUALITY=100`    |
+| `menyoki edit test.png --ratio 2.0 --filter triangle`       | `MENYOKI_EDIT_RATIO=2.0 MENYOKI_EDIT_FILTER=triangle`     |
+| `menyoki split test.gif --dir frames/ pnm --format graymap` | `MENYOKI_SPLIT_DIR=frames/ MENYOKI_PNM_FORMAT=graymap`    |
+| `menyoki analyze test.png --timestamp save --date %H%M%S`   | `MENYOKI_ANALYZE_TIMESTAMP=true MENYOKI_SAVE_DATE=%H%M%S` |
+| `menyoki view test.png --transparent`                       | `MENYOKI_VIEW_TRANSPARENT=true`                           |
 
 ## Roadmap
 

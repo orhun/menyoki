@@ -9,7 +9,7 @@ menyoki \- screenshot/screencast and perform image operations on the command lin
 .PP
 \f[B]menyoki\f[R] is a screencast and screenshot utility that can also
 perform various image related operations such as making/splitting GIFs
-and modifying/analyzing image files.
+and modifying/analyzing/viewing image files.
 It aims to be a lightweight command line tool for either helping out on
 day-to-day life operations or complicated detail-centric issues.
 Originally it was designed to record/screenshot terminal windows but it
@@ -67,6 +67,7 @@ SUBCOMMANDS:
     capture    Capture an image
     edit       Edit an image
     analyze    Analyze an image
+    view       View an image
 \f[R]
 .fi
 .SS Examples
@@ -726,6 +727,47 @@ T{
 \f[C]menyoki analyze test.jpg --timestamp save --timestamp\f[R]
 T}@T{
 Use timestamps for both analysis report and file name
+T}
+.TE
+.SH VIEW SUBCOMMAND
+.PP
+\f[B]view\f[R] subcommand can be used to simply view an image from the
+terminal.
+It uses the core library of viu (https://github.com/atanunq/viu).
+.PP
+\f[C]menyoki view [FLAGS] <FILE>\f[R]
+.SS Arguments
+.IP
+.nf
+\f[C]
+FLAGS:
+    -t, --transparent    Display transparent image with transparent background
+    -h, --help           Print help information
+
+ARGS:
+    <FILE>    Set the input file
+\f[R]
+.fi
+.SS Examples
+.PP
+.TS
+tab(@);
+lw(27.3n) lw(42.7n).
+T{
+Command
+T}@T{
+Action
+T}
+_
+T{
+\f[C]menyoki view test.jpg\f[R]
+T}@T{
+View \[lq]test.jpg\[rq] from the terminal
+T}
+T{
+\f[C]menyoki view test.png --transparent\f[R]
+T}@T{
+View \[lq]test.png\[rq] from the terminal with transparency enabled
 T}
 .TE
 .SH OTHER SUBCOMMANDS
