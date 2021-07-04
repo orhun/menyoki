@@ -57,6 +57,10 @@ mod tests {
 		let image = DynamicImage::ImageRgba8(buffer);
 		let mut viewer = ImageViewer::new(image, &ViewSettings::default());
 		viewer.config.restore_cursor = true;
-		assert_eq!((1, 1), viewer.view().unwrap());
+		if cfg!(feature = "test-ws") {
+			assert_eq!((1, 1), viewer.view().unwrap());
+		} else {
+			viewer.view().unwrap();
+		}
 	}
 }
