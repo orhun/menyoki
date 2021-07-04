@@ -67,14 +67,9 @@ jobs:
               --locked --target ${{ matrix.target }}
             strip -s target/${{ matrix.TARGET }}/release/menyoki
           fi
-      - name: Build the project (windows)
-        if: matrix.os == 'windows-2019'
+      - name: Build the project (windows/macos)
+        if: matrix.os != 'ubuntu-18.04'
         run: cargo build --verbose --release --locked --target ${{ matrix.target }}
-      - name: Build the project (macos)
-        if: matrix.os == 'macos-10.15'
-        run: |
-          cargo build --verbose --release --locked --target ${{ matrix.target }}
-          strip target/${{ matrix.TARGET }}/release/menyoki
       - name: Prepare assets
         shell: bash
         run: |
