@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.5.1] - 2021-07-04
+### Changed
+- Update the CD workflow about building for macOS
+- Update image viewer tests
+
 ## [1.5.0] - 2021-07-04
 ### Added
 - Add **view** subcommand for viewing image files from the terminal
