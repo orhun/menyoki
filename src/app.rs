@@ -50,6 +50,8 @@ pub enum AppError {
 	Image(#[from] image::error::ImageError),
 	#[error("GIF encoding error: `{0}`")]
 	GifEncoding(#[from] gif::EncodingError),
+	#[error("PNG encoding error: `{0}`")]
+	PngEncoding(#[from] png::EncodingError),
 	#[cfg(feature = "ski")]
 	#[error("gifski error: `{0}`")]
 	Gifski(#[from] gifski::Error),
@@ -586,9 +588,10 @@ where
 		ApngEncoder::new(
 			images.len().try_into().unwrap_or_default(),
 			geometry,
+			output,
 			&self.settings.anim,
-		)
-		.save(images, self.settings.input_state, output);
+		)?
+		.save(images, self.settings.input_state)?;
 		Ok(())
 	}
 }

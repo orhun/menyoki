@@ -37,8 +37,7 @@ ctrlc = { version = "3.2.0", features = ["termination"] }
 image = "0.23.14"
 imgref = { version = "1.9.1", optional = true }
 rgb = { version = "0.8.27", optional = true }
-png = "0.16.8"
-apng = "0.2.0"
+png = "0.17.0"
 gif = "0.11.2"
 kamadak-exif = "0.5.4"
 dominant_color = "0.3.0"

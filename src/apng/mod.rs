@@ -1,64 +1,60 @@
 use crate::anim::settings::AnimSettings;
+use crate::app::AppResult;
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
-use apng::{Config, Encoder, Frame, PNGImage};
 use image::ExtendedColorType;
-use png::{BitDepth, ColorType, FilterType};
+use png::{BitDepth, ColorType, Encoder, FilterType};
 use std::convert::TryInto;
 use std::io::{self, Write};
 
 /* APNG encoder and settings */
-#[derive(Debug)]
-pub struct ApngEncoder<'a> {
-	geometry: Geometry,
-	config: Config,
+pub struct ApngEncoder<'a, Output: Write> {
+	encoder: Encoder<'a, Output>,
 	settings: &'a AnimSettings,
 }
 
-impl<'a> ApngEncoder<'a> {
+impl<'a, Output: Write> ApngEncoder<'a, Output> {
 	/**
 	 * Create a new ApngEncoder object.
 	 *
 	 * @param  frame_count
 	 * @param  geometry
+	 * @param  output
 	 * @param  settings
-	 * @return ApngEncoder
+	 * @return ApngEncoder (Result)
 	 */
 	pub fn new(
 		frame_count: u32,
 		geometry: Geometry,
+		output: Output,
 		settings: &'a AnimSettings,
-	) -> Self {
-		Self {
-			geometry,
-			config: Config {
-				width: geometry.width,
-				height: geometry.height,
-				num_frames: frame_count,
-				num_plays: settings.repeat.try_into().unwrap_or_default(),
-				color: ColorType::RGBA,
-				depth: BitDepth::Eight,
-				filter: FilterType::NoFilter,
-			},
-			settings,
-		}
+	) -> AppResult<Self> {
+		let mut encoder = Encoder::new(output, geometry.width, geometry.height);
+		encoder.set_animated(
+			frame_count,
+			settings.repeat.try_into().unwrap_or_default(),
+		)?;
+		encoder.set_color(ColorType::Rgba);
+		encoder.set_depth(BitDepth::Eight);
+		encoder.set_filter(FilterType::NoFilter);
+		Ok(Self { encoder, settings })
 	}
 
 	/**
 	 * Encode images as frame and write to the APNG file.
 	 *
-	 * @param images
-	 * @param input_state (Option)
+	 * @param  images
+	 * @param  input_state (Option)
+	 * @return Result
 	 */
-	pub fn save<Output: Write>(
-		&self,
+	pub fn save(
+		self,
 		images: Vec<Image>,
 		input_state: Option<&'static InputState>,
-		mut output: Output,
-	) {
-		let mut encoder = Encoder::new(&mut output, self.config.clone())
-			.expect("Failed to create APNG encoder");
+	) -> AppResult<()> {
+		let mut writer = self.encoder.write_header()?;
+		writer.set_frame_delay(1, self.settings.fps.try_into().unwrap_or(1))?;
 		for (i, image) in images.iter().enumerate() {
 			let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
 			info!("Saving... ({:.1}%)\r", percentage);
@@ -68,7 +64,7 @@ impl<'a> ApngEncoder<'a> {
 				i + 1,
 				images.len()
 			);
-			io::stdout().flush().expect("Failed to flush stdout");
+			io::stdout().flush()?;
 			if let Some(state) = input_state {
 				if state.check_cancel_keys() {
 					info!("\n");
@@ -76,27 +72,10 @@ impl<'a> ApngEncoder<'a> {
 					panic!("Failed to write the frames")
 				}
 			}
-			encoder
-				.write_frame(
-					&PNGImage {
-						width: self.geometry.width,
-						height: self.geometry.height,
-						data: image.get_data(ExtendedColorType::Rgba8),
-						color_type: self.config.color,
-						bit_depth: self.config.depth,
-					},
-					Frame {
-						delay_num: Some(1),
-						delay_den: Some(self.settings.fps.try_into().unwrap_or(1)),
-						..Default::default()
-					},
-				)
-				.unwrap_or_else(|_| {
-					panic!("Failed to write frame: {}/{}", i + 1, images.len())
-				});
+			writer.write_image_data(&image.get_data(ExtendedColorType::Rgba8))?;
 		}
 		info!("\n");
-		encoder.finish_encode().expect("Failed to finish encoding");
+		Ok(())
 	}
 }
 
@@ -105,7 +84,7 @@ mod tests {
 	use super::*;
 	use image::Bgra;
 	#[test]
-	fn test_apng_encoder() {
+	fn test_apng_encoder() -> AppResult<()> {
 		let geometry = Geometry::new(0, 0, 1, 2);
 		let data = vec![Bgra::from([128, 128, 128, 0]), Bgra::from([16, 16, 16, 0])];
 		let images = vec![
@@ -116,10 +95,12 @@ mod tests {
 		ApngEncoder::new(
 			images.len().try_into().unwrap(),
 			geometry,
+			&mut output,
 			&AnimSettings::default(),
-		)
-		.save(images, None, &mut output);
+		)?
+		.save(images, None)?;
 		output.truncate(6);
 		assert_eq!(vec![0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a], output);
+		Ok(())
 	}
 }
