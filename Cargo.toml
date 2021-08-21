@@ -32,10 +32,10 @@ x11 = { version = "2.18.2", features = ["xlib", "xrandr"] }
 [dependencies]
 # window system
 device_query = "0.2.8"
-ctrlc = { version = "3.1.9", features = ["termination"] }
+ctrlc = { version = "3.2.0", features = ["termination"] }
 # image operations
 image = "0.23.14"
-imgref = { version = "1.9.0", optional = true }
+imgref = { version = "1.9.1", optional = true }
 rgb = { version = "0.8.27", optional = true }
 png = "0.16.8"
 apng = "0.2.0"
@@ -48,12 +48,12 @@ dirs = "3.0.2"
 rust-ini = "0.17.0"
 chrono = "0.4.19"
 hex = "0.4.3"
-bytesize = "1.0.1"
+bytesize = "1.1.0"
 natord = "1.0.9"
 colored = "2.0.0"
 log = "0.4.14"
 fern_colored = { version = "0.6.1", features = ["colored"] }
-thiserror = "1.0.25"
+thiserror = "1.0.26"
 
 [dependencies.gifski]
 version = "1.4.3"
