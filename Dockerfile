@@ -1,22 +1,22 @@
 # Planner
-FROM rust:1.54.0-slim-buster as planner
+FROM lukemathwalker/cargo-chef:latest-rust-1.53.0 as planner
 WORKDIR app
-RUN cargo install cargo-chef --version 0.1.9
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
+
 # Cacher
-FROM rust:1.54.0-slim-buster as cacher
+FROM lukemathwalker/cargo-chef:latest-rust-1.53.0 as cacher
 WORKDIR app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     --allow-unauthenticated pkg-config \
     libx11-dev libxrandr-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
-RUN cargo install cargo-chef
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
+
 # Builder
-FROM rust:1.54.0-slim-buster as builder
+FROM rust:1.53.0-slim-buster as builder
 WORKDIR app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -28,12 +28,13 @@ COPY --from=cacher /app/target target
 COPY --from=cacher /usr/local/cargo /usr/local/cargo
 RUN cargo build --release --locked
 RUN rm -f target/release/deps/menyoki*
+
 # Runner
-FROM debian:buster-slim as runner
+FROM debian:buster-slim as runtime
 WORKDIR /root/
 RUN apt-get update && apt-get install -y \
     --no-install-recommends --allow-unauthenticated \
     libx11-dev libxrandr-dev \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app/target/release/menyoki /usr/local/bin
-CMD ["menyoki"]
+ENTRYPOINT ["menyoki"]
