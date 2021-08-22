@@ -1,11 +1,11 @@
 # Planner
-FROM rust:1.51.0-slim-buster as planner
+FROM rust:1.54.0-slim-buster as planner
 WORKDIR app
 RUN cargo install cargo-chef --version 0.1.9
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 # Cacher
-FROM rust:1.51.0-slim-buster as cacher
+FROM rust:1.54.0-slim-buster as cacher
 WORKDIR app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -16,7 +16,7 @@ RUN cargo install cargo-chef
 COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 # Builder
-FROM rust:1.51.0-slim-buster as builder
+FROM rust:1.54.0-slim-buster as builder
 WORKDIR app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
