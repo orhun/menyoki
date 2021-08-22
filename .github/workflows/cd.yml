@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [linux-gnu, win-gnu, win-msvc, win32-msvc, macos]
+        build: [linux-gnu, win-gnu, win-msvc, win32-msvc]
         include:
           - build: linux-gnu
             os: ubuntu-18.04
@@ -29,10 +29,10 @@ jobs:
             os: windows-2019
             toolchain: stable
             target: i686-pc-windows-msvc
-          - build: macos
-            os: macos-10.15
-            toolchain: stable
-            target: x86_64-apple-darwin
+          #- build: macos
+          #  os: macos-10.15
+          #  toolchain: stable
+          #  target: x86_64-apple-darwin
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
