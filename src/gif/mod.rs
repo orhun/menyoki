@@ -86,9 +86,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 				speed,
 			);
 			frame.delay = (1e2 / self.fps as f32) as u16;
-			self.encoder.write_frame(&frame).unwrap_or_else(|_| {
-				panic!("Failed to write frame: {}/{}", i + 1, images.len())
-			});
+			self.encoder.write_frame(&frame)?;
 		}
 		info!("\n");
 		Ok(())
