@@ -4,7 +4,6 @@ use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::state::InputState;
 use crate::x11::window::Window;
 use device_query::{DeviceQuery, Keycode};
-use std::convert::TryInto;
 use std::ffi::CString;
 use std::io::{self, Write};
 use std::mem::MaybeUninit;
@@ -376,7 +375,6 @@ mod tests {
 	use crate::record::settings::RecordTime;
 	use crate::window::Capture;
 	use pretty_assertions::assert_eq;
-	use std::convert::TryFrom;
 	use x11::keysym;
 	#[test]
 	fn test_x11_display() {

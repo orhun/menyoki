@@ -6,7 +6,6 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use image::imageops::{self, colorops};
 use image::{Bgra, DynamicImage, ImageBuffer, RgbaImage};
-use std::convert::TryInto;
 
 /* Image processor */
 #[derive(Debug)]

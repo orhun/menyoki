@@ -3,7 +3,6 @@ use crate::gif::encoder::{Encoder, EncoderConfig};
 use crate::image::Image;
 use crate::util::state::InputState;
 use gifski::{Collector, Repeat, Writer};
-use std::convert::TryInto;
 use std::io::{self, Write};
 use std::thread;
 

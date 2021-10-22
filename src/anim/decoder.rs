@@ -3,7 +3,6 @@ use crate::anim::Frames;
 use crate::app::{AppError, AppResult};
 use crate::edit::ImageOps;
 use image::Frame;
-use std::convert::TryInto;
 use std::io::{self, Write};
 
 /* Animation decoder and settings */

@@ -1,6 +1,5 @@
 use device_query::Keycode;
 use std::fmt;
-use std::iter::FromIterator;
 
 /* Padding properties */
 #[derive(Clone, Copy, Debug, Default, PartialEq)]

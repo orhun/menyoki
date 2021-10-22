@@ -1,7 +1,5 @@
 use crate::image::padding::Padding;
-use std::convert::TryFrom;
 use std::fmt;
-use std::iter::FromIterator;
 
 /* Position and size in 2D */
 #[derive(Clone, Copy, Debug, Default, PartialEq)]

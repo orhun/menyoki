@@ -4,7 +4,6 @@ use crate::record::fps::FpsClock;
 use crate::window::Capture;
 use crate::x11::display::Display;
 use image::Bgra;
-use std::convert::{TryFrom, TryInto};
 use std::ffi::CString;
 use std::fmt;
 use std::io::{self, Write};
