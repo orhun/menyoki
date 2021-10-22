@@ -123,8 +123,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             --allow-unauthenticated libx11-dev libxrandr-dev
-      - name: Publish
-        uses: actions-rs/cargo@v1
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
         with:
-          command: publish
-          args: --locked --token ${{ secrets.CARGO_TOKEN }}
+          toolchain: stable
+          target: x86_64-unknown-linux-gnu
+          override: true
+      - name: Publish
+        run: cargo publish --locked --token ${{ secrets.CARGO_TOKEN }}
