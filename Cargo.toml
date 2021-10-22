@@ -20,30 +20,31 @@ ski = ["gifski", "rgb", "imgref"]
 # run window system tests
 test-ws = []
 
-[target.'cfg(windows)'.dependencies]
 # Windows dependencies
+[target.'cfg(windows)'.dependencies]
 
-[target.'cfg(target_os = "macos")'.dependencies]
 # MacOS dependencies
+[target.'cfg(target_os = "macos")'.dependencies]
 
+# Linux dependencies
 [target.'cfg(all(unix, not(target_os = "macos")))'.dependencies]
-x11 = { version = "2.18.2", features = ["xlib", "xrandr"] }
+x11 = { version = "2.19.1", features = ["xlib", "xrandr"] }
 
 [dependencies]
 # window system
 device_query = "0.2.8"
-ctrlc = { version = "3.2.0", features = ["termination"] }
+ctrlc = { version = "3.2.1", features = ["termination"] }
 # image operations
 image = "0.23.14"
 imgref = { version = "1.9.1", optional = true }
 rgb = { version = "0.8.27", optional = true }
-png = "0.17.0"
-gif = "0.11.2"
+png = "0.17.2"
+gif = "0.11.3"
 kamadak-exif = "0.5.4"
 dominant_color = "0.3.0"
-viuer = "0.5.1"
+viuer = "0.5.2"
 # utility
-dirs = "3.0.2"
+dirs = "4.0.0"
 rust-ini = "0.17.0"
 chrono = "0.4.19"
 hex = "0.4.3"
@@ -52,10 +53,10 @@ natord = "1.0.9"
 colored = "2.0.0"
 log = "0.4.14"
 fern_colored = { version = "0.6.1", features = ["colored"] }
-thiserror = "1.0.26"
+thiserror = "1.0.30"
 
 [dependencies.gifski]
-version = "1.5.0"
+version = "1.5.1"
 default-features = false
 optional = true
 
@@ -65,7 +66,7 @@ default-features = false
 features = ["suggestions", "color", "wrap_help"]
 
 [dev-dependencies]
-pretty_assertions = "0.7.2"
+pretty_assertions = "1.0.0"
 
 [profile.dev]
 opt-level = 2
