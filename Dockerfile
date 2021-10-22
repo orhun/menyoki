@@ -1,11 +1,11 @@
 # Planner
-FROM lukemathwalker/cargo-chef:latest-rust-1.53.0 as planner
+FROM lukemathwalker/cargo-chef:0.1.31-rust-1.56-slim-buster as planner
 WORKDIR app
 COPY . .
 RUN cargo chef prepare --recipe-path recipe.json
 
 # Cacher
-FROM lukemathwalker/cargo-chef:latest-rust-1.53.0 as cacher
+FROM lukemathwalker/cargo-chef:0.1.31-rust-1.56-slim-buster as cacher
 WORKDIR app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -16,7 +16,7 @@ COPY --from=planner /app/recipe.json recipe.json
 RUN cargo chef cook --release --recipe-path recipe.json
 
 # Builder
-FROM rust:1.53.0-slim-buster as builder
+FROM rust:1.56-slim-buster as builder
 WORKDIR app
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -30,7 +30,7 @@ RUN cargo build --release --locked
 RUN rm -f target/release/deps/menyoki*
 
 # Runner
-FROM debian:buster-slim as runtime
+FROM debian:buster-slim as runner
 WORKDIR /root/
 RUN apt-get update && apt-get install -y \
     --no-install-recommends --allow-unauthenticated \
