@@ -9,7 +9,6 @@ use image::{Bgra, ExtendedColorType};
 use {
 	imgref::{Img, ImgVec},
 	rgb::RGBA8,
-	std::convert::TryInto,
 };
 
 /* Coefficients for transforming sRGB to CIE Y (luminance value) */

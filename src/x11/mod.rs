@@ -6,7 +6,6 @@ use crate::settings::AppSettings;
 use crate::window::Access;
 use crate::x11::display::Display;
 use crate::x11::window::Window;
-use std::convert::TryInto;
 use std::ffi::CStr;
 use std::os::raw::c_char;
 use x11::xlib;

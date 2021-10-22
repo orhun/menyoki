@@ -31,7 +31,6 @@ use image::tiff::TiffEncoder;
 use image::{
 	AnimationDecoder, ColorType, ExtendedColorType, ImageEncoder, ImageFormat,
 };
-use std::convert::TryInto;
 use std::fmt::Debug;
 use std::fs::{self, File};
 use std::io::{self, Read, Write};

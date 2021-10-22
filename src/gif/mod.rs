@@ -9,7 +9,6 @@ use crate::image::Image;
 use crate::util::state::InputState;
 use gif::{Encoder as BaseEncoder, Frame, Repeat};
 use image::ExtendedColorType;
-use std::convert::TryInto;
 use std::io::{self, Write};
 
 /* GIF encoder and settings */

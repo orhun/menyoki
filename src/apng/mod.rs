@@ -5,7 +5,6 @@ use crate::image::Image;
 use crate::util::state::InputState;
 use image::ExtendedColorType;
 use png::{BitDepth, ColorType, Encoder, FilterType};
-use std::convert::TryInto;
 use std::io::{self, Write};
 
 /* APNG encoder and settings */
