@@ -14,7 +14,7 @@ jobs:
         build: [linux-gnu, win-gnu, win-msvc, win32-msvc]
         include:
           - build: linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             toolchain: stable
             target: x86_64-unknown-linux-gnu
           - build: win-gnu
@@ -40,7 +40,7 @@ jobs:
         shell: bash
         run: echo "RELEASE_VERSION=${GITHUB_REF:11}" >> $GITHUB_ENV
       - name: Install packages (linux)
-        if: matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
@@ -52,7 +52,7 @@ jobs:
           target: ${{ matrix.target }}
           override: true
       - name: Build the project (linux)
-        if: matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           if [ "${{ matrix.build }}" = "linux-arm" ]; then
             PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
@@ -68,7 +68,7 @@ jobs:
             strip -s target/${{ matrix.TARGET }}/release/menyoki
           fi
       - name: Build the project (windows/macos)
-        if: matrix.os != 'ubuntu-18.04'
+        if: matrix.os != 'ubuntu-20.04'
         run: cargo build --verbose --release --locked --target ${{ matrix.target }}
       - name: Prepare assets
         shell: bash
@@ -114,7 +114,7 @@ jobs:
   publish-crates-io:
     name: Publish on crates.io
     needs: publish-github
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@master

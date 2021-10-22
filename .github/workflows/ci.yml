@@ -17,7 +17,7 @@ jobs:
         build: [linux-gnu, win-gnu, win-msvc, win32-msvc, macos]
         include:
           - build: linux-gnu
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             toolchain: stable
             target: x86_64-unknown-linux-gnu
           - build: win-gnu
@@ -40,7 +40,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@master
       - name: Install dependencies (linux)
-        if: matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
@@ -62,14 +62,14 @@ jobs:
           command: clippy
           args: --verbose -- -D warnings
       - name: Install cargo-tarpaulin (linux)
-        if: matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest | \
             grep "browser_download_url.*tar.gz" | cut -d : -f 2,3 | tr -d \" | wget -qi -
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
       - name: Run tests (linux)
-        if: matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
           xvfb-run --server-args="-screen 0 1366x768x24" \
             cargo tarpaulin -o Xml -v --features test-ws
@@ -78,7 +78,7 @@ jobs:
         run: |
           cargo test --verbose --features test-ws
       - name: Upload reports to Codecov (linux)
-        if: matrix.os == 'ubuntu-18.04'
+        if: matrix.os == 'ubuntu-20.04'
         uses: codecov/codecov-action@v1.0.7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
@@ -89,7 +89,7 @@ jobs:
 
   rustfmt:
     name: Format
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
@@ -108,7 +108,7 @@ jobs:
 
   lychee:
     name: Check the links
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
