@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.4] - 2021-10-22
+### Changed
+- Switch to Rust 2021 edition
+- Bump the Rust version in Dockerfile
+- Improve the Docker build workflow
+- Switch to ubuntu-20.04 runner
+- Run CI builds periodically
+- Add security audit workflow
+- Update .gitignore about misc files
+- Enable macOS releases
+- Bump dependencies
+
 ## [1.5.3] - 2021-08-22
 ### Changed
 - Temporarily disable macOS releases
