@@ -16,27 +16,25 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        build: [linux-gnu, win-gnu, win-msvc, win32-msvc, macos]
+        build: [linux-gnu, linux-musl, win-gnu, win-msvc, win32-msvc, macos]
         include:
           - build: linux-gnu
             os: ubuntu-20.04
-            toolchain: stable
             target: x86_64-unknown-linux-gnu
+          - build: linux-musl
+            os: ubuntu-20.04
+            target: x86_64-unknown-linux-musl
           - build: win-gnu
             os: windows-2019
-            toolchain: stable
             target: x86_64-pc-windows-gnu
           - build: win-msvc
             os: windows-2019
-            toolchain: stable
             target: x86_64-pc-windows-msvc
           - build: win32-msvc
             os: windows-2019
-            toolchain: stable
             target: i686-pc-windows-msvc
           - build: macos
             os: macos-10.15
-            toolchain: stable
             target: x86_64-apple-darwin
     steps:
       - name: Checkout repository
@@ -50,7 +48,7 @@ jobs:
       - name: Install Rust toolchain
         uses: actions-rs/toolchain@v1
         with:
-          toolchain: ${{ matrix.toolchain }}
+          toolchain: stable
           target: ${{ matrix.target }}
           override: true
       - name: Check the project files
@@ -63,6 +61,10 @@ jobs:
         with:
           command: clippy
           args: --verbose -- -D warnings
+      - name: Run tests (macos/windows)
+        if: matrix.os == 'macos-10.15' || matrix.os == 'windows-2019'
+        run: |
+          cargo test --verbose --features test-ws
       - name: Install cargo-tarpaulin (linux)
         if: matrix.os == 'ubuntu-20.04'
         run: |
@@ -75,12 +77,8 @@ jobs:
         run: |
           xvfb-run --server-args="-screen 0 1366x768x24" \
             cargo tarpaulin -o Xml -v --features test-ws
-      - name: Run tests (macos/windows)
-        if: matrix.os == 'macos-10.15' || matrix.os == 'windows-2019'
-        run: |
-          cargo test --verbose --features test-ws
       - name: Upload reports to Codecov (linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.build == 'linux-gnu'
         uses: codecov/codecov-action@v1.0.7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
