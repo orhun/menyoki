@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.6] - 2022-01-16
+### Changed
+- Optimize GitHub workflows
+- Update license copyright years
+- Update the broken link in CONTRIBUTING.md
+- Update RELEASE.md about Docker releases
+- Bump dependencies
+- Bump the Rust version in Dockerfile
+
 ## [1.5.5] - 2021-10-22
 ### Fixed
 - Specify the Rust toolchain explicitly for crates.io release
