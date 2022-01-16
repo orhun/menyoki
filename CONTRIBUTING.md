@@ -5,7 +5,7 @@ Thank you for considering contributing to [menyoki](https://github.com/orhun/men
 When contributing, please first discuss the change you wish to make via [issue](https://github.com/orhun/menyoki/issues),
 [email](mailto:orhunparmaksiz@gmail.com), or any other method with the owners of this repository before making a change.
 
-Note that we have a [Code of Conduct](https://github.com/orhun/menyoki/blob/master/.github/CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
+Note that we have a [Code of Conduct](https://github.com/orhun/menyoki/blob/master/CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
 
 ## Setup
 
