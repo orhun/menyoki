@@ -37,12 +37,12 @@ ctrlc = { version = "3.2.1", features = ["termination"] }
 # image operations
 image = "0.23.14"
 imgref = { version = "1.9.1", optional = true }
-rgb = { version = "0.8.27", optional = true }
+rgb = { version = "0.8.31", optional = true }
 png = "0.17.2"
 gif = "0.11.3"
 kamadak-exif = "0.5.4"
 dominant_color = "0.3.0"
-viuer = "0.5.2"
+viuer = "0.5.3"
 # utility
 dirs = "4.0.0"
 rust-ini = "0.17.0"
@@ -56,12 +56,12 @@ fern_colored = { version = "0.6.1", features = ["colored"] }
 thiserror = "1.0.30"
 
 [dependencies.gifski]
-version = "1.5.1"
+version = "1.6.3"
 default-features = false
 optional = true
 
 [dependencies.clap]
-version = "2.33.3"
+version = "2.34.0"
 default-features = false
 features = ["suggestions", "color", "wrap_help"]
 
