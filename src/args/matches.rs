@@ -59,7 +59,7 @@ impl<'a> ArgMatches<'a> {
 				"{}_{}_{}",
 				env!("CARGO_PKG_NAME"),
 				self.section,
-				name.replace("-", "_")
+				name.replace('-', "_")
 			)
 			.to_uppercase(),
 		)
