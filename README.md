@@ -131,7 +131,7 @@
 
 ### Requirements
 
-* Rust: `1.44.0+`
+* Rust: `1.56.1+`
 * Dependencies
   * Arch Linux: `libx11`, `libxrandr`
   * Debian, Ubuntu: `libx11-dev`/`librust-x11-dev`, `libxrandr-dev`
