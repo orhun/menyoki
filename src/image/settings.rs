@@ -1,8 +1,7 @@
 use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
-use image::codecs::png::CompressionType;
-use image::codecs::png::FilterType;
-use image::pnm::{PnmSubtype, SampleEncoding};
+use image::codecs::png::{CompressionType, FilterType};
+use image::codecs::pnm::{PnmSubtype, SampleEncoding};
 
 /* PNG compression and filter settings */
 #[derive(Clone, Copy, Debug)]

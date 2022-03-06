@@ -1,6 +1,6 @@
 use crate::args::matches::ArgMatches;
 use crate::file::File;
-use image::pnm::PnmSubtype;
+use image::codecs::pnm::PnmSubtype;
 use std::fmt;
 use std::str::FromStr;
 

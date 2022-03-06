@@ -1,7 +1,7 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::window::Capture;
-use image::Bgra;
+use image::Rgba;
 
 /* Testing window */
 #[derive(Clone, Copy, Debug)]
@@ -37,7 +37,7 @@ impl Capture for TestWindow {
 	 */
 	fn get_image(&self) -> Option<Image> {
 		Some(Image::new(
-			vec![Bgra::from([255, 255, 255, 0])],
+			vec![Rgba::from([255, 255, 255, 0])],
 			false,
 			self.geometry,
 		))

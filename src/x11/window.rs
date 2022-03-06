@@ -3,7 +3,7 @@ use crate::image::Image;
 use crate::record::fps::FpsClock;
 use crate::window::Capture;
 use crate::x11::display::Display;
-use image::Bgra;
+use image::Rgba;
 use std::ffi::CString;
 use std::fmt;
 use std::io::{self, Write};
@@ -401,14 +401,16 @@ impl Capture for Window {
 			);
 			if !window_image.is_null() {
 				let image = &mut *window_image;
-				let data = slice::from_raw_parts::<Bgra<u8>>(
-					image.data as *const Bgra<u8>,
+				let data = slice::from_raw_parts(
+					image.data as *const [u8; 4],
 					image.width as usize * image.height as usize,
 				)
 				.to_vec();
 				xlib::XDestroyImage(window_image);
 				Some(Image::new(
-					data,
+					data.iter()
+						.map(|bgra| Rgba::from([bgra[2], bgra[1], bgra[0], bgra[3]]))
+						.collect(),
 					self.display.settings.flag.alpha,
 					self.area,
 				))

@@ -81,11 +81,11 @@ impl<'a, Output: Write> ApngEncoder<'a, Output> {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use image::Bgra;
+	use image::Rgba;
 	#[test]
 	fn test_apng_encoder() -> AppResult<()> {
 		let geometry = Geometry::new(0, 0, 1, 2);
-		let data = vec![Bgra::from([128, 128, 128, 0]), Bgra::from([16, 16, 16, 0])];
+		let data = vec![Rgba::from([128, 128, 128, 0]), Rgba::from([16, 16, 16, 0])];
 		let images = vec![
 			Image::new(data.clone(), false, geometry),
 			Image::new(data.into_iter().rev().collect(), false, geometry),

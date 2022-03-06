@@ -5,7 +5,7 @@ use crate::edit::settings::{EditSettings, Flip};
 use crate::image::geometry::Geometry;
 use crate::image::Image;
 use image::imageops::{self, colorops};
-use image::{Bgra, DynamicImage, ImageBuffer, RgbaImage};
+use image::{DynamicImage, ImageBuffer, Rgba, RgbaImage};
 
 /* Image processor */
 #[derive(Debug)]
@@ -84,7 +84,7 @@ impl<'a> ImageOps<'a> {
 				.clone()
 				.into_vec()
 				.chunks(4)
-				.map(|rgba| Bgra::from([rgba[2], rgba[1], rgba[0], rgba[3]]))
+				.map(|rgba| Rgba::from([rgba[0], rgba[1], rgba[2], rgba[3]]))
 				.collect(),
 			true,
 			self.geometry,

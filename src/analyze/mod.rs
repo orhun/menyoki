@@ -255,7 +255,7 @@ mod tests {
 			TimeZone::Utc(false),
 		);
 		let analyzer = ImageAnalyzer::new(&settings).unwrap();
-		assert_eq!("73 B", analyzer.get_file_size());
+		assert_eq!("72 B", analyzer.get_file_size());
 		for info in vec![TimeInfo::Created, TimeInfo::Modified, TimeInfo::Accessed] {
 			if let Some(time) = analyzer.get_time_info(info) {
 				assert_eq!(

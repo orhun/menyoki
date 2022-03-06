@@ -58,14 +58,14 @@ mod tests {
 	#[cfg(feature = "ski")]
 	use crate::gif::ski::GifskiEncoder;
 	use crate::gif::GifEncoder;
-	use image::Bgra;
+	use image::Rgba;
 	const GIF_HEADER: &[u8] = &[0x47, 0x49, 0x46, 0x38, 0x39, 0x61];
 	fn get_config<'a, Output: Write>(
 		output: Output,
 		settings: &'a AnimSettings,
 	) -> (EncoderConfig<'a, Output>, Vec<Image>) {
 		let geometry = Geometry::new(0, 0, 1, 2);
-		let data = vec![Bgra::from([0, 0, 0, 0]), Bgra::from([255, 255, 255, 0])];
+		let data = vec![Rgba::from([0, 0, 0, 0]), Rgba::from([255, 255, 255, 0])];
 		let images = vec![
 			Image::new(data.clone(), false, geometry),
 			Image::new(data.into_iter().rev().collect(), false, geometry),

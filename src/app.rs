@@ -14,20 +14,20 @@ use crate::settings::AppSettings;
 use crate::view::ImageViewer;
 use crate::window::Capture;
 use bytesize::ByteSize;
-use image::bmp::BmpEncoder;
+use image::codecs::bmp::BmpEncoder;
+use image::codecs::farbfeld::FarbfeldEncoder;
+use image::codecs::gif::GifDecoder;
+use image::codecs::ico::IcoEncoder;
+use image::codecs::jpeg::JpegEncoder;
 use image::codecs::png::PngDecoder;
+use image::codecs::png::PngEncoder;
+use image::codecs::pnm::{PnmEncoder, PnmSubtype};
+use image::codecs::tga::TgaEncoder;
+use image::codecs::tiff::TiffEncoder;
 use image::error::{
 	ImageError, ImageFormatHint, UnsupportedError, UnsupportedErrorKind,
 };
-use image::farbfeld::FarbfeldEncoder;
-use image::gif::GifDecoder;
-use image::ico::IcoEncoder;
 use image::io::Reader;
-use image::jpeg::JpegEncoder;
-use image::png::PngEncoder;
-use image::pnm::{PnmEncoder, PnmSubtype};
-use image::tga::TgaEncoder;
-use image::tiff::TiffEncoder;
 use image::{
 	AnimationDecoder, ColorType, ExtendedColorType, ImageEncoder, ImageFormat,
 };

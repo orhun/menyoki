@@ -4,7 +4,7 @@ pub mod settings;
 use std::fmt;
 
 use crate::image::geometry::Geometry;
-use image::{Bgra, ExtendedColorType};
+use image::{ExtendedColorType, Rgba};
 #[cfg(feature = "ski")]
 use {
 	imgref::{Img, ImgVec},
@@ -17,7 +17,7 @@ const SRGB_LUMA: [f32; 3] = [0.2126, 0.7152, 0.0722];
 /* Image data and geometric properties */
 #[derive(Clone)]
 pub struct Image {
-	data: Vec<Bgra<u8>>,
+	data: Vec<Rgba<u8>>,
 	alpha_channel: bool,
 	pub geometry: Geometry,
 }
@@ -43,7 +43,7 @@ impl Image {
 	 * @return Image
 	 */
 	pub fn new(
-		data: Vec<Bgra<u8>>,
+		data: Vec<Rgba<u8>>,
 		alpha_channel: bool,
 		geometry: Geometry,
 	) -> Self {
@@ -61,25 +61,25 @@ impl Image {
 	 * @return Vector of u8
 	 */
 	pub fn get_data(&self, color_type: ExtendedColorType) -> Vec<u8> {
-		self.data.iter().fold(Vec::<u8>::new(), |mut data, bgra| {
-			let alpha = if self.alpha_channel { bgra[3] } else { 255 };
+		self.data.iter().fold(Vec::<u8>::new(), |mut data, rgba| {
+			let alpha = if self.alpha_channel { rgba[3] } else { 255 };
 			data.extend(&match color_type {
 				ExtendedColorType::L1 | ExtendedColorType::L8 => vec![{
-					let y = (SRGB_LUMA[0] * bgra[2] as f32
-						+ SRGB_LUMA[1] * bgra[1] as f32
-						+ SRGB_LUMA[2] * bgra[0] as f32) as u8;
+					let y = (SRGB_LUMA[0] * rgba[0] as f32
+						+ SRGB_LUMA[1] * rgba[1] as f32
+						+ SRGB_LUMA[2] * rgba[2] as f32) as u8;
 					if color_type == ExtendedColorType::L1 {
 						(y >> 7) * 0xFF
 					} else {
 						y
 					}
 				}],
-				ExtendedColorType::Rgb8 => vec![bgra[2], bgra[1], bgra[0]],
+				ExtendedColorType::Rgb8 => vec![rgba[0], rgba[1], rgba[2]],
 				ExtendedColorType::Rgba16 => vec![
-					bgra[2], bgra[2], bgra[1], bgra[1], bgra[0], bgra[0], alpha,
+					rgba[0], rgba[0], rgba[1], rgba[1], rgba[2], rgba[2], alpha,
 					alpha,
 				],
-				_ => vec![bgra[2], bgra[1], bgra[0], alpha],
+				_ => vec![rgba[0], rgba[1], rgba[2], alpha],
 			});
 			data
 		})
@@ -95,12 +95,12 @@ impl Image {
 		Img::new(
 			self.data
 				.iter()
-				.fold(Vec::<RGBA8>::new(), |mut rgba8, bgra| {
-					let alpha = if self.alpha_channel { bgra[3] } else { 255 };
+				.fold(Vec::<RGBA8>::new(), |mut rgba8, rgba| {
+					let alpha = if self.alpha_channel { rgba[3] } else { 255 };
 					rgba8.extend(vec![RGBA8 {
-						r: bgra[2],
-						g: bgra[1],
-						b: bgra[0],
+						r: rgba[0],
+						g: rgba[1],
+						b: rgba[2],
 						a: alpha,
 					}]);
 					rgba8
@@ -118,9 +118,9 @@ mod tests {
 	#[test]
 	fn test_image() {
 		let geometry = Geometry::new(0, 0, 200, 200);
-		let data: [Bgra<u8>; 2] = [
-			Bgra::from([128, 128, 128, 0]),
-			Bgra::from([255, 255, 255, 0]),
+		let data: [Rgba<u8>; 2] = [
+			Rgba::from([128, 128, 128, 0]),
+			Rgba::from([255, 255, 255, 0]),
 		];
 		let image = Image::new(data.to_vec(), false, geometry);
 		assert_eq!(
