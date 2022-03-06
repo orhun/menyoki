@@ -1,3 +1,4 @@
+#[cfg(test)]
 pub mod test;
 
 use crate::image::Image;
