@@ -285,16 +285,15 @@ impl Window {
 	pub fn show_text(&self, text: Option<String>, mut clock: FpsClock) {
 		let text = text.unwrap_or_default();
 		for _ in 0..clock.fps {
-			self.draw_text(
-				text.as_str(),
-				self.area.x
-					+ (self.area.width
-						- (u32::try_from(TEXT_CORNER_OFFSET).unwrap_or_default()
-							+ 5))
-						.try_into()
-						.unwrap_or(TEXT_CORNER_OFFSET),
-				self.area.y + TEXT_CORNER_OFFSET,
-			);
+			if let Some(x_offset) = self.area.width.checked_sub(
+				u32::try_from(TEXT_CORNER_OFFSET).unwrap_or_default() + 5,
+			) {
+				self.draw_text(
+					text.as_str(),
+					self.area.x + x_offset.try_into().unwrap_or(TEXT_CORNER_OFFSET),
+					self.area.y + TEXT_CORNER_OFFSET,
+				);
+			}
 			clock.tick();
 		}
 	}
