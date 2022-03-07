@@ -31,6 +31,9 @@ _menyoki() {
             edit)
                 cmd+="__edit"
                 ;;
+            exr)
+                cmd+="__exr"
+                ;;
             extract)
                 cmd+="__extract"
                 ;;
@@ -210,7 +213,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__capture)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff exr save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -350,6 +353,82 @@ _menyoki() {
             return 0
             ;;
         menyoki__capture__bmp__save)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__capture__exr)
+            opts=" -h -V  --help --version   save help  out"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__capture__exr__help)
+            opts=" -h -V  --help --version  "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__capture__exr__out)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__capture__exr__save)
             opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -1073,7 +1152,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__edit)
-            opts=" -h -V  --convert --grayscale --invert --help --version --crop --resize --ratio --rotate --flip --blur --hue --contrast --brightness --filter  <FILE>  gif apng png jpg bmp ico tiff tga pnm ff save help    out"
+            opts=" -h -V  --convert --grayscale --invert --help --version --crop --resize --ratio --rotate --flip --blur --hue --contrast --brightness --filter  <FILE>  gif apng png jpg bmp ico tiff tga pnm ff exr save help    out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -1309,6 +1388,82 @@ _menyoki() {
             return 0
             ;;
         menyoki__edit__bmp__save)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__exr)
+            opts=" -h -V  --help --version   save help  out"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__exr__help)
+            opts=" -h -V  --help --version  "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__exr__out)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__edit__exr__save)
             opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -2093,7 +2248,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__extract)
-            opts=" -h -V -d  --help --version --dir  <FILE>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -h -V -d  --help --version --dir  <FILE>  png jpg bmp ico tiff tga pnm ff exr save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2709,7 +2864,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__screenshot)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff exr save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2796,7 +2951,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__split)
-            opts=" -h -V -d  --help --version --dir  <FILE>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -h -V -d  --help --version --dir  <FILE>  png jpg bmp ico tiff tga pnm ff exr save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0
@@ -2872,6 +3027,82 @@ _menyoki() {
             return 0
             ;;
         menyoki__split__bmp__save)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__split__exr)
+            opts=" -h -V  --help --version   save help  out"
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 3 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__split__exr__help)
+            opts=" -h -V  --help --version  "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__split__exr__out)
+            opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
+            if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
+                COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+                return 0
+            fi
+            case "${prev}" in
+                
+                --date)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                    -d)
+                    COMPREPLY=($(compgen -f "${cur}"))
+                    return 0
+                    ;;
+                *)
+                    COMPREPLY=()
+                    ;;
+            esac
+            COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
+            return 0
+            ;;
+        menyoki__split__exr__save)
             opts=" -e -t -h -V -d  --with-extension --timestamp --help --version --date  <FILE> "
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 4 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
@@ -3528,7 +3759,7 @@ _menyoki() {
             return 0
             ;;
         menyoki__ss)
-            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff save help  out"
+            opts=" -r -f -m -h -V -b -p -s -d -c -t -i  --root --focus --select --parent --with-alpha --no-keys --mouse --help --version --action-keys --cancel-keys --border --padding --size --duration --countdown --timeout --interval --font --monitor  <COMMAND>  png jpg bmp ico tiff tga pnm ff exr save help  out"
             if [[ ${cur} == -* || ${COMP_CWORD} -eq 2 ]] ; then
                 COMPREPLY=( $(compgen -W "${opts}" -- "${cur}") )
                 return 0

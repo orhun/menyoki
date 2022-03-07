@@ -193,6 +193,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand tga 'Use the TGA encoder'
             cand pnm 'Use the PNM encoder'
             cand ff 'Use the farbfeld encoder'
+            cand exr 'Use the OpenEXR encoder'
             cand save 'Save the output file(s)'
             cand help 'Prints this message or the help of the given subcommand(s)'
         }
@@ -414,6 +415,32 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand -V 'Prints version information'
             cand --version 'Prints version information'
         }
+        &'menyoki;split;exr'= {
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+            cand save 'Save the output file(s)'
+            cand help 'Prints this message or the help of the given subcommand(s)'
+        }
+        &'menyoki;split;exr;save'= {
+            cand -d 'Add formatted date/time to the file name'
+            cand --date 'Add formatted date/time to the file name'
+            cand -e 'Always save the file with an extension'
+            cand --with-extension 'Always save the file with an extension'
+            cand -t 'Add Unix timestamp to the file name'
+            cand --timestamp 'Add Unix timestamp to the file name'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;split;exr;help'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
         &'menyoki;split;save'= {
             cand -d 'Add formatted date/time to the file name'
             cand --date 'Add formatted date/time to the file name'
@@ -516,6 +543,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand tga 'Use the TGA encoder'
             cand pnm 'Use the PNM encoder'
             cand ff 'Use the farbfeld encoder'
+            cand exr 'Use the OpenEXR encoder'
             cand save 'Save the output file(s)'
             cand help 'Prints this message or the help of the given subcommand(s)'
         }
@@ -737,6 +765,32 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand -V 'Prints version information'
             cand --version 'Prints version information'
         }
+        &'menyoki;capture;exr'= {
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+            cand save 'Save the output file(s)'
+            cand help 'Prints this message or the help of the given subcommand(s)'
+        }
+        &'menyoki;capture;exr;save'= {
+            cand -d 'Add formatted date/time to the file name'
+            cand --date 'Add formatted date/time to the file name'
+            cand -e 'Always save the file with an extension'
+            cand --with-extension 'Always save the file with an extension'
+            cand -t 'Add Unix timestamp to the file name'
+            cand --timestamp 'Add Unix timestamp to the file name'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;capture;exr;help'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
         &'menyoki;capture;save'= {
             cand -d 'Add formatted date/time to the file name'
             cand --date 'Add formatted date/time to the file name'
@@ -783,6 +837,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand tga 'Use the TGA encoder'
             cand pnm 'Use the PNM encoder'
             cand ff 'Use the farbfeld encoder'
+            cand exr 'Use the OpenEXR encoder'
             cand save 'Save the output file(s)'
             cand help 'Prints this message or the help of the given subcommand(s)'
         }
@@ -1085,6 +1140,32 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
         }
         &'menyoki;edit;ff;help'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;edit;exr'= {
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+            cand save 'Save the output file(s)'
+            cand help 'Prints this message or the help of the given subcommand(s)'
+        }
+        &'menyoki;edit;exr;save'= {
+            cand -d 'Add formatted date/time to the file name'
+            cand --date 'Add formatted date/time to the file name'
+            cand -e 'Always save the file with an extension'
+            cand --with-extension 'Always save the file with an extension'
+            cand -t 'Add Unix timestamp to the file name'
+            cand --timestamp 'Add Unix timestamp to the file name'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;edit;exr;help'= {
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand -V 'Prints version information'

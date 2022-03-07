@@ -755,6 +755,63 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(exr)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__split__exr_commands" \
+"*::: :->exr" \
+&& ret=0
+case $state in
+    (exr)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-split-exr-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (out)
 _arguments "${_arguments_options[@]}" \
 '-d+[Add formatted date/time to the file name]' \
@@ -1238,6 +1295,63 @@ case $state in
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:menyoki-split-ff-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(exr)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__split__exr_commands" \
+"*::: :->exr" \
+&& ret=0
+case $state in
+    (exr)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-split-exr-command-$line[1]:"
         case $line[1] in
             (out)
 _arguments "${_arguments_options[@]}" \
@@ -1983,6 +2097,63 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(exr)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__capture__exr_commands" \
+"*::: :->exr" \
+&& ret=0
+case $state in
+    (exr)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-capture-exr-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (out)
 _arguments "${_arguments_options[@]}" \
 '-d+[Add formatted date/time to the file name]' \
@@ -2535,6 +2706,63 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(exr)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__capture__exr_commands" \
+"*::: :->exr" \
+&& ret=0
+case $state in
+    (exr)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-capture-exr-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (out)
 _arguments "${_arguments_options[@]}" \
 '-d+[Add formatted date/time to the file name]' \
@@ -3044,6 +3272,63 @@ case $state in
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:menyoki-capture-ff-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(exr)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__capture__exr_commands" \
+"*::: :->exr" \
+&& ret=0
+case $state in
+    (exr)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-capture-exr-command-$line[1]:"
         case $line[1] in
             (out)
 _arguments "${_arguments_options[@]}" \
@@ -3774,6 +4059,63 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(exr)
+_arguments "${_arguments_options[@]}" \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__edit__exr_commands" \
+"*::: :->exr" \
+&& ret=0
+case $state in
+    (exr)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-edit-exr-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (out)
 _arguments "${_arguments_options[@]}" \
 '-d+[Add formatted date/time to the file name]' \
@@ -4046,6 +4388,7 @@ _menyoki__capture_commands() {
 "tga:Use the TGA encoder" \
 "pnm:Use the PNM encoder" \
 "ff:Use the farbfeld encoder" \
+"exr:Use the OpenEXR encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -4072,10 +4415,35 @@ _menyoki__edit_commands() {
 "tga:Use the TGA encoder" \
 "pnm:Use the PNM encoder" \
 "ff:Use the farbfeld encoder" \
+"exr:Use the OpenEXR encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
     _describe -t commands 'menyoki edit commands' commands "$@"
+}
+(( $+functions[_menyoki__capture__exr_commands] )) ||
+_menyoki__capture__exr_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki capture exr commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__exr_commands] )) ||
+_menyoki__edit__exr_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki edit exr commands' commands "$@"
+}
+(( $+functions[_menyoki__split__exr_commands] )) ||
+_menyoki__split__exr_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki split exr commands' commands "$@"
 }
 (( $+functions[_extract_commands] )) ||
 _extract_commands() {
@@ -4088,6 +4456,7 @@ _extract_commands() {
 "tga:Use the TGA encoder" \
 "pnm:Use the PNM encoder" \
 "ff:Use the farbfeld encoder" \
+"exr:Use the OpenEXR encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -4146,6 +4515,13 @@ _menyoki__capture__bmp__help_commands() {
         
     )
     _describe -t commands 'menyoki capture bmp help commands' commands "$@"
+}
+(( $+functions[_menyoki__capture__exr__help_commands] )) ||
+_menyoki__capture__exr__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki capture exr help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ff__help_commands] )) ||
 _menyoki__capture__ff__help_commands() {
@@ -4216,6 +4592,13 @@ _menyoki__edit__bmp__help_commands() {
         
     )
     _describe -t commands 'menyoki edit bmp help commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__exr__help_commands] )) ||
+_menyoki__edit__exr__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit exr help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ff__help_commands] )) ||
 _menyoki__edit__ff__help_commands() {
@@ -4321,6 +4704,13 @@ _menyoki__split__bmp__help_commands() {
         
     )
     _describe -t commands 'menyoki split bmp help commands' commands "$@"
+}
+(( $+functions[_menyoki__split__exr__help_commands] )) ||
+_menyoki__split__exr__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki split exr help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ff__help_commands] )) ||
 _menyoki__split__ff__help_commands() {
@@ -4463,6 +4853,13 @@ _menyoki__capture__bmp__out_commands() {
     )
     _describe -t commands 'menyoki capture bmp out commands' commands "$@"
 }
+(( $+functions[_menyoki__capture__exr__out_commands] )) ||
+_menyoki__capture__exr__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki capture exr out commands' commands "$@"
+}
 (( $+functions[_menyoki__capture__ff__out_commands] )) ||
 _menyoki__capture__ff__out_commands() {
     local commands; commands=(
@@ -4532,6 +4929,13 @@ _menyoki__edit__bmp__out_commands() {
         
     )
     _describe -t commands 'menyoki edit bmp out commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__exr__out_commands] )) ||
+_menyoki__edit__exr__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit exr out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ff__out_commands] )) ||
 _menyoki__edit__ff__out_commands() {
@@ -4637,6 +5041,13 @@ _menyoki__split__bmp__out_commands() {
         
     )
     _describe -t commands 'menyoki split bmp out commands' commands "$@"
+}
+(( $+functions[_menyoki__split__exr__out_commands] )) ||
+_menyoki__split__exr__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki split exr out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ff__out_commands] )) ||
 _menyoki__split__ff__out_commands() {
@@ -4766,6 +5177,13 @@ _menyoki__capture__bmp__save_commands() {
     )
     _describe -t commands 'menyoki capture bmp save commands' commands "$@"
 }
+(( $+functions[_menyoki__capture__exr__save_commands] )) ||
+_menyoki__capture__exr__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki capture exr save commands' commands "$@"
+}
 (( $+functions[_menyoki__capture__ff__save_commands] )) ||
 _menyoki__capture__ff__save_commands() {
     local commands; commands=(
@@ -4835,6 +5253,13 @@ _menyoki__edit__bmp__save_commands() {
         
     )
     _describe -t commands 'menyoki edit bmp save commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__exr__save_commands] )) ||
+_menyoki__edit__exr__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit exr save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ff__save_commands] )) ||
 _menyoki__edit__ff__save_commands() {
@@ -4934,6 +5359,13 @@ _menyoki__split__bmp__save_commands() {
     )
     _describe -t commands 'menyoki split bmp save commands' commands "$@"
 }
+(( $+functions[_menyoki__split__exr__save_commands] )) ||
+_menyoki__split__exr__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki split exr save commands' commands "$@"
+}
 (( $+functions[_menyoki__split__ff__save_commands] )) ||
 _menyoki__split__ff__save_commands() {
     local commands; commands=(
@@ -5001,6 +5433,7 @@ _screenshot_commands() {
 "tga:Use the TGA encoder" \
 "pnm:Use the PNM encoder" \
 "ff:Use the farbfeld encoder" \
+"exr:Use the OpenEXR encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -5017,6 +5450,7 @@ _menyoki__split_commands() {
 "tga:Use the TGA encoder" \
 "pnm:Use the PNM encoder" \
 "ff:Use the farbfeld encoder" \
+"exr:Use the OpenEXR encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
@@ -5033,6 +5467,7 @@ _ss_commands() {
 "tga:Use the TGA encoder" \
 "pnm:Use the PNM encoder" \
 "ff:Use the farbfeld encoder" \
+"exr:Use the OpenEXR encoder" \
 "save:Save the output file(s)" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )

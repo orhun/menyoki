@@ -18,6 +18,7 @@ pub enum FileFormat {
 	Tga,
 	Pnm(String),
 	Ff,
+	Exr,
 	Txt,
 }
 
@@ -43,6 +44,7 @@ impl FromStr for FileFormat {
 			"tga" => Ok(Self::Tga),
 			"pnm" => Ok(Self::Pnm(String::from("ppm"))),
 			"ff" => Ok(Self::Ff),
+			"exr" => Ok(Self::Exr),
 			"txt" => Ok(Self::Txt),
 			_ => Err("Unrecognized file format"),
 		}
@@ -81,6 +83,8 @@ impl FileFormat {
 					Self::Gif
 				} else if matches.is_present("ff") {
 					Self::Ff
+				} else if matches.is_present("exr") {
+					Self::Exr
 				} else if matches.is_present("tiff") {
 					Self::Tiff
 				} else if matches.is_present("tga") {

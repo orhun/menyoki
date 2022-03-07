@@ -828,6 +828,14 @@ where
 					Self::get_save_args(FileFormat::Ff).settings(&save_settings),
 				),
 		)
+		.subcommand(
+			SubCommand::with_name("exr")
+				.about("Use the OpenEXR encoder")
+				.help_message("Print help information")
+				.subcommand(
+					Self::get_save_args(FileFormat::Exr).settings(&save_settings),
+				),
+		)
 		.subcommand(Self::get_save_args(FileFormat::Any).settings(&save_settings))
 	}
 

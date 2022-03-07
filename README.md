@@ -121,6 +121,7 @@
 - [x] [PNM](https://en.wikipedia.org/wiki/Netpbm)
 - [x] [TGA](https://en.wikipedia.org/wiki/Truevision_TGA)
 - [x] [farbfeld](https://tools.suckless.org/farbfeld/)
+- [x] [OpenEXR](https://en.wikipedia.org/wiki/OpenEXR)
 - [ ] [WebP](https://en.wikipedia.org/wiki/WebP)
 - [ ] [AVIF](https://en.wikipedia.org/wiki/AV1)
 - [ ] [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14)
@@ -406,6 +407,7 @@ SUBCOMMANDS:
     tga     Use the TGA encoder
     pnm     Use the PNM encoder
     ff      Use the farbfeld encoder
+    exr     Use the OpenEXR encoder
 ```
 
 #### Examples
@@ -497,6 +499,7 @@ SUBCOMMANDS:
     tga     Use the TGA encoder
     pnm     Use the PNM encoder
     ff      Use the farbfeld encoder
+    exr     Use the OpenEXR encoder
     save    Save the output file(s)
 ```
 
@@ -562,6 +565,7 @@ SUBCOMMANDS:
     tga     Use the TGA encoder
     pnm     Use the PNM encoder
     ff      Use the farbfeld encoder
+    exr     Use the OpenEXR encoder
     save    Save the output file(s)
 ```
 

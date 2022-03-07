@@ -79,6 +79,14 @@ impl Image {
 					rgba[0], rgba[0], rgba[1], rgba[1], rgba[2], rgba[2], alpha,
 					alpha,
 				],
+				ExtendedColorType::Rgba32F => {
+					let mut data = Vec::new();
+					data.extend_from_slice(&(rgba[0] as f32 / 255.).to_ne_bytes());
+					data.extend_from_slice(&(rgba[1] as f32 / 255.).to_ne_bytes());
+					data.extend_from_slice(&(rgba[2] as f32 / 255.).to_ne_bytes());
+					data.extend_from_slice(&(alpha as f32 / 255.).to_ne_bytes());
+					data
+				}
 				_ => vec![rgba[0], rgba[1], rgba[2], alpha],
 			});
 			data

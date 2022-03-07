@@ -19,6 +19,7 @@ use image::codecs::farbfeld::FarbfeldEncoder;
 use image::codecs::gif::GifDecoder;
 use image::codecs::ico::IcoEncoder;
 use image::codecs::jpeg::JpegEncoder;
+use image::codecs::openexr::OpenExrEncoder;
 use image::codecs::png::PngDecoder;
 use image::codecs::png::PngEncoder;
 use image::codecs::pnm::{PnmEncoder, PnmSubtype};
@@ -33,7 +34,7 @@ use image::{
 };
 use std::fmt::Debug;
 use std::fs::{self, File};
-use std::io::{self, Read, Write};
+use std::io::{self, Cursor, Read, Seek, Write};
 use std::path::Path;
 use std::thread;
 use thiserror::Error as ThisError;
@@ -118,7 +119,9 @@ where
 			debug!("Viewing the image... ({:?})", self.settings.view.file);
 			self.view_image()?;
 		} else if self.settings.save.file.path.to_str() == Some("-") {
-			self.save_output(self.get_app_output()?, io::stdout())?;
+			let mut buffer = Cursor::new(Vec::new());
+			self.save_output(self.get_app_output()?, &mut buffer)?;
+			io::stdout().write_all(&buffer.into_inner())?;
 		} else {
 			self.save_output(
 				self.get_app_output()?,
@@ -385,7 +388,7 @@ where
 	 * @param   output
 	 * @return  Result
 	 */
-	fn save_output<Output: Write>(
+	fn save_output<Output: Write + Seek>(
 		&self,
 		app_output: AppOutput,
 		mut output: Output,
@@ -452,6 +455,11 @@ where
 				FarbfeldEncoder::new(output),
 				ExtendedColorType::Rgba16,
 			),
+			FileFormat::Exr => self.save_image(
+				image,
+				OpenExrEncoder::new(output),
+				ExtendedColorType::Rgba32F,
+			),
 			_ => Ok(()),
 		}
 	}
@@ -492,6 +500,7 @@ where
 				ExtendedColorType::L1 | ExtendedColorType::L8 => ColorType::L8,
 				ExtendedColorType::Rgb8 => ColorType::Rgb8,
 				ExtendedColorType::Rgba16 => ColorType::Rgba16,
+				ExtendedColorType::Rgba32F => ColorType::Rgba32F,
 				_ => ColorType::Rgba8,
 			},
 		)?;
@@ -618,6 +627,7 @@ mod tests {
 			FileFormat::Tga,
 			FileFormat::Pnm(String::from("ppm")),
 			FileFormat::Ff,
+			FileFormat::Exr,
 		] {
 			let path =
 				FileUtil::get_path_with_extension(PathBuf::from("test.*"), &format);

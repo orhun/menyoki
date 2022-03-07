@@ -208,6 +208,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('tga', 'tga', [CompletionResultType]::ParameterValue, 'Use the TGA encoder')
             [CompletionResult]::new('pnm', 'pnm', [CompletionResultType]::ParameterValue, 'Use the PNM encoder')
             [CompletionResult]::new('ff', 'ff', [CompletionResultType]::ParameterValue, 'Use the farbfeld encoder')
+            [CompletionResult]::new('exr', 'exr', [CompletionResultType]::ParameterValue, 'Use the OpenEXR encoder')
             [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
             break
@@ -454,6 +455,35 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             break
         }
+        'menyoki;split;exr' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;exr;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;exr;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
         'menyoki;split;save' {
             [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
             [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
@@ -561,6 +591,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('tga', 'tga', [CompletionResultType]::ParameterValue, 'Use the TGA encoder')
             [CompletionResult]::new('pnm', 'pnm', [CompletionResultType]::ParameterValue, 'Use the PNM encoder')
             [CompletionResult]::new('ff', 'ff', [CompletionResultType]::ParameterValue, 'Use the farbfeld encoder')
+            [CompletionResult]::new('exr', 'exr', [CompletionResultType]::ParameterValue, 'Use the OpenEXR encoder')
             [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
             break
@@ -807,6 +838,35 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             break
         }
+        'menyoki;capture;exr' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;exr;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;exr;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
         'menyoki;capture;save' {
             [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
             [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
@@ -855,6 +915,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('tga', 'tga', [CompletionResultType]::ParameterValue, 'Use the TGA encoder')
             [CompletionResult]::new('pnm', 'pnm', [CompletionResultType]::ParameterValue, 'Use the PNM encoder')
             [CompletionResult]::new('ff', 'ff', [CompletionResultType]::ParameterValue, 'Use the farbfeld encoder')
+            [CompletionResult]::new('exr', 'exr', [CompletionResultType]::ParameterValue, 'Use the OpenEXR encoder')
             [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
             break
@@ -1187,6 +1248,35 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             break
         }
         'menyoki;edit;ff;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;exr' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;exr;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;exr;help' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
