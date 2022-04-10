@@ -159,14 +159,14 @@ mod tests {
 		);
 		assert!(
 			Utc::now().timestamp() - 1
-				< TimeZone::Utc(true)
+				<= TimeZone::Utc(true)
 					.get(system_time)
 					.parse()
 					.unwrap_or_default()
 		);
 		assert!(
 			Local::now().timestamp() - 1
-				< TimeZone::Local(true)
+				<= TimeZone::Local(true)
 					.get(system_time)
 					.parse()
 					.unwrap_or_default()
