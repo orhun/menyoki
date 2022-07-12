@@ -8,6 +8,7 @@ use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
 use image::io::Reader as ImageReader;
 use image::{DynamicImage, ImageFormat};
+use std::fmt::Write;
 use std::fs::{self, File, Metadata};
 use std::io::BufReader;
 
@@ -116,8 +117,9 @@ impl<'a> ImageAnalyzer<'a> {
 				{
 					value = format!("({} bytes binary data)", value.len());
 				}
-				data += &format!(
-					"  {}: {}{}\n",
+				let _ = writeln!(
+					data,
+					"  {}: {}{}",
 					f.tag,
 					value,
 					if f.ifd_num.index() == 1 { " (T)" } else { "" }
