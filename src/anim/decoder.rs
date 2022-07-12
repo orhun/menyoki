@@ -99,9 +99,11 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_anim_decoder() {
-		let mut anim_settings = AnimSettings::default();
-		anim_settings.cut = (500., 0.);
-		anim_settings.speed = 2.0;
+		let anim_settings = AnimSettings {
+			cut: (500., 0.),
+			speed: 2.0,
+			..Default::default()
+		};
 		let mut edit_settings = EditSettings::default();
 		edit_settings.image.ratio = 2.0;
 		let frames = AnimDecoder::new(edit_settings.get_imageops(), &anim_settings)

@@ -60,10 +60,10 @@ mod tests {
 	use crate::gif::GifEncoder;
 	use image::Rgba;
 	const GIF_HEADER: &[u8] = &[0x47, 0x49, 0x46, 0x38, 0x39, 0x61];
-	fn get_config<'a, Output: Write>(
+	fn get_config<Output: Write>(
 		output: Output,
-		settings: &'a AnimSettings,
-	) -> (EncoderConfig<'a, Output>, Vec<Image>) {
+		settings: &AnimSettings,
+	) -> (EncoderConfig<'_, Output>, Vec<Image>) {
 		let geometry = Geometry::new(0, 0, 1, 2);
 		let data = vec![Rgba::from([0, 0, 0, 0]), Rgba::from([255, 255, 255, 0])];
 		let images = vec![
@@ -77,10 +77,7 @@ mod tests {
 		let mut output = Vec::new();
 		let settings = AnimSettings::default();
 		let (config, images) = get_config(&mut output, &settings);
-		GifEncoder::new(config)
-			.unwrap()
-			.save(images.clone(), None)
-			.unwrap();
+		GifEncoder::new(config).unwrap().save(images, None).unwrap();
 		output.truncate(6);
 		assert_eq!(GIF_HEADER, output);
 		output.clear();

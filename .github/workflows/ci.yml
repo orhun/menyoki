@@ -61,7 +61,7 @@ jobs:
         uses: actions-rs/cargo@v1
         with:
           command: clippy
-          args: --verbose -- -D warnings
+          args: --tests --verbose -- -D warnings
       - name: Run tests (macos/windows)
         if: matrix.os == 'macos-10.15' || matrix.os == 'windows-2019'
         run: |

@@ -192,7 +192,7 @@ mod tests {
 	use pretty_assertions::{assert_eq, assert_ne};
 	#[test]
 	fn test_png_settings() {
-		for value in vec![
+		for value in &[
 			("default", "none"),
 			("best", "up"),
 			("huffman", "avg"),

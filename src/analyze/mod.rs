@@ -275,14 +275,7 @@ mod tests {
 			analyzer.get_dominant_colors().join("-")
 		);
 		assert!(analyzer.exif.is_none());
-		assert_eq!(
-			17,
-			analyzer
-				.get_colored_report()
-				.lines()
-				.collect::<Vec<&str>>()
-				.len()
-		);
+		assert_eq!(17, analyzer.get_colored_report().lines().count());
 		fs::remove_file(file_name).unwrap();
 	}
 }

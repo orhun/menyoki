@@ -190,7 +190,7 @@ mod tests {
 		let recorder = Recorder::new(window, 10, false, RecordSettings::default());
 		let record = recorder.record_async();
 		thread::sleep(Duration::from_millis(200));
-		assert!(record.get().unwrap().unwrap().len() > 0);
+		assert!(!record.get().unwrap().unwrap().is_empty());
 		let mut recorder =
 			Recorder::new(window, 10, false, RecordSettings::default());
 		recorder.settings.time.duration = Some(0.2);
