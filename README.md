@@ -1033,7 +1033,7 @@ It's a reference to the [author](https://orhun.dev)'s favorite character from th
 
 The Menyokki sprite that is used as the project's logo was originally drawn by [OwocekTV](https://twitter.com/0x757775) for the fan made game [Patafour](https://patafourgame.com). He is also the creator and lead developer of Patafour and he is working on bringing the long awaited 4th installment of the Patapon franchise to life with the rest of the team.
 
-Thanks to [OwocekTV](https://github.com/OwocekTV) for his hard work on [Patafour](https://patafourgame.com/) and the help with the **menyoki** logo. Kudos!
+Thanks to [owodzeg](https://github.com/owodzeg) for his hard work on [Patafour](https://patafourgame.com/) and the help with the **menyoki** logo. Kudos!
 
 ### Social Media
 
