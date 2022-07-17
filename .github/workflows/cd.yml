@@ -57,15 +57,9 @@ jobs:
           if [ "${{ matrix.build }}" = "linux-arm" ]; then
             PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
               --locked --no-default-features --target ${{ matrix.target }}
-            docker run --rm -v \
-              "$PWD/target:/target:Z" \
-              rustembedded/cross:${{ matrix.TARGET }} \
-              arm-linux-gnueabihf-strip \
-              target/${{ matrix.TARGET }}/release/menyoki
           else
             PKG_CONFIG_ALLOW_CROSS=1 cargo build --verbose --release \
               --locked --target ${{ matrix.target }}
-            strip -s target/${{ matrix.TARGET }}/release/menyoki
           fi
       - name: Build the project (windows/macos)
         if: matrix.os != 'ubuntu-20.04'
