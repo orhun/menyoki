@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1] - 2022-07-17
+### Changed
+- Check clippy lints for tests
+- Update broken link in README.md
+- Bump dependencies
+- Add optional feature to support viewing sixel images
+- Update edition in rustfmt config
+- Bump the Rust version in Dockerfile
+- Add caching step to CI workflow
+- Update cargo-chef image
+- Enable strip option for release profile
+
+### Fixed
+- Update timezone test about comparisons
+- Apply clippy suggestions
+
 ## [1.6.0] - 2022-03-07
 ### Changed
 - Add OpenEXR support
