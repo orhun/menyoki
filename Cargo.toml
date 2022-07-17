@@ -32,17 +32,17 @@ x11 = { version = "2.19.1", features = ["xlib", "xrandr"] }
 
 [dependencies]
 # window system
-device_query = "1.0.0"
-ctrlc = { version = "3.2.1", features = ["termination"] }
+device_query = "1.1.1"
+ctrlc = { version = "3.2.2", features = ["termination"] }
 # image operations
-image = "0.24.1"
-imgref = { version = "1.9.1", optional = true }
-rgb = { version = "0.8.32", optional = true }
+image = "0.24.2"
+imgref = { version = "1.9.2", optional = true }
+rgb = { version = "0.8.33", optional = true }
 png = "0.17.5"
-gif = "0.11.3"
+gif = "0.11.4"
 kamadak-exif = "0.5.4"
 dominant_color = "0.3.0"
-viuer = "0.6.0"
+viuer = "0.6.1"
 # utility
 dirs = "4.0.0"
 rust-ini = "0.18.0"
@@ -51,12 +51,12 @@ hex = "0.4.3"
 bytesize = "1.1.0"
 natord = "1.0.9"
 colored = "2.0.0"
-log = "0.4.14"
+log = "0.4.17"
 fern_colored = { version = "0.6.1", features = ["colored"] }
-thiserror = "1.0.30"
+thiserror = "1.0.31"
 
 [dependencies.gifski]
-version = "1.6.6"
+version = "1.7.0"
 default-features = false
 optional = true
 
@@ -66,7 +66,7 @@ default-features = false
 features = ["suggestions", "color", "wrap_help"]
 
 [dev-dependencies]
-pretty_assertions = "1.1.0"
+pretty_assertions = "1.2.1"
 
 [profile.dev]
 opt-level = 2
