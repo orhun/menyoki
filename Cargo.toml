@@ -17,6 +17,8 @@ edition = "2021"
 default = ["ski"]
 # enable gifski encoder
 ski = ["gifski", "rgb", "imgref"]
+# enable support for viewing sixel images
+sixel = ["viuer/sixel"]
 # run window system tests
 test-ws = []
 
