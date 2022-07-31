@@ -1044,9 +1044,7 @@ Thanks to [owodzeg](https://github.com/owodzeg) for his hard work on [Patafour](
 
 ### Funding
 
-I only support [Patreon](https://www.patreon.com/orhunp) as the funding model currently. If you like the **menyoki** and/or other projects on my [GitHub profile](https://github.com/orhun/), consider becoming a [patron](https://www.patreon.com/join/orhunp)!
-
-[![Become a Patron](https://img.shields.io/badge/-Become%20a%20patron-000000?style=flat&labelColor=000000&color=25691f&logo=Patreon&logoColor=white)](https://www.patreon.com/join/orhunp)
+If you like the **menyoki** and/or other projects on my [GitHub profile](https://github.com/orhun/), consider supporting me on [GitHub Sponsors](https://github.com/sponsors/orhun) or [Patreon](https://www.patreon.com/join/orhunp)!
 
 ## License
 
