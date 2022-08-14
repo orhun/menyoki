@@ -3,7 +3,7 @@ use chrono::Local;
 use std::fmt;
 
 /* Information to include in file name */
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum FileInfo<'a> {
 	Date(&'a str),
 	Timestamp,

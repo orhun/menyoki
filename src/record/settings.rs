@@ -134,7 +134,7 @@ impl RecordFlag {
 }
 
 /* Window to record, with geometric properties  */
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum RecordWindow {
 	Focus(Option<Geometry>, bool),
 	Root(Option<Geometry>),

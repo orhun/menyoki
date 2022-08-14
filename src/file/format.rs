@@ -5,7 +5,7 @@ use std::fmt;
 use std::str::FromStr;
 
 /* Format of the output file */
-#[derive(Clone, Debug, PartialEq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub enum FileFormat {
 	Any,
 	Gif,

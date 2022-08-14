@@ -118,7 +118,7 @@ impl ColorSettings {
 }
 
 /* Flip direction */
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Flip {
 	Horizontal,
 	Vertical,

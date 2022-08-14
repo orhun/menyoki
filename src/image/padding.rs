@@ -2,7 +2,7 @@ use device_query::Keycode;
 use std::fmt;
 
 /* Padding properties */
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct Padding {
 	pub top: u32,
 	pub right: u32,

@@ -99,7 +99,7 @@ impl ActionKeys {
 					.split('-')
 					.filter_map(|v| Keycode::from_str(v).ok())
 					.collect::<Vec<Keycode>>();
-				(!group.is_empty()).then(|| group)
+				(!group.is_empty()).then_some(group)
 			})
 			.collect::<Vec<Vec<Keycode>>>();
 		if keys.is_empty() {

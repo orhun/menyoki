@@ -8,7 +8,7 @@ use std::fmt;
 pub type Frames = (Vec<Image>, u32);
 
 /* Animation format */
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AnimFormat {
 	Gif,
 	Apng,
@@ -22,7 +22,7 @@ impl fmt::Display for AnimFormat {
 }
 
 /* Animation related subcommands */
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum AnimMode {
 	Record(AnimFormat),
 	Edit(AnimFormat),

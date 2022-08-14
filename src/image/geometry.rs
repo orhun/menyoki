@@ -2,7 +2,7 @@ use crate::image::padding::Padding;
 use std::fmt;
 
 /* Position and size in 2D */
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct Geometry {
 	pub x: i32,
 	pub y: i32,
