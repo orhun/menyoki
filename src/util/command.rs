@@ -38,7 +38,7 @@ impl<'a> Command<'a> {
 	 */
 	pub fn execute(&self) -> Result<(), Error> {
 		info!("Running the command...");
-		match OsCommand::new(&self.cmd).args(&self.args).spawn() {
+		match OsCommand::new(self.cmd).args(&self.args).spawn() {
 			Ok(mut child) => {
 				child.wait()?;
 				Ok(())
