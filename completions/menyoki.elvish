@@ -33,7 +33,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand edit 'Edit an image'
             cand analyze 'Analyze an image'
             cand view 'View an image'
-            cand misc 'Perfom miscellaneous operations'
+            cand misc 'Perform miscellaneous operations'
             cand help 'Prints this message or the help of the given subcommand(s)'
         }
         &'menyoki;record'= {

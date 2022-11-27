@@ -11,7 +11,7 @@ complete -c menyoki -n "__fish_use_subcommand" -f -a "capture" -d 'Capture an im
 complete -c menyoki -n "__fish_use_subcommand" -f -a "edit" -d 'Edit an image'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "analyze" -d 'Analyze an image'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "view" -d 'View an image'
-complete -c menyoki -n "__fish_use_subcommand" -f -a "misc" -d 'Perfom miscellaneous operations'
+complete -c menyoki -n "__fish_use_subcommand" -f -a "misc" -d 'Perform miscellaneous operations'
 complete -c menyoki -n "__fish_use_subcommand" -f -a "help" -d 'Prints this message or the help of the given subcommand(s)'
 complete -c menyoki -n "__fish_seen_subcommand_from record" -l action-keys -d 'Set the action keys'
 complete -c menyoki -n "__fish_seen_subcommand_from record" -l cancel-keys -d 'Set the cancel keys'

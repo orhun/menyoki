@@ -38,7 +38,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('edit', 'edit', [CompletionResultType]::ParameterValue, 'Edit an image')
             [CompletionResult]::new('analyze', 'analyze', [CompletionResultType]::ParameterValue, 'Analyze an image')
             [CompletionResult]::new('view', 'view', [CompletionResultType]::ParameterValue, 'View an image')
-            [CompletionResult]::new('misc', 'misc', [CompletionResultType]::ParameterValue, 'Perfom miscellaneous operations')
+            [CompletionResult]::new('misc', 'misc', [CompletionResultType]::ParameterValue, 'Perform miscellaneous operations')
             [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
             break
         }

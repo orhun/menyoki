@@ -890,7 +890,7 @@ where
 	 */
 	fn get_misc_args() -> App<'a, 'b> {
 		SubCommand::with_name("misc")
-			.about("Perfom miscellaneous operations")
+			.about("Perform miscellaneous operations")
 			.help_message("Print help information")
 			.setting(AppSettings::Hidden)
 			.arg(
