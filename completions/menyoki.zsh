@@ -4324,7 +4324,7 @@ _menyoki_commands() {
 "edit:Edit an image" \
 "analyze:Analyze an image" \
 "view:View an image" \
-"misc:Perfom miscellaneous operations" \
+"misc:Perform miscellaneous operations" \
 "help:Prints this message or the help of the given subcommand(s)" \
     )
     _describe -t commands 'menyoki commands' commands "$@"
@@ -4505,266 +4505,266 @@ _menyoki__record__gif_commands() {
 (( $+functions[_menyoki__analyze__help_commands] )) ||
 _menyoki__analyze__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki analyze help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__bmp__help_commands] )) ||
 _menyoki__capture__bmp__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture bmp help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__exr__help_commands] )) ||
 _menyoki__capture__exr__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture exr help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ff__help_commands] )) ||
 _menyoki__capture__ff__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture ff help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__help_commands] )) ||
 _menyoki__capture__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ico__help_commands] )) ||
 _menyoki__capture__ico__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture ico help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__jpg__help_commands] )) ||
 _menyoki__capture__jpg__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture jpg help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__png__help_commands] )) ||
 _menyoki__capture__png__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture png help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__pnm__help_commands] )) ||
 _menyoki__capture__pnm__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture pnm help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__tga__help_commands] )) ||
 _menyoki__capture__tga__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture tga help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__tiff__help_commands] )) ||
 _menyoki__capture__tiff__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture tiff help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__apng__help_commands] )) ||
 _menyoki__edit__apng__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit apng help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__bmp__help_commands] )) ||
 _menyoki__edit__bmp__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit bmp help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__exr__help_commands] )) ||
 _menyoki__edit__exr__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit exr help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ff__help_commands] )) ||
 _menyoki__edit__ff__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit ff help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__gif__help_commands] )) ||
 _menyoki__edit__gif__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit gif help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__help_commands] )) ||
 _menyoki__edit__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ico__help_commands] )) ||
 _menyoki__edit__ico__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit ico help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__jpg__help_commands] )) ||
 _menyoki__edit__jpg__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit jpg help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__png__help_commands] )) ||
 _menyoki__edit__png__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit png help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__pnm__help_commands] )) ||
 _menyoki__edit__pnm__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit pnm help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__tga__help_commands] )) ||
 _menyoki__edit__tga__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit tga help commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__tiff__help_commands] )) ||
 _menyoki__edit__tiff__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit tiff help commands' commands "$@"
 }
 (( $+functions[_menyoki__help_commands] )) ||
 _menyoki__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki help commands' commands "$@"
 }
 (( $+functions[_menyoki__make__help_commands] )) ||
 _menyoki__make__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki make help commands' commands "$@"
 }
 (( $+functions[_menyoki__record__apng__help_commands] )) ||
 _menyoki__record__apng__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record apng help commands' commands "$@"
 }
 (( $+functions[_menyoki__record__gif__help_commands] )) ||
 _menyoki__record__gif__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record gif help commands' commands "$@"
 }
 (( $+functions[_menyoki__record__help_commands] )) ||
 _menyoki__record__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__bmp__help_commands] )) ||
 _menyoki__split__bmp__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split bmp help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__exr__help_commands] )) ||
 _menyoki__split__exr__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split exr help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ff__help_commands] )) ||
 _menyoki__split__ff__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split ff help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__help_commands] )) ||
 _menyoki__split__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ico__help_commands] )) ||
 _menyoki__split__ico__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split ico help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__jpg__help_commands] )) ||
 _menyoki__split__jpg__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split jpg help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__png__help_commands] )) ||
 _menyoki__split__png__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split png help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__pnm__help_commands] )) ||
 _menyoki__split__pnm__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split pnm help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__tga__help_commands] )) ||
 _menyoki__split__tga__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split tga help commands' commands "$@"
 }
 (( $+functions[_menyoki__split__tiff__help_commands] )) ||
 _menyoki__split__tiff__help_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split tiff help commands' commands "$@"
 }
@@ -4835,273 +4835,273 @@ _menyoki__make_commands() {
 (( $+functions[_menyoki__misc_commands] )) ||
 _menyoki__misc_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki misc commands' commands "$@"
 }
 (( $+functions[_menyoki__analyze__out_commands] )) ||
 _menyoki__analyze__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki analyze out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__bmp__out_commands] )) ||
 _menyoki__capture__bmp__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture bmp out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__exr__out_commands] )) ||
 _menyoki__capture__exr__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture exr out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ff__out_commands] )) ||
 _menyoki__capture__ff__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture ff out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ico__out_commands] )) ||
 _menyoki__capture__ico__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture ico out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__jpg__out_commands] )) ||
 _menyoki__capture__jpg__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture jpg out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__out_commands] )) ||
 _menyoki__capture__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__png__out_commands] )) ||
 _menyoki__capture__png__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture png out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__pnm__out_commands] )) ||
 _menyoki__capture__pnm__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture pnm out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__tga__out_commands] )) ||
 _menyoki__capture__tga__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture tga out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__tiff__out_commands] )) ||
 _menyoki__capture__tiff__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture tiff out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__apng__out_commands] )) ||
 _menyoki__edit__apng__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit apng out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__bmp__out_commands] )) ||
 _menyoki__edit__bmp__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit bmp out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__exr__out_commands] )) ||
 _menyoki__edit__exr__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit exr out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ff__out_commands] )) ||
 _menyoki__edit__ff__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit ff out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__gif__out_commands] )) ||
 _menyoki__edit__gif__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit gif out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ico__out_commands] )) ||
 _menyoki__edit__ico__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit ico out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__jpg__out_commands] )) ||
 _menyoki__edit__jpg__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit jpg out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__out_commands] )) ||
 _menyoki__edit__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__png__out_commands] )) ||
 _menyoki__edit__png__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit png out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__pnm__out_commands] )) ||
 _menyoki__edit__pnm__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit pnm out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__tga__out_commands] )) ||
 _menyoki__edit__tga__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit tga out commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__tiff__out_commands] )) ||
 _menyoki__edit__tiff__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit tiff out commands' commands "$@"
 }
 (( $+functions[_menyoki__make__out_commands] )) ||
 _menyoki__make__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki make out commands' commands "$@"
 }
 (( $+functions[_menyoki__out_commands] )) ||
 _menyoki__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki out commands' commands "$@"
 }
 (( $+functions[_menyoki__record__apng__out_commands] )) ||
 _menyoki__record__apng__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record apng out commands' commands "$@"
 }
 (( $+functions[_menyoki__record__gif__out_commands] )) ||
 _menyoki__record__gif__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record gif out commands' commands "$@"
 }
 (( $+functions[_menyoki__record__out_commands] )) ||
 _menyoki__record__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__bmp__out_commands] )) ||
 _menyoki__split__bmp__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split bmp out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__exr__out_commands] )) ||
 _menyoki__split__exr__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split exr out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ff__out_commands] )) ||
 _menyoki__split__ff__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split ff out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ico__out_commands] )) ||
 _menyoki__split__ico__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split ico out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__jpg__out_commands] )) ||
 _menyoki__split__jpg__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split jpg out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__out_commands] )) ||
 _menyoki__split__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__png__out_commands] )) ||
 _menyoki__split__png__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split png out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__pnm__out_commands] )) ||
 _menyoki__split__pnm__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split pnm out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__tga__out_commands] )) ||
 _menyoki__split__tga__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split tga out commands' commands "$@"
 }
 (( $+functions[_menyoki__split__tiff__out_commands] )) ||
 _menyoki__split__tiff__out_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split tiff out commands' commands "$@"
 }
@@ -5166,259 +5166,259 @@ _menyoki__record_commands() {
 (( $+functions[_menyoki__analyze__save_commands] )) ||
 _menyoki__analyze__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki analyze save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__bmp__save_commands] )) ||
 _menyoki__capture__bmp__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture bmp save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__exr__save_commands] )) ||
 _menyoki__capture__exr__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture exr save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ff__save_commands] )) ||
 _menyoki__capture__ff__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture ff save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ico__save_commands] )) ||
 _menyoki__capture__ico__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture ico save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__jpg__save_commands] )) ||
 _menyoki__capture__jpg__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture jpg save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__png__save_commands] )) ||
 _menyoki__capture__png__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture png save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__pnm__save_commands] )) ||
 _menyoki__capture__pnm__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture pnm save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__save_commands] )) ||
 _menyoki__capture__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__tga__save_commands] )) ||
 _menyoki__capture__tga__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture tga save commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__tiff__save_commands] )) ||
 _menyoki__capture__tiff__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki capture tiff save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__apng__save_commands] )) ||
 _menyoki__edit__apng__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit apng save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__bmp__save_commands] )) ||
 _menyoki__edit__bmp__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit bmp save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__exr__save_commands] )) ||
 _menyoki__edit__exr__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit exr save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ff__save_commands] )) ||
 _menyoki__edit__ff__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit ff save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__gif__save_commands] )) ||
 _menyoki__edit__gif__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit gif save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__ico__save_commands] )) ||
 _menyoki__edit__ico__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit ico save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__jpg__save_commands] )) ||
 _menyoki__edit__jpg__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit jpg save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__png__save_commands] )) ||
 _menyoki__edit__png__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit png save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__pnm__save_commands] )) ||
 _menyoki__edit__pnm__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit pnm save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__save_commands] )) ||
 _menyoki__edit__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__tga__save_commands] )) ||
 _menyoki__edit__tga__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit tga save commands' commands "$@"
 }
 (( $+functions[_menyoki__edit__tiff__save_commands] )) ||
 _menyoki__edit__tiff__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki edit tiff save commands' commands "$@"
 }
 (( $+functions[_menyoki__make__save_commands] )) ||
 _menyoki__make__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki make save commands' commands "$@"
 }
 (( $+functions[_menyoki__record__apng__save_commands] )) ||
 _menyoki__record__apng__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record apng save commands' commands "$@"
 }
 (( $+functions[_menyoki__record__gif__save_commands] )) ||
 _menyoki__record__gif__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record gif save commands' commands "$@"
 }
 (( $+functions[_menyoki__record__save_commands] )) ||
 _menyoki__record__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki record save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__bmp__save_commands] )) ||
 _menyoki__split__bmp__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split bmp save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__exr__save_commands] )) ||
 _menyoki__split__exr__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split exr save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ff__save_commands] )) ||
 _menyoki__split__ff__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split ff save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__ico__save_commands] )) ||
 _menyoki__split__ico__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split ico save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__jpg__save_commands] )) ||
 _menyoki__split__jpg__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split jpg save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__png__save_commands] )) ||
 _menyoki__split__png__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split png save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__pnm__save_commands] )) ||
 _menyoki__split__pnm__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split pnm save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__save_commands] )) ||
 _menyoki__split__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__tga__save_commands] )) ||
 _menyoki__split__tga__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split tga save commands' commands "$@"
 }
 (( $+functions[_menyoki__split__tiff__save_commands] )) ||
 _menyoki__split__tiff__save_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki split tiff save commands' commands "$@"
 }
@@ -5524,7 +5524,7 @@ _menyoki__split__tiff_commands() {
 (( $+functions[_menyoki__view_commands] )) ||
 _menyoki__view_commands() {
     local commands; commands=(
-        
+
     )
     _describe -t commands 'menyoki view commands' commands "$@"
 }
