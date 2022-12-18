@@ -170,7 +170,7 @@ mod tests {
 		assert_eq!(5, matches.occurrences_of("test"));
 		assert_eq!(0, matches.occurrences_of("test_"));
 		assert_eq!(
-			format!("{:?}", matches),
+			format!("{matches:?}"),
 			"ArgMatches { args: ArgMatches { args: {}, \
 			subcommand: None, usage: None }, config: false, section: \"general\" }"
 		);

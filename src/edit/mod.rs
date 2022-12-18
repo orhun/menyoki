@@ -232,7 +232,7 @@ mod tests {
 		let image = imageops.init(image.dimensions()).process(image).get_image();
 		let (width, height) = imageops.image.dimensions();
 		assert_eq!(
-			format!("{:?}", image),
+			format!("{image:?}"),
 			"Image { data_len: 4536, alpha_channel: true, \
 			geometry: Geometry { x: 0, y: 10, width: 84, height: 54 } }"
 		);

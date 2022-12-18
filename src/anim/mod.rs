@@ -17,7 +17,7 @@ pub enum AnimFormat {
 /* Display implementation for user-facing output */
 impl fmt::Display for AnimFormat {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "{:?}", self)
+		write!(f, "{self:?}")
 	}
 }
 
@@ -73,7 +73,7 @@ impl fmt::Display for AnimMode {
 			"{}",
 			match self {
 				Self::Record(format) | Self::Edit(format) => format.to_string(),
-				_ => format!("{:?}", self),
+				_ => format!("{self:?}"),
 			}
 			.to_lowercase()
 		)

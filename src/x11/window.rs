@@ -184,10 +184,10 @@ impl Window {
 			{
 				if (*crtc).noutput > 0 {
 					crtc_info.push(Geometry::new(
-						(*crtc).x as i32,
-						(*crtc).y as i32,
-						(*crtc).width as u32,
-						(*crtc).height as u32,
+						(*crtc).x,
+						(*crtc).y,
+						(*crtc).width,
+						(*crtc).height,
 					));
 				}
 				xrandr::XRRFreeCrtcInfo(crtc);

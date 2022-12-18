@@ -85,7 +85,7 @@ impl<'a> ImageAnalyzer<'a> {
 	 */
 	fn get_image_dimensions(&self) -> String {
 		let (width, height) = self.image.clone().into_rgba8().dimensions();
-		format!("{}x{}", width, height)
+		format!("{width}x{height}")
 	}
 
 	/**
@@ -167,7 +167,7 @@ impl<'a> ImageAnalyzer<'a> {
 				.unwrap_or_else(|| String::from("(?)")),
 			self.format.map_or_else(
 				|| String::from("(?)"),
-				|f| format!("{:?}", f).to_uppercase()
+				|f| format!("{f:?}").to_uppercase()
 			),
 			self.get_image_dimensions(),
 			format!("{:?}", self.image.color()).to_uppercase(),

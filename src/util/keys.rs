@@ -28,7 +28,7 @@ impl fmt::Display for ActionKeys {
 				.iter()
 				.map(|keys| keys
 					.iter()
-					.map(|key| format!("{:?}", key))
+					.map(|key| format!("{key:?}"))
 					.collect::<Vec<String>>()
 					.join("-"))
 				.collect::<Vec<String>>()

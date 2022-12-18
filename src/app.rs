@@ -370,7 +370,7 @@ where
 		fs::create_dir_all(&self.settings.split.dir)?;
 		for i in 0..frames.len() {
 			let path = FileUtil::get_path_with_extension(
-				self.settings.split.dir.join(format!("frame_{}", i,)),
+				self.settings.split.dir.join(format!("frame_{i}",)),
 				&self.settings.save.file.format,
 			);
 			debug!("Saving to {:?}\r", path);
@@ -668,7 +668,7 @@ mod tests {
 		app.save_apng(Some((images.clone(), 20)), File::create("test.apng")?)?;
 		fs::remove_file("test.apng")?;
 		for i in 0..images.len() {
-			let path = PathBuf::from(format!("frame_{}.png", i));
+			let path = PathBuf::from(format!("frame_{i}.png"));
 			if path.exists() {
 				fs::remove_file(path)?;
 			}

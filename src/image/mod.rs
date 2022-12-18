@@ -132,7 +132,7 @@ mod tests {
 		];
 		let image = Image::new(data.to_vec(), false, geometry);
 		assert_eq!(
-			format!("{:?}", image),
+			format!("{image:?}"),
 			"Image { data_len: 2, alpha_channel: false, \
 			geometry: Geometry { x: 0, y: 0, width: 200, height: 200 } }"
 		);

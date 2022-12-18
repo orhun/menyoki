@@ -72,8 +72,7 @@ impl<'a> Logger<'a> {
 					))
 				} else {
 					out.finish(format_args!(
-						"[{} {} {}] {}\n",
-						time, color, target, message
+						"[{time} {color} {target}] {message}\n"
 					))
 				}
 			})

@@ -44,7 +44,7 @@ impl File {
 		if !path.exists() && !cfg!(test) {
 			fs::create_dir_all(path.parent().expect("Failed to get the directory"))
 				.unwrap_or_else(|_| {
-					panic!("Failed to create directory: {:?}", path)
+					panic!("Failed to create directory: {path:?}")
 				});
 		}
 	}
@@ -125,7 +125,7 @@ mod tests {
 				)
 				.get_matches_from(vec!["test", "capture", format]);
 			assert_eq!(
-				File::get_default_path(&format!("cap.{}", format))
+				File::get_default_path(&format!("cap.{format}"))
 					.to_str()
 					.unwrap(),
 				FileFormat::from_args(&ArgMatches::new(&args), None)
@@ -145,8 +145,8 @@ mod tests {
 		);
 		for info in ["", "date", "timestamp"] {
 			let args = App::new("test")
-				.arg(Arg::with_name(info).long(&format!("--{}", info)))
-				.get_matches_from(vec!["test", &format!("--{}", info)]);
+				.arg(Arg::with_name(info).long(&format!("--{info}")))
+				.get_matches_from(vec!["test", &format!("--{info}")]);
 			assert_eq!(
 				match info {
 					"date" => {

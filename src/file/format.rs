@@ -25,7 +25,7 @@ pub enum FileFormat {
 /* Display implementation for user-facing output */
 impl fmt::Display for FileFormat {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-		write!(f, "{:?}", self)
+		write!(f, "{self:?}")
 	}
 }
 
