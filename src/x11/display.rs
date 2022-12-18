@@ -178,9 +178,7 @@ impl Display {
 	 * @return c_ulong
 	 */
 	fn get_symbol_from_keycode(&self, keycode: &Keycode) -> c_ulong {
-		let mut key = format!("{keycode:?}")
-			.trim_start_matches("Key")
-			.to_string();
+		let mut key = format!("{keycode:?}").trim_start_matches("Key").to_string();
 		if (key.starts_with('L') | key.starts_with('R')) && key.len() > 3 {
 			key = format!(
 				"{}_{}",

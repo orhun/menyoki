@@ -43,9 +43,7 @@ impl File {
 	fn create_path(path: &Path) {
 		if !path.exists() && !cfg!(test) {
 			fs::create_dir_all(path.parent().expect("Failed to get the directory"))
-				.unwrap_or_else(|_| {
-					panic!("Failed to create directory: {path:?}")
-				});
+				.unwrap_or_else(|_| panic!("Failed to create directory: {path:?}"));
 		}
 	}
 

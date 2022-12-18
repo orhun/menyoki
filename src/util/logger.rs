@@ -71,9 +71,7 @@ impl<'a> Logger<'a> {
 						&message[..message.len() - 1]
 					))
 				} else {
-					out.finish(format_args!(
-						"[{time} {color} {target}] {message}\n"
-					))
+					out.finish(format_args!("[{time} {color} {target}] {message}\n"))
 				}
 			})
 			.chain(Output::stdout(""))
