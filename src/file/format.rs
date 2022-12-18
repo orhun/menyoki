@@ -53,7 +53,7 @@ impl FromStr for FileFormat {
 
 impl FileFormat {
 	/**
-	 * Create a FileFormat enum fron parsed arguments.
+	 * Create a FileFormat enum from parsed arguments.
 	 *
 	 * @param  args
 	 * @param  pnm_subtype

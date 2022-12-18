@@ -68,7 +68,7 @@ impl<'a> Access<'a, Window> for WindowSystem<'a> {
 /* X opcodes to trace */
 static TRACED_OPCODES: &[u8] = &[14, 55, 56, 67, 74];
 
-/* Error handler implemention for X11 */
+/* Error handler implementation for X11 */
 unsafe extern "C" fn handle_x11_errors(
 	display: *mut xlib::Display,
 	error: *mut xlib::XErrorEvent,
