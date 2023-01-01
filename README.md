@@ -16,13 +16,13 @@
     </a>
     <br>
     <a href="https://github.com/orhun/menyoki/actions?query=workflow%3A%22Continuous+Integration%22">
-        <img src="https://img.shields.io/github/workflow/status/orhun/menyoki/Continuous%20Integration/master?style=flat&labelColor=000000&color=25691f&label=CI&logo=GitHub%20Actions&logoColor=white">
+        <img src="https://img.shields.io/github/actions/workflow/status/orhun/menyoki/ci.yml?branch=master&style=flat&labelColor=000000&color=25691f&label=CI&logo=GitHub%20Actions&logoColor=white">
     </a>
     <a href="https://github.com/orhun/menyoki/actions?query=workflow%3A%22Continuous+Deployment%22">
-        <img src="https://img.shields.io/github/workflow/status/orhun/menyoki/Continuous%20Deployment?style=flat&labelColor=000000&color=25691f&label=CD&logo=GitHub%20Actions&logoColor=white">
+        <img src="https://img.shields.io/github/actions/workflow/status/orhun/menyoki/cd.yml?style=flat&labelColor=000000&color=25691f&label=CD&logo=GitHub%20Actions&logoColor=white">
     </a>
     <a href="https://hub.docker.com/r/orhunp/menyoki">
-        <img src="https://img.shields.io/docker/cloud/build/orhunp/menyoki?style=flat&labelColor=000000&color=25691f&label=Docker&logo=Docker&logoColor=white">
+        <img src="https://img.shields.io/github/actions/workflow/status/orhun/menyoki/docker.yml?style=flat&labelColor=000000&color=25691f&label=Docker&logo=Docker&logoColor=white">
     </a>
     <a href="https://codecov.io/gh/orhun/menyoki">
         <img src="https://img.shields.io/codecov/c/gh/orhun/menyoki?style=flat&labelColor=000000&color=25691f&logo=Codecov&logoColor=white">
