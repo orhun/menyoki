@@ -138,7 +138,7 @@ mod tests {
 			xlib::RevertToParent,
 		);
 		assert_eq!(
-			1366 * 768 * 3,
+			1920 * 1080 * 3,
 			window_system
 				.get_window()
 				.unwrap()
