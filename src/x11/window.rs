@@ -489,16 +489,16 @@ mod tests {
 		window.draw_borders();
 		window.show_countdown();
 		window.clear_area();
-		assert_eq!(Geometry::new(0, 0, 1366, 768), window.get_crtc_info()[0]);
+		assert_eq!(Geometry::new(0, 0, 1920, 1080), window.get_crtc_info()[0]);
 		assert_eq!(0, unsafe { window.get_parent() }.unwrap().xid);
 		assert_eq!(
-			"\n Window title  -> \"root-window\"\n Window size   -> [1366x768]",
+			"\n Window title  -> \"root-window\"\n Window size   -> [1920x1080]",
 			format!("{}", window)
 		);
 		assert_eq!((0, 0), (window.geometry.x, window.geometry.y));
 		assert_eq!("root-window", window.get_name().unwrap());
 		assert_eq!(
-			1366 * 768 * 3,
+			1920 * 1080 * 3,
 			window
 				.get_image()
 				.unwrap()
