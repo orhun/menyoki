@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.0] - 2023-03-01
+### Added
+- Add WebP encoding support
+- Use LZW-compressed frames for the default GIF encoder
+
+### Changed
+- Update sponsorship options
+- Optimize Dockerfile
+- Bump dependencies
+
+### Removed
+- Remove deprecated compression options from PNG encoder
+
+### Fixed
+- Apply clippy suggestions
+- Remove spurious X11 test
+
 ## [1.6.1] - 2022-07-17
 ### Changed
 - Check clippy lints for tests
