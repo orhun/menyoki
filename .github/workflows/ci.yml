@@ -79,7 +79,7 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: |
           xvfb-run --server-args="-screen 0 1366x768x24" \
-            cargo tarpaulin -o Xml -v --features test-ws
+            cargo tarpaulin -o Xml -v --features test-ws -- --test-threads 1
       - name: Upload reports to Codecov (linux)
         if: matrix.build == 'linux-gnu'
         uses: codecov/codecov-action@v1.0.7
