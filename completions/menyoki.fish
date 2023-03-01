@@ -102,7 +102,7 @@ complete -c menyoki -n "__fish_seen_subcommand_from split" -f -a "ff" -d 'Use th
 complete -c menyoki -n "__fish_seen_subcommand_from split" -f -a "exr" -d 'Use the OpenEXR encoder'
 complete -c menyoki -n "__fish_seen_subcommand_from split" -f -a "save" -d 'Save the output file(s)'
 complete -c menyoki -n "__fish_seen_subcommand_from split" -f -a "help" -d 'Prints this message or the help of the given subcommand(s)'
-complete -c menyoki -n "__fish_seen_subcommand_from png" -s c -l compression -d 'Set the compression level' -r -f -a "default fast best huffman rle"
+complete -c menyoki -n "__fish_seen_subcommand_from png" -s c -l compression -d 'Set the compression level' -r -f -a "default fast best"
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s f -l filter -d 'Set the filter algorithm' -r -f -a "none sub up avg paeth"
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s h -l help -d 'Print help information'
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s V -l version -d 'Prints version information'
@@ -266,7 +266,7 @@ complete -c menyoki -n "__fish_seen_subcommand_from capture" -f -a "ff" -d 'Use 
 complete -c menyoki -n "__fish_seen_subcommand_from capture" -f -a "exr" -d 'Use the OpenEXR encoder'
 complete -c menyoki -n "__fish_seen_subcommand_from capture" -f -a "save" -d 'Save the output file(s)'
 complete -c menyoki -n "__fish_seen_subcommand_from capture" -f -a "help" -d 'Prints this message or the help of the given subcommand(s)'
-complete -c menyoki -n "__fish_seen_subcommand_from png" -s c -l compression -d 'Set the compression level' -r -f -a "default fast best huffman rle"
+complete -c menyoki -n "__fish_seen_subcommand_from png" -s c -l compression -d 'Set the compression level' -r -f -a "default fast best"
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s f -l filter -d 'Set the filter algorithm' -r -f -a "none sub up avg paeth"
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s h -l help -d 'Print help information'
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s V -l version -d 'Prints version information'
@@ -449,7 +449,7 @@ complete -c menyoki -n "__fish_seen_subcommand_from save" -s h -l help -d 'Print
 complete -c menyoki -n "__fish_seen_subcommand_from save" -s V -l version -d 'Prints version information'
 complete -c menyoki -n "__fish_seen_subcommand_from help" -s h -l help -d 'Prints help information'
 complete -c menyoki -n "__fish_seen_subcommand_from help" -s V -l version -d 'Prints version information'
-complete -c menyoki -n "__fish_seen_subcommand_from png" -s c -l compression -d 'Set the compression level' -r -f -a "default fast best huffman rle"
+complete -c menyoki -n "__fish_seen_subcommand_from png" -s c -l compression -d 'Set the compression level' -r -f -a "default fast best"
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s f -l filter -d 'Set the filter algorithm' -r -f -a "none sub up avg paeth"
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s h -l help -d 'Print help information'
 complete -c menyoki -n "__fish_seen_subcommand_from png" -s V -l version -d 'Prints version information'

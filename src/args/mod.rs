@@ -716,9 +716,7 @@ where
 						.short("c")
 						.long("compression")
 						.value_name("COMPRESSION")
-						.possible_values(&[
-							"default", "fast", "best", "huffman", "rle",
-						])
+						.possible_values(&["default", "fast", "best"])
 						.default_value("fast")
 						.help("Set the compression level")
 						.takes_value(true),

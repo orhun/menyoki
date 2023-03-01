@@ -37,7 +37,7 @@ x11 = { version = "2.21.0", features = ["xlib", "xrandr"] }
 device_query = "1.1.2"
 ctrlc = { version = "3.2.5", features = ["termination"] }
 # image operations
-image = "0.24.2"
+image = "0.24.5"
 imgref = { version = "1.9.4", optional = true }
 rgb = { version = "0.8.36", optional = true }
 png = "0.17.7"

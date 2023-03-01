@@ -734,11 +734,11 @@ _menyoki() {
             case "${prev}" in
                 
                 --compression)
-                    COMPREPLY=($(compgen -W "default fast best huffman rle" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "default fast best" -- "${cur}"))
                     return 0
                     ;;
                     -c)
-                    COMPREPLY=($(compgen -W "default fast best huffman rle" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "default fast best" -- "${cur}"))
                     return 0
                     ;;
                 --filter)
@@ -1897,11 +1897,11 @@ _menyoki() {
             case "${prev}" in
                 
                 --compression)
-                    COMPREPLY=($(compgen -W "default fast best huffman rle" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "default fast best" -- "${cur}"))
                     return 0
                     ;;
                     -c)
-                    COMPREPLY=($(compgen -W "default fast best huffman rle" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "default fast best" -- "${cur}"))
                     return 0
                     ;;
                 --filter)
@@ -3408,11 +3408,11 @@ _menyoki() {
             case "${prev}" in
                 
                 --compression)
-                    COMPREPLY=($(compgen -W "default fast best huffman rle" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "default fast best" -- "${cur}"))
                     return 0
                     ;;
                     -c)
-                    COMPREPLY=($(compgen -W "default fast best huffman rle" -- "${cur}"))
+                    COMPREPLY=($(compgen -W "default fast best" -- "${cur}"))
                     return 0
                     ;;
                 --filter)

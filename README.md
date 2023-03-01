@@ -760,7 +760,7 @@ FLAGS:
     -h, --help    Print help information
 
 OPTIONS:
-    -c, --compression <COMPRESSION>    Set the compression level [default: fast]  [possible values: default, fast, best, huffman, rle]
+    -c, --compression <COMPRESSION>    Set the compression level [default: fast]  [possible values: default, fast, best]
     -f, --filter <FILTER>              Set the filter algorithm [default: sub]  [possible values: none, sub, up, avg, paeth]
 
 SUBCOMMANDS:

@@ -58,8 +58,6 @@ impl PngSettings {
 					Some("default") => CompressionType::Default,
 					Some("fast") => CompressionType::Fast,
 					Some("best") => CompressionType::Best,
-					Some("huffman") => CompressionType::Huffman,
-					Some("rle") => CompressionType::Rle,
 					_ => CompressionType::Fast,
 				},
 				match matches.value_of("filter") {
@@ -195,8 +193,8 @@ mod tests {
 		for value in &[
 			("default", "none"),
 			("best", "up"),
-			("huffman", "avg"),
-			("rle", "paeth"),
+			("default", "avg"),
+			("best", "paeth"),
 			("", ""),
 		] {
 			let args = App::new("test")
