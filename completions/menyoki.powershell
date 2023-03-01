@@ -202,6 +202,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             [CompletionResult]::new('png', 'png', [CompletionResultType]::ParameterValue, 'Use the PNG encoder')
             [CompletionResult]::new('jpg', 'jpg', [CompletionResultType]::ParameterValue, 'Use the JPG encoder')
+            [CompletionResult]::new('webp', 'webp', [CompletionResultType]::ParameterValue, 'Use the WebP encoder')
             [CompletionResult]::new('bmp', 'bmp', [CompletionResultType]::ParameterValue, 'Use the BMP encoder')
             [CompletionResult]::new('ico', 'ico', [CompletionResultType]::ParameterValue, 'Use the ICO encoder')
             [CompletionResult]::new('tiff', 'tiff', [CompletionResultType]::ParameterValue, 'Use the TIFF encoder')
@@ -271,6 +272,39 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             break
         }
         'menyoki;split;jpg;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;webp' {
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the lossy encoding quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the lossy encoding quality (1-100)')
+            [CompletionResult]::new('-l', 'l', [CompletionResultType]::ParameterName, 'Use lossless encoding')
+            [CompletionResult]::new('--lossless', 'lossless', [CompletionResultType]::ParameterName, 'Use lossless encoding')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;split;webp;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;split;webp;help' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
@@ -585,6 +619,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
             [CompletionResult]::new('png', 'png', [CompletionResultType]::ParameterValue, 'Use the PNG encoder')
             [CompletionResult]::new('jpg', 'jpg', [CompletionResultType]::ParameterValue, 'Use the JPG encoder')
+            [CompletionResult]::new('webp', 'webp', [CompletionResultType]::ParameterValue, 'Use the WebP encoder')
             [CompletionResult]::new('bmp', 'bmp', [CompletionResultType]::ParameterValue, 'Use the BMP encoder')
             [CompletionResult]::new('ico', 'ico', [CompletionResultType]::ParameterValue, 'Use the ICO encoder')
             [CompletionResult]::new('tiff', 'tiff', [CompletionResultType]::ParameterValue, 'Use the TIFF encoder')
@@ -654,6 +689,39 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             break
         }
         'menyoki;capture;jpg;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;webp' {
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the lossy encoding quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the lossy encoding quality (1-100)')
+            [CompletionResult]::new('-l', 'l', [CompletionResultType]::ParameterName, 'Use lossless encoding')
+            [CompletionResult]::new('--lossless', 'lossless', [CompletionResultType]::ParameterName, 'Use lossless encoding')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;capture;webp;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;capture;webp;help' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
@@ -909,6 +977,7 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             [CompletionResult]::new('apng', 'apng', [CompletionResultType]::ParameterValue, 'Use the APNG encoder')
             [CompletionResult]::new('png', 'png', [CompletionResultType]::ParameterValue, 'Use the PNG encoder')
             [CompletionResult]::new('jpg', 'jpg', [CompletionResultType]::ParameterValue, 'Use the JPG encoder')
+            [CompletionResult]::new('webp', 'webp', [CompletionResultType]::ParameterValue, 'Use the WebP encoder')
             [CompletionResult]::new('bmp', 'bmp', [CompletionResultType]::ParameterValue, 'Use the BMP encoder')
             [CompletionResult]::new('ico', 'ico', [CompletionResultType]::ParameterValue, 'Use the ICO encoder')
             [CompletionResult]::new('tiff', 'tiff', [CompletionResultType]::ParameterValue, 'Use the TIFF encoder')
@@ -1070,6 +1139,39 @@ Register-ArgumentCompleter -Native -CommandName 'menyoki' -ScriptBlock {
             break
         }
         'menyoki;edit;jpg;help' {
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;webp' {
+            [CompletionResult]::new('-q', 'q', [CompletionResultType]::ParameterName, 'Set the lossy encoding quality (1-100)')
+            [CompletionResult]::new('--quality', 'quality', [CompletionResultType]::ParameterName, 'Set the lossy encoding quality (1-100)')
+            [CompletionResult]::new('-l', 'l', [CompletionResultType]::ParameterName, 'Use lossless encoding')
+            [CompletionResult]::new('--lossless', 'lossless', [CompletionResultType]::ParameterName, 'Use lossless encoding')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('save', 'save', [CompletionResultType]::ParameterValue, 'Save the output file(s)')
+            [CompletionResult]::new('help', 'help', [CompletionResultType]::ParameterValue, 'Prints this message or the help of the given subcommand(s)')
+            break
+        }
+        'menyoki;edit;webp;save' {
+            [CompletionResult]::new('-d', 'd', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('--date', 'date', [CompletionResultType]::ParameterName, 'Add formatted date/time to the file name')
+            [CompletionResult]::new('-e', 'e', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('--with-extension', 'with-extension', [CompletionResultType]::ParameterName, 'Always save the file with an extension')
+            [CompletionResult]::new('-t', 't', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('--timestamp', 'timestamp', [CompletionResultType]::ParameterName, 'Add Unix timestamp to the file name')
+            [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Print help information')
+            [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')
+            [CompletionResult]::new('--version', 'version', [CompletionResultType]::ParameterName, 'Prints version information')
+            break
+        }
+        'menyoki;edit;webp;help' {
             [CompletionResult]::new('-h', 'h', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('--help', 'help', [CompletionResultType]::ParameterName, 'Prints help information')
             [CompletionResult]::new('-V', 'V', [CompletionResultType]::ParameterName, 'Prints version information')

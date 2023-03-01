@@ -409,6 +409,67 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(webp)
+_arguments "${_arguments_options[@]}" \
+'-q+[Set the lossy encoding quality (1-100)]' \
+'--quality=[Set the lossy encoding quality (1-100)]' \
+'-l[Use lossless encoding]' \
+'--lossless[Use lossless encoding]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__split__webp_commands" \
+"*::: :->webp" \
+&& ret=0
+case $state in
+    (webp)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-split-webp-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (bmp)
 _arguments "${_arguments_options[@]}" \
 '-h[Print help information]' \
@@ -949,6 +1010,67 @@ case $state in
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:menyoki-split-jpg-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(webp)
+_arguments "${_arguments_options[@]}" \
+'-q+[Set the lossy encoding quality (1-100)]' \
+'--quality=[Set the lossy encoding quality (1-100)]' \
+'-l[Use lossless encoding]' \
+'--lossless[Use lossless encoding]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__split__webp_commands" \
+"*::: :->webp" \
+&& ret=0
+case $state in
+    (webp)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-split-webp-command-$line[1]:"
         case $line[1] in
             (out)
 _arguments "${_arguments_options[@]}" \
@@ -1751,6 +1873,67 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(webp)
+_arguments "${_arguments_options[@]}" \
+'-q+[Set the lossy encoding quality (1-100)]' \
+'--quality=[Set the lossy encoding quality (1-100)]' \
+'-l[Use lossless encoding]' \
+'--lossless[Use lossless encoding]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__capture__webp_commands" \
+"*::: :->webp" \
+&& ret=0
+case $state in
+    (webp)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-capture-webp-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (bmp)
 _arguments "${_arguments_options[@]}" \
 '-h[Print help information]' \
@@ -2360,6 +2543,67 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(webp)
+_arguments "${_arguments_options[@]}" \
+'-q+[Set the lossy encoding quality (1-100)]' \
+'--quality=[Set the lossy encoding quality (1-100)]' \
+'-l[Use lossless encoding]' \
+'--lossless[Use lossless encoding]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__capture__webp_commands" \
+"*::: :->webp" \
+&& ret=0
+case $state in
+    (webp)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-capture-webp-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (bmp)
 _arguments "${_arguments_options[@]}" \
 '-h[Print help information]' \
@@ -2926,6 +3170,67 @@ case $state in
         words=($line[1] "${words[@]}")
         (( CURRENT += 1 ))
         curcontext="${curcontext%:*:*}:menyoki-capture-jpg-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
+(webp)
+_arguments "${_arguments_options[@]}" \
+'-q+[Set the lossy encoding quality (1-100)]' \
+'--quality=[Set the lossy encoding quality (1-100)]' \
+'-l[Use lossless encoding]' \
+'--lossless[Use lossless encoding]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__capture__webp_commands" \
+"*::: :->webp" \
+&& ret=0
+case $state in
+    (webp)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-capture-webp-command-$line[1]:"
         case $line[1] in
             (out)
 _arguments "${_arguments_options[@]}" \
@@ -3713,6 +4018,67 @@ _arguments "${_arguments_options[@]}" \
     ;;
 esac
 ;;
+(webp)
+_arguments "${_arguments_options[@]}" \
+'-q+[Set the lossy encoding quality (1-100)]' \
+'--quality=[Set the lossy encoding quality (1-100)]' \
+'-l[Use lossless encoding]' \
+'--lossless[Use lossless encoding]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+":: :_menyoki__edit__webp_commands" \
+"*::: :->webp" \
+&& ret=0
+case $state in
+    (webp)
+        words=($line[1] "${words[@]}")
+        (( CURRENT += 1 ))
+        curcontext="${curcontext%:*:*}:menyoki-edit-webp-command-$line[1]:"
+        case $line[1] in
+            (out)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(save)
+_arguments "${_arguments_options[@]}" \
+'-d+[Add formatted date/time to the file name]' \
+'--date=[Add formatted date/time to the file name]' \
+'-e[Always save the file with an extension]' \
+'--with-extension[Always save the file with an extension]' \
+'-t[Add Unix timestamp to the file name]' \
+'--timestamp[Add Unix timestamp to the file name]' \
+'-h[Print help information]' \
+'--help[Print help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+'::file -- Set the output file:_files' \
+&& ret=0
+;;
+(help)
+_arguments "${_arguments_options[@]}" \
+'-h[Prints help information]' \
+'--help[Prints help information]' \
+'-V[Prints version information]' \
+'--version[Prints version information]' \
+&& ret=0
+;;
+        esac
+    ;;
+esac
+;;
 (bmp)
 _arguments "${_arguments_options[@]}" \
 '-h[Print help information]' \
@@ -4382,6 +4748,7 @@ _menyoki__capture_commands() {
     local commands; commands=(
         "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
+"webp:Use the WebP encoder" \
 "bmp:Use the BMP encoder" \
 "ico:Use the ICO encoder" \
 "tiff:Use the TIFF encoder" \
@@ -4409,6 +4776,7 @@ _menyoki__edit_commands() {
 "apng:Use the APNG encoder" \
 "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
+"webp:Use the WebP encoder" \
 "bmp:Use the BMP encoder" \
 "ico:Use the ICO encoder" \
 "tiff:Use the TIFF encoder" \
@@ -4450,6 +4818,7 @@ _extract_commands() {
     local commands; commands=(
         "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
+"webp:Use the WebP encoder" \
 "bmp:Use the BMP encoder" \
 "ico:Use the ICO encoder" \
 "tiff:Use the TIFF encoder" \
@@ -4579,6 +4948,13 @@ _menyoki__capture__tiff__help_commands() {
     )
     _describe -t commands 'menyoki capture tiff help commands' commands "$@"
 }
+(( $+functions[_menyoki__capture__webp__help_commands] )) ||
+_menyoki__capture__webp__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki capture webp help commands' commands "$@"
+}
 (( $+functions[_menyoki__edit__apng__help_commands] )) ||
 _menyoki__edit__apng__help_commands() {
     local commands; commands=(
@@ -4662,6 +5038,13 @@ _menyoki__edit__tiff__help_commands() {
         
     )
     _describe -t commands 'menyoki edit tiff help commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__webp__help_commands] )) ||
+_menyoki__edit__webp__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit webp help commands' commands "$@"
 }
 (( $+functions[_menyoki__help_commands] )) ||
 _menyoki__help_commands() {
@@ -4767,6 +5150,13 @@ _menyoki__split__tiff__help_commands() {
         
     )
     _describe -t commands 'menyoki split tiff help commands' commands "$@"
+}
+(( $+functions[_menyoki__split__webp__help_commands] )) ||
+_menyoki__split__webp__help_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki split webp help commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__ico_commands] )) ||
 _menyoki__capture__ico_commands() {
@@ -4916,6 +5306,13 @@ _menyoki__capture__tiff__out_commands() {
     )
     _describe -t commands 'menyoki capture tiff out commands' commands "$@"
 }
+(( $+functions[_menyoki__capture__webp__out_commands] )) ||
+_menyoki__capture__webp__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki capture webp out commands' commands "$@"
+}
 (( $+functions[_menyoki__edit__apng__out_commands] )) ||
 _menyoki__edit__apng__out_commands() {
     local commands; commands=(
@@ -4999,6 +5396,13 @@ _menyoki__edit__tiff__out_commands() {
         
     )
     _describe -t commands 'menyoki edit tiff out commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__webp__out_commands] )) ||
+_menyoki__edit__webp__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit webp out commands' commands "$@"
 }
 (( $+functions[_menyoki__make__out_commands] )) ||
 _menyoki__make__out_commands() {
@@ -5104,6 +5508,13 @@ _menyoki__split__tiff__out_commands() {
         
     )
     _describe -t commands 'menyoki split tiff out commands' commands "$@"
+}
+(( $+functions[_menyoki__split__webp__out_commands] )) ||
+_menyoki__split__webp__out_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki split webp out commands' commands "$@"
 }
 (( $+functions[_menyoki__capture__png_commands] )) ||
 _menyoki__capture__png_commands() {
@@ -5240,6 +5651,13 @@ _menyoki__capture__tiff__save_commands() {
     )
     _describe -t commands 'menyoki capture tiff save commands' commands "$@"
 }
+(( $+functions[_menyoki__capture__webp__save_commands] )) ||
+_menyoki__capture__webp__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki capture webp save commands' commands "$@"
+}
 (( $+functions[_menyoki__edit__apng__save_commands] )) ||
 _menyoki__edit__apng__save_commands() {
     local commands; commands=(
@@ -5323,6 +5741,13 @@ _menyoki__edit__tiff__save_commands() {
         
     )
     _describe -t commands 'menyoki edit tiff save commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__webp__save_commands] )) ||
+_menyoki__edit__webp__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki edit webp save commands' commands "$@"
 }
 (( $+functions[_menyoki__make__save_commands] )) ||
 _menyoki__make__save_commands() {
@@ -5422,11 +5847,19 @@ _menyoki__split__tiff__save_commands() {
     )
     _describe -t commands 'menyoki split tiff save commands' commands "$@"
 }
+(( $+functions[_menyoki__split__webp__save_commands] )) ||
+_menyoki__split__webp__save_commands() {
+    local commands; commands=(
+        
+    )
+    _describe -t commands 'menyoki split webp save commands' commands "$@"
+}
 (( $+functions[_screenshot_commands] )) ||
 _screenshot_commands() {
     local commands; commands=(
         "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
+"webp:Use the WebP encoder" \
 "bmp:Use the BMP encoder" \
 "ico:Use the ICO encoder" \
 "tiff:Use the TIFF encoder" \
@@ -5444,6 +5877,7 @@ _menyoki__split_commands() {
     local commands; commands=(
         "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
+"webp:Use the WebP encoder" \
 "bmp:Use the BMP encoder" \
 "ico:Use the ICO encoder" \
 "tiff:Use the TIFF encoder" \
@@ -5461,6 +5895,7 @@ _ss_commands() {
     local commands; commands=(
         "png:Use the PNG encoder" \
 "jpg:Use the JPG encoder" \
+"webp:Use the WebP encoder" \
 "bmp:Use the BMP encoder" \
 "ico:Use the ICO encoder" \
 "tiff:Use the TIFF encoder" \
@@ -5527,6 +5962,30 @@ _menyoki__view_commands() {
         
     )
     _describe -t commands 'menyoki view commands' commands "$@"
+}
+(( $+functions[_menyoki__capture__webp_commands] )) ||
+_menyoki__capture__webp_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki capture webp commands' commands "$@"
+}
+(( $+functions[_menyoki__edit__webp_commands] )) ||
+_menyoki__edit__webp_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki edit webp commands' commands "$@"
+}
+(( $+functions[_menyoki__split__webp_commands] )) ||
+_menyoki__split__webp_commands() {
+    local commands; commands=(
+        "save:Save the output file(s)" \
+"help:Prints this message or the help of the given subcommand(s)" \
+    )
+    _describe -t commands 'menyoki split webp commands' commands "$@"
 }
 
 _menyoki "$@"

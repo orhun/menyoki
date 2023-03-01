@@ -2,6 +2,7 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use image::codecs::png::{CompressionType, FilterType};
 use image::codecs::pnm::{PnmSubtype, SampleEncoding};
+use image::codecs::webp::WebPQuality;
 
 /* PNG compression and filter settings */
 #[derive(Clone, Copy, Debug)]
@@ -122,6 +123,74 @@ impl JpgSettings {
 	}
 }
 
+/* WebP quality setting */
+#[derive(Clone, Copy, Debug)]
+pub struct WebPSettings {
+	quality: Option<u8>,
+}
+
+/* Default initialization values for WebPSettings */
+impl Default for WebPSettings {
+	fn default() -> Self {
+		Self {
+			quality: Some(WebPQuality::DEFAULT),
+		}
+	}
+}
+
+impl WebPSettings {
+	/**
+	 * Create a new WebPSettings object.
+	 *
+	 * @param  quality
+	 * @return WebPSettings
+	 */
+	pub fn new(quality: Option<u8>) -> Self {
+		Self { quality }
+	}
+
+	/**
+	 * Create a WebPQuality object from WebPSettings.
+	 *
+	 * @return WebPQuality
+	 */
+	pub fn get_quality(&self) -> WebPQuality {
+		match self.quality {
+			Some(quality) => WebPQuality::lossy(quality),
+			None => WebPQuality::lossless(),
+		}
+	}
+
+	/**
+	 * Create a new WebPSettings object from arguments.
+	 *
+	 * @param  matches
+	 * @return WebPSettings
+	 */
+	pub fn from_args(matches: &ArgMatches<'_>) -> Self {
+		Self::from_parser(ArgParser::from_subcommand(matches, "webp"))
+	}
+
+	/**
+	 * Create a WebPSettings object from an argument parser.
+	 *
+	 * @param  parser
+	 * @return WebPSettings
+	 */
+	fn from_parser(parser: ArgParser<'_>) -> Self {
+		match &parser.args {
+			Some(args) => {
+				if args.is_present("lossless") {
+					Self::new(None)
+				} else {
+					Self::new(Some(parser.parse("quality", WebPQuality::DEFAULT)))
+				}
+			}
+			None => Self::default(),
+		}
+	}
+}
+
 /* PNM subtype settings */
 #[derive(Clone, Copy, Debug)]
 pub struct PnmSettings {
@@ -237,6 +306,27 @@ mod tests {
 			JpgSettings::from_parser(ArgParser::from_args(&args)).quality
 		);
 		assert_eq!(90, JpgSettings::from_parser(ArgParser::new(None)).quality);
+	}
+	#[test]
+	fn test_webp_settings() {
+		let args = App::new("test")
+			.arg(Arg::with_name("quality").long("quality").takes_value(true))
+			.get_matches_from(vec!["test", "--quality", "20"]);
+		assert_eq!(
+			Some(20),
+			WebPSettings::from_parser(ArgParser::from_args(&args)).quality
+		);
+		assert_eq!(
+			Some(80),
+			WebPSettings::from_parser(ArgParser::new(None)).quality
+		);
+		let args = App::new("test")
+			.arg(Arg::with_name("lossless").long("lossless"))
+			.get_matches_from(vec!["test", "--lossless"]);
+		assert_eq!(
+			None,
+			WebPSettings::from_parser(ArgParser::from_args(&args)).quality
+		);
 	}
 	#[test]
 	fn test_pnm_settings() {

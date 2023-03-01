@@ -187,6 +187,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
             cand png 'Use the PNG encoder'
             cand jpg 'Use the JPG encoder'
+            cand webp 'Use the WebP encoder'
             cand bmp 'Use the BMP encoder'
             cand ico 'Use the ICO encoder'
             cand tiff 'Use the TIFF encoder'
@@ -250,6 +251,36 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
         }
         &'menyoki;split;jpg;help'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;split;webp'= {
+            cand -q 'Set the lossy encoding quality (1-100)'
+            cand --quality 'Set the lossy encoding quality (1-100)'
+            cand -l 'Use lossless encoding'
+            cand --lossless 'Use lossless encoding'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+            cand save 'Save the output file(s)'
+            cand help 'Prints this message or the help of the given subcommand(s)'
+        }
+        &'menyoki;split;webp;save'= {
+            cand -d 'Add formatted date/time to the file name'
+            cand --date 'Add formatted date/time to the file name'
+            cand -e 'Always save the file with an extension'
+            cand --with-extension 'Always save the file with an extension'
+            cand -t 'Add Unix timestamp to the file name'
+            cand --timestamp 'Add Unix timestamp to the file name'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;split;webp;help'= {
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand -V 'Prints version information'
@@ -537,6 +568,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
             cand png 'Use the PNG encoder'
             cand jpg 'Use the JPG encoder'
+            cand webp 'Use the WebP encoder'
             cand bmp 'Use the BMP encoder'
             cand ico 'Use the ICO encoder'
             cand tiff 'Use the TIFF encoder'
@@ -600,6 +632,36 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
         }
         &'menyoki;capture;jpg;help'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;capture;webp'= {
+            cand -q 'Set the lossy encoding quality (1-100)'
+            cand --quality 'Set the lossy encoding quality (1-100)'
+            cand -l 'Use lossless encoding'
+            cand --lossless 'Use lossless encoding'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+            cand save 'Save the output file(s)'
+            cand help 'Prints this message or the help of the given subcommand(s)'
+        }
+        &'menyoki;capture;webp;save'= {
+            cand -d 'Add formatted date/time to the file name'
+            cand --date 'Add formatted date/time to the file name'
+            cand -e 'Always save the file with an extension'
+            cand --with-extension 'Always save the file with an extension'
+            cand -t 'Add Unix timestamp to the file name'
+            cand --timestamp 'Add Unix timestamp to the file name'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;capture;webp;help'= {
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand -V 'Prints version information'
@@ -831,6 +893,7 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand apng 'Use the APNG encoder'
             cand png 'Use the PNG encoder'
             cand jpg 'Use the JPG encoder'
+            cand webp 'Use the WebP encoder'
             cand bmp 'Use the BMP encoder'
             cand ico 'Use the ICO encoder'
             cand tiff 'Use the TIFF encoder'
@@ -980,6 +1043,36 @@ edit:completion:arg-completer[menyoki] = [@words]{
             cand --version 'Prints version information'
         }
         &'menyoki;edit;jpg;help'= {
+            cand -h 'Prints help information'
+            cand --help 'Prints help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;edit;webp'= {
+            cand -q 'Set the lossy encoding quality (1-100)'
+            cand --quality 'Set the lossy encoding quality (1-100)'
+            cand -l 'Use lossless encoding'
+            cand --lossless 'Use lossless encoding'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+            cand save 'Save the output file(s)'
+            cand help 'Prints this message or the help of the given subcommand(s)'
+        }
+        &'menyoki;edit;webp;save'= {
+            cand -d 'Add formatted date/time to the file name'
+            cand --date 'Add formatted date/time to the file name'
+            cand -e 'Always save the file with an extension'
+            cand --with-extension 'Always save the file with an extension'
+            cand -t 'Add Unix timestamp to the file name'
+            cand --timestamp 'Add Unix timestamp to the file name'
+            cand -h 'Print help information'
+            cand --help 'Print help information'
+            cand -V 'Prints version information'
+            cand --version 'Prints version information'
+        }
+        &'menyoki;edit;webp;help'= {
             cand -h 'Prints help information'
             cand --help 'Prints help information'
             cand -V 'Prints version information'
