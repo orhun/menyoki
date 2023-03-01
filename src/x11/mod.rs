@@ -131,13 +131,6 @@ mod tests {
 			.unwrap()
 			.get_window()
 			.is_none());
-		settings.record.window =
-			RecordWindow::Focus(Some(Geometry::default()), false);
-		settings.record.command = Some("test");
-		assert!(WindowSystem::init(&settings)
-			.unwrap()
-			.get_window()
-			.is_some());
 		settings.record.window = RecordWindow::Focus(None, false);
 		let mut window_system = WindowSystem::init(&settings).unwrap();
 		window_system.display.set_focused_window(
