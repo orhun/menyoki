@@ -85,7 +85,8 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifEncoder<'a, Output> {
 				speed,
 			);
 			frame.delay = (1e2 / self.fps as f32) as u16;
-			self.encoder.write_frame(&frame)?;
+			frame.make_lzw_pre_encoded();
+			self.encoder.write_lzw_pre_encoded_frame(&frame)?;
 		}
 		info!("\n");
 		Ok(())
