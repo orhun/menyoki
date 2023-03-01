@@ -8,7 +8,7 @@ trim_trailing_whitespace = true
 insert_final_newline = true
 
 [*.rs]
-indent_style = tab
+indent_style = space
 indent_size = 4
 
 [*.{md,txt}]
