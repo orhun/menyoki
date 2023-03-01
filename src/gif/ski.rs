@@ -53,7 +53,6 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 		input_state: Option<&'static InputState>,
 	) -> AppResult<()> {
 		let fps = self.fps;
-		let mut collector = self.collector;
 		let collector_thread = thread::spawn(move || {
 			for (i, image) in images.iter().enumerate() {
 				let percentage = ((i + 1) as f64 / images.len() as f64) * 100.;
@@ -72,7 +71,7 @@ impl<'a, Output: Write> Encoder<'a, Output> for GifskiEncoder<Output> {
 						panic!("Failed to write the frames")
 					}
 				}
-				collector
+				self.collector
 					.add_frame_rgba(i, image.get_img_vec(), i as f64 / fps as f64)
 					.expect("Failed to collect a frame");
 			}

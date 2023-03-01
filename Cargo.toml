@@ -58,8 +58,9 @@ fern_colored = { version = "0.6.1", features = ["colored"] }
 thiserror = "1.0.38"
 
 [dependencies.gifski]
-version = "1.7.0"
+version = "1.10.0"
 default-features = false
+features = ["png"]
 optional = true
 
 [dependencies.clap]

@@ -226,9 +226,9 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-channel"
-version = "0.5.5"
+version = "0.5.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4c02a4d71819009c192cf4872265391563fd6a84c81ff2c0f2a7026ca4c1d85c"
+checksum = "cf2b3e8478797446514c91ef04bafcb59faba183e621ad488df88983cc14128c"
 dependencies = [
  "cfg-if",
  "crossbeam-utils",
@@ -261,12 +261,11 @@ dependencies = [
 
 [[package]]
 name = "crossbeam-utils"
-version = "0.8.10"
+version = "0.8.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7d82ee10ce34d7bc12c2122495e7593a9c41347ecdd64185af4ecf72cb1a7f83"
+checksum = "3c063cd8cc95f5c377ed0d4b49a4b21f632396ff690e8470c29b3359b346984b"
 dependencies = [
  "cfg-if",
- "once_cell",
 ]
 
 [[package]]
@@ -546,31 +545,34 @@ dependencies = [
 
 [[package]]
 name = "gif-dispose"
-version = "3.1.1"
+version = "4.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "243e0347e8f4384181cb12069d87b9dae021c41bdaada7bd0d6743ad6d95c1d7"
+checksum = "a40dfdf5be59e0cbbf77cb7c6a91a18ee6d398b70fc54ad900e2bcba1860cb50"
 dependencies = [
- "gif 0.11.4",
+ "gif 0.12.0",
  "imgref",
  "rgb",
 ]
 
 [[package]]
 name = "gifski"
-version = "1.7.0"
+version = "1.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1c48a42f51b4a632ac682e00d4d72b807383ecddfd8ee35280fb6f5a2da86694"
+checksum = "52cb891802512f897458a65aacbb743f6827502d1eb4a56e439eca52b65bbbdf"
 dependencies = [
  "crossbeam-channel",
- "gif 0.11.4",
+ "crossbeam-utils",
+ "gif 0.12.0",
  "gif-dispose",
  "imagequant",
  "imgref",
+ "lodepng",
  "loop9",
  "num-traits",
  "quick-error",
  "resize",
  "rgb",
+ "scopeguard",
 ]
 
 [[package]]
@@ -649,13 +651,13 @@ dependencies = [
 
 [[package]]
 name = "imagequant"
-version = "4.0.0"
+version = "4.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49f533cecb7eb061d19dee3c938d0e302c02193270497483e1b662a0a1a5e343"
+checksum = "9c56d8895f7eeace4c479de13672e87c1623649360477252306e00b680eaa06f"
 dependencies = [
  "arrayvec",
- "fallible_collections",
  "noisy_float",
+ "num_cpus",
  "once_cell",
  "rayon",
  "rgb",
@@ -748,6 +750,19 @@ checksum = "327fa5b6a6940e4699ec49a9beae1ea4845c6bab9314e4f84ac68742139d8c53"
 dependencies = [
  "autocfg",
  "scopeguard",
+]
+
+[[package]]
+name = "lodepng"
+version = "3.7.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0ad39f75bbaa4b10bb6f2316543632a8046a5bcf9c785488d79720b21f044f8"
+dependencies = [
+ "crc32fast",
+ "fallible_collections",
+ "flate2",
+ "libc",
+ "rgb",
 ]
 
 [[package]]
@@ -948,9 +963,9 @@ dependencies = [
 
 [[package]]
 name = "once_cell"
-version = "1.13.0"
+version = "1.17.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "18a6dbe30758c9f83eb00cbea4ac95966305f5a7772f3f42ebfc7fc7eddbd8e1"
+checksum = "b7e5500299e16ebb147ae15a00a942af264cf3688f47923b8fc2cd5858f23ad3"
 
 [[package]]
 name = "ordered-multimap"
@@ -1135,9 +1150,9 @@ dependencies = [
 
 [[package]]
 name = "resize"
-version = "0.7.3"
+version = "0.7.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d05ed0e778666d123be79444a5ddb81506fda18ea6d7c05a8b6a701a6215d310"
+checksum = "87e7bdfff05e26408cf8f82fe896ce3d7624f0c0b06c84b2f1009c50452ead41"
 dependencies = [
  "fallible_collections",
  "rgb",
