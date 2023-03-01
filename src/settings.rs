@@ -5,7 +5,7 @@ use crate::edit::settings::EditSettings;
 use crate::file::format::FileFormat;
 use crate::file::settings::SaveSettings;
 use crate::image::geometry::Geometry;
-use crate::image::settings::{JpgSettings, PngSettings, PnmSettings};
+use crate::image::settings::{JpgSettings, PngSettings, PnmSettings, WebPSettings};
 use crate::record::settings::{RecordSettings, RecordWindow};
 use crate::util::keys::{ActionKeys, KeyType};
 use crate::util::state::InputState;
@@ -21,6 +21,7 @@ pub struct AppSettings<'a> {
 	pub split: SplitSettings,
 	pub png: PngSettings,
 	pub jpg: JpgSettings,
+	pub webp: WebPSettings,
 	pub pnm: PnmSettings,
 	pub edit: EditSettings,
 	pub analyze: AnalyzeSettings,
@@ -52,6 +53,7 @@ impl<'a> AppSettings<'a> {
 			split: SplitSettings::from_args(args),
 			png: PngSettings::from_args(args),
 			jpg: JpgSettings::from_args(args),
+			webp: WebPSettings::from_args(args),
 			analyze: AnalyzeSettings::from_args(args, Self::get_color(args)),
 			view: ViewSettings::from_args(args),
 			pnm,

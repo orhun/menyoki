@@ -77,6 +77,7 @@
     - [GIF/APNG](#gifapng)
     - [PNG](#png)
     - [JPG](#jpg)
+    - [WEBP](#webp)
     - [PNM](#pnm)
     - [Save](#save)
 - [Key Bindings](#key-bindings)
@@ -122,7 +123,7 @@
 - [x] [TGA](https://en.wikipedia.org/wiki/Truevision_TGA)
 - [x] [farbfeld](https://tools.suckless.org/farbfeld/)
 - [x] [OpenEXR](https://en.wikipedia.org/wiki/OpenEXR)
-- [ ] [WebP](https://en.wikipedia.org/wiki/WebP)
+- [x] [WebP](https://en.wikipedia.org/wiki/WebP)
 - [ ] [AVIF](https://en.wikipedia.org/wiki/AV1)
 - [ ] [MP4](https://en.wikipedia.org/wiki/MPEG-4_Part_14)
 
@@ -401,6 +402,7 @@ ARGS:
 SUBCOMMANDS:
     png     Use the PNG encoder
     jpg     Use the JPG encoder
+    webp    Use the WebP encoder
     bmp     Use the BMP encoder
     ico     Use the ICO encoder
     tiff    Use the TIFF encoder
@@ -493,6 +495,7 @@ ARGS:
 SUBCOMMANDS:
     png     Use the PNG encoder
     jpg     Use the JPG encoder
+    webp    Use the WebP encoder
     bmp     Use the BMP encoder
     ico     Use the ICO encoder
     tiff    Use the TIFF encoder
@@ -515,6 +518,7 @@ SUBCOMMANDS:
 | `menyoki capture --mouse`                                                    | Screenshot the selected window with a mouse click                                            |
 | `menyoki capture png --filter avg --compression fast`                        | Screenshot and encode with the specified PNG options                                         |
 | `menyoki capture jpg --quality 100`                                          | Screenshot and encode with the specified JPEG options                                        |
+| `menyoki capture webp --lossless`                                            | Screenshot and encode with the specified WEBP options                                        |
 | `menyoki capture pnm --format pixmap --encoding ascii`                       | Screenshot and encode with the specified PNM options                                         |
 | `menyoki capture ff save "test.ff" --timestamp`                              | Screenshot and save as "test.ff" in farbfeld format with timestamp in the file name          |
 | `menyoki -q capture png save "-" > test.png`                                 | Screenshot and redirect output to "test.png"                                                 |
@@ -559,6 +563,7 @@ SUBCOMMANDS:
     apng    Use the APNG encoder
     png     Use the PNG encoder
     jpg     Use the JPG encoder
+    webp    Use the WebP encoder
     bmp     Use the BMP encoder
     ico     Use the ICO encoder
     tiff    Use the TIFF encoder
@@ -780,6 +785,20 @@ SUBCOMMANDS:
     save    Save the output file(s)
 ```
 
+#### WEBP
+
+```
+FLAGS:
+    -l, --lossless    Use lossless encoding
+    -h, --help        Print help information
+
+OPTIONS:
+    -q, --quality <QUALITY>    Set the lossy encoding quality (1-100) [default: 80]
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+```
+
 #### PNM
 
 ```
@@ -963,6 +982,10 @@ filter = sub
 
 [jpg]
 quality = 90
+
+[webp]
+quality = 80
+lossless = false
 
 [pnm]
 format = pixmap

@@ -275,6 +275,7 @@ ARGS:
 SUBCOMMANDS:
     png     Use the PNG encoder
     jpg     Use the JPG encoder
+    webp    Use the WebP encoder
     bmp     Use the BMP encoder
     ico     Use the ICO encoder
     tiff    Use the TIFF encoder
@@ -425,6 +426,7 @@ ARGS:
 SUBCOMMANDS:
     png     Use the PNG encoder
     jpg     Use the JPG encoder
+    webp    Use the WebP encoder
     bmp     Use the BMP encoder
     ico     Use the ICO encoder
     tiff    Use the TIFF encoder
@@ -481,6 +483,11 @@ T{
 \f[C]menyoki capture jpg --quality 100\f[R]
 T}@T{
 Screenshot and encode with the specified JPEG options
+T}
+T{
+\f[C]menyoki capture webp --lossless\f[R]
+T}@T{
+Screenshot and encode with the specified WEBP options
 T}
 T{
 \f[C]menyoki capture pnm --format pixmap --encoding ascii\f[R]
@@ -545,6 +552,7 @@ SUBCOMMANDS:
     apng    Use the APNG encoder
     png     Use the PNG encoder
     jpg     Use the JPG encoder
+    webp    Use the WebP encoder
     bmp     Use the BMP encoder
     ico     Use the ICO encoder
     tiff    Use the TIFF encoder
@@ -826,6 +834,21 @@ FLAGS:
 
 OPTIONS:
     -q, --quality <QUALITY>    Set the image quality (1-100) [default: 90]
+
+SUBCOMMANDS:
+    save    Save the output file(s)
+\f[R]
+.fi
+.SS WEBP Subcommand
+.IP
+.nf
+\f[C]
+FLAGS:
+    -l, --lossless    Use lossless encoding
+    -h, --help        Print help information
+
+OPTIONS:
+    -q, --quality <QUALITY>    Set the lossy encoding quality (1-100) [default: 80]
 
 SUBCOMMANDS:
     save    Save the output file(s)

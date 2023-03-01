@@ -25,6 +25,7 @@ use image::codecs::png::PngEncoder;
 use image::codecs::pnm::{PnmEncoder, PnmSubtype};
 use image::codecs::tga::TgaEncoder;
 use image::codecs::tiff::TiffEncoder;
+use image::codecs::webp::WebPEncoder;
 use image::error::{
 	ImageError, ImageFormatHint, UnsupportedError, UnsupportedErrorKind,
 };
@@ -417,6 +418,14 @@ where
 				JpegEncoder::new_with_quality(
 					&mut output,
 					self.settings.jpg.quality,
+				),
+				ExtendedColorType::Rgb8,
+			),
+			FileFormat::WebP => self.save_image(
+				image,
+				WebPEncoder::new_with_quality(
+					&mut output,
+					self.settings.webp.get_quality(),
 				),
 				ExtendedColorType::Rgb8,
 			),

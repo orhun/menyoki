@@ -115,7 +115,9 @@ mod tests {
 	use pretty_assertions::assert_eq;
 	#[test]
 	fn test_file() {
-		for format in &["png", "jpg", "bmp", "ico", "tiff", "tga", "pnm", "ff"] {
+		for format in &[
+			"png", "jpg", "webp", "bmp", "ico", "tiff", "tga", "pnm", "ff",
+		] {
 			let args = App::new("test")
 				.subcommand(
 					SubCommand::with_name("capture")

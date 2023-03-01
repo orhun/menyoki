@@ -12,6 +12,7 @@ pub enum FileFormat {
 	Apng,
 	Png,
 	Jpg,
+	WebP,
 	Bmp,
 	Ico,
 	Tiff,
@@ -38,6 +39,7 @@ impl FromStr for FileFormat {
 			"apng" => Ok(Self::Apng),
 			"png" => Ok(Self::Png),
 			"jpg" => Ok(Self::Jpg),
+			"webp" => Ok(Self::WebP),
 			"bmp" => Ok(Self::Bmp),
 			"ico" => Ok(Self::Ico),
 			"tiff" => Ok(Self::Tiff),
@@ -103,6 +105,8 @@ impl FileFormat {
 					Self::Ico
 				} else if matches.is_present("jpg") {
 					Self::Jpg
+				} else if matches.is_present("webp") {
+					Self::WebP
 				} else {
 					Self::Png
 				}

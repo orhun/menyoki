@@ -753,6 +753,29 @@ where
 				),
 		)
 		.subcommand(
+			SubCommand::with_name("webp")
+				.about("Use the WebP encoder")
+				.help_message("Print help information")
+				.arg(
+					Arg::with_name("quality")
+						.short("q")
+						.long("quality")
+						.value_name("QUALITY")
+						.default_value("80")
+						.help("Set the lossy encoding quality (1-100)")
+						.takes_value(true),
+				)
+				.arg(
+					Arg::with_name("losless")
+						.short("l")
+						.long("lossless")
+						.help("Use lossless encoding"),
+				)
+				.subcommand(
+					Self::get_save_args(FileFormat::WebP).settings(&save_settings),
+				),
+		)
+		.subcommand(
 			SubCommand::with_name("bmp")
 				.about("Use the BMP encoder")
 				.help_message("Print help information")
