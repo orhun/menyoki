@@ -71,6 +71,12 @@ features = ["suggestions", "color", "wrap_help"]
 [dev-dependencies]
 pretty_assertions = "1.3.0"
 
+# metadata for cargo-binstall to get the right artifacts
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ version }-{ target }{ archive-suffix }"
+bin-dir = "{ name }-{ version }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
+
 [profile.dev]
 opt-level = 2
 debug = true
