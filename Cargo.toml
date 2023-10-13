@@ -56,6 +56,7 @@ colored = "2.0.0"
 log = "0.4.17"
 fern_colored = { version = "0.6.1", features = ["colored"] }
 thiserror = "1.0.38"
+shellexpand = "3.1.0"
 
 [dependencies.gifski]
 version = "1.10.0"
