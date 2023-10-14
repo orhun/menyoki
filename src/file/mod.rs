@@ -92,7 +92,7 @@ impl File {
 		if let Some(config_dir) = dirs::config_dir() {
 			let file_name =
 				format!("{}.{}", env!("CARGO_PKG_NAME"), CONFIG_FILE_EXTENSION);
-			for config_file in vec![
+			for config_file in [
 				config_dir.join(&file_name),
 				config_dir.join(env!("CARGO_PKG_NAME")).join(&file_name),
 				config_dir.join(env!("CARGO_PKG_NAME")).join("config"),
