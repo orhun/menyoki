@@ -5,6 +5,7 @@ use crate::file::format::FileFormat;
 use crate::file::info::FileInfo;
 use crate::file::File;
 use crate::image::settings::PnmSettings;
+use shellexpand::full;
 use std::path::PathBuf;
 use std::str::FromStr;
 
@@ -72,8 +73,11 @@ impl SaveSettings {
 	fn from_parser(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
 		match parser.args {
 			Some(matches) => {
-				let mut path =
-					PathBuf::from(matches.value_of("file").unwrap_or_default());
+				let file = matches.value_of("file").unwrap_or_default();
+				let file = full(file)
+					.map(|s| s.to_string())
+					.unwrap_or(file.to_string());
+				let mut path = PathBuf::from(file);
 				if let Some(info) = FileInfo::from_args(&matches) {
 					path.set_file_name(format!(
 						"{}_{}{}",
