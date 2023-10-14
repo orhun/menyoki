@@ -4,6 +4,7 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use chrono::{DateTime, Local, Utc};
 use colored::Color;
+use shellexpand::full;
 use std::path::PathBuf;
 use std::time::SystemTime;
 
@@ -103,8 +104,12 @@ impl AnalyzeSettings {
 		match parser.args {
 			Some(matches) => {
 				let timestamp = matches.is_present("timestamp");
+				let file = matches.value_of("file").unwrap_or_default();
+				let file = full(file)
+					.map(|s| s.to_string())
+					.unwrap_or(file.to_string());
 				Self::new(
-					PathBuf::from(matches.value_of("file").unwrap_or_default()),
+					PathBuf::from(file),
 					color.unwrap_or(Self::default().color),
 					match matches.value_of("time-zone") {
 						Some("local") => TimeZone::Local(timestamp),
