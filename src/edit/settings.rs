@@ -4,6 +4,7 @@ use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 use image::imageops::FilterType;
+use shellexpand::full;
 use std::path::PathBuf;
 
 /* Image settings */
@@ -187,36 +188,47 @@ impl EditSettings {
 	 */
 	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
-			Some(ref matches) => Self::new(
-				PathBuf::from(matches.value_of("file").unwrap_or_default()),
-				matches.is_present("convert"),
-				ImageSettings::new(
-					Padding::parse(matches.value_of("crop").unwrap_or_default()),
-					Geometry::parse(matches.value_of("resize").unwrap_or_default()),
-					parser.parse("ratio", ImageSettings::default().ratio),
-					match matches.value_of("flip") {
-						Some("horizontal") => Some(Flip::Horizontal),
-						Some("vertical") => Some(Flip::Vertical),
-						_ => None,
-					},
-					parser.parse("rotate", ImageSettings::default().rotate),
-					parser.parse("blur", ImageSettings::default().blur),
-					match matches.value_of("filter") {
-						Some("nearest") => FilterType::Nearest,
-						Some("triangle") => FilterType::Triangle,
-						Some("catmull-rom") => FilterType::CatmullRom,
-						Some("gaussian") => FilterType::Gaussian,
-						_ => FilterType::Lanczos3,
-					},
-				),
-				ColorSettings::new(
-					matches.is_present("grayscale"),
-					matches.is_present("invert"),
-					parser.parse("hue", ColorSettings::default().hue),
-					parser.parse("contrast", ColorSettings::default().contrast),
-					parser.parse("brightness", ColorSettings::default().brightness),
-				),
-			),
+			Some(ref matches) => {
+				let file = matches.value_of("file").unwrap_or_default();
+				let file = full(file)
+					.map(|s| s.to_string())
+					.unwrap_or(file.to_string());
+				Self::new(
+					PathBuf::from(file),
+					matches.is_present("convert"),
+					ImageSettings::new(
+						Padding::parse(matches.value_of("crop").unwrap_or_default()),
+						Geometry::parse(
+							matches.value_of("resize").unwrap_or_default(),
+						),
+						parser.parse("ratio", ImageSettings::default().ratio),
+						match matches.value_of("flip") {
+							Some("horizontal") => Some(Flip::Horizontal),
+							Some("vertical") => Some(Flip::Vertical),
+							_ => None,
+						},
+						parser.parse("rotate", ImageSettings::default().rotate),
+						parser.parse("blur", ImageSettings::default().blur),
+						match matches.value_of("filter") {
+							Some("nearest") => FilterType::Nearest,
+							Some("triangle") => FilterType::Triangle,
+							Some("catmull-rom") => FilterType::CatmullRom,
+							Some("gaussian") => FilterType::Gaussian,
+							_ => FilterType::Lanczos3,
+						},
+					),
+					ColorSettings::new(
+						matches.is_present("grayscale"),
+						matches.is_present("invert"),
+						parser.parse("hue", ColorSettings::default().hue),
+						parser.parse("contrast", ColorSettings::default().contrast),
+						parser.parse(
+							"brightness",
+							ColorSettings::default().brightness,
+						),
+					),
+				)
+			}
 			None => Self::default(),
 		}
 	}
