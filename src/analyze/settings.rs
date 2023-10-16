@@ -4,7 +4,7 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use chrono::{DateTime, Local, Utc};
 use colored::Color;
-use shellexpand::full;
+use shellexpand;
 use std::path::PathBuf;
 use std::time::SystemTime;
 
@@ -105,7 +105,7 @@ impl AnalyzeSettings {
 			Some(matches) => {
 				let timestamp = matches.is_present("timestamp");
 				let file = matches.value_of("file").unwrap_or_default();
-				let file = full(file)
+				let file = shellexpand::full(file)
 					.map(|s| s.to_string())
 					.unwrap_or(file.to_string());
 				Self::new(

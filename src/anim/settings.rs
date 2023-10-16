@@ -2,7 +2,7 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::file::format::FileFormat;
 use crate::file::File;
-use shellexpand::full;
+use shellexpand;
 use std::fs;
 use std::path::PathBuf;
 
@@ -123,7 +123,9 @@ impl AnimSettings {
 	 */
 	fn get_frames(args: &ArgMatches<'_>) -> Vec<PathBuf> {
 		let mut values = if let Some(dir) = args.value_of("dir") {
-			let dir = full(dir).map(|s| s.to_string()).unwrap_or(dir.to_string());
+			let dir = shellexpand::full(dir)
+				.map(|s| s.to_string())
+				.unwrap_or(dir.to_string());
 			fs::read_dir(dir)
 				.expect("Could not read files from directory")
 				.map(|entry| {
@@ -215,13 +217,13 @@ impl SplitSettings {
 		match parser.args {
 			Some(matches) => {
 				let file = matches.value_of("file").unwrap_or_default();
-				let file = full(file)
+				let file = shellexpand::full(file)
 					.map(|s| s.to_string())
 					.unwrap_or(file.to_string());
 				let file = PathBuf::from(file);
 				let dir = match matches.value_of("dir") {
 					Some(dir) => {
-						let dir = full(dir)
+						let dir = shellexpand::full(dir)
 							.map(|s| s.to_string())
 							.unwrap_or(dir.to_string());
 						PathBuf::from(dir)

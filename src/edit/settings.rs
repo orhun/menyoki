@@ -4,7 +4,7 @@ use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 use image::imageops::FilterType;
-use shellexpand::full;
+use shellexpand;
 use std::path::PathBuf;
 
 /* Image settings */
@@ -190,7 +190,7 @@ impl EditSettings {
 		match parser.args {
 			Some(ref matches) => {
 				let file = matches.value_of("file").unwrap_or_default();
-				let file = full(file)
+				let file = shellexpand::full(file)
 					.map(|s| s.to_string())
 					.unwrap_or(file.to_string());
 				Self::new(
