@@ -4,7 +4,6 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use chrono::{DateTime, Local, Utc};
 use colored::Color;
-use shellexpand;
 use std::path::PathBuf;
 use std::time::SystemTime;
 

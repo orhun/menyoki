@@ -1,6 +1,5 @@
 use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
-use shellexpand;
 use std::path::PathBuf;
 
 /* Image view settings */

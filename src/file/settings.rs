@@ -5,7 +5,6 @@ use crate::file::format::FileFormat;
 use crate::file::info::FileInfo;
 use crate::file::File;
 use crate::image::settings::PnmSettings;
-use shellexpand;
 use std::path::PathBuf;
 use std::str::FromStr;
 

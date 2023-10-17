@@ -2,7 +2,6 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use crate::file::format::FileFormat;
 use crate::file::File;
-use shellexpand;
 use std::fs;
 use std::path::PathBuf;
 
@@ -247,7 +246,6 @@ impl SplitSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
-	use dirs;
 	use pretty_assertions::assert_eq;
 	use std::ffi::OsStr;
 	#[test]

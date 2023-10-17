@@ -4,7 +4,6 @@ use crate::edit::ImageOps;
 use crate::image::geometry::Geometry;
 use crate::image::padding::Padding;
 use image::imageops::FilterType;
-use shellexpand;
 use std::path::PathBuf;
 
 /* Image settings */
