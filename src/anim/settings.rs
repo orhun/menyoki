@@ -247,6 +247,7 @@ impl SplitSettings {
 mod tests {
 	use super::*;
 	use clap::{App, Arg};
+	use dirs;
 	use pretty_assertions::assert_eq;
 	use std::ffi::OsStr;
 	#[test]
@@ -305,5 +306,10 @@ mod tests {
 		let split_settings = SplitSettings::from_parser(ArgParser::from_args(&args));
 		assert_eq!(PathBuf::from("x"), split_settings.file);
 		assert_eq!(Some(OsStr::new("x_frames")), split_settings.dir.file_name());
+		let args = App::new("test")
+			.arg(Arg::with_name("dir").long("dir").takes_value(true))
+			.get_matches_from(vec!["test", "--dir", "~/"]);
+		let split_settings = SplitSettings::from_parser(ArgParser::from_args(&args));
+		assert_eq!(dirs::home_dir().unwrap(), split_settings.dir)
 	}
 }
