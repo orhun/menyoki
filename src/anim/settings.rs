@@ -122,6 +122,9 @@ impl AnimSettings {
 	 */
 	fn get_frames(args: &ArgMatches<'_>) -> Vec<PathBuf> {
 		let mut values = if let Some(dir) = args.value_of("dir") {
+			let dir = shellexpand::full(dir)
+				.map(|s| s.to_string())
+				.unwrap_or(dir.to_string());
 			fs::read_dir(dir)
 				.expect("Could not read files from directory")
 				.map(|entry| {
@@ -212,10 +215,18 @@ impl SplitSettings {
 	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
 			Some(matches) => {
-				let file =
-					PathBuf::from(matches.value_of("file").unwrap_or_default());
+				let file = matches.value_of("file").unwrap_or_default();
+				let file = shellexpand::full(file)
+					.map(|s| s.to_string())
+					.unwrap_or(file.to_string());
+				let file = PathBuf::from(file);
 				let dir = match matches.value_of("dir") {
-					Some(dir) => PathBuf::from(dir),
+					Some(dir) => {
+						let dir = shellexpand::full(dir)
+							.map(|s| s.to_string())
+							.unwrap_or(dir.to_string());
+						PathBuf::from(dir)
+					}
 					None => File::get_default_path(&format!(
 						"{}_frames",
 						file.file_stem()
@@ -293,5 +304,10 @@ mod tests {
 		let split_settings = SplitSettings::from_parser(ArgParser::from_args(&args));
 		assert_eq!(PathBuf::from("x"), split_settings.file);
 		assert_eq!(Some(OsStr::new("x_frames")), split_settings.dir.file_name());
+		let args = App::new("test")
+			.arg(Arg::with_name("dir").long("dir").takes_value(true))
+			.get_matches_from(vec!["test", "--dir", "~/"]);
+		let split_settings = SplitSettings::from_parser(ArgParser::from_args(&args));
+		assert_eq!(dirs::home_dir().unwrap(), split_settings.dir)
 	}
 }

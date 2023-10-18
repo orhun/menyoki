@@ -72,8 +72,11 @@ impl SaveSettings {
 	fn from_parser(parser: ArgParser<'_>, file_format: FileFormat) -> Self {
 		match parser.args {
 			Some(matches) => {
-				let mut path =
-					PathBuf::from(matches.value_of("file").unwrap_or_default());
+				let file = matches.value_of("file").unwrap_or_default();
+				let file = shellexpand::full(file)
+					.map(|s| s.to_string())
+					.unwrap_or(file.to_string());
+				let mut path = PathBuf::from(file);
 				if let Some(info) = FileInfo::from_args(&matches) {
 					path.set_file_name(format!(
 						"{}_{}{}",

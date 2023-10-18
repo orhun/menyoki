@@ -49,10 +49,13 @@ impl ViewSettings {
 	 */
 	fn from_parser(parser: ArgParser<'_>) -> Self {
 		match parser.args {
-			Some(matches) => Self::new(
-				PathBuf::from(matches.value_of("file").unwrap_or_default()),
-				matches.is_present("transparent"),
-			),
+			Some(matches) => {
+				let file = matches.value_of("file").unwrap_or_default();
+				let file = shellexpand::full(file)
+					.map(|s| s.to_string())
+					.unwrap_or(file.to_string());
+				Self::new(PathBuf::from(file), matches.is_present("transparent"))
+			}
 			None => Self::default(),
 		}
 	}
