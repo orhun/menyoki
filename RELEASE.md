@@ -13,4 +13,4 @@
 
 ### Arch Linux
 
-Flag the packages out-of-date both on [AUR](https://aur.archlinux.org/packages/?O=0&SeB=b&K=menyoki&outdated=&SB=n&SO=a&PP=50&do_Search=Go) and [community repository](https://archlinux.org/packages/community/x86_64/menyoki/). If they are not updated within 3 days, contact and ask for the [current maintainer](mailto:orhunparmaksiz@gmail.com) to update them.
+Flag the packages out-of-date both on [AUR](https://aur.archlinux.org/packages/?O=0&SeB=b&K=menyoki&outdated=&SB=n&SO=a&PP=50&do_Search=Go) and [extra repository](https://archlinux.org/packages/extra/x86_64/menyoki/). If they are not updated within 3 days, contact and ask for the [current maintainer](mailto:orhunparmaksiz@gmail.com) to update them.
