@@ -11,8 +11,8 @@
     <a href="https://crates.io/crates/menyoki/">
         <img src="https://img.shields.io/crates/v/menyoki?style=flat&labelColor=000000&color=25691f&logo=Rust&logoColor=white">
     </a>
-    <a href="https://archlinux.org/packages/community/x86_64/menyoki/">
-        <img src="https://img.shields.io/archlinux/v/community/x86_64/menyoki?style=flat&labelColor=000000&color=25691f&logo=Arch%20Linux&logoColor=white">
+    <a href="https://archlinux.org/packages/extra/x86_64/menyoki/">
+        <img src="https://img.shields.io/archlinux/v/extra/x86_64/menyoki?style=flat&labelColor=000000&color=25691f&logo=Arch%20Linux&logoColor=white">
     </a>
     <br>
     <a href="https://github.com/orhun/menyoki/actions?query=workflow%3A%22Continuous+Integration%22">
@@ -155,7 +155,7 @@ cargo install menyoki --force
 
 ### Arch Linux
 
-**menyoki** can be installed from the Arch Linux [community repository](https://archlinux.org/packages/community/x86_64/menyoki/).
+**menyoki** can be installed from the Arch Linux [extra repository](https://archlinux.org/packages/extra/x86_64/menyoki/).
 
 ```sh
 pacman -S menyoki
