@@ -48,12 +48,12 @@ fn main() {
 				Some(window) => Some(window),
 				None => {
 					error!("Failed to retrieve the window.");
-					return;
+					std::process::exit(1);
 				}
 			},
 			None => {
 				error!("Failed to access the window system.");
-				return;
+				std::process::exit(1);
 			}
 		}
 	} else {
@@ -61,5 +61,6 @@ fn main() {
 	};
 	if let Err(e) = App::new(window, &settings).start() {
 		error!("{}", e);
+		std::process::exit(1);
 	}
 }
