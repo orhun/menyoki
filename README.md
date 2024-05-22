@@ -1063,7 +1063,7 @@ Thanks to [owodzeg](https://github.com/owodzeg) for his hard work on [Patafour](
 * [![Follow @menyoki_cli](https://img.shields.io/twitter/follow/menyoki_cli?style=flat&labelColor=000000&logo=twitter&logoColor=white&color=25691f)](https://twitter.com/menyoki_cli)
 * [![https://orhun.dev](https://img.shields.io/badge/author-orhun-000000?style=flat&labelColor=000000&color=25691f&logo=Rust&logoColor=white)](https://orhun.dev)
   * [![Follow @orhun](https://img.shields.io/github/followers/orhun?label=follow%20%40orhun&style=flat&labelColor=000000&logo=GitHub&logoColor=white&color=25691f)](https://github.com/orhun)
-  * [![Follow @orhunp_](https://img.shields.io/twitter/follow/orhunp_?style=flat&labelColor=000000&logo=twitter&logoColor=white&color=25691f)](https://twitter.com/orhunp_)
+  * [![Follow @orhundev](https://img.shields.io/twitter/follow/orhundev?style=flat&labelColor=000000&logo=twitter&logoColor=white&color=25691f)](https://twitter.com/orhundev)
 
 ### Funding
 
