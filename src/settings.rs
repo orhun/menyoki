@@ -201,7 +201,7 @@ mod tests {
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		env::set_var(
-			format!("{}_general_color", env!("CARGO_PKG_NAME")).to_uppercase(),
+			concat!(env!("CARGO_PKG_NAME"), "_general_color").to_uppercase(),
 			"d473d4",
 		);
 		assert_eq!(
