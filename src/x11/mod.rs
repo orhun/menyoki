@@ -87,7 +87,8 @@ unsafe extern "C" fn handle_x11_errors(
 		{
 			CStr::from_ptr(error_text.as_mut_ptr() as *mut c_char)
 				.to_string_lossy()
-				.into_owned() + " "
+				.into_owned()
+				+ " "
 		} else {
 			String::from("Unknown error ")
 		},

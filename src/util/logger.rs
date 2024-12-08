@@ -78,7 +78,7 @@ impl<'a> Logger<'a> {
 			.level(self.level_filter);
 		if self.settings.save.file.format.is_animation() {
 			logger = logger.level_for(
-				format!("{}::edit", env!("CARGO_PKG_NAME")),
+				concat!(env!("CARGO_PKG_NAME"), "::edit"),
 				LevelFilter::Warn,
 			)
 		}
@@ -95,7 +95,7 @@ mod tests {
 	#[test]
 	fn test_logger() -> Result<(), SetLoggerError> {
 		let quiet_var =
-			format!("{}_GENERAL_QUIET", env!("CARGO_PKG_NAME").to_uppercase());
+			concat!(env!("CARGO_PKG_NAME"), "_GENERAL_QUIET").to_uppercase();
 		env::set_var(quiet_var, "true");
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);

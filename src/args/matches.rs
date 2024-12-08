@@ -158,7 +158,7 @@ mod tests {
 	fn test_matches() {
 		let args = Args::default();
 		let matches = ArgMatches::new(&args);
-		let key = format!("{}_general_test", env!("CARGO_PKG_NAME")).to_uppercase();
+		let key = concat!(env!("CARGO_PKG_NAME"), "_general_test").to_uppercase();
 		env::set_var(&key, "...");
 		assert_eq!("...", matches.get_env("test").unwrap_or_default());
 		assert_eq!(Some("..."), matches.value_of("test"));

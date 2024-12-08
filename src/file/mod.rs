@@ -8,9 +8,6 @@ use std::ffi::OsStr;
 use std::fs;
 use std::path::{Path, PathBuf};
 
-/* Extension of the configuration file */
-const CONFIG_FILE_EXTENSION: &str = "conf";
-
 /* Representation of the output file */
 #[derive(Debug)]
 pub struct File {
@@ -85,13 +82,12 @@ impl File {
 	 */
 	pub fn get_config_file() -> Option<PathBuf> {
 		if let Ok(config_file) =
-			env::var(format!("{}_CONFIG", env!("CARGO_PKG_NAME")).to_uppercase())
+			env::var(concat!(env!("CARGO_PKG_NAME"), "_CONFIG").to_uppercase())
 		{
 			return Some(PathBuf::from(config_file));
 		}
 		if let Some(config_dir) = dirs::config_dir() {
-			let file_name =
-				format!("{}.{}", env!("CARGO_PKG_NAME"), CONFIG_FILE_EXTENSION);
+			let file_name = concat!(env!("CARGO_PKG_NAME"), ".conf");
 			for config_file in [
 				config_dir.join(&file_name),
 				config_dir.join(env!("CARGO_PKG_NAME")).join(&file_name),
