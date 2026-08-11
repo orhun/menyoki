@@ -17,7 +17,18 @@ use wayland_client::protocol::wl_registry::{self, WlRegistry};
 use wayland_client::protocol::wl_shm::{self, WlShm};
 use wayland_client::protocol::wl_shm_pool::WlShmPool;
 use wayland_client::{
-	delegate_noop, Connection, Dispatch, EventQueue, Proxy, QueueHandle, WEnum,
+	delegate_noop, event_created_child, Connection, Dispatch, EventQueue, Proxy,
+	QueueHandle, WEnum,
+};
+use wayland_protocols_hyprland::toplevel_export::v1::client::hyprland_toplevel_export_frame_v1::{
+	self, HyprlandToplevelExportFrameV1,
+};
+use wayland_protocols_hyprland::toplevel_export::v1::client::hyprland_toplevel_export_manager_v1::HyprlandToplevelExportManagerV1;
+use wayland_protocols_wlr::foreign_toplevel::v1::client::zwlr_foreign_toplevel_handle_v1::{
+	self, State as ToplevelState, ZwlrForeignToplevelHandleV1,
+};
+use wayland_protocols_wlr::foreign_toplevel::v1::client::zwlr_foreign_toplevel_manager_v1::{
+	self, ZwlrForeignToplevelManagerV1, EVT_TOPLEVEL_OPCODE,
 };
 use wayland_protocols_wlr::screencopy::v1::client::zwlr_screencopy_frame_v1::{
 	self, ZwlrScreencopyFrameV1,
@@ -28,8 +39,19 @@ use wayland_protocols_wlr::screencopy::v1::client::zwlr_screencopy_manager_v1::Z
 const SCREENCOPY_VERSION: u32 = 3;
 /* Highest version of the output interface that is used */
 const OUTPUT_VERSION: u32 = 4;
+/* Highest version of the foreign toplevel interface that is used */
+const TOPLEVEL_VERSION: u32 = 3;
+/* Version of the toplevel export protocol that accepts a toplevel handle */
+const TOPLEVEL_EXPORT_VERSION: u32 = 2;
 /* Number of bytes that a single pixel occupies in a shm buffer */
 const PIXEL_SIZE: u32 = 4;
+
+/* Thing to capture the frames of */
+#[derive(Clone, Copy, Debug)]
+pub enum Target {
+	Output(usize),
+	Toplevel(usize),
+}
 
 /* Result of a frame copy request */
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
@@ -95,12 +117,23 @@ pub struct OutputInfo {
 	pub geometry: Geometry,
 }
 
+/* Title and state of a toplevel (window) */
+#[derive(Clone, Debug, Default)]
+pub struct ToplevelInfo {
+	pub title: String,
+	pub app_id: String,
+	pub activated: bool,
+	pub closed: bool,
+}
+
 /* Wayland globals and the state of the ongoing frame copy */
 #[derive(Debug, Default)]
 struct State {
 	shm: Option<WlShm>,
 	screencopy: Option<ZwlrScreencopyManagerV1>,
+	toplevel_export: Option<HyprlandToplevelExportManagerV1>,
 	outputs: Vec<(WlOutput, OutputInfo)>,
+	toplevels: Vec<(ZwlrForeignToplevelHandleV1, ToplevelInfo)>,
 	frame_info: Option<FrameInfo>,
 	frame_status: FrameStatus,
 	y_invert: bool,
@@ -136,6 +169,7 @@ struct DisplayInner {
 pub struct Display {
 	inner: Mutex<DisplayInner>,
 	pub outputs: Vec<OutputInfo>,
+	pub toplevels: Vec<ToplevelInfo>,
 	pub settings: RecordSettings,
 }
 
@@ -144,6 +178,7 @@ impl fmt::Debug for Display {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
 		f.debug_struct("Display")
 			.field("outputs", &self.outputs)
+			.field("toplevels", &self.toplevels)
 			.finish()
 	}
 }
@@ -195,7 +230,13 @@ impl Display {
 			.iter()
 			.map(|(_, info)| info.clone())
 			.collect::<Vec<OutputInfo>>();
+		let toplevels = state
+			.toplevels
+			.iter()
+			.map(|(_, info)| info.clone())
+			.collect::<Vec<ToplevelInfo>>();
 		debug!("Outputs: {:?}", outputs);
+		debug!("Toplevels: {:?}", toplevels);
 		Some(Self {
 			inner: Mutex::new(DisplayInner {
 				queue,
@@ -203,8 +244,91 @@ impl Display {
 				buffer: None,
 			}),
 			outputs,
+			toplevels,
 			settings,
 		})
+	}
+
+	/**
+	 * Check if individual windows can be captured.
+	 *
+	 * @return bool
+	 */
+	pub fn has_toplevel_capture(&self) -> bool {
+		match self.inner.lock() {
+			Ok(inner) => inner.state.toplevel_export.is_some(),
+			Err(_) => false,
+		}
+	}
+
+	/**
+	 * Get the index of the toplevel that currently has the focus.
+	 *
+	 * @return usize (Option)
+	 */
+	pub fn get_active_toplevel(&self) -> Option<usize> {
+		self.toplevels.iter().position(|info| info.activated)
+	}
+
+	/**
+	 * Get the size of a toplevel by asking for a frame and dropping it.
+	 *
+	 * @param  toplevel
+	 * @return Geometry (Result)
+	 */
+	pub fn get_toplevel_geometry(
+		&self,
+		toplevel: usize,
+	) -> Result<Geometry, String> {
+		let mut inner = self
+			.inner
+			.lock()
+			.map_err(|e| format!("Failed to lock the display: {e}"))?;
+		let DisplayInner { queue, state, .. } = &mut *inner;
+		let handle = queue.handle();
+		let frame = Self::export_frame(state, &handle, toplevel)?;
+		state.frame_info = None;
+		let result = queue
+			.roundtrip(state)
+			.map_err(|e| format!("Wayland communication failed: {e}"));
+		let info = state.frame_info;
+		frame.destroy();
+		result?;
+		let info = info
+			.ok_or_else(|| String::from("The compositor did not offer a buffer"))?;
+		Ok(Geometry::new(0, 0, info.width, info.height))
+	}
+
+	/**
+	 * Ask for a frame of the given toplevel.
+	 *
+	 * @param  state
+	 * @param  handle
+	 * @param  toplevel
+	 * @return HyprlandToplevelExportFrameV1 (Result)
+	 */
+	fn export_frame(
+		state: &State,
+		handle: &QueueHandle<State>,
+		toplevel: usize,
+	) -> Result<HyprlandToplevelExportFrameV1, String> {
+		let (toplevel, info) = state
+			.toplevels
+			.get(toplevel)
+			.ok_or_else(|| String::from("Invalid toplevel"))?;
+		if info.closed {
+			return Err(String::from("The window was closed"));
+		}
+		let manager = state
+			.toplevel_export
+			.as_ref()
+			.ok_or_else(|| String::from("Missing toplevel export manager"))?;
+		Ok(manager.capture_toplevel_with_wlr_toplevel_handle(
+			0,
+			toplevel,
+			handle,
+			(),
+		))
 	}
 
 	/**
@@ -216,7 +340,7 @@ impl Display {
 	 */
 	pub fn capture(
 		&self,
-		output: usize,
+		target: Target,
 		area: Geometry,
 	) -> Result<Vec<Rgba<u8>>, String> {
 		if area.width == 0 || area.height == 0 {
@@ -232,29 +356,56 @@ impl Display {
 			buffer,
 		} = &mut *inner;
 		let handle = queue.handle();
-		let (output, _) = state
-			.outputs
-			.get(output)
-			.ok_or_else(|| String::from("Invalid output"))?;
-		let screencopy = state
-			.screencopy
-			.clone()
-			.ok_or_else(|| String::from("Missing screencopy manager"))?;
 		let shm = state
 			.shm
 			.clone()
 			.ok_or_else(|| String::from("Missing shared memory global"))?;
-		/* ponytail: the whole output is copied and cropped afterwards, since
-		 * the region request of the protocol uses logical coordinates while
-		 * the padding of menyoki is given in pixels. */
-		let frame = screencopy.capture_output(0, &output.clone(), &handle, ());
 		state.frame_info = None;
 		state.frame_status = FrameStatus::Pending;
 		state.y_invert = false;
-		let result =
-			Self::copy_frame(queue, state, buffer, &shm, &handle, &frame, area);
-		frame.destroy();
-		result
+		match target {
+			Target::Output(output) => {
+				let (output, _) = state
+					.outputs
+					.get(output)
+					.ok_or_else(|| String::from("Invalid output"))?;
+				let manager = state
+					.screencopy
+					.clone()
+					.ok_or_else(|| String::from("Missing screencopy manager"))?;
+				/* ponytail: the whole output is copied and cropped afterwards,
+				 * since the region request of the protocol uses logical
+				 * coordinates while the padding of menyoki is given in pixels. */
+				let frame = manager.capture_output(0, &output.clone(), &handle, ());
+				let result = Self::copy_frame(
+					queue,
+					state,
+					buffer,
+					&shm,
+					&handle,
+					|buffer| frame.copy(buffer),
+					area,
+				);
+				frame.destroy();
+				result
+			}
+			Target::Toplevel(toplevel) => {
+				let frame = Self::export_frame(state, &handle, toplevel)?;
+				let result = Self::copy_frame(
+					queue,
+					state,
+					buffer,
+					&shm,
+					&handle,
+					/* The whole frame is wanted every time, not just the part
+					 * of it that changed since the previous one. */
+					|buffer| frame.copy(buffer, 1),
+					area,
+				);
+				frame.destroy();
+				result
+			}
+		}
 	}
 
 	/**
@@ -265,18 +416,18 @@ impl Display {
 	 * @param  buffer
 	 * @param  shm
 	 * @param  handle
-	 * @param  frame
+	 * @param  copy
 	 * @param  area
 	 * @return Vector of Rgba (Result)
 	 */
 	#[allow(clippy::too_many_arguments)]
-	fn copy_frame(
+	fn copy_frame<Copy: FnOnce(&WlBuffer)>(
 		queue: &mut EventQueue<State>,
 		state: &mut State,
 		buffer: &mut Option<ShmBuffer>,
 		shm: &WlShm,
 		handle: &QueueHandle<State>,
-		frame: &ZwlrScreencopyFrameV1,
+		copy: Copy,
 		area: Geometry,
 	) -> Result<Vec<Rgba<u8>>, String> {
 		queue
@@ -306,7 +457,7 @@ impl Display {
 				Self::create_buffer(shm, handle, info, size)?
 			}
 		};
-		frame.copy(&shm_buffer.buffer);
+		copy(&shm_buffer.buffer);
 		/* The buffer is kept around for the next frame, so it is put back
 		 * before anything else can fail. */
 		*buffer = Some(shm_buffer);
@@ -475,6 +626,18 @@ impl Dispatch<WlRegistry, ()> for State {
 					handle,
 					(),
 				));
+			} else if interface == HyprlandToplevelExportManagerV1::interface().name
+				&& version >= TOPLEVEL_EXPORT_VERSION
+			{
+				state.toplevel_export =
+					Some(registry.bind(name, TOPLEVEL_EXPORT_VERSION, handle, ()));
+			} else if interface == ZwlrForeignToplevelManagerV1::interface().name {
+				registry.bind::<ZwlrForeignToplevelManagerV1, _, _>(
+					name,
+					version.min(TOPLEVEL_VERSION),
+					handle,
+					(),
+				);
 			} else if interface == WlOutput::interface().name {
 				let index = state.outputs.len();
 				let output =
@@ -580,7 +743,124 @@ impl Dispatch<ZwlrScreencopyFrameV1, ()> for State {
 	}
 }
 
+/* Collect the toplevels that the compositor exposes. */
+impl Dispatch<ZwlrForeignToplevelManagerV1, ()> for State {
+	fn event(
+		state: &mut Self,
+		_: &ZwlrForeignToplevelManagerV1,
+		event: zwlr_foreign_toplevel_manager_v1::Event,
+		_: &(),
+		_: &Connection,
+		_: &QueueHandle<Self>,
+	) {
+		if let zwlr_foreign_toplevel_manager_v1::Event::Toplevel { toplevel } = event
+		{
+			state.toplevels.push((toplevel, ToplevelInfo::default()));
+		}
+	}
+
+	event_created_child!(State, ZwlrForeignToplevelManagerV1, [
+		EVT_TOPLEVEL_OPCODE => (ZwlrForeignToplevelHandleV1, ()),
+	]);
+}
+
+/* Collect the title and the state of the toplevels. */
+impl Dispatch<ZwlrForeignToplevelHandleV1, ()> for State {
+	fn event(
+		state: &mut Self,
+		toplevel: &ZwlrForeignToplevelHandleV1,
+		event: zwlr_foreign_toplevel_handle_v1::Event,
+		_: &(),
+		_: &Connection,
+		_: &QueueHandle<Self>,
+	) {
+		let info = match state
+			.toplevels
+			.iter_mut()
+			.find(|(handle, _)| handle == toplevel)
+		{
+			Some((_, info)) => info,
+			None => return,
+		};
+		match event {
+			/* The entry is kept so that the indices of the toplevels that
+			 * are captured stay valid for the rest of the session. */
+			zwlr_foreign_toplevel_handle_v1::Event::Closed => {
+				info.closed = true;
+				info.activated = false;
+				toplevel.destroy();
+			}
+			zwlr_foreign_toplevel_handle_v1::Event::Title { title } => {
+				info.title = title
+			}
+			zwlr_foreign_toplevel_handle_v1::Event::AppId { app_id } => {
+				info.app_id = app_id
+			}
+			zwlr_foreign_toplevel_handle_v1::Event::State { state } => {
+				info.activated = state
+					.chunks_exact(4)
+					.filter_map(|value| value.try_into().ok())
+					.map(u32::from_ne_bytes)
+					.any(|value| value == ToplevelState::Activated as u32);
+			}
+			_ => {}
+		}
+	}
+}
+
+/* Track the state of the toplevel frame that is being copied. */
+impl Dispatch<HyprlandToplevelExportFrameV1, ()> for State {
+	fn event(
+		state: &mut Self,
+		_: &HyprlandToplevelExportFrameV1,
+		event: hyprland_toplevel_export_frame_v1::Event,
+		_: &(),
+		_: &Connection,
+		_: &QueueHandle<Self>,
+	) {
+		match event {
+			hyprland_toplevel_export_frame_v1::Event::Buffer {
+				format,
+				width,
+				height,
+				stride,
+			} => {
+				state.frame_info = match format {
+					WEnum::Value(format) => Some(FrameInfo {
+						format,
+						width,
+						height,
+						stride,
+					}),
+					WEnum::Unknown(value) => {
+						warn!("Unknown buffer format: {}", value);
+						None
+					}
+				};
+			}
+			hyprland_toplevel_export_frame_v1::Event::Flags { flags } => {
+				state.y_invert = flags
+					.into_result()
+					.map(|flags| {
+						flags.contains(
+							hyprland_toplevel_export_frame_v1::Flags::YInvert,
+						)
+					})
+					.unwrap_or_default();
+			}
+			hyprland_toplevel_export_frame_v1::Event::Ready { .. } => {
+				state.frame_status = FrameStatus::Ready;
+			}
+			hyprland_toplevel_export_frame_v1::Event::Failed => {
+				state.frame_status = FrameStatus::Failed;
+			}
+			_ => {}
+		}
+	}
+}
+
 delegate_noop!(State: ignore WlShm);
+delegate_noop!(State: ignore HyprlandToplevelExportManagerV1);
 delegate_noop!(State: ignore WlShmPool);
 delegate_noop!(State: ignore WlBuffer);
 delegate_noop!(State: ignore ZwlrScreencopyManagerV1);

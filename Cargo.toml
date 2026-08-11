@@ -34,6 +34,7 @@ x11 = { version = "2.21.0", features = ["xlib", "xrandr"] }
 # pure-Rust backend by default, so no libwayland is needed to build
 wayland-client = "0.31.15"
 wayland-protocols-wlr = { version = "0.3.12", features = ["client"] }
+wayland-protocols-hyprland = { version = "1.2.0", features = ["client"] }
 
 [dependencies]
 # window system

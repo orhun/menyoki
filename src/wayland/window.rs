@@ -1,17 +1,17 @@
 use crate::image::geometry::Geometry;
 use crate::image::Image;
-use crate::wayland::display::Display;
+use crate::wayland::display::{Display, Target};
 use crate::window::Capture;
 use std::fmt;
 use std::io::{self, Write};
 use std::thread;
 use std::time::Duration;
 
-/* Wayland output to capture, with its geometric properties */
+/* Wayland output or window to capture, with its geometric properties */
 #[derive(Clone, Copy, Debug)]
 pub struct Window {
 	display: &'static Display,
-	output: usize,
+	target: Target,
 	pub geometry: Geometry,
 	pub area: Geometry,
 }
@@ -19,10 +19,16 @@ pub struct Window {
 /* Display implementation for user-facing output */
 impl fmt::Display for Window {
 	fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+		let label = match self.target {
+			Target::Output(_) => "Output",
+			Target::Toplevel(_) => "Window",
+		};
 		write!(
 			f,
-			"\n Output name   -> \"{}\"\n Output size   -> [{}x{}]",
+			"\n {} name   -> \"{}\"\n {} size   -> [{}x{}]",
+			label,
 			self.get_name().unwrap_or_else(|| String::from("(?)")),
+			label,
 			self.geometry.width,
 			self.geometry.height,
 		)
@@ -34,35 +40,43 @@ impl Window {
 	 * Create a new Window object.
 	 *
 	 * @param  display
-	 * @param  output
+	 * @param  target
 	 * @param  geometry
 	 * @param  area
 	 * @return Window
 	 */
 	pub fn new(
 		display: &'static Display,
-		output: usize,
+		target: Target,
 		geometry: Geometry,
 		area: Geometry,
 	) -> Self {
 		Self {
 			display,
-			output,
+			target,
 			geometry,
 			area,
 		}
 	}
 
 	/**
-	 * Get the name of the output.
+	 * Get the name of the output or the title of the window.
 	 *
 	 * @return String (Option)
 	 */
 	pub fn get_name(&self) -> Option<String> {
-		self.display
-			.outputs
-			.get(self.output)
-			.map(|output| output.name.clone())
+		match self.target {
+			Target::Output(output) => self
+				.display
+				.outputs
+				.get(output)
+				.map(|output| output.name.clone()),
+			Target::Toplevel(toplevel) => self
+				.display
+				.toplevels
+				.get(toplevel)
+				.map(|toplevel| toplevel.title.clone()),
+		}
 	}
 }
 
@@ -74,7 +88,7 @@ impl Capture for Window {
 	 * @return Image (Option)
 	 */
 	fn get_image(&self) -> Option<Image> {
-		match self.display.capture(self.output, self.area) {
+		match self.display.capture(self.target, self.area) {
 			Ok(data) => Some(Image::new(
 				data,
 				self.display.settings.flag.alpha,
