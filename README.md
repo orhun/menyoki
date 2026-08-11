@@ -104,9 +104,16 @@
 
 - [x] Linux
     - [x] [X11](https://www.x.org/) (fully supported)
-    - [ ] [Wayland](https://wayland.freedesktop.org/) (no record/capture)
+    - [x] [Wayland](https://wayland.freedesktop.org/) (output record/capture)
 - [ ] Windows (no record/capture)
 - [ ] macOS (no record/capture)
+
+The window system is picked at runtime: **menyoki** uses Wayland if `WAYLAND_DISPLAY` is set and X11 otherwise. Set `MENYOKI_WINDOW_SYSTEM` to `x11` or `wayland` to override this, which is useful for capturing an [XWayland](https://wayland.freedesktop.org/xserver.html) window while a Wayland session is running.
+
+On Wayland, capturing is done via the [wlr-screencopy](https://wayland.app/protocols/wlr-screencopy-unstable-v1) protocol, so a [wlroots](https://gitlab.freedesktop.org/wlroots/wlroots)-based compositor (such as [Sway](https://swaywm.org/) or [Hyprland](https://hyprland.org/)) is required. The protocol only exposes whole outputs, which brings a couple of limitations compared to X11:
+
+* `--root` is the only supported window mode, `--focus`/`--select` are not available. Use `--monitor` to pick an output and `--size`/`--padding` to narrow the capture area down.
+* Action keys are not available, so use `--duration` or press `Ctrl-C` to stop recording.
 
 **menyoki** requires a window system [implementation](https://github.com/orhun/menyoki/blob/master/IMPLEMENTATION.md#implementing-for-other-platforms) of the supported platform for **record** and **capture** actions. Other features are expected to work normally since they don't require a window system running (or grabbing a window to operate on). For example, despite the macOS is not listed as a supported platform, **menyoki** still can perform image operations such as **edit**, **analyze** and **view** if it's compiled on macOS.
 
@@ -133,8 +140,8 @@
 
 ### Requirements
 
-* Rust: `1.56.1+`
-* Dependencies
+* Rust: `1.71+`
+* Dependencies (only needed for the X11 backend, the Wayland one is pure Rust)
   * Arch Linux: `libx11`, `libxrandr`
   * Debian, Ubuntu: `libx11-dev`/`librust-x11-dev`, `libxrandr-dev`
   * Fedora: `libX11-devel`, `libXrandr`

@@ -85,13 +85,15 @@ impl Geometry {
 			.y
 			.checked_add(i32::try_from(padding.top).unwrap_or_default())
 			.unwrap_or_default();
-		self.width = self
-			.width
-			.checked_sub(padding.right + padding.left)
+		self.width = padding
+			.right
+			.checked_add(padding.left)
+			.and_then(|padding| self.width.checked_sub(padding))
 			.unwrap_or_default();
-		self.height = self
-			.height
-			.checked_sub(padding.top + padding.bottom)
+		self.height = padding
+			.top
+			.checked_add(padding.bottom)
+			.and_then(|padding| self.height.checked_sub(padding))
 			.unwrap_or_default();
 		*self
 	}

@@ -18,6 +18,8 @@ mod record;
 mod settings;
 mod util;
 mod view;
+#[cfg(all(unix, not(target_os = "macos")))]
+mod wayland;
 mod window;
 #[cfg(not(all(unix, not(target_os = "macos"))))]
 mod ws;
@@ -28,11 +30,50 @@ use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
 use self::util::logger::Logger;
-use self::window::Access;
+use self::window::{Access, Capture};
 #[cfg(not(all(unix, not(target_os = "macos"))))]
-use self::ws::WindowSystem;
+use self::ws::{
+	window::Window as DefaultWindow, WindowSystem as DefaultWindowSystem,
+};
 #[cfg(all(unix, not(target_os = "macos")))]
-use self::x11::WindowSystem;
+use self::x11::{
+	window::Window as DefaultWindow, WindowSystem as DefaultWindowSystem,
+};
+use std::fmt::Debug;
+use std::process;
+
+/**
+ * Retrieve the window from the given window system and start the application.
+ *
+ * @param settings
+ */
+fn start<'a, Window, Ws>(settings: &'a AppSettings<'a>)
+where
+	Window: Capture + Send + Sync + Copy + Debug + 'static,
+	Ws: Access<'a, Window>,
+{
+	let window = if settings.window_required {
+		match Ws::init(settings) {
+			Some(mut ws) => match ws.get_window() {
+				Some(window) => Some(window),
+				None => {
+					error!("Failed to retrieve the window.");
+					process::exit(1);
+				}
+			},
+			None => {
+				error!("Failed to access the window system.");
+				process::exit(1);
+			}
+		}
+	} else {
+		None
+	};
+	if let Err(e) = App::new(window, settings).start() {
+		error!("{}", e);
+		process::exit(1);
+	}
+}
 
 fn main() {
 	let args = Args::parse();
@@ -42,25 +83,10 @@ fn main() {
 		.init()
 		.expect("Failed to initialize the logger");
 	settings.check();
-	let window = if settings.window_required {
-		match WindowSystem::init(&settings) {
-			Some(mut ws) => match ws.get_window() {
-				Some(window) => Some(window),
-				None => {
-					error!("Failed to retrieve the window.");
-					std::process::exit(1);
-				}
-			},
-			None => {
-				error!("Failed to access the window system.");
-				std::process::exit(1);
-			}
-		}
-	} else {
-		None
-	};
-	if let Err(e) = App::new(window, &settings).start() {
-		error!("{}", e);
-		std::process::exit(1);
+	#[cfg(all(unix, not(target_os = "macos")))]
+	if wayland::is_preferred() {
+		start::<wayland::window::Window, wayland::WindowSystem<'_>>(&settings);
+		return;
 	}
+	start::<DefaultWindow, DefaultWindowSystem<'_>>(&settings);
 }
