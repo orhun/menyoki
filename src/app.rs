@@ -661,7 +661,7 @@ mod tests {
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		let window = TestWindow::default();
-		for format in vec![
+		for format in [
 			FileFormat::Png,
 			FileFormat::Jpg,
 			FileFormat::Bmp,

@@ -74,7 +74,9 @@ pub struct RecordFlag {
 	pub alpha: bool,
 	pub action_keys: Option<&'static str>,
 	pub cancel_keys: Option<&'static str>,
+	#[cfg_attr(not(all(unix, not(target_os = "macos"))), allow(dead_code))]
 	pub font: Option<&'static str>,
+	#[cfg_attr(not(all(unix, not(target_os = "macos"))), allow(dead_code))]
 	pub monitor: Option<usize>,
 	pub select: bool,
 	pub mouse: bool,

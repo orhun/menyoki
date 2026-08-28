@@ -798,9 +798,10 @@ impl Dispatch<ZwlrForeignToplevelHandleV1, ()> for State {
 			}
 			zwlr_foreign_toplevel_handle_v1::Event::State { state } => {
 				info.activated = state
-					.chunks_exact(4)
-					.filter_map(|value| value.try_into().ok())
-					.map(u32::from_ne_bytes)
+					.as_chunks::<4>()
+					.0
+					.iter()
+					.map(|value| u32::from_ne_bytes(*value))
 					.any(|value| value == ToplevelState::Activated as u32);
 			}
 			_ => {}
