@@ -330,6 +330,10 @@ The general prototype of the variables that \f[B]menyoki\f[R] checks are
 the following:
 .PP
 \f[C]MENYOKI_{SECTION}_{ARGUMENT}=value\f[R]
+.PP
+Additionally, \f[C]MENYOKI_WINDOW_SYSTEM\f[R] can be set to \f[C]x11\f[R] or
+\f[C]wayland\f[R] for overriding the window system that is otherwise detected
+from the presence of \f[C]WAYLAND_DISPLAY\f[R].
 .SS Examples
 .PP
 .TS

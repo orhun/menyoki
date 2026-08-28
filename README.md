@@ -80,6 +80,7 @@
     - [WEBP](#webp)
     - [PNM](#pnm)
     - [Save](#save)
+- [Wayland](#wayland)
 - [Key Bindings](#key-bindings)
 - [Configuration](#configuration)
 - [Environment Variables](#environment-variables)
@@ -104,7 +105,7 @@
 
 - [x] Linux
     - [x] [X11](https://www.x.org/) (fully supported)
-    - [ ] [Wayland](https://wayland.freedesktop.org/) (no record/capture)
+    - [x] [Wayland](https://wayland.freedesktop.org/) (output record/capture, window on Hyprland)
 - [ ] Windows (no record/capture)
 - [ ] macOS (no record/capture)
 
@@ -133,8 +134,8 @@
 
 ### Requirements
 
-* Rust: `1.56.1+`
-* Dependencies
+* Rust: `1.71+`
+* Dependencies (only needed for the X11 backend, the Wayland one is pure Rust)
   * Arch Linux: `libx11`, `libxrandr`
   * Debian, Ubuntu: `libx11-dev`/`librust-x11-dev`, `libxrandr-dev`
   * Fedora: `libX11-devel`, `libXrandr`
@@ -827,6 +828,19 @@ OPTIONS:
 ARGS:
     <FILE>    Set the output file
 ```
+
+## Wayland
+
+The window system is picked at runtime: **menyoki** uses Wayland if `WAYLAND_DISPLAY` is set and X11 otherwise. Set `MENYOKI_WINDOW_SYSTEM` to `x11` or `wayland` to override this, which is useful for capturing an [XWayland](https://wayland.freedesktop.org/xserver.html) window while a Wayland session is running.
+
+On Wayland, outputs are captured via the [wlr-screencopy](https://wayland.app/protocols/wlr-screencopy-unstable-v1) protocol, so a [wlroots](https://gitlab.freedesktop.org/wlroots/wlroots)-based compositor (such as [Sway](https://swaywm.org/) or [Hyprland](https://hyprland.org/)) is required. `--root` picks a whole output, `--monitor` selects which one and `--size`/`--padding` narrow the captured area down.
+
+`--focus` captures the window that has the focus, on its own, without whatever happens to be drawn on top of it. This uses the [hyprland-toplevel-export](https://wayland.app/protocols/hyprland-toplevel-export-v1) protocol together with [wlr-foreign-toplevel-management](https://wayland.app/protocols/wlr-foreign-toplevel-management-unstable-v1), so it is only available on [Hyprland](https://hyprland.org/); elsewhere it reports that only outputs can be captured.
+
+Two limitations remain compared to X11:
+
+* `--select` and `--mouse` are not available, since the compositor does not let a client pick a window interactively. `--focus` or `--root` with `--size` cover most of that ground.
+* Action keys are not available, so use `--duration` or press `Ctrl-C` to stop recording.
 
 ## Key Bindings
 

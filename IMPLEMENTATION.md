@@ -54,6 +54,10 @@ Details of the implementation of **menyoki**.
 * view
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/view/mod.rs) -> `ImageViewer`
   * [settings.rs](https://github.com/orhun/menyoki/blob/master/src/view/settings.rs) -> `ViewSettings`
+* wayland
+    * [display.rs](https://github.com/orhun/menyoki/blob/master/src/wayland/display.rs) -> `Display` (Wayland connection that copies frames via the wlr-screencopy protocol)
+    * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/wayland/mod.rs) -> `WindowSystem` (implements `Access` trait for Wayland)
+    * [window.rs](https://github.com/orhun/menyoki/blob/master/src/wayland/window.rs) -> `Window` (Wayland output wrapper with methods like `get_name`)
 * window
   * [mod.rs](https://github.com/orhun/menyoki/blob/master/src/window/mod.rs) -> `Access`, `Capture` (crucial traits)
   * [test.rs](https://github.com/orhun/menyoki/blob/master/src/window/test.rs) -> `TestWindow` (implements `Capture` trait for testing purposes)

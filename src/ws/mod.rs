@@ -5,9 +5,12 @@ use crate::window::Access;
 use crate::ws::window::Window;
 
 /* Window system implementation */
-pub struct WindowSystem {}
+pub struct WindowSystem<'a> {
+	#[allow(dead_code)]
+	settings: &'a AppSettings<'a>,
+}
 
-impl<'a> Access<'a, Window> for WindowSystem {
+impl<'a> Access<'a, Window> for WindowSystem<'a> {
 	/**
 	 * Initialize the window system.
 	 *

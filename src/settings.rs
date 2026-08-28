@@ -45,7 +45,8 @@ impl<'a> AppSettings<'a> {
 		let pnm = PnmSettings::from_args(args);
 		let edit = EditSettings::from_args(args);
 		let save = SaveSettings::from_args(args, &edit, &pnm);
-		let input_state = Self::get_input_state(window_required, &record);
+		let input_state =
+			Self::get_input_state(window_required && !Self::is_wayland(), &record);
 		Self {
 			args,
 			record,
@@ -95,7 +96,30 @@ impl<'a> AppSettings<'a> {
 	}
 
 	/**
+	 * Check if the Wayland backend is going to be used.
+	 *
+	 * @return bool
+	 */
+	#[cfg(all(unix, not(target_os = "macos")))]
+	fn is_wayland() -> bool {
+		crate::wayland::is_preferred()
+	}
+
+	/**
+	 * Check if the Wayland backend is going to be used.
+	 *
+	 * @return bool
+	 */
+	#[cfg(not(all(unix, not(target_os = "macos"))))]
+	fn is_wayland() -> bool {
+		false
+	}
+
+	/**
 	 * Get InputState if a window is required.
+	 *
+	 * The input state is backed by the X11 keyboard state, which is neither
+	 * available nor meaningful on Wayland, so it is left out there.
 	 *
 	 * @param  window_required
 	 * @param  record
