@@ -6,7 +6,7 @@ use bytesize::ByteSize;
 use colored::{Color, Colorize};
 use exif::{Exif, Reader as ExifReader};
 use hex::ToHex;
-use image::io::Reader as ImageReader;
+use image::ImageReader;
 use image::{DynamicImage, ImageFormat};
 use std::fmt::Write;
 use std::fs::{self, File, Metadata};
@@ -75,7 +75,7 @@ impl<'a> ImageAnalyzer<'a> {
 	 * @return String
 	 */
 	fn get_file_size(&self) -> String {
-		ByteSize(self.metadata.len()).to_string_as(false)
+		ByteSize(self.metadata.len()).display().iec().to_string()
 	}
 
 	/**
@@ -257,7 +257,10 @@ mod tests {
 			TimeZone::Utc(false),
 		);
 		let analyzer = ImageAnalyzer::new(&settings).unwrap();
-		assert_eq!("72 B", analyzer.get_file_size());
+		assert_eq!(
+			format!("{} B", analyzer.metadata.len()),
+			analyzer.get_file_size()
+		);
 		for info in [TimeInfo::Created, TimeInfo::Modified, TimeInfo::Accessed] {
 			if let Some(time) = analyzer.get_time_info(info) {
 				assert_eq!(

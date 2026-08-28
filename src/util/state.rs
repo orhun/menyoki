@@ -98,6 +98,6 @@ mod tests {
 		let input_state = InputState::default().into_boxed_state();
 		assert!(!input_state.check_action());
 		assert!(!input_state.check_cancel_keys());
-		assert!(format!("{:?}", input_state).len() > 0);
+		assert!(!format!("{:?}", input_state).is_empty());
 	}
 }

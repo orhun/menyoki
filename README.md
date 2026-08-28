@@ -134,7 +134,7 @@
 
 ### Requirements
 
-* Rust: `1.71+`
+* Rust: `1.88+`
 * Dependencies (only needed for the X11 backend, the Wayland one is pure Rust)
   * Arch Linux: `libx11`, `libxrandr`
   * Debian, Ubuntu: `libx11-dev`/`librust-x11-dev`, `libxrandr-dev`

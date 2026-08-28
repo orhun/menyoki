@@ -6,8 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [1.8.0] - 2026-08-28
 ### Added
-- Add Wayland support for record/capture via the wlr-screencopy protocol
+- Add Wayland support for recording and capturing screens
+
+### Changed
+- Bump dependencies and raise the minimum supported Rust version to 1.88
 
 ## [1.7.0] - 2023-03-01
 ### Added

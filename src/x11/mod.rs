@@ -80,7 +80,7 @@ unsafe extern "C" fn handle_x11_errors(
 		"{}[Opcode: {}, Serial: {}]",
 		if xlib::XGetErrorText(
 			display,
-			(*error).error_code.try_into().unwrap_or_default(),
+			(*error).error_code.into(),
 			error_text.as_mut_ptr() as *mut c_char,
 			error_text.capacity().try_into().unwrap_or_default(),
 		) == 0

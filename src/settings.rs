@@ -168,18 +168,12 @@ impl<'a> AppSettings<'a> {
 			if self.record.flag.action_keys
 				!= Some(&ActionKeys::default(KeyType::ActionKeys).to_string())
 			{
-				info!(
-					"Using custom action keys: {}",
-					input_state.action_keys.to_string()
-				);
+				info!("Using custom action keys: {}", input_state.action_keys);
 			}
 			if self.record.flag.cancel_keys
 				!= Some(&ActionKeys::default(KeyType::CancelKeys).to_string())
 			{
-				info!(
-					"Using custom cancel keys: {}",
-					input_state.cancel_keys.to_string()
-				);
+				info!("Using custom cancel keys: {}", input_state.cancel_keys);
 			}
 		}
 		if !self.record.flag.select {

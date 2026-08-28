@@ -20,103 +20,104 @@ jobs:
         build: [linux-gnu, linux-musl, win-gnu, win-msvc, win32-msvc, macos]
         include:
           - build: linux-gnu
-            os: ubuntu-20.04
+            os: ubuntu-24.04
             target: x86_64-unknown-linux-gnu
           - build: linux-musl
-            os: ubuntu-20.04
+            os: ubuntu-24.04
             target: x86_64-unknown-linux-musl
           - build: win-gnu
-            os: windows-2019
+            os: windows-2025
             target: x86_64-pc-windows-gnu
           - build: win-msvc
-            os: windows-2019
+            os: windows-2025
             target: x86_64-pc-windows-msvc
           - build: win32-msvc
-            os: windows-2019
+            os: windows-2025
             target: i686-pc-windows-msvc
           - build: macos
-            os: macos-10.15
+            os: macos-15-intel
             target: x86_64-apple-darwin
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v7
       - name: Install dependencies (linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.os == 'ubuntu-24.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             --allow-unauthenticated xvfb libx11-dev libxrandr-dev
       - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          target: ${{ matrix.target }}
-          override: true
+          targets: ${{ matrix.target }}
       - name: Cache Cargo dependencies
-        uses: Swatinem/rust-cache@v1
+        uses: Swatinem/rust-cache@v2
       - name: Check the project files
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
-          args: --locked
+        run: cargo check --locked --target ${{ matrix.target }}
       - name: Check the lints
-        uses: actions-rs/cargo@v1
-        with:
-          command: clippy
-          args: --tests --verbose -- -D warnings
+        run: cargo clippy --locked --tests --target ${{ matrix.target }} -- -D warnings
       - name: Run tests (macos/windows)
-        if: matrix.os == 'macos-10.15' || matrix.os == 'windows-2019'
+        if: startsWith(matrix.os, 'macos-') || startsWith(matrix.os, 'windows-')
         run: |
           cargo test --verbose --features test-ws
       - name: Install cargo-tarpaulin (linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.build == 'linux-gnu'
         run: |
           curl -s https://api.github.com/repos/xd009642/tarpaulin/releases/latest | \
             grep "browser_download_url.*x86_64-unknown-linux-musl.tar.gz" | cut -d : -f 2,3 | tr -d \" | wget -qi -
           tar -xzf cargo-tarpaulin-*.tar.gz
           mv cargo-tarpaulin ~/.cargo/bin/
       - name: Run tests (linux)
-        if: matrix.os == 'ubuntu-20.04'
+        if: matrix.build == 'linux-gnu'
         run: |
           xvfb-run --server-args="-screen 0 1920x1080x24" \
             cargo tarpaulin -o Xml -v --features test-ws -- --test-threads 1
       - name: Upload reports to Codecov (linux)
         if: matrix.build == 'linux-gnu'
-        uses: codecov/codecov-action@v1.0.7
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: cobertura.xml
+          files: cobertura.xml
           flags: unit-tests
           name: code-coverage-report
           fail_ci_if_error: true
 
   rustfmt:
     name: Format
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v7
       - name: Install Rust toolchain
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          override: true
-          profile: minimal
           components: rustfmt
       - name: Check the formatting
-        uses: actions-rs/cargo@v1
-        with:
-          command: fmt
-          args: -- --check --verbose
+        run: cargo fmt --all -- --check --verbose
+
+  msrv:
+    name: Minimum Rust version
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libx11-dev libxrandr-dev
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@1.88
+      - name: Check MSRV
+        run: cargo check --locked --all-features
 
   lychee:
     name: Check the links
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout repository
-        uses: actions/checkout@master
+        uses: actions/checkout@v7
       - name: Link Checker
-        uses: lycheeverse/lychee-action@v1
+        uses: lycheeverse/lychee-action@v2
         with:
           args: --exclude "twitter.com|crates.io|aur.archlinux.org/(.+?).git|patreon.com|mailto:+|%7Busername%7D" -v *.md
         env:

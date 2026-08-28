@@ -80,7 +80,7 @@ impl ActionKeys {
 	pub fn get_primary(&self) -> Vec<&Keycode> {
 		self.key_groups
 			.iter()
-			.filter_map(|keys| keys.get(0))
+			.filter_map(|keys| keys.first())
 			.collect()
 	}
 
