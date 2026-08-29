@@ -89,8 +89,8 @@ impl File {
 		if let Some(config_dir) = dirs::config_dir() {
 			let file_name = concat!(env!("CARGO_PKG_NAME"), ".conf");
 			for config_file in [
-				config_dir.join(&file_name),
-				config_dir.join(env!("CARGO_PKG_NAME")).join(&file_name),
+				config_dir.join(file_name),
+				config_dir.join(env!("CARGO_PKG_NAME")).join(file_name),
 				config_dir.join(env!("CARGO_PKG_NAME")).join("config"),
 			] {
 				if config_file.exists() {

@@ -4,7 +4,7 @@ use crate::image::geometry::Geometry;
 use crate::image::Image;
 use crate::util::state::InputState;
 use image::ExtendedColorType;
-use png::{BitDepth, ColorType, Encoder, FilterType};
+use png::{BitDepth, ColorType, Encoder, Filter};
 use std::io::{self, Write};
 
 /* APNG encoder and settings */
@@ -36,7 +36,7 @@ impl<'a, Output: Write> ApngEncoder<'a, Output> {
 		)?;
 		encoder.set_color(ColorType::Rgba);
 		encoder.set_depth(BitDepth::Eight);
-		encoder.set_filter(FilterType::NoFilter);
+		encoder.set_filter(Filter::NoFilter);
 		Ok(Self { encoder, settings })
 	}
 

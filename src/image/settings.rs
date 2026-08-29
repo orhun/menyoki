@@ -2,7 +2,9 @@ use crate::args::matches::ArgMatches;
 use crate::args::parser::ArgParser;
 use image::codecs::png::{CompressionType, FilterType};
 use image::codecs::pnm::{PnmSubtype, SampleEncoding};
-use image::codecs::webp::WebPQuality;
+
+/* Default lossy WebP quality */
+const DEFAULT_WEBP_QUALITY: u8 = 80;
 
 /* PNG compression and filter settings */
 #[derive(Clone, Copy, Debug)]
@@ -133,7 +135,7 @@ pub struct WebPSettings {
 impl Default for WebPSettings {
 	fn default() -> Self {
 		Self {
-			quality: Some(WebPQuality::DEFAULT),
+			quality: Some(DEFAULT_WEBP_QUALITY),
 		}
 	}
 }
@@ -150,15 +152,12 @@ impl WebPSettings {
 	}
 
 	/**
-	 * Create a WebPQuality object from WebPSettings.
+	 * Get the lossy WebP quality, or None for lossless encoding.
 	 *
-	 * @return WebPQuality
+	 * @return f32 (Option)
 	 */
-	pub fn get_quality(&self) -> WebPQuality {
-		match self.quality {
-			Some(quality) => WebPQuality::lossy(quality),
-			None => WebPQuality::lossless(),
-		}
+	pub fn get_quality(&self) -> Option<f32> {
+		self.quality.map(f32::from)
 	}
 
 	/**
@@ -183,7 +182,7 @@ impl WebPSettings {
 				if args.is_present("lossless") {
 					Self::new(None)
 				} else {
-					Self::new(Some(parser.parse("quality", WebPQuality::DEFAULT)))
+					Self::new(Some(parser.parse("quality", DEFAULT_WEBP_QUALITY)))
 				}
 			}
 			None => Self::default(),

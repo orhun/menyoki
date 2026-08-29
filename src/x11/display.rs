@@ -159,7 +159,7 @@ impl Display {
 			if let Some(monitor) = self.settings.flag.monitor {
 				let crtc = window.get_crtc_info();
 				let geometry = crtc
-					.get(monitor.checked_sub(1).unwrap_or_default())
+					.get(monitor.saturating_sub(1))
 					.expect("Invalid monitor number");
 				size = *geometry;
 				self.settings.padding.left =
@@ -278,14 +278,12 @@ impl Display {
 	 */
 	fn update_padding(&mut self, size: Geometry, window_geometry: Geometry) {
 		if !size.is_zero() {
-			self.settings.padding.right = window_geometry
-				.width
-				.checked_sub(size.width + self.settings.padding.left)
-				.unwrap_or_default();
-			self.settings.padding.bottom = window_geometry
-				.height
-				.checked_sub(size.height + self.settings.padding.top)
-				.unwrap_or_default();
+			self.settings.padding.right = window_geometry.width.saturating_sub(
+				size.width.saturating_add(self.settings.padding.left),
+			);
+			self.settings.padding.bottom = window_geometry.height.saturating_sub(
+				size.height.saturating_add(self.settings.padding.top),
+			);
 		}
 	}
 
@@ -376,8 +374,10 @@ mod tests {
 	use x11::keysym;
 	#[test]
 	fn test_x11_display() {
-		let mut settings = RecordSettings::default();
-		settings.time = RecordTime::new(Some(0.0), 0, 0, 10);
+		let mut settings = RecordSettings {
+			time: RecordTime::new(Some(0.0), 0, 0, 10),
+			..RecordSettings::default()
+		};
 		settings.flag.font = Some(DEFAULT_FONT);
 		let mut display = Display::open(Some(settings)).unwrap();
 		display
@@ -390,18 +390,17 @@ mod tests {
 		let input_state = InputState::default();
 		assert!(display.select_window(&input_state).is_none());
 		assert_eq!(
-			u64::try_from(keysym::XK_Alt_L).unwrap(),
+			u64::from(keysym::XK_Alt_L),
 			display
-				.get_symbol_from_keycode(&input_state.action_keys.get_primary()[0])
-				as u64
+				.get_symbol_from_keycode(input_state.action_keys.get_primary()[0])
 		);
 		assert_eq!(
-			u64::try_from(keysym::XK_Control_R).unwrap(),
-			display.get_symbol_from_keycode(&Keycode::RControl) as u64
+			u64::from(keysym::XK_Control_R),
+			display.get_symbol_from_keycode(&Keycode::RControl)
 		);
 		assert_eq!(
-			u64::try_from(keysym::XK_X).unwrap(),
-			display.get_symbol_from_keycode(&Keycode::X) as u64
+			u64::from(keysym::XK_X),
+			display.get_symbol_from_keycode(&Keycode::X)
 		);
 		display.get_root_window().release();
 	}

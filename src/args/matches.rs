@@ -34,7 +34,8 @@ impl<'a> ArgMatches<'a> {
 	pub fn new(args: &'a Args<'a>) -> Self {
 		let config = if let Some(config_file) = args
 			.value_of("config")
-			.map_or(File::get_config_file().take(), |v| Some(PathBuf::from(v)))
+			.map(PathBuf::from)
+			.or_else(File::get_config_file)
 		{
 			Config::load_from_file(config_file).ok()
 		} else {
@@ -94,12 +95,10 @@ impl<'a> ArgMatches<'a> {
 			|| if let Some(config) = &self.config {
 				config
 					.get_from(Some(self.section), name)
-					.map_or(false, |s| s.to_lowercase() == "true")
+					.is_some_and(|s| s.to_lowercase() == "true")
 			} else {
 				false
-			} || self
-			.get_env(name)
-			.map_or(false, |s| s.to_lowercase() == "true")
+			} || self.get_env(name).is_ok_and(|s| s.to_lowercase() == "true")
 	}
 
 	/**

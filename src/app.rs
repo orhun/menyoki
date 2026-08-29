@@ -25,17 +25,15 @@ use image::codecs::png::PngEncoder;
 use image::codecs::pnm::{PnmEncoder, PnmSubtype};
 use image::codecs::tga::TgaEncoder;
 use image::codecs::tiff::TiffEncoder;
-use image::codecs::webp::WebPEncoder;
 use image::error::{
 	ImageError, ImageFormatHint, UnsupportedError, UnsupportedErrorKind,
 };
-use image::io::Reader;
 use image::{
-	AnimationDecoder, ColorType, ExtendedColorType, ImageEncoder, ImageFormat,
+	AnimationDecoder, ExtendedColorType, ImageEncoder, ImageFormat, ImageReader,
 };
 use std::fmt::Debug;
 use std::fs::{self, File};
-use std::io::{self, Cursor, Read, Seek, Write};
+use std::io::{self, BufReader, Cursor, Read, Seek, Write};
 use std::path::Path;
 use std::thread;
 use thiserror::Error as ThisError;
@@ -53,6 +51,8 @@ pub enum AppError {
 	GifEncoding(#[from] gif::EncodingError),
 	#[error("PNG encoding error: `{0}`")]
 	PngEncoding(#[from] png::EncodingError),
+	#[error("WebP encoding error: `{0}`")]
+	WebPEncoding(String),
 	#[cfg(feature = "ski")]
 	#[error("gifski error: `{0}`")]
 	Gifski(#[from] gifski::Error),
@@ -282,7 +282,7 @@ where
 	 * @return Image (Result)
 	 */
 	fn edit_image(self, path: &Path) -> AppResult<Image> {
-		let image = Reader::open(path)?
+		let image = ImageReader::open(path)?
 			.with_guessed_format()?
 			.decode()?
 			.to_rgba8();
@@ -321,7 +321,7 @@ where
 	 * @return Result
 	 */
 	fn view_image(self) -> AppResult<()> {
-		let image = Reader::open(&self.settings.view.file)?
+		let image = ImageReader::open(&self.settings.view.file)?
 			.with_guessed_format()?
 			.decode()?;
 		let viewer = ImageViewer::new(image, &self.settings.view);
@@ -337,8 +337,13 @@ where
 	 * @param  path
 	 * @return Frames (Result)
 	 */
-	fn edit_anim<Input: Read>(self, input: Input, path: &Path) -> AppResult<Frames> {
-		let format = Reader::open(path)?.with_guessed_format()?.format();
+	fn edit_anim<Input: Read + Seek>(
+		self,
+		input: Input,
+		path: &Path,
+	) -> AppResult<Frames> {
+		let format = ImageReader::open(path)?.with_guessed_format()?.format();
+		let input = BufReader::new(input);
 		let frames =
 			AnimDecoder::new(self.settings.edit.get_imageops(), &self.settings.anim)
 				.update_frames(match format {
@@ -346,7 +351,7 @@ where
 						GifDecoder::new(input)?.into_frames().collect_frames()
 					}
 					Some(ImageFormat::Png) => PngDecoder::new(input)?
-						.apng()
+						.apng()?
 						.into_frames()
 						.collect_frames(),
 					_ => Err(ImageError::Unsupported(
@@ -365,7 +370,7 @@ where
 	 * @param  input
 	 * @return Frames (Result)
 	 */
-	fn split_anim<Input: Read>(self, input: Input) -> AppResult<()> {
+	fn split_anim<Input: Read + Seek>(self, input: Input) -> AppResult<()> {
 		let (frames, fps) = self.edit_anim(input, &self.settings.split.file)?;
 		debug!("FPS: {}", fps);
 		fs::create_dir_all(&self.settings.split.dir)?;
@@ -421,14 +426,7 @@ where
 				),
 				ExtendedColorType::Rgb8,
 			),
-			FileFormat::WebP => self.save_image(
-				image,
-				WebPEncoder::new_with_quality(
-					&mut output,
-					self.settings.webp.get_quality(),
-				),
-				ExtendedColorType::Rgb8,
-			),
+			FileFormat::WebP => self.save_webp(image, output),
 			FileFormat::Bmp => self.save_image(
 				image,
 				BmpEncoder::new(&mut output),
@@ -474,6 +472,40 @@ where
 	}
 
 	/**
+	 * Save an image as WebP while preserving lossy and lossless output modes.
+	 *
+	 * @param image (Option)
+	 * @param output
+	 * @return Result
+	 */
+	fn save_webp<Output: Write>(
+		self,
+		image: Option<Image>,
+		mut output: Output,
+	) -> AppResult<()> {
+		let image = image.ok_or_else(|| {
+			AppError::WsError(String::from("Failed to get the image"))
+		})?;
+		if !self.settings.args.is_present("split") {
+			info!("Saving the image as WEBP...");
+			debug!("{:?}", image);
+		}
+		let data = image.get_data(ExtendedColorType::Rgb8);
+		let encoder = webp::Encoder::from_rgb(
+			&data,
+			image.geometry.width,
+			image.geometry.height,
+		);
+		let encoded = match self.settings.webp.get_quality() {
+			Some(quality) => encoder.encode_simple(false, quality),
+			None => encoder.encode_simple(true, 75.0),
+		}
+		.map_err(|e| AppError::WebPEncoding(format!("{e:?}")))?;
+		output.write_all(&encoded)?;
+		Ok(())
+	}
+
+	/**
 	 * Save the image to a file.
 	 *
 	 * @param  image (Option)
@@ -506,11 +538,13 @@ where
 			image.geometry.width,
 			image.geometry.height,
 			match color_type {
-				ExtendedColorType::L1 | ExtendedColorType::L8 => ColorType::L8,
-				ExtendedColorType::Rgb8 => ColorType::Rgb8,
-				ExtendedColorType::Rgba16 => ColorType::Rgba16,
-				ExtendedColorType::Rgba32F => ColorType::Rgba32F,
-				_ => ColorType::Rgba8,
+				ExtendedColorType::L1 | ExtendedColorType::L8 => {
+					ExtendedColorType::L8
+				}
+				ExtendedColorType::Rgb8 => ExtendedColorType::Rgb8,
+				ExtendedColorType::Rgba16 => ExtendedColorType::Rgba16,
+				ExtendedColorType::Rgba32F => ExtendedColorType::Rgba32F,
+				_ => ExtendedColorType::Rgba8,
 			},
 		)?;
 		Ok(())
@@ -627,7 +661,7 @@ mod tests {
 		let matches = ArgMatches::new(&args);
 		let mut settings = AppSettings::new(&matches);
 		let window = TestWindow::default();
-		for format in vec![
+		for format in [
 			FileFormat::Png,
 			FileFormat::Jpg,
 			FileFormat::Bmp,

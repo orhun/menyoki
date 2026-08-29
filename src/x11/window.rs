@@ -473,8 +473,10 @@ mod tests {
 	use x11::keysym;
 	#[test]
 	fn test_x11_window() {
-		let mut settings = RecordSettings::default();
-		settings.time = RecordTime::new(Some(0.0), 1, 0, 10);
+		let settings = RecordSettings {
+			time: RecordTime::new(Some(0.0), 1, 0, 10),
+			..RecordSettings::default()
+		};
 		let display = Display::open(Some(settings)).unwrap();
 		let window = display.get_root_window();
 		unsafe {
