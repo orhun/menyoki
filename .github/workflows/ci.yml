@@ -52,6 +52,9 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Cache Cargo dependencies
         uses: Swatinem/rust-cache@v2
+      - name: Configure pkg-config (musl)
+        if: matrix.build == 'linux-musl'
+        run: echo "PKG_CONFIG_ALLOW_CROSS=1" >> "$GITHUB_ENV"
       - name: Check the project files
         run: cargo check --locked --target ${{ matrix.target }}
       - name: Check the lints
@@ -71,7 +74,7 @@ jobs:
         if: matrix.build == 'linux-gnu'
         run: |
           xvfb-run --server-args="-screen 0 1920x1080x24" \
-            cargo tarpaulin -o Xml -v --features test-ws -- --test-threads 1
+            cargo tarpaulin --engine llvm -o Xml -v --features test-ws -- --test-threads 1
       - name: Upload reports to Codecov (linux)
         if: matrix.build == 'linux-gnu'
         uses: codecov/codecov-action@v7
