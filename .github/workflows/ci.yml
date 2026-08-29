@@ -45,7 +45,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            --allow-unauthenticated xvfb libx11-dev libxrandr-dev
+            --allow-unauthenticated xvfb musl-tools libx11-dev libxrandr-dev
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
