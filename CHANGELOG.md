@@ -7,12 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Fixed
-- Bound the wait for a Wayland frame copy
-- Keep the recorded frames when a recording ends early
-- Fail when a frame no longer covers the capture area
-- Warn that --select is not supported on Wayland
-- Exit cleanly when a recording is cancelled
-- Do not panic when no X display is available
+- Stop hanging and losing frames when the window disappears mid-recording on Wayland
+- Reject frames that no longer fit the capture area instead of corrupting the recording
+- Warn that `--select` is not supported on Wayland, like `--mouse` already does
+- Exit cleanly when a recording is cancelled before saving any frames
+- Do not panic when `MENYOKI_WINDOW_SYSTEM=x11` is set without an X display available
 
 ## [1.8.0] - 2026-08-28
 ### Added

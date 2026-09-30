@@ -98,6 +98,8 @@ pub trait Capture {
 }
 ```
 
+`get_image` returning `None` means different things depending on when it happens. Before any frame has been captured, it is a hard failure. Once a recording is underway, it means the window is gone (e.g. it was closed), so [Recorder](https://github.com/orhun/menyoki/blob/master/src/record/mod.rs) ends the recording early and keeps the frames captured so far instead of failing. `RecordResult::get` also joins the recording thread and returns its `thread::Result` directly (instead of wrapping it in an `Option`), so a panicked recording thread is reported through the same `Result` rather than silently discarded.
+
 As a reference: see [src/x11/mod.rs](https://github.com/orhun/menyoki/blob/master/src/x11/mod.rs) (for `Access` implementation), [src/x11/window.rs](https://github.com/orhun/menyoki/blob/master/src/x11/window.rs) (for `Capture` implementation), and [src/ws/*](https://github.com/orhun/menyoki/tree/master/src/ws) (for implementation templates).
 
 The rest of the modules/functions are not platform-dependent (abstracted) so they are expected to work properly.
