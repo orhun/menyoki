@@ -1,6 +1,7 @@
 pub mod display;
 pub mod window;
 
+use crate::args::parser::ArgParser;
 use crate::image::geometry::Geometry;
 use crate::record::settings::RecordWindow;
 use crate::settings::AppSettings;
@@ -51,6 +52,9 @@ impl<'a> Access<'a, Window> for WindowSystem<'a> {
 	 */
 	fn get_window(&mut self) -> Option<Window> {
 		debug!("Record window: {:?}", self.settings.record.window);
+		if self.has_arg("select") {
+			warn!("Selecting a window interactively is not supported on Wayland.");
+		}
 		if self.settings.record.flag.mouse {
 			warn!("Selecting a window with the mouse is not supported on Wayland.");
 		}
@@ -99,6 +103,28 @@ impl<'a> Access<'a, Window> for WindowSystem<'a> {
 }
 
 impl WindowSystem<'_> {
+	/**
+	 * Check if an argument was given for the running subcommand.
+	 *
+	 * `RecordFlag` cannot answer this for every argument, since some of its
+	 * fields are on by default and mean more than the argument they carry.
+	 *
+	 * @param  arg
+	 * @return bool
+	 */
+	fn has_arg(&self, arg: &'static str) -> bool {
+		ArgParser::from_subcommand(
+			self.settings.args,
+			if self.settings.args.is_present("capture") {
+				"capture"
+			} else {
+				"record"
+			},
+		)
+		.args
+		.is_some_and(|matches| matches.is_present(arg))
+	}
+
 	/**
 	 * Get the output to capture, selected via the monitor flag.
 	 *

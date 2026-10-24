@@ -25,7 +25,7 @@ mod window;
 mod ws;
 #[cfg(all(unix, not(target_os = "macos")))]
 mod x11;
-use self::app::App;
+use self::app::{App, AppError};
 use self::args::matches::ArgMatches;
 use self::args::Args;
 use self::settings::AppSettings;
@@ -69,9 +69,13 @@ where
 	} else {
 		None
 	};
-	if let Err(e) = App::new(window, settings).start() {
-		error!("{}", e);
-		process::exit(1);
+	match App::new(window, settings).start() {
+		Ok(()) => {}
+		Err(e @ AppError::Cancelled) => info!("{}", e),
+		Err(e) => {
+			error!("{}", e);
+			process::exit(1);
+		}
 	}
 }
 

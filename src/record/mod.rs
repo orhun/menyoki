@@ -34,14 +34,13 @@ impl<T> RecordResult<T> {
 	/**
 	 * Stop the thread and retrieve values.
 	 *
-	 * @return Option
+	 * @return Result
 	 */
-	pub fn get(self) -> Option<thread::Result<T>> {
-		if self.sender.send(()).is_ok() {
-			Some(self.thread.join())
-		} else {
-			None
-		}
+	pub fn get(self) -> thread::Result<T> {
+		/* The thread might have already stopped on its own, which drops the
+		 * receiver, but the frames that it recorded are still wanted. */
+		let _ = self.sender.send(());
+		self.thread.join()
 	}
 }
 
@@ -122,22 +121,36 @@ where
 			rec_state.store(false, Ordering::SeqCst);
 		})?;
 		self.window.show_countdown();
+		if !recording.load(Ordering::SeqCst) {
+			return Err(AppError::Cancelled);
+		}
 		let max_frames = self.get_max_frames();
 		while recording.load(Ordering::SeqCst) && frames.len() < max_frames {
 			if let Some(state) = input_state {
 				if state.check_cancel_keys() {
-					frames.clear();
 					debug!("\n");
 					warn!("User interrupt detected.");
-					break;
+					return Err(AppError::Cancelled);
 				} else if state.check_action() {
 					break;
 				}
 			}
 			self.clock.tick();
-			frames.push(self.window.get_image().ok_or_else(|| {
-				AppError::FrameError(String::from("Failed to get image"))
-			})?);
+			match self.window.get_image() {
+				Some(image) => frames.push(image),
+				None if frames.is_empty() => {
+					return Err(AppError::FrameError(String::from(
+						"Failed to get image",
+					)))
+				}
+				/* The window is gone, but the frames that were recorded
+				 * until now are still worth saving. */
+				None => {
+					debug!("\n");
+					warn!("The recording ended early.");
+					break;
+				}
+			}
 			debug!("Frames: {}\r", frames.len());
 			io::stdout().flush()?;
 		}
@@ -160,11 +173,14 @@ where
 				while self.channel.1.try_recv().is_err() {
 					self.clock.tick();
 					if frames.len() < max_frames {
-						frames.push(
-							self.window
-								.get_image()
-								.expect("Failed to get the image"),
-						);
+						match self.window.get_image() {
+							Some(image) => frames.push(image),
+							None => {
+								debug!("\n");
+								warn!("The recording ended early.");
+								break;
+							}
+						}
 						debug!("Frames: {}\r", frames.len());
 						io::stdout().flush().expect("Failed to flush stdout");
 					}
@@ -179,21 +195,70 @@ where
 #[cfg(test)]
 mod tests {
 	use super::*;
+	use crate::image::geometry::Geometry;
 	use crate::record::settings::RecordSettings;
 	use crate::window::test::TestWindow;
-	use pretty_assertions::assert_ne;
+	use image::Rgba;
+	use pretty_assertions::{assert_eq, assert_ne};
+	use std::sync::atomic::AtomicUsize;
 	use std::thread;
 	use std::time::Duration;
+
+	/* Number of frames to hand over before the window is gone */
+	const VANISHING_FRAMES: usize = 3;
+	/* Set once the vanishing window has been asked for one frame too many */
+	static GONE: AtomicBool = AtomicBool::new(false);
+
+	/* Window that stops giving frames, like one that is closed mid-recording */
+	#[derive(Debug)]
+	struct VanishingWindow;
+
+	impl Capture for VanishingWindow {
+		fn get_image(&self) -> Option<Image> {
+			static FRAMES: AtomicUsize = AtomicUsize::new(0);
+			if FRAMES.fetch_add(1, Ordering::SeqCst) < VANISHING_FRAMES {
+				Some(Image::new(
+					vec![Rgba::from([255, 255, 255, 0])],
+					false,
+					Geometry::new(0, 0, 1, 1),
+				))
+			} else {
+				GONE.store(true, Ordering::SeqCst);
+				None
+			}
+		}
+		fn show_countdown(&self) {}
+		fn release(&self) {}
+	}
 	#[test]
 	fn test_record() {
 		let window = TestWindow::default();
 		let recorder = Recorder::new(window, 10, false, RecordSettings::default());
 		let record = recorder.record_async();
 		thread::sleep(Duration::from_millis(200));
-		assert!(!record.get().unwrap().unwrap().is_empty());
+		assert!(!record.get().unwrap().is_empty());
 		let mut recorder =
 			Recorder::new(window, 10, false, RecordSettings::default());
 		recorder.settings.time.duration = Some(0.2);
 		assert_ne!(0, recorder.record_sync(None).unwrap().len());
+	}
+	#[test]
+	fn test_record_window_gone() {
+		let recorder =
+			Recorder::new(VanishingWindow, 10, false, RecordSettings::default());
+		let record = recorder.record_async();
+		/* Waiting for the window instead of for a duration keeps the test off
+		 * the speed of the machine that runs it. */
+		for _ in 0..200 {
+			if GONE.load(Ordering::SeqCst) {
+				break;
+			}
+			thread::sleep(Duration::from_millis(10));
+		}
+		/* Give the thread the moment it needs to end and drop its receiver. */
+		thread::sleep(Duration::from_millis(100));
+		/* The thread stopped on its own, but the frames that it did record
+		 * are still wanted. */
+		assert_eq!(VANISHING_FRAMES, record.get().unwrap().len());
 	}
 }

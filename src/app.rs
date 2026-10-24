@@ -64,6 +64,9 @@ pub enum AppError {
 	FrameError(String),
 	#[error("Command error: `{0}`")]
 	CommandError(String),
+	/* Not a failure: the user stopped before there was anything to save. */
+	#[error("Cancelled.")]
+	Cancelled,
 }
 
 /* Application output and result types */
@@ -260,10 +263,7 @@ where
 					))
 				})?
 				.execute()?;
-			Ok(match record.get() {
-				Some(frames) => frames.expect("Failed to retrieve the frames."),
-				None => Vec::new(),
-			})
+			Ok(record.get().expect("Failed to retrieve the frames."))
 		} else {
 			Ok(recorder.record_sync(
 				if self.settings.record.flag.action_keys.is_some() {

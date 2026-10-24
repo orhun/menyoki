@@ -45,8 +45,10 @@ impl<'a> AppSettings<'a> {
 		let pnm = PnmSettings::from_args(args);
 		let edit = EditSettings::from_args(args);
 		let save = SaveSettings::from_args(args, &edit, &pnm);
-		let input_state =
-			Self::get_input_state(window_required && !Self::is_wayland(), &record);
+		let input_state = Self::get_input_state(
+			window_required && !Self::is_wayland() && Self::has_x_display(),
+			&record,
+		);
 		Self {
 			args,
 			record,
@@ -116,10 +118,32 @@ impl<'a> AppSettings<'a> {
 	}
 
 	/**
+	 * Check if an X display is available.
+	 *
+	 * @return bool
+	 */
+	#[cfg(all(unix, not(target_os = "macos")))]
+	fn has_x_display() -> bool {
+		crate::x11::has_display()
+	}
+
+	/**
+	 * Check if an X display is available.
+	 *
+	 * @return bool
+	 */
+	#[cfg(not(all(unix, not(target_os = "macos"))))]
+	fn has_x_display() -> bool {
+		true
+	}
+
+	/**
 	 * Get InputState if a window is required.
 	 *
 	 * The input state is backed by the X11 keyboard state, which is neither
-	 * available nor meaningful on Wayland, so it is left out there.
+	 * available nor meaningful on Wayland, so it is left out there. It also
+	 * panics without an X display, so it is left out then as well and the
+	 * window system reports the missing display on its own.
 	 *
 	 * @param  window_required
 	 * @param  record

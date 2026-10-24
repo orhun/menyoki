@@ -8,6 +8,7 @@ use crate::x11::display::Display;
 use crate::x11::window::Window;
 use std::ffi::CStr;
 use std::os::raw::c_char;
+use std::ptr;
 use x11::xlib;
 
 /* X11 window system */
@@ -61,6 +62,26 @@ impl<'a> Access<'a, Window> for WindowSystem<'a> {
 					)
 				}
 			}
+		}
+	}
+}
+
+/**
+ * Check if an X display can be opened.
+ *
+ * `device_query` panics instead of reporting this, so it has to be asked
+ * before the input state is created.
+ *
+ * @return bool
+ */
+pub fn has_display() -> bool {
+	unsafe {
+		let display = xlib::XOpenDisplay(ptr::null());
+		if display.is_null() {
+			false
+		} else {
+			xlib::XCloseDisplay(display);
+			true
 		}
 	}
 }
