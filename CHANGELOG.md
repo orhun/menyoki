@@ -6,12 +6,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-### Fixed
-- Stop hanging and losing frames when the window disappears mid-recording on Wayland
-- Reject frames that no longer fit the capture area instead of corrupting the recording
-- Warn that `--select` is not supported on Wayland, like `--mouse` already does
-- Exit cleanly when a recording is cancelled before saving any frames
-- Do not panic when `MENYOKI_WINDOW_SYSTEM=x11` is set without an X display available
 
 ## [1.8.0] - 2026-08-28
 ### Added
